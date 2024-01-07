@@ -6,9 +6,11 @@ using UnityEngine;
 public class PlayerData
 {
     public SaveBase saveBase;
+    public CakeSaveData cakeSaveData;
 
     public void LoadData()
     {
+        cakeSaveData.LoadData();
         saveBase.LoadData();
     }
 

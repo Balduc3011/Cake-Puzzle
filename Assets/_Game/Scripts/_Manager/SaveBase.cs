@@ -30,6 +30,6 @@ public class SaveBase
 
     public virtual void Update()
     {
-        throw new NotImplementedException();
+        //throw new NotImplementedException();
     }
 }
