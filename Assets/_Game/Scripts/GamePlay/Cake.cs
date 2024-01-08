@@ -10,23 +10,77 @@ public class Cake : MonoBehaviour
     public List<Pieces> pieces = new List<Pieces>();
     public List<int> rotates = new List<int>();
     public int totalPieces;
+    public int totalCakeID;
     public float radiusCheck;
     public Plate currentPlate;
     GroupCake myGroupCake;
-
+    public List<int> pieceCakeIDCount = new List<int>();
+    public List<int> pieceCakeID = new List<int>();
     public void InitData() {
         totalPieces = GameManager.Instance.cakeManager.GetPiecesTotal() + 1;
-        for (int i = 0; i < pieces.Count; i++) {
-            if (i >= totalPieces) pieces[i].gameObject.SetActive(false);
-            else InitPiece(i);
+        SetupPiecesCakeID();
+        pieceIndex = 0;
+        SetUpCakeID();
+        for (int i = 0; i < pieceCakeIDCount.Count; i++)
+        {
+            InitPiecesSame(pieceCakeIDCount[i], pieceCakeID[i]);
+        }
+        for (int i = totalPieces; i < pieces.Count; i++) {
+            pieces[i].gameObject.SetActive(false);
+        }
+    }
+    int indexRandom;
+    void SetupPiecesCakeID() {
+        pieceCakeIDCount.Clear();
+        totalCakeID = GameManager.Instance.cakeManager.GetTotalCakeID() + 1;
+        if (totalCakeID > totalPieces)
+            totalCakeID = totalPieces;
+
+        for (int i = 0; i < totalCakeID; i++)
+        {
+            pieceCakeIDCount.Add(1);
+            pieceCakeID.Add(-1);
+        }
+
+        for (int i = 0; i < totalPieces - totalCakeID; i++)
+        {
+            indexRandom = Random.Range(0, pieceCakeIDCount.Count);
+            pieceCakeIDCount[indexRandom]++;
+        }
+        pieceCakeIDCount.Sort((a, b) => Compare(a, b));
+    }
+
+    int Compare(int a, int b) {
+        if (a < b) return 1;
+        if (a > b) return -1;
+        return 0;
+    }
+
+    List<int> cakeID = new List<int>();
+    void SetUpCakeID() {
+        cakeID = ProfileManager.Instance.playerData.cakeSaveData.cakeID;
+        System.Random rd = new System.Random();
+        for (int i = 0; i < pieceCakeID.Count; i++)
+        {
+            int randomIndexX = (int)(rd.Next(cakeID.Count));
+            pieceCakeID[i] = cakeID[randomIndexX];
         }
     }
 
-    void InitPiece(int pieceInidex) {
+    int pieceIndex;
+    void InitPiecesSame(int totalPiecesSame, int pieceCakeID) {
+        int pieceCountSame = 0;
+        while (pieceCountSame < totalPiecesSame) {
+            InitPiece(pieceIndex, pieceCakeID);
+            pieceIndex++;
+            pieceCountSame++; 
+        }
+    }
+
+    void InitPiece(int pieceInidex, int pieceCakeID) {
         pieces[pieceInidex].transform.eulerAngles = Vector3.zero;
-        int cakeID = GameManager.Instance.cakeManager.GetRandomPieces();
-        GameObject objecPref = Resources.Load("Pieces/Piece_" + cakeID) as GameObject;
-        pieces[pieceInidex].InitData(objecPref);
+        GameObject objecPref = Resources.Load("Pieces/Piece_" + pieceCakeID) as GameObject;
+        pieces[pieceInidex].InitData(objecPref, pieceCakeID);
 
         pieces[pieceInidex].transform.eulerAngles = new Vector3(0, rotates[pieceInidex], 0);
     }
@@ -40,11 +94,10 @@ public class Cake : MonoBehaviour
         else Debug.Log("Group cake null!");
     }
 
-    public bool Drop()
+    public bool CheckDrop()
     {
         if (currentPlate != null && currentPlate.currentCake == null)
         {
-            transform.position = currentPlate.pointStay.position;
             currentPlate.SetCurrentCake(this);
             currentPlate.Deactive();
             return true;
@@ -52,9 +105,14 @@ public class Cake : MonoBehaviour
         return false;
     }
 
+    public void DropDone() {
+        transform.position = currentPlate.pointStay.position;
+    }
+
     public void GroupDropFail() {
         if (currentPlate != null)
         {
+            currentPlate.currentCake = null;
             currentPlate.Deactive();
             currentPlate = null;
         }

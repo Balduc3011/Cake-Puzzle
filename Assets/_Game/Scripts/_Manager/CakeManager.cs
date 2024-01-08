@@ -73,10 +73,22 @@ public class CakeManager : MonoBehaviour
         {
             countCake.Add(ProfileManager.Instance.dataConfig.rateDataConfig.GetRandomSlot(haveMoreCake) + 1);
         }
+        countCake.Sort((a, b) => CompareCountCake(a, b));
+    }
+
+    int CompareCountCake(float a, float b) {
+        if (a < b) return 1;
+        if (a > b) return -1;
+        return 0;
     }
 
     public int GetPiecesTotal() {
         haveMoreThan3Cake = ProfileManager.Instance.playerData.cakeSaveData.IsHaveMoreThanThreeCake();
         return ProfileManager.Instance.dataConfig.rateDataConfig.GetTotalPieces(haveMoreThan3Cake);
+    }
+
+    public int GetTotalCakeID() {
+        haveMoreThan3Cake = ProfileManager.Instance.playerData.cakeSaveData.IsHaveMoreThanThreeCake();
+        return ProfileManager.Instance.dataConfig.rateDataConfig.GetTotalCakeID(haveMoreThan3Cake);
     }
 }

@@ -7,9 +7,10 @@ public class Pieces : MonoBehaviour
     public Transform parent;
     public GameObject objPref;
     public Vector3 objectOffset;
-
-    public void InitData(GameObject objPref) { 
+    public int cakeID;
+    public void InitData(GameObject objPref, int cakeID) { 
         this.objPref = objPref;
+        this.cakeID = cakeID;
         if (parent.childCount > 0) { Destroy(parent.GetChild(0).gameObject); }
         Transform trs = Instantiate(objPref).transform;
         trs.parent = parent;

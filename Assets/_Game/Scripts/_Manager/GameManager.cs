@@ -8,8 +8,8 @@ public class GameManager : Singleton<GameManager>
     public CameraManager cameraManager;
     public CakeManager cakeManager;
     public ObjectPooling objectPooling;
-    bool isTouching = false;
-    Vector3 touchUp, touchDown;
+    //bool isTouching = false;
+    //Vector3 touchUp, touchDown;
     //private void Update()
     //{
     //    if (Input.touchCount > 0)

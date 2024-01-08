@@ -6,8 +6,8 @@ using UnityEngine;
 public class RateDataConfig : ScriptableObject
 {
     public List<float> rateTotalSlot = new List<float>();
-    public List<float> ratePiecesDiff = new List<float>();
     public List<float> ratePiecesTotal = new List<float>();
+    public List<float> rateCakeID = new List<float>();
 
     float randomResult;
     public float GetRandomSlot(bool moreThanThree) {
@@ -38,6 +38,22 @@ public class RateDataConfig : ScriptableObject
             }
         }
         if (moreThanThree) { return ratePiecesTotal.Count - 1; }
+        else return 0;
+    }
+    public int GetTotalCakeID(bool moreThanThree) {
+        randomResult = Random.Range(0, 100);
+        for (int i = 0; i < rateCakeID.Count - 1; i++)
+        {
+            if (randomResult < rateCakeID[i])
+            {
+                return i;
+            }
+            else
+            {
+                randomResult -= rateCakeID[i];
+            }
+        }
+        if (moreThanThree) { return rateCakeID.Count - 1; }
         else return 0;
     }
 }
