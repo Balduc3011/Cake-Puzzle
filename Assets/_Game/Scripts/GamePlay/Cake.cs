@@ -154,4 +154,9 @@ public class Cake : MonoBehaviour
     {
         myGroupCake = groupCake;
     }
+    Pieces piece;
+    public bool GetCakePieceSame(int cakeID) {
+        piece = pieces.Find(e => e.cakeID == cakeID);
+        return piece != null;
+    }
 }

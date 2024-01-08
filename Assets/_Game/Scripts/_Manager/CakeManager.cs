@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class CakeManager : MonoBehaviour
 {
-    public List<Cake> cakeOnTable = new List<Cake>();
     public List<GroupCake> cakesWait = new List<GroupCake>();
     public List<Transform> pointSpawnGroupCake = new List<Transform>();
     public GroupCake currentGCake;

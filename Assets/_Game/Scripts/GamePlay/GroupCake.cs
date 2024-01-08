@@ -6,6 +6,7 @@ using UnityEngine;
 public class GroupCake : MonoBehaviour
 {
     public List<Cake> cake = new List<Cake>();
+    [SerializeField] List<GameObject> objConnects = new List<GameObject>();
 
     //public Cake[,]cakes2 = new Cake[3, 3];
 
@@ -76,6 +77,11 @@ public class GroupCake : MonoBehaviour
                 cake[i].DropDone();
             }
         }
+
+        for (int i = 0; i < objConnects.Count; i++)
+        {
+            objConnects[i].SetActive(false);
+        }
         GameManager.Instance.cakeManager.RemoveCakeWait(this);
         canTouch = false;
     }
@@ -98,14 +104,21 @@ public class GroupCake : MonoBehaviour
         if (countCake == 2)
         {
             Init2Cakes();
-            return;
+        }
+        else
+        {
+
+            for (int i = 0; i < countCake; i++)
+            {
+                cake[i].gameObject.SetActive(true);
+                cake[i].InitData();
+            }
+          
         }
 
-        for (int i = 0; i < countCake; i++)
-        {
-            cake[i].gameObject.SetActive(true);
-            cake[i].InitData();
-        }
+        objConnects[0].SetActive(cake[1].gameObject.activeSelf);
+        objConnects[1].SetActive(cake[2].gameObject.activeSelf);
+
         //cakes2[1, 1].gameObject.SetActive(true);
         //cakes2[1, 1].InitData();
 
