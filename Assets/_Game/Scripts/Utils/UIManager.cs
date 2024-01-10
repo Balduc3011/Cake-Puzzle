@@ -27,7 +27,8 @@ public class UIManager : MonoBehaviour {
     {
         //uiPooling.FirstPooling();
         //StartCoroutine(WaitToSpawnUIPool());
-        ingameDebugConsole.SetActive(ProfileManager.Instance.IsShowDebug());
+        //ingameDebugConsole.SetActive(ProfileManager.Instance.IsShowDebug());
+        ShowPanelTotal();
     }
 
     public bool isDoneFirstLoadPanel = false;
@@ -69,6 +70,15 @@ public class UIManager : MonoBehaviour {
                 case UIPanelType.PanelBase:
                     panel = Instantiate(Resources.Load("UI/PanelBase") as GameObject, mainCanvas);
                     break;
+                case UIPanelType.PanelTotal:
+                    panel = Instantiate(Resources.Load("UI/PanelTotal") as GameObject, mainCanvas);
+                    break;
+                case UIPanelType.PanelSpin:
+                    panel = Instantiate(Resources.Load("UI/PanelSpin") as GameObject, mainCanvas);
+                    break;
+                case UIPanelType.PanelDailyReward:
+                    panel = Instantiate(Resources.Load("UI/PanelDailyReward") as GameObject, mainCanvas);
+                    break;
             }
             if (panel) panel.SetActive(true);
             return panel;
@@ -87,4 +97,41 @@ public class UIManager : MonoBehaviour {
         go.SetActive(false);
     }
 
+    public void ShowPanelTotal()
+    {
+        GameObject go = GetPanel(UIPanelType.PanelTotal);
+        go.SetActive(true);
+    }
+
+    public void ClosePanelTotal()
+    {
+        GameObject go = GetPanel(UIPanelType.PanelTotal);
+        go.SetActive(false);
+    }
+
+
+    public void ShowPanelSpin()
+    {
+        isHasPopupOnScene = true;
+        GameObject go = GetPanel(UIPanelType.PanelSpin);
+        go.SetActive(true);
+    }
+    public void ClosePanelSpin()
+    {
+        isHasPopupOnScene = false;
+        GameObject go = GetPanel(UIPanelType.PanelSpin);
+        go.SetActive(false);
+    }
+    public void ShowPanelDailyReward()
+    {
+        isHasPopupOnScene = true;
+        GameObject go = GetPanel(UIPanelType.PanelDailyReward);
+        go.SetActive(true);
+    }
+    public void ClosePanelDailyReward()
+    {
+        isHasPopupOnScene = false;
+        GameObject go = GetPanel(UIPanelType.PanelDailyReward);
+        go.SetActive(false);
+    }
 }

@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 public enum UIPanelType {
-    PanelBase
+    PanelBase,
+    PanelTotal,
+    PanelSpin,
+    PanelDailyReward
 }
 public class UIPanel : MonoBehaviour {
     public bool isRegisterInUI = true;
