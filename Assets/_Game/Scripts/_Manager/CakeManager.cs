@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,7 @@ public class CakeManager : MonoBehaviour
 {
     public List<GroupCake> cakesWait = new List<GroupCake>();
     public List<Transform> pointSpawnGroupCake = new List<Transform>();
+    public Table table;
     public GroupCake currentGCake;
     public Vector3 vectorOffset;
     public float distance;
@@ -89,5 +91,15 @@ public class CakeManager : MonoBehaviour
     public int GetTotalCakeID() {
         haveMoreThan3Cake = ProfileManager.Instance.playerData.cakeSaveData.IsHaveMoreThanThreeCake();
         return ProfileManager.Instance.dataConfig.rateDataConfig.GetTotalCakeID(haveMoreThan3Cake);
+    }
+
+    public void StartCheckCake(Cake cake)
+    {
+        table.ClearMapPlate();
+        table.AddFirstPlate(cake.currentPlate);
+        table.CreateMapPlate(cake.currentPlate.GetPlateIndex(), cake.pieceCakeID[0], -1);
+        table.FindPlateBest(cake.pieceCakeID[0]);
+        table.StartCreateWay();
+        table.ClearDoneSetWayPoint();
     }
 }

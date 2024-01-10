@@ -156,7 +156,7 @@ public class Cake : MonoBehaviour
     }
     Pieces piece;
     public bool GetCakePieceSame(int cakeID) {
-        piece = pieces.Find(e => e.cakeID == cakeID);
+        piece = pieces.Find(e => (e.cakeID == cakeID && e.gameObject.activeSelf));
         return piece != null;
     }
 }
