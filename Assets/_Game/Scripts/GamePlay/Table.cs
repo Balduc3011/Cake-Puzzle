@@ -82,7 +82,7 @@ public class Table : MonoBehaviour
         bestPoint = int.MinValue;
         for (int i = 0; i < mapPlate.Count; i++)
         {
-            int points = mapPlate[i].CalculatePoint(cakeID);
+            int points = mapPlate[i].CalculatePoint();
             if (points > bestPoint) {
                 bestPlate = mapPlate[i];
                 bestPoint = points;
@@ -94,7 +94,14 @@ public class Table : MonoBehaviour
 
     public void StartMove(int cakeID) {
         if (CheckWayDone(cakeID))
-            return;
+        {
+            if (bestPlate.CheckCakeIsDone(cakeID))
+            {
+                bestPlate.DoneCake();
+            }
+           
+            return; 
+        }
         stepIndex = -1;
         Move(cakeID);
     }
@@ -105,17 +112,19 @@ public class Table : MonoBehaviour
             if (ways[i].plateCurrent.CheckModeDone(cakeID))
                 totalDone++;
         }
+        Debug.Log("total done move:" + totalDone);
         return totalDone == ways.Count || bestPlate.BestPlateDone(cakeID, totalPieceMoveDone);
     }
     int stepIndex = -1;
     void Move(int cakeID) {
         stepIndex++;
-        Debug.Log(stepIndex);
-        if (stepIndex== ways.Count)
+        if (stepIndex == ways.Count)
         {
             StartMove(cakeID);
             return;
         }
+        Debug.Log("way count: "+ways.Count);
+        Debug.Log("step index: " + stepIndex);
         ways[stepIndex].Move(cakeID, Move);
     }
 
@@ -173,6 +182,7 @@ public class Table : MonoBehaviour
         for (int i = 0; i < mapPlate.Count; i++)
         {
             mapPlate[i].wayPoint.setDone = false;
+            mapPlate[i].wayPoint.nextPlate = null;
         }
     }
 }
@@ -183,23 +193,39 @@ public class Way {
     public Plate plateGo;
     bool moveDone;
 
-    Pieces pieces;
+    Piece pieces;
     public void Move(int cakeID, UnityAction<int> actionDone = null)
     {
-        if (moveDone) return;
+        if (moveDone)
+        {
+            DoActionDone(cakeID, actionDone);
+            return;
+        }
         int totalFreeSpace = plateGo.GetFreeSpace();
-        if (totalFreeSpace == 0) return;
-        pieces = plateCurrent.currentCake.GetPieceMove(cakeID);
+        if (totalFreeSpace == 0)
+        {
+            DoActionDone(cakeID, actionDone);
+            return;
+        }
+        pieces = plateCurrent.GetPieceMove(cakeID);
         if (pieces == null)
+        {
             moveDone = true;
-        int rotate = plateGo.currentCake.GetRotate(cakeID);
-        pieces.transform.parent = plateGo.currentCake.transform;
-        pieces.transform.localPosition = Vector3.zero;
-        pieces.transform.eulerAngles = new Vector3(0, rotate, 0);
-        plateGo.AddPiece(pieces);
+        }
+        else
+        {
+            int rotate = plateGo.currentCake.GetRotate(cakeID);
+            pieces.transform.parent = plateGo.currentCake.transform;
+            pieces.transform.localPosition = Vector3.zero;
+            pieces.transform.eulerAngles = new Vector3(0, rotate, 0);
+            plateGo.AddPiece(pieces);
+        }
+        plateCurrent.MoveDoneOfCake();
         if (actionDone != null) {
             actionDone(cakeID);
         }
     }
+
+    void DoActionDone(int cakeID, UnityAction<int> actionDone = null) { actionDone(cakeID); }
 }
 

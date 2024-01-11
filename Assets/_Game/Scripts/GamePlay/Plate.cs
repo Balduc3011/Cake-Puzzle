@@ -30,38 +30,27 @@ public class Plate : MonoBehaviour
         anim.SetBool("Active", false);
     }
 
-    public int CalculatePoint(int cakeID)
+    public int CalculatePoint()
     {
         int point = 6;
-        for (int i = 0; i < currentCake.pieces.Count; i++)
-        {
-            if (currentCake.pieces[i].gameObject.activeSelf)
-            {
-                point--;          
-            }
-        }
+        point -= currentCake.pieces.Count;
         point -= currentCake.pieceCakeID.Count - 1;
         return point;
 
     }
 
     public int GetFreeSpace() {
-        int pieceSpace = 0;
-        for (int i = 0; i < currentCake.pieces.Count; i++)
-        {
-            if (!currentCake.pieces[i].gameObject.activeSelf)
-            {
-                pieceSpace++;
-            }
-        }
-        return pieceSpace;
+        if (currentCake == null) return 0;
+        return 6 - currentCake.pieces.Count;
     }
 
     public bool CheckModeDone(int cakeID) {
-       return currentCake.CheckMoveDone(cakeID);
+        if (currentCake == null) return true;
+        return currentCake.CheckMoveDone(cakeID);
     }
 
     public bool BestPlateDone(int cakeID, int totalPieceSame) {
+        if (currentCake == null) return false;
         return currentCake.CheckBestCakeDone(cakeID, totalPieceSame);
     }
 
@@ -70,9 +59,38 @@ public class Plate : MonoBehaviour
         return currentCake.GetCurrentPiecesSame(cakeID);
     }
 
-    public void AddPiece(Pieces piece)
+    public void AddPiece(Piece piece)
     {
         currentCake.AddPieces(piece);
+    }
+
+    public void MoveDoneOfCake()
+    {
+        if (currentCake == null)
+            return;
+
+        Debug.Log("Plate check piece out: " + this);
+        Debug.Log("total pieces: " + currentCake.pieces.Count);
+        if (currentCake.pieces.Count == 0) {
+            Destroy(currentCake.gameObject);
+            currentCake = null;
+        }
+    }
+
+    public bool CheckCakeIsDone(int cakeID) {
+        if (currentCake == null) return true;
+        return currentCake.CheckCakeIsDone(cakeID);
+    }
+
+    public void DoneCake()
+    {
+        Destroy(currentCake.gameObject);
+        currentCake = null;
+    }
+    public Piece GetPieceMove(int cakeID) {
+        if (currentCake == null)
+            return null;
+        return currentCake.GetPieceMove(cakeID);
     }
 }
 [System.Serializable]

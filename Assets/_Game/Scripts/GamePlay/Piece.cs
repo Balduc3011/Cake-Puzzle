@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Pieces : MonoBehaviour
+public class Piece : MonoBehaviour
 {
     public Transform parent;
     public GameObject objPref;
