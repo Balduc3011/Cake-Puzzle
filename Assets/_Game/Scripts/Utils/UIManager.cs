@@ -79,6 +79,9 @@ public class UIManager : MonoBehaviour {
                 case UIPanelType.PanelDailyReward:
                     panel = Instantiate(Resources.Load("UI/PanelDailyReward") as GameObject, mainCanvas);
                     break;
+                case UIPanelType.PanelItemsReward:
+                    panel = Instantiate(Resources.Load("UI/PanelItemsReward") as GameObject, mainCanvas);
+                    break;
             }
             if (panel) panel.SetActive(true);
             return panel;
@@ -132,6 +135,19 @@ public class UIManager : MonoBehaviour {
     {
         isHasPopupOnScene = false;
         GameObject go = GetPanel(UIPanelType.PanelDailyReward);
+        go.SetActive(false);
+    }
+
+    public void ShowPanelItemsReward()
+    {
+        isHasPopupOnScene = true;
+        GameObject go = GetPanel(UIPanelType.PanelItemsReward);
+        go.SetActive(true);
+    }
+    public void ClosePanelItemsReward()
+    {
+        isHasPopupOnScene = false;
+        GameObject go = GetPanel(UIPanelType.PanelItemsReward);
         go.SetActive(false);
     }
 }

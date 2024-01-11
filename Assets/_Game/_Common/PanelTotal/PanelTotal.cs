@@ -26,11 +26,11 @@ public class PanelTotal : UIPanel
 
     void ShowPanelDailyReward()
     {
-        //UIManager.instance.ShowPanelDailyReward();
+        UIManager.instance.ShowPanelDailyReward();
     }
 
     void ShowPanelSpin()
     {
-        //UIManager.instance.ShowPanelSpin();
+        UIManager.instance.ShowPanelSpin();
     }
 }

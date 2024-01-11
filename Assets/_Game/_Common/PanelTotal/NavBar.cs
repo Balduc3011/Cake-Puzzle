@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,7 +15,7 @@ public class NavBar : MonoBehaviour
     void Start()
     {
         SetUp();
-        //FirstSelect();
+        FirstSelect();
     }
 
     void SetUp()
@@ -42,16 +43,30 @@ public class NavBar : MonoBehaviour
 
     void FirstSelect()
     {
-        SelectNavItem(2);
+        //SelectNavItem(2);
+        selectedItem = navBarItems[2];
     }
 
     void SelectNavItem(int index)
     {
-        Debug.Log(index);
-        selector.DOMove(navBarItems[index].position.position, 0.25f);
+        if (selectedItem == navBarItems[index]) return;
         if(selectedItem != null)
         {
-
+            selector.DOScaleX(1, 0.1f).OnComplete(
+                () => {
+                    selector.DOScaleX(1.2f, 0.15f);
+                    navBarItems[index].OnSelect();
+                }
+                );
+            selectedItem.OnDeselect();
+            Sequence navSelectSequence = DOTween.Sequence();
+            navSelectSequence.Append(selector.DOMove(selectedItem.lowPosition.position, 0.1f));
+            navSelectSequence.Append(selector.DOMove(navBarItems[index].lowPosition.position, 0.01f));
+            navSelectSequence.Append(selector.DOMove(navBarItems[index].position.position, 0.15f));
+        }
+        else
+        {
+            selector.position = navBarItems[index].position.position;
         }
         selectedItem = navBarItems[index];
     }

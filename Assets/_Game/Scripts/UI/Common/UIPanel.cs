@@ -6,7 +6,8 @@ public enum UIPanelType {
     PanelBase,
     PanelTotal,
     PanelSpin,
-    PanelDailyReward
+    PanelDailyReward,
+    PanelItemsReward
 }
 public class UIPanel : MonoBehaviour {
     public bool isRegisterInUI = true;
