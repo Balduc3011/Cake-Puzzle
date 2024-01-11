@@ -100,6 +100,7 @@ public class CakeManager : MonoBehaviour
         table.CreateMapPlate(cake.currentPlate.GetPlateIndex(), cake.pieceCakeID[0], -1);
         table.FindPlateBest(cake.pieceCakeID[0]);
         table.StartCreateWay();
+        table.StartMove(cake.pieceCakeID[0]);
         table.ClearDoneSetWayPoint();
     }
 }

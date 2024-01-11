@@ -73,7 +73,7 @@ public class Cake : MonoBehaviour
         while (pieceCountSame < totalPiecesSame) {
             InitPiece(pieceIndex, pieceCakeID);
             pieceIndex++;
-            pieceCountSame++; 
+            pieceCountSame++;
         }
     }
 
@@ -158,5 +158,66 @@ public class Cake : MonoBehaviour
     public bool GetCakePieceSame(int cakeID) {
         piece = pieces.Find(e => (e.cakeID == cakeID && e.gameObject.activeSelf));
         return piece != null;
+    }
+
+    public int GetRotate(int cakeID) {
+        for (int i = 0; i < pieces.Count; i++)
+        {
+            if (pieces[i].cakeID == cakeID)
+                return rotates[i + 1];
+        }
+        return 0;
+    }
+
+    public Pieces GetPieceMove(int cakeID)
+    {
+        for (int i = 0; i < pieces.Count; i++)
+        {
+            if (pieces[i].cakeID == cakeID && pieces[i].gameObject.activeSelf)
+            {
+                piece = pieces[i];
+                pieces.Remove(pieces[i]);
+                return piece;
+            }
+        }
+        return null;
+    }
+
+    public bool CheckMoveDone(int cakeID)
+    {
+        for (int i = 0; i < pieces.Count; i++)
+        {
+            if (pieces[i].cakeID == cakeID && pieces[i].gameObject.activeSelf)
+                return false;
+        }
+
+        return true;
+    }
+
+    public bool CheckBestCakeDone(int cakeID, int totalPieces)
+    {
+        int pieceCount = 0;
+        for (int i = 0; i < pieces.Count; i++)
+        {
+            if (pieces[i].cakeID == cakeID && pieces[i].gameObject.activeSelf)
+                pieceCount++;
+        }
+        return pieceCount >= totalPieces;
+    }
+
+    public int GetCurrentPiecesSame(int cakeID)
+    {
+        int pieceCount = 0;
+        for (int i = 0; i < pieces.Count; i++)
+        {
+            if (pieces[i].cakeID == cakeID && pieces[i].gameObject.activeSelf)
+                pieceCount++;
+        }
+        return pieceCount;
+    }
+
+    public void AddPieces(Pieces piece)
+    {
+       pieces.Add(piece);
     }
 }

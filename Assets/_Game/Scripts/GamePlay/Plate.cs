@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 
 public class Plate : MonoBehaviour
@@ -42,6 +43,36 @@ public class Plate : MonoBehaviour
         point -= currentCake.pieceCakeID.Count - 1;
         return point;
 
+    }
+
+    public int GetFreeSpace() {
+        int pieceSpace = 0;
+        for (int i = 0; i < currentCake.pieces.Count; i++)
+        {
+            if (!currentCake.pieces[i].gameObject.activeSelf)
+            {
+                pieceSpace++;
+            }
+        }
+        return pieceSpace;
+    }
+
+    public bool CheckModeDone(int cakeID) {
+       return currentCake.CheckMoveDone(cakeID);
+    }
+
+    public bool BestPlateDone(int cakeID, int totalPieceSame) {
+        return currentCake.CheckBestCakeDone(cakeID, totalPieceSame);
+    }
+
+    public int GetCurrentPieceSame(int cakeID)
+    {
+        return currentCake.GetCurrentPiecesSame(cakeID);
+    }
+
+    public void AddPiece(Pieces piece)
+    {
+        currentCake.AddPieces(piece);
     }
 }
 [System.Serializable]
