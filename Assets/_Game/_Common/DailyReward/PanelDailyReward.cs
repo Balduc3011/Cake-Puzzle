@@ -28,7 +28,7 @@ public class PanelDailyReward : UIPanel
         List<DailyRewardConfig> dailyRewardConfig = ProfileManager.Instance.dataConfig.dailyRewardDataConfig.dailyRewardConfig;
         for (int i = 0; i < uiDailyItems.Count; i++)
         {
-            uiDailyItems[i].Init(dailyRewardConfig[i]);
+            uiDailyItems[i].Init(i, dailyRewardConfig[i]);
         }
     }
 

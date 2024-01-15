@@ -8,4 +8,5 @@ public class DataConfig
     public RateDataConfig rateDataConfig;
     public SpinDataConfig spinDataConfig;
     public DailyRewardDataConfig dailyRewardDataConfig;
+    public SpriteDataConfig spriteDataConfig;
 }

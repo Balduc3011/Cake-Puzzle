@@ -8,6 +8,10 @@ public class GameManager : Singleton<GameManager>
     public CameraManager cameraManager;
     public CakeManager cakeManager;
     public ObjectPooling objectPooling;
+    public SpinManager spinManager;
+    public DailyRewardManager dailyRewardManager;
+
+
     //bool isTouching = false;
     //Vector3 touchUp, touchDown;
     //private void Update()
@@ -51,4 +55,10 @@ public class GameManager : Singleton<GameManager>
     //        }
     //    }
     //}
+
+    public void AddItem(ItemData item)
+    {
+        ProfileManager.Instance.playerData.playerResourseSave.AddItem(item);
+    }
 }
+

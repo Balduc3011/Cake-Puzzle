@@ -9,6 +9,7 @@ public class PanelSpin : UIPanel
     [SerializeField] Button closeBtn;
     [SerializeField] Button spinBtn;
     [SerializeField] Button stopBtn;
+    [SerializeField] GameObject adsSpinObj;
     [SerializeField] RectTransform dynamicSpinWheel;
     [SerializeField] List<SpinSlide> slides;
     bool spin;
@@ -36,6 +37,12 @@ public class PanelSpin : UIPanel
         spinSpeed = defaultSpinSpeed;
         spinState = SpinState.Default;
         spin = true;
+        CheckFreeSpin();
+    }
+
+    void CheckFreeSpin()
+    {
+        adsSpinObj.SetActive(!GameManager.Instance.spinManager.IsHasFreeSpin());
     }
 
     private void Start()
@@ -69,6 +76,7 @@ public class PanelSpin : UIPanel
         spin = true;
         spinBtn.gameObject.SetActive(false);
         stopBtn.gameObject.SetActive(false);
+        selectedSlide = GameManager.Instance.spinManager.OnSpin();
     }
 
     void OnSpinToMax()
@@ -98,13 +106,13 @@ public class PanelSpin : UIPanel
         stopAngle = stopAngle % 360;
         if(selectedSlide == 0)
         {
-            return stopAngle > 360 - 7.5f ||
-                stopAngle < +5f;
+            return stopAngle > 360 - 15f ||
+                stopAngle < +15f;
         }
         else
         {
-            return stopAngle > firstMark + selectedSlide * markValue - 7.5f  &&
-                stopAngle < firstMark + selectedSlide * markValue + 5f;
+            return stopAngle > firstMark + (selectedSlide - 1) * markValue - 15f  &&
+                stopAngle < firstMark + (selectedSlide - 1) * markValue + 15f;
         }
     }
 
@@ -120,6 +128,7 @@ public class PanelSpin : UIPanel
         spinSpeed = 0;
         spin = false;
         spinBtn.gameObject.SetActive(true);
+        CheckFreeSpin();
         stopBtn.gameObject.SetActive(false);
         CheckResult();
     }
@@ -140,6 +149,7 @@ public class PanelSpin : UIPanel
                 index++;
             }
         }
+        //GameManager.Instance.spinManager.OnGetReward();
     }
 
     private void Update()
@@ -181,7 +191,7 @@ public class PanelSpin : UIPanel
                 default:
                     break;
             }
-            dynamicSpinWheel.eulerAngles += new Vector3(0f, 0f, Time.deltaTime * spinSpeed);
+            dynamicSpinWheel.eulerAngles -= new Vector3(0f, 0f, Time.deltaTime * spinSpeed);
             overrun += Time.deltaTime * spinSpeed;
         }
     }

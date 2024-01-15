@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class PanelTotal : UIPanel
 {
+    [SerializeField] Button playBtn;
     [SerializeField] Button dailyBtn;
     [SerializeField] Button spinBtn;
     public override void Awake()
@@ -14,14 +15,14 @@ public class PanelTotal : UIPanel
     }
     void Start()
     {
+        playBtn.onClick.AddListener(PlayGame);
         dailyBtn.onClick.AddListener(ShowPanelDailyReward);
         spinBtn.onClick.AddListener(ShowPanelSpin);
     }
 
-    // Update is called once per frame
-    void Update()
+    void PlayGame()
     {
-        
+
     }
 
     void ShowPanelDailyReward()

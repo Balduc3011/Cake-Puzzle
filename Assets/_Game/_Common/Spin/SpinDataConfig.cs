@@ -7,13 +7,17 @@ public class SpinDataConfig : ScriptableObject
 {
     // Recomend 6 or 8 items
     public List<SpinItemData> spinItemDatas;
+
+    public ItemData GetSpinItemData(int index)
+    {
+        return spinItemDatas[index].itemData;
+    }
 }
 
 [System.Serializable]
 public class SpinItemData
 {
-    public SpinItemType itemType;
-    public float amount;
+    public ItemData itemData;
     public float rate;
 }
 

@@ -12,6 +12,7 @@ public class DailyItemUI : MonoBehaviour
     [SerializeField] List<ItemToShow> itemsToShow;
     [SerializeField] GameObject rewardedObj;
     [SerializeField] GameObject hideObj;
+    [SerializeField] GameObject todayObj;
     [SerializeField] bool toHide;
 
     string STR_DAY = "DAY ";
@@ -22,31 +23,34 @@ public class DailyItemUI : MonoBehaviour
 
     void CollectItem()
     {
-
+        GameManager.Instance.dailyRewardManager.OnGetDailyReward(dayIndex);
+        SetInteract();
     }
 
-    public void Init(DailyRewardConfig data)
+    public void Init(int dayIndex, DailyRewardConfig data)
     {
+        this.dayIndex = dayIndex;
         dailyRewardConfig = data;
-        titleTxt.text = STR_DAY + dailyRewardConfig.dayIndex.ToString();
+        titleTxt.text = STR_DAY + (dailyRewardConfig.dayIndex + 1).ToString();
         dayIndex = dailyRewardConfig.dayIndex;
         for (int i = 0; i < itemsToShow.Count; i++)
         {
-            itemsToShow[i].Init(i, dailyRewardConfig.rewardList[i]);
+            itemsToShow[i].Init(dailyRewardConfig.rewardList[i]);
         }
         SetInteract();
     }
 
     void SetInteract()
     {
-        //itemBtn.interactable = GameManager.Instance.dailyRewardManager.CheckAbleToCollect(dailyRewardConfig.dayIndex) &&
-        //    !GameManager.Instance.CheckCollectted.CheckAbleToCollect(dailyRewardConfig.dayIndex);
-        //rewardedObj.SetActive(GameManager.Instance.CheckCollectted.CheckAbleToCollect(dailyRewardConfig.dayIndex));    
-        //if(toHide)
-        //{
-        //    hideObj.SetActive(!GameManager.Instance.dailyRewardManager.CheckAbleToCollect(dailyRewardConfig.dayIndex) &&
-        //        !GameManager.Instance.CheckCollectted.CheckAbleToCollect(dailyRewardConfig.dayIndex));
-        //}
+        itemBtn.interactable = GameManager.Instance.dailyRewardManager.IsAbleToGetDailyReward(dailyRewardConfig.dayIndex) &&
+            !GameManager.Instance.dailyRewardManager.CheckDailyRewardCollectted(dailyRewardConfig.dayIndex);
+        todayObj.SetActive(itemBtn.interactable);
+        rewardedObj.SetActive(GameManager.Instance.dailyRewardManager.CheckDailyRewardCollectted(dailyRewardConfig.dayIndex));
+        if (toHide)
+        {
+            hideObj.SetActive(!GameManager.Instance.dailyRewardManager.IsAbleToGetDailyReward(dailyRewardConfig.dayIndex) &&
+                !GameManager.Instance.dailyRewardManager.CheckDailyRewardCollectted(dailyRewardConfig.dayIndex));
+        }
     }
 }
 
@@ -56,8 +60,9 @@ public class ItemToShow
     [SerializeField] Image itemIconImg;
     [SerializeField] TextMeshProUGUI amoutTxt;
 
-    public void Init(int dayIndex, DailyRewardData dailyRewardData)
+    public void Init(ItemData dailyRewardData)
     {
         amoutTxt.text = dailyRewardData.amount.ToString();
+        itemIconImg.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetSprite(dailyRewardData.ItemType);
     }
 }

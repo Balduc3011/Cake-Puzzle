@@ -7,11 +7,13 @@ public class PlayerData
 {
     public SaveBase saveBase;
     public CakeSaveData cakeSaveData;
+    public PlayerResourseSave playerResourseSave;
 
     public void LoadData()
     {
         cakeSaveData.LoadData();
         saveBase.LoadData();
+        playerResourseSave.LoadData();
     }
 
     public void SaveData()

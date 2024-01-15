@@ -25,4 +25,23 @@ public class SpinManager : MonoBehaviour
         selectedItemId = chanceTable.GetRandomItem();
         return selectedItemId;
     }
+
+    public bool IsHasFreeSpin()
+    {
+        return ProfileManager.Instance.playerData.playerResourseSave.IsHasFreeSpin();
+    }
+
+    public int OnSpin()
+    {
+        ProfileManager.Instance.playerData.playerResourseSave.OnSpin();
+        OnGetSelectedItem();
+        OnGetReward();
+        return selectedItemId;
+    }
+
+    public void OnGetReward()
+    {
+        ItemData rewardData = ProfileManager.Instance.dataConfig.spinDataConfig.GetSpinItemData(selectedItemId);
+        GameManager.Instance.AddItem(rewardData);
+    }
 }
