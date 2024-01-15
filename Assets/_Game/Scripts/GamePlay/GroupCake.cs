@@ -84,7 +84,14 @@ public class GroupCake : MonoBehaviour
         }
         GameManager.Instance.cakeManager.RemoveCakeWait(this);
         canTouch = false;
-        GameManager.Instance.cakeManager.StartCheckCake(cake[0]);
+        CheckNextCake();
+        indexCake = -1;
+    }
+    int indexCake = -1;
+    void CheckNextCake() {
+        indexCake++;
+        if (indexCake < cake.Count)
+            GameManager.Instance.cakeManager.StartCheckCake(cake[indexCake], CheckNextCake);
     }
 
     void DropFail() {

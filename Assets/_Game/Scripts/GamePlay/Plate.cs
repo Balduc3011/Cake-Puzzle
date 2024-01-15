@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 
 public class Plate : MonoBehaviour
@@ -29,19 +30,69 @@ public class Plate : MonoBehaviour
         anim.SetBool("Active", false);
     }
 
-    public int CalculatePoint(int cakeID)
+    public int CalculatePoint()
     {
+        if (currentCake == null) return 0;
         int point = 6;
-        for (int i = 0; i < currentCake.pieces.Count; i++)
-        {
-            if (currentCake.pieces[i].gameObject.activeSelf)
-            {
-                point--;          
-            }
-        }
+        point -= currentCake.pieces.Count;
         point -= currentCake.pieceCakeID.Count - 1;
         return point;
 
+    }
+
+    public int GetFreeSpace() {
+        if (currentCake == null) return 0;
+        return 6 - currentCake.pieces.Count;
+    }
+
+    public bool CheckModeDone(int cakeID) {
+        if (currentCake == null) return true;
+        return currentCake.CheckMoveDone(cakeID);
+    }
+
+    public bool BestPlateDone(int cakeID, int totalPieceSame) {
+        if (currentCake == null) return false;
+        return currentCake.CheckBestCakeDone(cakeID, totalPieceSame);
+    }
+
+    public int GetCurrentPieceSame(int cakeID)
+    {
+        if (currentCake == null) return -1;
+        return currentCake.GetCurrentPiecesSame(cakeID);
+    }
+
+    public void AddPiece(Piece piece)
+    {
+        currentCake.AddPieces(piece);
+    }
+
+    public void MoveDoneOfCake()
+    {
+        if (currentCake == null)
+            return;
+        if (currentCake.pieces.Count == 0) {
+            Destroy(currentCake.gameObject);
+            currentCake = null;
+        }
+    }
+
+    public bool CheckCakeIsDone(int cakeID) {
+        if (currentCake == null) return true;
+        return currentCake.CheckCakeIsDone(cakeID);
+    }
+
+    public void DoneCake()
+    {
+        if (currentCake == null)
+        {
+            Destroy(currentCake.gameObject);
+            currentCake = null;
+        }
+    }
+    public Piece GetPieceMove(int cakeID) {
+        if (currentCake == null)
+            return null;
+        return currentCake.GetPieceMove(cakeID);
     }
 }
 [System.Serializable]

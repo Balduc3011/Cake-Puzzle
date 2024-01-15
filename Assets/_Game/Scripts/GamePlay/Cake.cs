@@ -7,7 +7,7 @@ using UnityEngine.Rendering;
 
 public class Cake : MonoBehaviour
 {
-    public List<Pieces> pieces = new List<Pieces>();
+    public List<Piece> pieces = new List<Piece>();
     public List<int> rotates = new List<int>();
     public int totalPieces;
     public int totalCakeID;
@@ -16,6 +16,7 @@ public class Cake : MonoBehaviour
     GroupCake myGroupCake;
     public List<int> pieceCakeIDCount = new List<int>();
     public List<int> pieceCakeID = new List<int>();
+    public Piece piecePref;
     public void InitData() {
         totalPieces = GameManager.Instance.cakeManager.GetPiecesTotal() + 1;
         SetupPiecesCakeID();
@@ -24,9 +25,6 @@ public class Cake : MonoBehaviour
         for (int i = 0; i < pieceCakeIDCount.Count; i++)
         {
             InitPiecesSame(pieceCakeIDCount[i], pieceCakeID[i]);
-        }
-        for (int i = totalPieces; i < pieces.Count; i++) {
-            pieces[i].gameObject.SetActive(false);
         }
     }
     int indexRandom;
@@ -71,9 +69,11 @@ public class Cake : MonoBehaviour
     void InitPiecesSame(int totalPiecesSame, int pieceCakeID) {
         int pieceCountSame = 0;
         while (pieceCountSame < totalPiecesSame) {
+            Piece newPiece = Instantiate(piecePref, transform);
+            pieces.Add(newPiece);
             InitPiece(pieceIndex, pieceCakeID);
             pieceIndex++;
-            pieceCountSame++; 
+            pieceCountSame++;
         }
     }
 
@@ -154,9 +154,80 @@ public class Cake : MonoBehaviour
     {
         myGroupCake = groupCake;
     }
-    Pieces piece;
+    Piece piece;
     public bool GetCakePieceSame(int cakeID) {
         piece = pieces.Find(e => (e.cakeID == cakeID && e.gameObject.activeSelf));
         return piece != null;
+    }
+
+    public int GetRotate(int cakeID) {
+        for (int i = 0; i < pieces.Count; i++)
+        {
+            if (pieces[i].cakeID != cakeID)
+                return rotates[i];
+        }
+        return rotates[pieces.Count];
+    }
+
+    public Piece GetPieceMove(int cakeID)
+    {
+        for (int i = 0; i < pieces.Count; i++)
+        {
+            if (pieces[i].cakeID == cakeID)
+            {
+                piece = pieces[i];
+                pieces.Remove(pieces[i]);
+                return piece;
+            }
+        }
+        return null;
+    }
+
+    public bool CheckMoveDone(int cakeID)
+    {
+        for (int i = 0; i < pieces.Count; i++)
+        {
+            if (pieces[i].cakeID == cakeID)
+                return false;
+        }
+
+        return true;
+    }
+
+    public bool CheckBestCakeDone(int cakeID, int totalPieces)
+    {
+        int pieceCount = 0;
+        for (int i = 0; i < pieces.Count; i++)
+        {
+            if (pieces[i].cakeID == cakeID)
+                pieceCount++;
+        }
+        return pieceCount >= totalPieces;
+    }
+
+    public int GetCurrentPiecesSame(int cakeID)
+    {
+        int pieceCount = 0;
+        for (int i = 0; i < pieces.Count; i++)
+        {
+            if (pieces[i].cakeID == cakeID)
+                pieceCount++;
+        }
+        return pieceCount;
+    }
+
+    public void AddPieces(Piece piece)
+    {
+       pieces.Add(piece);
+    }
+
+    public bool CheckCakeIsDone(int cakeID) {
+        if (pieces.Count < 6) return false;
+        for (int i = 0; i < pieces.Count; i++)
+        {
+            if (pieces[i].cakeID != cakeID)
+               return false;
+        }
+        return true;
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CakeManager : MonoBehaviour
 {
@@ -93,13 +94,32 @@ public class CakeManager : MonoBehaviour
         return ProfileManager.Instance.dataConfig.rateDataConfig.GetTotalCakeID(haveMoreThan3Cake);
     }
 
-    public void StartCheckCake(Cake cake)
+    int cakeIDIndex = -1;
+    Cake currentCakeCheck;
+    UnityAction actionCallBack;
+    public void StartCheckCake(Cake cake, UnityAction actionCallBack)
     {
-        table.ClearMapPlate();
-        table.AddFirstPlate(cake.currentPlate);
-        table.CreateMapPlate(cake.currentPlate.GetPlateIndex(), cake.pieceCakeID[0], -1);
-        table.FindPlateBest(cake.pieceCakeID[0]);
-        table.StartCreateWay();
-        table.ClearDoneSetWayPoint();
+        this.actionCallBack = actionCallBack;
+        currentCakeCheck = cake;
+        cakeIDIndex = -1;
+        CheckIDOfCake();
+    }
+
+    public void CheckIDOfCake() {
+        cakeIDIndex++;
+        if (cakeIDIndex < currentCakeCheck.pieceCakeIDCount.Count)
+        {
+            Debug.Log("index cake id: " + cakeIDIndex);
+            table.ClearMapPlate();
+            table.AddFirstPlate(currentCakeCheck.currentPlate);
+            table.CreateMapPlate(currentCakeCheck.currentPlate.GetPlateIndex(), currentCakeCheck.pieceCakeID[cakeIDIndex], -1);
+            table.FindPlateBest(currentCakeCheck.pieceCakeID[cakeIDIndex]);
+            table.StartCreateWay();
+            table.StartMove(currentCakeCheck.pieceCakeID[cakeIDIndex], CheckIDOfCake);
+            table.ClearDoneSetWayPoint();
+        }
+        else {
+            actionCallBack();
+        }
     }
 }
