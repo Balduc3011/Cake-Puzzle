@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
-
+using DG.Tweening;
 public class Table : MonoBehaviour
 {
     public List<Plate> plates = new List<Plate>();
@@ -92,14 +92,15 @@ public class Table : MonoBehaviour
         }
     }
 
-    public void StartMove(int cakeID) {
+    public void StartMove(int cakeID, UnityAction actioncallback = null) {
         if (CheckWayDone(cakeID))
         {
             if (bestPlate.CheckCakeIsDone(cakeID))
             {
                 bestPlate.DoneCake();
             }
-           
+            if (actioncallback != null)
+                actioncallback();
             return; 
         }
         stepIndex = -1;
@@ -112,7 +113,6 @@ public class Table : MonoBehaviour
             if (ways[i].plateCurrent.CheckModeDone(cakeID))
                 totalDone++;
         }
-        Debug.Log("total done move:" + totalDone);
         return totalDone == ways.Count || bestPlate.BestPlateDone(cakeID, totalPieceMoveDone);
     }
     int stepIndex = -1;
@@ -120,11 +120,9 @@ public class Table : MonoBehaviour
         stepIndex++;
         if (stepIndex == ways.Count)
         {
-            StartMove(cakeID);
+            StartMove(cakeID, GameManager.Instance.cakeManager.CheckIDOfCake);
             return;
         }
-        Debug.Log("way count: "+ways.Count);
-        Debug.Log("step index: " + stepIndex);
         ways[stepIndex].Move(cakeID, Move);
     }
 
@@ -221,9 +219,13 @@ public class Way {
             plateGo.AddPiece(pieces);
         }
         plateCurrent.MoveDoneOfCake();
-        if (actionDone != null) {
-            actionDone(cakeID);
-        }
+        DOVirtual.DelayedCall(.25f, () =>{
+            if (actionDone != null)
+            {
+                actionDone(cakeID);
+            }
+        });
+       
     }
 
     void DoActionDone(int cakeID, UnityAction<int> actionDone = null) { actionDone(cakeID); }

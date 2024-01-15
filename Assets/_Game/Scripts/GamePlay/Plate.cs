@@ -32,6 +32,7 @@ public class Plate : MonoBehaviour
 
     public int CalculatePoint()
     {
+        if (currentCake == null) return 0;
         int point = 6;
         point -= currentCake.pieces.Count;
         point -= currentCake.pieceCakeID.Count - 1;
@@ -56,6 +57,7 @@ public class Plate : MonoBehaviour
 
     public int GetCurrentPieceSame(int cakeID)
     {
+        if (currentCake == null) return -1;
         return currentCake.GetCurrentPiecesSame(cakeID);
     }
 
@@ -68,9 +70,6 @@ public class Plate : MonoBehaviour
     {
         if (currentCake == null)
             return;
-
-        Debug.Log("Plate check piece out: " + this);
-        Debug.Log("total pieces: " + currentCake.pieces.Count);
         if (currentCake.pieces.Count == 0) {
             Destroy(currentCake.gameObject);
             currentCake = null;
@@ -84,8 +83,11 @@ public class Plate : MonoBehaviour
 
     public void DoneCake()
     {
-        Destroy(currentCake.gameObject);
-        currentCake = null;
+        if (currentCake == null)
+        {
+            Destroy(currentCake.gameObject);
+            currentCake = null;
+        }
     }
     public Piece GetPieceMove(int cakeID) {
         if (currentCake == null)
