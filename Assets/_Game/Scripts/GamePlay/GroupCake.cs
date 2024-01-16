@@ -89,6 +89,8 @@ public class GroupCake : MonoBehaviour
     }
     int indexCake = -1;
     void CheckNextCake() {
+
+        Debug.Log("Cake index check: "+indexCake);
         indexCake++;
         if (indexCake < cake.Count)
             GameManager.Instance.cakeManager.StartCheckCake(cake[indexCake], CheckNextCake);
@@ -138,6 +140,15 @@ public class GroupCake : MonoBehaviour
         //    cakes2[randomIndexX, randomIndexY].gameObject.SetActive(true);
         //    cakes2[randomIndexX, randomIndexY].InitData();
         //}
+
+        for (int i = cake.Count - 1; i >= 0; i--)
+        {
+            if (!cake[i].gameObject.activeSelf)
+            {
+                Destroy(cake[i].gameObject);
+                cake.RemoveAt(i);
+            }
+        }
     }
 
     void Init2Cakes() {

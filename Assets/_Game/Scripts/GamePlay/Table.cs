@@ -101,6 +101,7 @@ public class Table : MonoBehaviour
             {
                 bestPlate.DoneCake();
             }
+            ClearCakeDone();
             GameManager.Instance.cakeManager.CheckIDOfCake();
             return; 
         }
@@ -198,6 +199,18 @@ public class Table : MonoBehaviour
             mapPlate[i].wayPoint.nextPlate = null;
         }
     }
+
+    public void ClearCakeDone()
+    {
+        for (int i = 0; i < mapPlate.Count; i++)
+        {
+            if (mapPlate[i].currentCake != null)
+                if (mapPlate[i].currentCake.cakeDone)
+                {
+                    mapPlate[i].ClearCake();
+                }
+        }
+    }
 }
 
 [System.Serializable]
@@ -223,7 +236,7 @@ public class Way {
         pieces = plateCurrent.GetPieceMove(cakeID);
         if (pieces == null)
         {
-            moveDone = true;
+            //moveDone = true;
         }
         else
         {

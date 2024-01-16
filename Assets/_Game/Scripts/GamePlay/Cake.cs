@@ -17,6 +17,8 @@ public class Cake : MonoBehaviour
     public List<int> pieceCakeIDCount = new List<int>();
     public List<int> pieceCakeID = new List<int>();
     public Piece piecePref;
+    public bool cakeDone;
+
     public void InitData() {
         totalPieces = GameManager.Instance.cakeManager.GetPiecesTotal() + 1;
         SetupPiecesCakeID();

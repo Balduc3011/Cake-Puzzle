@@ -81,9 +81,17 @@ public class Plate : MonoBehaviour
         if (currentCake == null)
             return;
         if (currentCake.pieces.Count == 0) {
-            Destroy(currentCake.gameObject);
-            currentCake = null;
+            //Destroy(currentCake.gameObject);
+            //currentCake = null;
+            currentCake.cakeDone = true;
         }
+        else { currentCake.cakeDone = false;}
+    }
+
+    public void ClearCake() {
+        Debug.Log("Destroy by clear cake");
+        Destroy(currentCake.gameObject);
+        currentCake = null;
     }
 
     public bool CheckCakeIsDone(int cakeID) {
@@ -95,6 +103,7 @@ public class Plate : MonoBehaviour
     {
         if (currentCake != null)
         {
+            Debug.Log("Destroy by cake done");
             Destroy(currentCake.gameObject);
             currentCake = null;
         }
