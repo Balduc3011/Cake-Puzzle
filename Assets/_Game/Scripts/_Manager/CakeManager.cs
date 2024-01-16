@@ -109,17 +109,28 @@ public class CakeManager : MonoBehaviour
         cakeIDIndex++;
         if (cakeIDIndex < currentCakeCheck.pieceCakeIDCount.Count)
         {
-            Debug.Log("index cake id: " + cakeIDIndex);
-            table.ClearMapPlate();
-            table.AddFirstPlate(currentCakeCheck.currentPlate);
-            table.CreateMapPlate(currentCakeCheck.currentPlate.GetPlateIndex(), currentCakeCheck.pieceCakeID[cakeIDIndex], -1);
-            table.FindPlateBest(currentCakeCheck.pieceCakeID[cakeIDIndex]);
-            table.StartCreateWay();
-            table.StartMove(currentCakeCheck.pieceCakeID[cakeIDIndex], CheckIDOfCake);
-            table.ClearDoneSetWayPoint();
+            if (CheckHaveCakeID(currentCakeCheck.pieceCakeID[cakeIDIndex]))
+            {
+                Debug.Log("=============START CHECK ID: " + currentCakeCheck.pieceCakeID[cakeIDIndex] + "==============");
+                table.ClearMapPlate(currentCakeCheck.pieceCakeID[cakeIDIndex]);
+                table.AddFirstPlate(currentCakeCheck.currentPlate);
+                table.CreateMapPlate(currentCakeCheck.currentPlate.GetPlateIndex(), currentCakeCheck.pieceCakeID[cakeIDIndex]);
+                table.FindPlateBest(currentCakeCheck.pieceCakeID[cakeIDIndex]);
+                table.StartCreateWay();
+                table.StartMove(currentCakeCheck.pieceCakeID[cakeIDIndex]);
+            }
+            else
+            {
+                actionCallBack();
+            }
         }
-        else {
+        else
+        {
             actionCallBack();
         }
+    }
+
+    bool CheckHaveCakeID(int cakeID) {
+        return currentCakeCheck.CheckHaveCakeID(cakeID);
     }
 }

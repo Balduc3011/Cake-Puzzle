@@ -11,11 +11,12 @@ public class Plate : MonoBehaviour
     public Transform pointStay;
     public Cake currentCake;
     public WayPointTemp wayPoint;
+    public int currentPiecesCountGet;
 
     public void SetPlateIndex(int x, int y) {
         plateIndex = new PlateIndex(x, y);
     }
-    public PlateIndex GetPlateIndex() {  return plateIndex; }
+    public PlateIndex GetPlateIndex() { return plateIndex; }
 
     public void SetCurrentCake(Cake cake) { currentCake = cake; }
 
@@ -30,12 +31,21 @@ public class Plate : MonoBehaviour
         anim.SetBool("Active", false);
     }
 
-    public int CalculatePoint()
+    public int CalculatePoint(int cakeID)
     {
         if (currentCake == null) return 0;
-        int point = 6;
-        point -= currentCake.pieces.Count;
-        point -= currentCake.pieceCakeID.Count - 1;
+        int point = 0;
+        for (int i = 0; i < currentCake.pieces.Count; i++)
+        {
+            if (currentCake.pieces[i].cakeID == cakeID)
+            {
+                point++;
+            }
+            else {
+                point--;
+            }
+        }
+        point += GetFreeSpace();
         return point;
 
     }
@@ -51,13 +61,13 @@ public class Plate : MonoBehaviour
     }
 
     public bool BestPlateDone(int cakeID, int totalPieceSame) {
-        if (currentCake == null) return false;
+        if (currentCake == null) return true;
         return currentCake.CheckBestCakeDone(cakeID, totalPieceSame);
     }
 
     public int GetCurrentPieceSame(int cakeID)
     {
-        if (currentCake == null) return -1;
+        if (currentCake == null) return 0;
         return currentCake.GetCurrentPiecesSame(cakeID);
     }
 
@@ -83,7 +93,7 @@ public class Plate : MonoBehaviour
 
     public void DoneCake()
     {
-        if (currentCake == null)
+        if (currentCake != null)
         {
             Destroy(currentCake.gameObject);
             currentCake = null;
@@ -94,6 +104,9 @@ public class Plate : MonoBehaviour
             return null;
         return currentCake.GetPieceMove(cakeID);
     }
+
+    public void SetCountPieces(int countpieces) { currentPiecesCountGet = countpieces; }
+    public void ResetPiecesCount() { currentPiecesCountGet = 0; }
 }
 [System.Serializable]
 public class PlateIndex {

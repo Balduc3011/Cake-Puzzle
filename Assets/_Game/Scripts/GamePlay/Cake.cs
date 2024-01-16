@@ -230,4 +230,14 @@ public class Cake : MonoBehaviour
         }
         return true;
     }
+
+    public bool CheckHaveCakeID(int cakeID)
+    {
+        for (int i = 0; i < pieces.Count; i++)
+        {
+            if (pieces[i].cakeID == cakeID)
+                return true;
+        }
+        return false;
+    }
 }

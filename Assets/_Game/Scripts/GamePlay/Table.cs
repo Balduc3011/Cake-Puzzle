@@ -35,13 +35,16 @@ public class Table : MonoBehaviour
     // 2 => up
     // 3 => down
 
-    public void ClearMapPlate() {
+    public void ClearMapPlate(int cakeID) {
+        ClearDoneSetWayPoint();
         mapPlate.Clear();
+        currentCakeID = cakeID;
+        stepIndex = -1; 
     }
 
     public void AddFirstPlate(Plate firstPlate) { mapPlate.Add(firstPlate); }
-
-    public void CreateMapPlate(PlateIndex plateIndex, int cakeID, int plateIgnore = -1) {
+    int currentCakeID;
+    public void CreateMapPlate(PlateIndex plateIndex, int cakeID) {
         List<Plate> plateNeedCheck = new List<Plate>();
 
         if ((plateIndex.indexX + 1) < plateArray.GetLength(0))
@@ -65,8 +68,7 @@ public class Table : MonoBehaviour
                 if (!mapPlate.Contains(plateNeedCheck[i]))
                 {
                     mapPlate.Add(plateNeedCheck[i]);
-                    //plateNeedCheck[i].wayPoint.nextPlate = plateArray[plateIndex.indexX, plateIndex.indexY];
-                    CreateMapPlate(plateNeedCheck[i].GetPlateIndex(), cakeID, i);
+                    CreateMapPlate(plateNeedCheck[i].GetPlateIndex(), cakeID);
                 }
             }
         }
@@ -82,7 +84,7 @@ public class Table : MonoBehaviour
         bestPoint = int.MinValue;
         for (int i = 0; i < mapPlate.Count; i++)
         {
-            int points = mapPlate[i].CalculatePoint();
+            int points = mapPlate[i].CalculatePoint(cakeID);
             if (points > bestPoint) {
                 bestPlate = mapPlate[i];
                 bestPoint = points;
@@ -92,15 +94,14 @@ public class Table : MonoBehaviour
         }
     }
 
-    public void StartMove(int cakeID, UnityAction actioncallback = null) {
+    public void StartMove(int cakeID) {
         if (CheckWayDone(cakeID))
         {
             if (bestPlate.CheckCakeIsDone(cakeID))
             {
                 bestPlate.DoneCake();
             }
-            if (actioncallback != null)
-                actioncallback();
+            GameManager.Instance.cakeManager.CheckIDOfCake();
             return; 
         }
         stepIndex = -1;
@@ -120,7 +121,7 @@ public class Table : MonoBehaviour
         stepIndex++;
         if (stepIndex == ways.Count)
         {
-            StartMove(cakeID, GameManager.Instance.cakeManager.CheckIDOfCake);
+            StartMove(cakeID);
             return;
         }
         ways[stepIndex].Move(cakeID, Move);
@@ -128,14 +129,15 @@ public class Table : MonoBehaviour
 
     public void StartCreateWay()
     {
+       
         bestPlate.wayPoint.setDone = true;
         currentPieces = 0;
         ways.Clear();
         SetNextWayPoint(bestPlate.GetPlateIndex());
     }
-
+    int piecesSame;
     public void SetNextWayPoint(PlateIndex plateIndex) {
-
+       
         if ((plateIndex.indexX + 1) < plateArray.GetLength(0))
             CheckPlateCondition(plateArray[plateIndex.indexX, plateIndex.indexY], plateArray[plateIndex.indexX + 1, plateIndex.indexY]);
 
@@ -147,7 +149,12 @@ public class Table : MonoBehaviour
 
         if ((plateIndex.indexY - 1) >= 0)
             CheckPlateCondition(plateArray[plateIndex.indexX, plateIndex.indexY], plateArray[plateIndex.indexX, plateIndex.indexY - 1]);
-        CreateWay(plateArray[plateIndex.indexX, plateIndex.indexY]);
+        piecesSame = plateArray[plateIndex.indexX, plateIndex.indexY].currentPiecesCountGet;
+        for (int i = 0; i < piecesSame; i++)
+        {
+            CreateWay(plateArray[plateIndex.indexX, plateIndex.indexY]);
+        }
+        
     }
     public List<Way> ways = new List<Way>();
 
@@ -163,6 +170,7 @@ public class Table : MonoBehaviour
     }
 
     void CheckPlateCondition(Plate plateCurrent, Plate plateSetNext) {
+       
         if (currentPieces >= totalPieceMerge) return;
         if (mapPlate.Contains(plateSetNext))
         {
@@ -170,7 +178,14 @@ public class Table : MonoBehaviour
             {
                 plateSetNext.wayPoint.nextPlate = plateCurrent;
                 plateSetNext.wayPoint.setDone = true;
-                currentPieces += plateSetNext.GetFreeSpace();
+                int pieceSame = plateSetNext.GetCurrentPieceSame(currentCakeID);
+                if (pieceSame + currentPieces >= totalPieceMerge)
+                {
+                    pieceSame = totalPieceMerge - currentPieces;
+                    currentPieces = totalPieceMerge;
+                }
+                else currentPieces += pieceSame;
+                plateSetNext.SetCountPieces(pieceSame);
                 SetNextWayPoint(plateSetNext.GetPlateIndex());
             }
         }
