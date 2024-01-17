@@ -106,15 +106,16 @@ public class CakeManager : MonoBehaviour
     }
 
     public void CheckIDOfCake() {
-        Debug.Log("current id index: " + cakeIDIndex);
+        //Debug.Log("current id index: " + cakeIDIndex);
         cakeIDIndex++;
         if (cakeIDIndex < currentCakeCheck.pieceCakeID.Count)
         {
             if (CheckHaveCakeID(currentCakeCheck.pieceCakeID[cakeIDIndex]))
             {
-                Debug.Log("=============START CHECK ID: " + currentCakeCheck.pieceCakeID[cakeIDIndex] + "==============");
-                Debug.Log("current id index: "+ cakeIDIndex);
-                Debug.Log(currentCakeCheck.currentPlate);
+                //Debug.Log("=============START CHECK ID: " + currentCakeCheck.pieceCakeID[cakeIDIndex] + "==============");
+                //Debug.Log(currentCakeCheck.pieceCakeID.Count);
+                //Debug.Log("current id index: "+ cakeIDIndex);
+                //Debug.Log(currentCakeCheck.currentPlate);
                 table.ClearMapPlate(currentCakeCheck.pieceCakeID[cakeIDIndex]);
                 table.AddFirstPlate(currentCakeCheck.currentPlate);
                 table.CreateMapPlate(currentCakeCheck.currentPlate.GetPlateIndex(), currentCakeCheck.pieceCakeID[cakeIDIndex]);
@@ -124,11 +125,13 @@ public class CakeManager : MonoBehaviour
             }
             else
             {
+                //Debug.Log("Check cake by call next cake");
                 actionCallBack();
             }
         }
         else
         {
+            //Debug.Log("Check cake by call next cake");
             actionCallBack();
         }
     }

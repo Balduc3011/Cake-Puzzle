@@ -134,9 +134,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16522b3476cb99d4f8b450b56779e9f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  plateIndex:
+    indexX: 0
+    indexY: 0
   anim: {fileID: 8645710699923904691}
   pointStay: {fileID: 5283229014130475333}
   currentCake: {fileID: 0}
+  wayPoint:
+    nextPlate: {fileID: 0}
+    setDone: 0
+  currentPiecesCountGet: 0
 --- !u!1 &8762108768121002594
 GameObject:
   m_ObjectHideFlags: 0
@@ -161,7 +168,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8762108768121002594}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.4, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using DG.Tweening;
+using System.Linq;
 public class Table : MonoBehaviour
 {
     public List<Plate> plates = new List<Plate>();
@@ -85,7 +86,7 @@ public class Table : MonoBehaviour
         for (int i = 0; i < mapPlate.Count; i++)
         {
             int points = mapPlate[i].CalculatePoint(cakeID);
-            if (points > bestPoint) {
+            if (points >= bestPoint) {
                 bestPlate = mapPlate[i];
                 bestPoint = points;
                 totalPieceMerge = mapPlate[i].GetFreeSpace();
@@ -97,16 +98,49 @@ public class Table : MonoBehaviour
     public void StartMove(int cakeID) {
         if (CheckWayDone(cakeID))
         {
+            
             if (bestPlate.CheckCakeIsDone(cakeID))
             {
                 bestPlate.DoneCake();
+                //CallBackCheckOtherCakeOnMap();
             }
             ClearCakeDone();
-            GameManager.Instance.cakeManager.CheckIDOfCake();
+            CallBackCheckOtherCakeOnMap();
+            // check other cake
+
+            //GameManager.Instance.cakeManager.CheckIDOfCake();
+
+
             return; 
         }
         stepIndex = -1;
         Move(cakeID);
+    }
+
+    void CallBackCheckOtherCakeOnMap() {
+        ClearDoneSetWayPoint();
+        ways.Clear();
+        for (int i = mapPlate.Count - 1; i >= 0; i--) {
+            if (mapPlate[i].currentCake == null || !mapPlate[i].currentCake.CheckHaveCakeID(currentCakeID))
+            {
+                mapPlate.RemoveAt(i);
+            }
+        }
+        if (mapPlate.Count > 1)
+        {
+            Plate plateCheck = mapPlate[0];
+            ClearMapPlate(currentCakeID);
+            AddFirstPlate(plateCheck);
+            CreateMapPlate(plateCheck.GetPlateIndex(), currentCakeID);
+            ClearDoneSetWayPoint();
+            FindPlateBest(currentCakeID);
+            StartCreateWay();
+            StartMove(currentCakeID);
+        }
+        else
+        {
+            GameManager.Instance.cakeManager.CheckIDOfCake();
+        }
     }
     bool CheckWayDone(int cakeID) {
         int totalDone = 0;
