@@ -239,10 +239,13 @@ public class Table : MonoBehaviour
         for (int i = 0; i < mapPlate.Count; i++)
         {
             if (mapPlate[i].currentCake != null)
+            {
+                mapPlate[i].currentCake.RotateOtherPieceRightWay(0);
                 if (mapPlate[i].currentCake.cakeDone)
                 {
                     mapPlate[i].ClearCake();
                 }
+            }
         }
     }
 }
@@ -251,16 +254,16 @@ public class Table : MonoBehaviour
 public class Way {
     public Plate plateCurrent;
     public Plate plateGo;
-    bool moveDone;
+    //bool moveDone;
 
     Piece pieces;
     public void Move(int cakeID, UnityAction<int> actionDone = null)
     {
-        if (moveDone)
-        {
-            DoActionDone(cakeID, actionDone);
-            return;
-        }
+        //if (moveDone)
+        //{
+        //    DoActionDone(cakeID, actionDone);
+        //    return;
+        //}
         int totalFreeSpace = plateGo.GetFreeSpace();
         if (totalFreeSpace == 0)
         {
@@ -276,8 +279,8 @@ public class Way {
         {
             int rotate = plateGo.currentCake.GetRotate(cakeID);
             pieces.transform.parent = plateGo.currentCake.transform;
-            pieces.transform.localPosition = Vector3.zero;
-            pieces.transform.eulerAngles = new Vector3(0, rotate, 0);
+            pieces.transform.DOMove(plateGo.pointStay.position, .25f);
+            pieces.transform.DORotate(new Vector3(0, rotate, 0), .25f, RotateMode.FastBeyond360);
             plateGo.AddPiece(pieces);
         }
         plateCurrent.MoveDoneOfCake();

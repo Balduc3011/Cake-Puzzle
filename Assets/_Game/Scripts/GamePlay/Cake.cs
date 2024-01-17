@@ -161,14 +161,46 @@ public class Cake : MonoBehaviour
         piece = pieces.Find(e => (e.cakeID == cakeID && e.gameObject.activeSelf));
         return piece != null;
     }
-
+    bool otherCake = false;
+    bool sameCake = false;
     public int GetRotate(int cakeID) {
+        otherCake = false;
+        sameCake = false;
         for (int i = 0; i < pieces.Count; i++)
         {
             if (pieces[i].cakeID != cakeID)
+            {
+                otherCake = true;
+            }
+
+            if (pieces[i].cakeID == cakeID)
+            {
+                sameCake = true;
+            }
+
+            if (otherCake && sameCake)
+            {
+                RotateOtherPiece(i);
                 return rotates[i];
+            }
         }
         return rotates[pieces.Count];
+    }
+    Vector3 vectorRotateTo;
+    public void RotateOtherPiece(int pieceIndex) {
+        for (int i = pieceIndex; i < pieces.Count; i++)
+        {
+            vectorRotateTo = new Vector3(0, rotates[i + 1], 0);
+            pieces[i].transform.DORotate(vectorRotateTo, .25f, RotateMode.FastBeyond360);
+        }
+    }
+
+    public void RotateOtherPieceRightWay(int pieceIndex) {
+        for (int i = pieceIndex; i < pieces.Count; i++)
+        {
+            vectorRotateTo = new Vector3(0, rotates[i], 0);
+            pieces[i].transform.DORotate(vectorRotateTo, .25f, RotateMode.FastBeyond360);
+        }
     }
 
     public Piece GetPieceMove(int cakeID)

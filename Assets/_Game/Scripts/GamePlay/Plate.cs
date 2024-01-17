@@ -80,6 +80,7 @@ public class Plate : MonoBehaviour
     {
         if (currentCake == null)
             return;
+        currentCake.RotateOtherPieceRightWay(0);
         if (currentCake.pieces.Count == 0) {
             //Destroy(currentCake.gameObject);
             //currentCake = null;
@@ -89,7 +90,6 @@ public class Plate : MonoBehaviour
     }
 
     public void ClearCake() {
-        Debug.Log("Destroy by clear cake");
         Destroy(currentCake.gameObject);
         currentCake = null;
     }
@@ -103,7 +103,6 @@ public class Plate : MonoBehaviour
     {
         if (currentCake != null)
         {
-            Debug.Log("Destroy by cake done");
             Destroy(currentCake.gameObject);
             currentCake = null;
         }
