@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -70,14 +71,6 @@ public class GroupCake : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < cake.Count; i++)
-        {
-            if (cake[i].gameObject.activeSelf)
-            {
-                cake[i].DropDone();
-            }
-        }
-
         for (int i = 0; i < objConnects.Count; i++)
         {
             objConnects[i].SetActive(false);
@@ -85,8 +78,18 @@ public class GroupCake : MonoBehaviour
         GameManager.Instance.cakeManager.RemoveCakeWait(this);
         canTouch = false;
         indexCake = -1;
-        CheckNextCake();
-       
+
+        for (int i = 0; i < cake.Count; i++)
+        {
+            if (cake[i].gameObject.activeSelf)
+            {
+                if (i == cake.Count - 1)
+                    cake[i].DropDone();
+                else
+                    cake[i].DropDone();
+            }
+        }
+        DOVirtual.DelayedCall(.15f, CheckNextCake);
     }
     int indexCake;
     void CheckNextCake() {

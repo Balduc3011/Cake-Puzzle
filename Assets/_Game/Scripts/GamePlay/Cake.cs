@@ -109,6 +109,7 @@ public class Cake : MonoBehaviour
 
     public void DropDone() {
         transform.position = currentPlate.pointStay.position;
+        transform.parent = currentPlate.pointStay;
     }
 
     public void GroupDropFail() {

@@ -1,8 +1,10 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Plate : MonoBehaviour
 {
@@ -12,7 +14,15 @@ public class Plate : MonoBehaviour
     public Cake currentCake;
     public WayPointTemp wayPoint;
     public int currentPiecesCountGet;
-
+    [SerializeField] Transform trsMove;
+    [SerializeField] Vector3 pointMoveUp;
+    [SerializeField] Vector3 pointMoveDown;
+    private void Awake()
+    {
+        pointMoveUp = trsMove.position;
+        pointMoveDown = trsMove.position;
+        pointMoveUp.y += .3f;
+    }
     public void SetPlateIndex(int x, int y) {
         plateIndex = new PlateIndex(x, y);
     }
@@ -23,12 +33,14 @@ public class Plate : MonoBehaviour
     public void CakeDone() { currentCake = null; }
 
     public void Active() {
-        anim.SetBool("Active", true);
+        //anim.SetBool("Active", true);
+        trsMove.DOMove(pointMoveUp, .15f);
     }
 
     public void Deactive()
     {
-        anim.SetBool("Active", false);
+        //anim.SetBool("Active", false);
+        trsMove.DOMove(pointMoveDown, .15f);
     }
 
     public int CalculatePoint(int cakeID)

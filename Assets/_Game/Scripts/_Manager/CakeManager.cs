@@ -112,7 +112,7 @@ public class CakeManager : MonoBehaviour
         {
             if (CheckHaveCakeID(currentCakeCheck.pieceCakeID[cakeIDIndex]))
             {
-                //Debug.Log("=============START CHECK ID: " + currentCakeCheck.pieceCakeID[cakeIDIndex] + "==============");
+                Debug.Log("=============START CHECK ID: " + currentCakeCheck.pieceCakeID[cakeIDIndex] + "==============");
                 //Debug.Log(currentCakeCheck.pieceCakeID.Count);
                 //Debug.Log("current id index: "+ cakeIDIndex);
                 //Debug.Log(currentCakeCheck.currentPlate);
