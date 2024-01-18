@@ -5,10 +5,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using UnityEngine.Events;
+using Unity.VisualScripting;
 
 public class UIManager : MonoBehaviour {
     public static UIManager instance;
     [SerializeField] Transform mainCanvas;
+    
     Dictionary<UIPanelType, GameObject> listPanel = new Dictionary<UIPanelType, GameObject>();
     public bool isHasPopupOnScene = false;
     public bool isHasTutorial = false;
@@ -18,6 +20,8 @@ public class UIManager : MonoBehaviour {
     [SerializeField] GameObject ingameDebugConsole;
   
     public Camera mainCamera;
+    public PanelTotal panelTotal;
+    PanelBakery panelBakery;
 
     // Start is called before the first frame update
     void Awake() {
@@ -82,6 +86,15 @@ public class UIManager : MonoBehaviour {
                 case UIPanelType.PanelItemsReward:
                     panel = Instantiate(Resources.Load("UI/PanelItemsReward") as GameObject, mainCanvas);
                     break;
+                case UIPanelType.PanelBakery:
+                    panel = Instantiate(Resources.Load("UI/PanelBakery") as GameObject, mainCanvas);
+                    break;
+                case UIPanelType.PanelPlayGame:
+                    panel = Instantiate(Resources.Load("UI/PanelPlayGame") as GameObject, mainCanvas);
+                    break;
+                case UIPanelType.PanelSetting:
+                    panel = Instantiate(Resources.Load("UI/PanelSetting") as GameObject, mainCanvas);
+                    break;
             }
             if (panel) panel.SetActive(true);
             return panel;
@@ -104,11 +117,40 @@ public class UIManager : MonoBehaviour {
     {
         GameObject go = GetPanel(UIPanelType.PanelTotal);
         go.SetActive(true);
+        if(panelTotal ==  null)
+        {
+            panelTotal = go.GetComponent<PanelTotal>();
+        }
     }
 
     public void ClosePanelTotal()
     {
         GameObject go = GetPanel(UIPanelType.PanelTotal);
+        go.SetActive(false);
+    }
+    public void ShowPanelTotalContent()
+    {
+        CloseOtherMenu(UIPanelType.PanelTotal);
+        if (panelTotal == null)
+        {
+            GameObject go = GetPanel(UIPanelType.PanelTotal);
+            go.SetActive(true);
+            panelTotal = go.GetComponent<PanelTotal>();
+        }
+        panelTotal.ShowMainSceneContent(true);
+    }
+
+    public void ShowPanelPlayGame()
+    {
+        isHasPopupOnScene = true;
+        GameObject go = GetPanel(UIPanelType.PanelPlayGame);
+        go.SetActive(true);
+        panelTotal.Transform.SetAsLastSibling();
+    }
+    public void ClosePanelPlayGame()
+    {
+        isHasPopupOnScene = false;
+        GameObject go = GetPanel(UIPanelType.PanelPlayGame);
         go.SetActive(false);
     }
 
@@ -148,6 +190,50 @@ public class UIManager : MonoBehaviour {
     {
         isHasPopupOnScene = false;
         GameObject go = GetPanel(UIPanelType.PanelItemsReward);
+        go.SetActive(false);
+    }
+
+    public void ShowPanelBakery()
+    {
+        CloseOtherMenu(UIPanelType.PanelBakery);
+        isHasPopupOnScene = true;
+        GameObject go = GetPanel(UIPanelType.PanelBakery);
+        go.SetActive(true);
+        panelTotal.ShowMainSceneContent(false);
+        panelTotal.Transform.SetAsLastSibling();
+        if(panelBakery == null)
+        {
+            panelBakery = go.GetComponent<PanelBakery>();
+        }
+    }
+    public void ClosePanelBakery()
+    {
+        isHasPopupOnScene = false;
+        GameObject go = GetPanel(UIPanelType.PanelBakery);
+        go.SetActive(false);
+    }
+
+    void CloseOtherMenu(UIPanelType ignorePanel)
+    {
+        if(panelBakery != null && ignorePanel != UIPanelType.PanelBakery)
+        {
+            if(panelBakery.gameObject.activeSelf)
+            {
+                panelBakery.OnClose();
+            }
+        }
+    }
+
+    public void ShowPanelSetting()
+    {
+        isHasPopupOnScene = true;
+        GameObject go = GetPanel(UIPanelType.PanelSetting);
+        go.SetActive(true);
+    }
+    public void ClosePanelSetting()
+    {
+        isHasPopupOnScene = false;
+        GameObject go = GetPanel(UIPanelType.PanelSetting);
         go.SetActive(false);
     }
 }

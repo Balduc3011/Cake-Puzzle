@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class PanelSpin : UIPanel
 {
+    Transform Transform;
     [SerializeField] Button closeBtn;
     [SerializeField] Button spinBtn;
     [SerializeField] Button stopBtn;
@@ -28,6 +29,7 @@ public class PanelSpin : UIPanel
     {
         panelType = UIPanelType.PanelSpin;
         base.Awake();
+        Transform = transform;
     }
 
     private void OnEnable()
@@ -38,6 +40,7 @@ public class PanelSpin : UIPanel
         spinState = SpinState.Default;
         spin = true;
         CheckFreeSpin();
+        Transform.SetAsLastSibling();
     }
 
     void CheckFreeSpin()
@@ -66,6 +69,11 @@ public class PanelSpin : UIPanel
     }
 
     void OnClose()
+    {
+        openAndCloseAnim.OnClose(CloseInstant);
+    }
+
+    void CloseInstant()
     {
         UIManager.instance.ClosePanelSpin();
     }
@@ -149,7 +157,7 @@ public class PanelSpin : UIPanel
                 index++;
             }
         }
-        //GameManager.Instance.spinManager.OnGetReward();
+        GameManager.Instance.spinManager.OnSpinStoped();
     }
 
     private void Update()

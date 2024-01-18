@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 [System.Serializable]
 public class PlayerResourseSave : SaveBase
@@ -118,5 +119,17 @@ public class PlayerResourseSave : SaveBase
         ownedItem.Add(data);
         IsMarkChangeData();
         SaveData();
+    }
+
+    public float GetItemAmount(ItemType itemType)
+    {
+        for (int i = 0; i < ownedItem.Count; i++)
+        {
+            if (ownedItem[i].ItemType == itemType)
+            {
+                return ownedItem[i].amount;
+            }
+        }
+        return 0;
     }
 }

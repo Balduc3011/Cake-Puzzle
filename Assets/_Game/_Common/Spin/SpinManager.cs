@@ -42,6 +42,13 @@ public class SpinManager : MonoBehaviour
     public void OnGetReward()
     {
         ItemData rewardData = ProfileManager.Instance.dataConfig.spinDataConfig.GetSpinItemData(selectedItemId);
-        GameManager.Instance.AddItem(rewardData);
+        List<ItemData> rewards = new List<ItemData>();
+        rewards.Add(rewardData);
+        GameManager.Instance.GetItemReward(rewards);
+    }
+
+    public void OnSpinStoped()
+    {
+        UIManager.instance.ShowPanelItemsReward();
     }
 }

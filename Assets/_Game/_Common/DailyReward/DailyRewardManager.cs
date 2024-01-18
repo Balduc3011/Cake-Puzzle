@@ -17,9 +17,7 @@ public class DailyRewardManager : MonoBehaviour
     {
         ProfileManager.Instance.playerData.playerResourseSave.OnGetDailyReward();
         List<ItemData> itemDatas = ProfileManager.Instance.dataConfig.dailyRewardDataConfig.GetDailyRewardList(dayIndex);
-        for (int i = 0; i < itemDatas.Count; i++)
-        {
-            GameManager.Instance.AddItem(itemDatas[i]);
-        }
+        GameManager.Instance.GetItemReward(itemDatas);
+        UIManager.instance.ShowPanelItemsReward();
     }
 }
