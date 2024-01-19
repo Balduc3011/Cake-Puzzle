@@ -42,8 +42,9 @@ public class UIPanelAnimOpenAndClose : MonoBehaviour
         }
 
         canvasGroup.DOFade(1, .5f).OnComplete(() => {
-            if (BGCanvasGroup != null) BGCanvasGroup.DOFade(1, 0.25f);
+            //if (BGCanvasGroup != null) BGCanvasGroup.DOFade(1, 0.25f);
         });
+        if (BGCanvasGroup != null) BGCanvasGroup.DOFade(1, 0.5f);
     }
 
     public void OnClose(UnityAction actionDone = null) {
