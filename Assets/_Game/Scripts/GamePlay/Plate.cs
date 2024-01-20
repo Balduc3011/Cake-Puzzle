@@ -83,9 +83,9 @@ public class Plate : MonoBehaviour
         return currentCake.GetCurrentPiecesSame(cakeID);
     }
 
-    public void AddPiece(Piece piece)
+    public void AddPiece(Piece piece, int indexChange)
     {
-        currentCake.AddPieces(piece);
+        currentCake.AddPieces(piece, indexChange);
     }
 
     public void MoveDoneOfCake()

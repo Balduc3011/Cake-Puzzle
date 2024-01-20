@@ -164,7 +164,7 @@ public class Cake : MonoBehaviour
     }
     bool otherCake = false;
     bool sameCake = false;
-    public int GetRotate(int cakeID) {
+    public int GetRotateIndex(int cakeID) {
         otherCake = false;
         sameCake = false;
         for (int i = 0; i < pieces.Count; i++)
@@ -181,11 +181,11 @@ public class Cake : MonoBehaviour
 
             if (otherCake && sameCake)
             {
-                RotateOtherPiece(i);
-                return rotates[i];
+                RotateOtherPiece(i+1);
+                return i+1;
             }
         }
-        return rotates[pieces.Count];
+        return pieces.Count;
     }
     Vector3 vectorRotateTo;
     public void RotateOtherPiece(int pieceIndex) {
@@ -251,9 +251,13 @@ public class Cake : MonoBehaviour
         return pieceCount;
     }
 
-    public void AddPieces(Piece piece)
+    Piece pieceTemp;
+    public void AddPieces(Piece piece, int indexChange)
     {
-       pieces.Add(piece);
+        pieces.Add(piece);
+        pieceTemp = pieces[indexChange];
+        pieces[indexChange] = piece;
+        pieces[pieces.Count - 1] = pieceTemp;
     }
 
     public bool CheckCakeIsDone(int cakeID) {

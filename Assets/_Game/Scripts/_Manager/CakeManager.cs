@@ -16,6 +16,7 @@ public class CakeManager : MonoBehaviour
     Vector3 currentPos;
     bool haveMoreThan3Cake;
     public float posYDefault;
+    public bool onMove;
 
     private void Start()
     {
@@ -27,7 +28,14 @@ public class CakeManager : MonoBehaviour
         if (currentGCake != null) {
             if (Input.GetMouseButtonUp(0))
             {
-                Drop();
+                if (!onMove)
+                {
+                    Drop();
+                }
+                else {
+                    currentGCake.DropFail();
+                    currentGCake = null;
+                }
                 return;
             }
             mousePos = Input.mousePosition;
@@ -38,7 +46,9 @@ public class CakeManager : MonoBehaviour
         }
     }
 
-    public void SetCurrentGroupCake(GroupCake gCake) { currentGCake = gCake; }
+    public void SetCurrentGroupCake(GroupCake gCake) { 
+        currentGCake = gCake; 
+    }
 
     void Drop() {
         currentGCake.Drop();
@@ -138,5 +148,12 @@ public class CakeManager : MonoBehaviour
 
     bool CheckHaveCakeID(int cakeID) {
         return currentCakeCheck.CheckHaveCakeID(cakeID);
+    }
+
+    public void SetOnMove(bool onMove) { this.onMove = onMove; }
+
+    public void CheckLoseGame()
+    {
+        
     }
 }

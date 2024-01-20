@@ -97,7 +97,12 @@ public class GroupCake : MonoBehaviour
         ClearCake();
         if (indexCake < cake.Count)
         {
+            GameManager.Instance.cakeManager.SetOnMove(true);
             GameManager.Instance.cakeManager.StartCheckCake(cake[indexCake], CheckNextCake);
+        }
+        else {
+            GameManager.Instance.cakeManager.SetOnMove(false);
+            GameManager.Instance.cakeManager.CheckLoseGame();
         }
     }
 
@@ -108,7 +113,7 @@ public class GroupCake : MonoBehaviour
         }
     }
 
-    void DropFail() {
+    public void DropFail() {
         for (int i = 0; i < cake.Count; i++)
         {
             if (cake[i].gameObject.activeSelf)

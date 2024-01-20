@@ -6,4 +6,5 @@ using UnityEngine;
 public class DataConfig
 {
     public RateDataConfig rateDataConfig;
+    public LevelDataConfig levelDataConfig;
 }

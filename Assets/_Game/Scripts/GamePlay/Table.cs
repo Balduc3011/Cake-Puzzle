@@ -277,11 +277,11 @@ public class Way {
         }
         else
         {
-            int rotate = plateGo.currentCake.GetRotate(cakeID);
+            int rotateIndex = plateGo.currentCake.GetRotateIndex(cakeID);
             pieces.transform.parent = plateGo.currentCake.transform;
             pieces.transform.DOMove(plateGo.pointStay.position, .25f);
-            pieces.transform.DORotate(new Vector3(0, rotate, 0), .25f, RotateMode.FastBeyond360);
-            plateGo.AddPiece(pieces);
+            pieces.transform.DORotate(new Vector3(0, plateGo.currentCake.rotates[rotateIndex], 0), .25f, RotateMode.FastBeyond360);
+            plateGo.AddPiece(pieces, rotateIndex);
         }
         plateCurrent.MoveDoneOfCake();
         DOVirtual.DelayedCall(.25f, () =>{
