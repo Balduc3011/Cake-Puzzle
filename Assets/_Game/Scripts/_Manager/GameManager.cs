@@ -8,6 +8,12 @@ public class GameManager : Singleton<GameManager>
     public CameraManager cameraManager;
     public CakeManager cakeManager;
     public ObjectPooling objectPooling;
+    public SpinManager spinManager;
+    public DailyRewardManager dailyRewardManager;
+
+    public List<ItemData> rewardItems;
+
+
     //bool isTouching = false;
     //Vector3 touchUp, touchDown;
     //private void Update()
@@ -51,4 +57,35 @@ public class GameManager : Singleton<GameManager>
     //        }
     //    }
     //}
+
+    public void PlayGame()
+    {
+        UIManager.instance.ShowPanelPlayGame();
+    }
+
+    public void BackToMenu()
+    {
+        UIManager.instance.ClosePanelPlayGame();
+    }
+
+    public void GetItemReward(List<ItemData> items)
+    {
+        rewardItems.Clear();
+        for (int i = 0; i < items.Count; i++)
+        {
+            rewardItems.Add(items[i]);
+            AddItem(items[i]);
+        }
+    }
+
+    public void AddItem(ItemData item)
+    {
+        ProfileManager.Instance.playerData.playerResourseSave.AddItem(item);
+    }
+
+    public float GetItemAmount(ItemType itemType)
+    {
+        return ProfileManager.Instance.playerData.playerResourseSave.GetItemAmount(itemType);
+    }
 }
+
