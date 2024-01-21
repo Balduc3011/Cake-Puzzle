@@ -47,7 +47,7 @@ public class PanelTotal : UIPanel
         mainMenuContent.SetActive(false);
     }
 
-    void BackToMenu()
+    public void BackToMenu()
     {
         navBarContent.SetActive(true);
         mainMenuContent.SetActive(true);

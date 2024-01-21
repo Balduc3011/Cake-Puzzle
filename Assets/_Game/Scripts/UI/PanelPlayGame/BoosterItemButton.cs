@@ -15,10 +15,12 @@ public class BoosterItemButton : MonoBehaviour
         int itemAmount = (int)GameManager.Instance.GetItemAmount(boosterType);
         if(itemAmount > 0 )
         {
+            itemBarIconImg.gameObject.SetActive(true);
             itemAmountTxt.text = itemAmount.ToString();
         }
         else
         {
+            itemBarIconImg.gameObject.SetActive(false);
             itemAmountTxt.text = ConstantValue.STR_BLANK;
         }
     }

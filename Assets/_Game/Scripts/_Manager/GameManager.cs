@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 
 public class GameManager : Singleton<GameManager>
 {
+    public bool playing = false;
     public CameraManager cameraManager;
     public CakeManager cakeManager;
     public ObjectPooling objectPooling;
@@ -61,11 +62,14 @@ public class GameManager : Singleton<GameManager>
     public void PlayGame()
     {
         UIManager.instance.ShowPanelPlayGame();
+        playing = true;
     }
 
     public void BackToMenu()
     {
         UIManager.instance.ClosePanelPlayGame();
+        UIManager.instance.panelTotal.BackToMenu();
+        playing = false;
     }
 
     public void GetItemReward(List<ItemData> items)
