@@ -19,6 +19,7 @@ public class PanelTotal : UIPanel
     [SerializeField] GameObject commonContent;
     [SerializeField] GameObject mainMenuContent;
     [SerializeField] GameObject navBarContent;
+    [SerializeField] GameObject backGround;    
     public override void Awake()
     {
         panelType = UIPanelType.PanelTotal;
@@ -45,12 +46,14 @@ public class PanelTotal : UIPanel
         GameManager.Instance.PlayGame();
         navBarContent.SetActive(false);
         mainMenuContent.SetActive(false);
+        backGround.SetActive(false);
     }
 
     void BackToMenu()
     {
         navBarContent.SetActive(true);
         mainMenuContent.SetActive(true);
+        backGround.SetActive(true);
     }
 
     void ShowPanelSetting()

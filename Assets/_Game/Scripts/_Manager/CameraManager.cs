@@ -8,7 +8,21 @@ public class CameraManager : MonoBehaviour
 {
     public Camera mainCamera;
     public CameraInfo mainCameraInfo;
-    
+
+    float currentSize;
+    float widthScene;
+    float heightScene;
+    float persent;
+    private void Awake()
+    {
+        currentSize = mainCamera.orthographicSize;
+        widthScene  = Screen.width;
+        heightScene = Screen.height;
+        persent = 1080f / 1920f;
+        persent = (widthScene / heightScene) / persent;
+        mainCamera.orthographicSize = currentSize / persent;
+    }
+
     public Camera GetMainCamera()
     {
         return mainCamera;

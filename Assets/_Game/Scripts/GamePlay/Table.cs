@@ -9,6 +9,8 @@ using System.Linq;
 public class Table : MonoBehaviour
 {
     public List<Plate> plates = new List<Plate>();
+    [SerializeField] AnimationCurve curveRotate;
+    [SerializeField] AnimationCurve curveMove;
     Plate[,] plateArray = new Plate[5, 4];
 
     private void Start()
@@ -159,7 +161,7 @@ public class Table : MonoBehaviour
             StartMove(cakeID);
             return;
         }
-        ways[stepIndex].Move(cakeID, Move);
+        ways[stepIndex].Move(cakeID, curveRotate, curveMove, Move);
     }
 
     public void StartCreateWay()
@@ -240,13 +242,53 @@ public class Table : MonoBehaviour
         {
             if (mapPlate[i].currentCake != null)
             {
-                mapPlate[i].currentCake.RotateOtherPieceRightWay(0);
+                mapPlate[i].currentCake.RotateOtherPieceRight(0);
                 if (mapPlate[i].currentCake.cakeDone)
                 {
                     mapPlate[i].ClearCake();
                 }
             }
         }
+    }
+
+    public bool CheckGroupOneAble() {
+        for (int i = 0; i < plates.Count; i++)
+        {
+            if (plates[i].currentCake == null)
+                return true;
+        }
+        return false;
+    }
+    //positionSecondCake = -1 is top ; positionSecondCake = 1 is right
+    public bool CheckGroupTwoAble(int positionSecondCake)
+    {
+        int pointXstart = 0;
+        int pointYend = plateArray.GetLength(1);
+        if (positionSecondCake == -1)
+            pointXstart = 1;
+        else pointYend--;
+
+        for (int i = pointXstart; i < plateArray.GetLength(0); i++)
+        {
+            for (int j = 0; j < pointYend; j++)
+            {
+                if (positionSecondCake == -1)
+                {
+                    if (plateArray[i, j].currentCake == null && plateArray[i - 1, j].currentCake == null)
+                    {
+                        return true;
+                    }
+                }
+                else {
+                    if (plateArray[i, j].currentCake == null && plateArray[i, j + 1].currentCake == null)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+
     }
 }
 
@@ -257,7 +299,7 @@ public class Way {
     //bool moveDone;
 
     Piece pieces;
-    public void Move(int cakeID, UnityAction<int> actionDone = null)
+    public void Move(int cakeID,AnimationCurve curveRotate, AnimationCurve curveMove, UnityAction<int> actionDone = null)
     {
         //if (moveDone)
         //{
@@ -277,14 +319,23 @@ public class Way {
         }
         else
         {
+           
             int rotateIndex = plateGo.currentCake.GetRotateIndex(cakeID);
             pieces.transform.parent = plateGo.currentCake.transform;
-            pieces.transform.DOMove(plateGo.pointStay.position, .25f);
-            pieces.transform.DORotate(new Vector3(0, plateGo.currentCake.rotates[rotateIndex], 0), .25f, RotateMode.FastBeyond360);
+            pieces.transform.DOMoveY(pieces.transform.position.y + 1f, .25f).OnComplete(() => {
+                pieces.transform.DOMove(plateGo.pointStay.position, .25f).OnComplete(() => {
+                    Transform trs = GameManager.Instance.objectPooling.GetPieceDoneEffect();
+                    trs.position = pieces.transform.position;
+                    trs.gameObject.SetActive(true);
+                    
+                });
+            });
+            
+            pieces.transform.DORotate(new Vector3(0, plateGo.currentCake.rotates[rotateIndex], 0), .5f).SetEase(curveRotate);
             plateGo.AddPiece(pieces, rotateIndex);
         }
         plateCurrent.MoveDoneOfCake();
-        DOVirtual.DelayedCall(.25f, () =>{
+        DOVirtual.DelayedCall(.6f, () =>{
             if (actionDone != null)
             {
                 actionDone(cakeID);

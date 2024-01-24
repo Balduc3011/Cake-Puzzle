@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -122,7 +123,7 @@ public class CakeManager : MonoBehaviour
         {
             if (CheckHaveCakeID(currentCakeCheck.pieceCakeID[cakeIDIndex]))
             {
-                Debug.Log("=============START CHECK ID: " + currentCakeCheck.pieceCakeID[cakeIDIndex] + "==============");
+                //Debug.Log("=============START CHECK ID: " + currentCakeCheck.pieceCakeID[cakeIDIndex] + "==============");
                 //Debug.Log(currentCakeCheck.pieceCakeID.Count);
                 //Debug.Log("current id index: "+ cakeIDIndex);
                 //Debug.Log(currentCakeCheck.currentPlate);
@@ -152,8 +153,23 @@ public class CakeManager : MonoBehaviour
 
     public void SetOnMove(bool onMove) { this.onMove = onMove; }
 
+    int countFaild;
     public void CheckLoseGame()
     {
-        
+        countFaild = 0;
+        for (int i = 0; i < cakesWait.Count; i++)
+        {
+            if (cakesWait[i].cake.Count == 1)
+            {
+                if (!table.CheckGroupOneAble())
+                countFaild++;
+            }
+            else {
+                if(!table.CheckGroupTwoAble(cakesWait[i].cakePosition))
+                    countFaild++;
+            }
+        }
+        if (countFaild == cakesWait.Count) Debug.Log("Loose game");
+        //Debug.Log( countFaild == cakesWait.Count);
     }
 }

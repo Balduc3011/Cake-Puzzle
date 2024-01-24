@@ -7,7 +7,7 @@ using UnityEngine;
 public class GroupCake : MonoBehaviour
 {
     public List<Cake> cake = new List<Cake>();
-    [SerializeField] List<GameObject> objConnects = new List<GameObject>();
+    //[SerializeField] List<GameObject> objConnects = new List<GameObject>();
 
     //public Cake[,]cakes2 = new Cake[3, 3];
 
@@ -71,10 +71,10 @@ public class GroupCake : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < objConnects.Count; i++)
-        {
-            objConnects[i].SetActive(false);
-        }
+        //for (int i = 0; i < objConnects.Count; i++)
+        //{
+        //    objConnects[i].SetActive(false);
+        //}
         GameManager.Instance.cakeManager.RemoveCakeWait(this);
         canTouch = false;
         indexCake = -1;
@@ -95,6 +95,7 @@ public class GroupCake : MonoBehaviour
     void CheckNextCake() {
         indexCake++;
         ClearCake();
+        GameManager.Instance.objectPooling.CheckGroupCake();
         if (indexCake < cake.Count)
         {
             GameManager.Instance.cakeManager.SetOnMove(true);
@@ -143,8 +144,8 @@ public class GroupCake : MonoBehaviour
           
         }
 
-        objConnects[0].SetActive(cake[1].gameObject.activeSelf);
-        objConnects[1].SetActive(cake[2].gameObject.activeSelf);
+        //objConnects[0].SetActive(cake[1].gameObject.activeSelf);
+        //objConnects[1].SetActive(cake[2].gameObject.activeSelf);
 
         //cakes2[1, 1].gameObject.SetActive(true);
         //cakes2[1, 1].InitData();
@@ -167,15 +168,29 @@ public class GroupCake : MonoBehaviour
             }
         }
     }
-
+    public int cakePosition;
     void Init2Cakes() {
 
         cake[0].gameObject.SetActive(true);
         cake[0].InitData();
 
         int indexRandom = UnityEngine.Random.Range(1, cake.Count);
+        cakePosition = indexRandom == 1 ? -1 : 1;
         cake[indexRandom].gameObject.SetActive(true);
         cake[indexRandom].InitData();
 
+    }
+    int countCakeDone;
+    public void CheckGroupDone() {
+        countCakeDone = 0;
+        for (int i = 0; i < cake.Count; i++) {
+            if (cake[i] == null || cake[i].cakeDone)
+            {
+                countCakeDone++;
+            }
+        }
+        if (countCakeDone == cake.Count) {
+            Destroy(gameObject);
+        }
     }
 }

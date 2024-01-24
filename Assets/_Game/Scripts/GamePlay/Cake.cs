@@ -2,8 +2,6 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.Rendering;
 
 public class Cake : MonoBehaviour
 {
@@ -18,6 +16,10 @@ public class Cake : MonoBehaviour
     public List<int> pieceCakeID = new List<int>();
     public Piece piecePref;
     public bool cakeDone;
+
+    [SerializeField] AnimationCurve curveRotate;
+    [SerializeField] Vector3 vectorOffsetEffect;
+    [SerializeField] Vector3 vectorOffsetExp;
 
     public void InitData() {
         totalPieces = GameManager.Instance.cakeManager.GetPiecesTotal() + 1;
@@ -59,12 +61,20 @@ public class Cake : MonoBehaviour
     List<int> cakeID = new List<int>();
     void SetUpCakeID() {
         cakeID = ProfileManager.Instance.playerData.cakeSaveData.cakeID;
-        System.Random rd = new System.Random();
         for (int i = 0; i < pieceCakeID.Count; i++)
         {
-            int randomIndexX = (int)(rd.Next(cakeID.Count));
+            int randomIndexX = GetRandomCakeID();
             pieceCakeID[i] = cakeID[randomIndexX];
         }
+    }
+
+    int GetRandomCakeID() {
+        int randomIndexX = Random.Range(0, cakeID.Count);
+        while (pieceCakeID.Contains(randomIndexX))
+        {
+            randomIndexX = Random.Range(0, cakeID.Count);
+        }
+        return randomIndexX;
     }
 
     int pieceIndex;
@@ -172,35 +182,54 @@ public class Cake : MonoBehaviour
             if (pieces[i].cakeID != cakeID)
             {
                 otherCake = true;
+                if (otherCake && sameCake)
+                {
+                    indexRotate = 0;
+                    StartCoroutine(RotateOtherPiece(i));
+                    return i;
+                }
             }
 
             if (pieces[i].cakeID == cakeID)
             {
                 sameCake = true;
+                if (otherCake && sameCake)
+                {
+                   
+                    StartCoroutine(RotateOtherPiece(i+1));
+                    return i+1;
+                }
             }
 
-            if (otherCake && sameCake)
-            {
-                RotateOtherPiece(i+1);
-                return i+1;
-            }
+           
         }
         return pieces.Count;
     }
     Vector3 vectorRotateTo;
-    public void RotateOtherPiece(int pieceIndex) {
-        for (int i = pieceIndex; i < pieces.Count; i++)
+    int indexRotate = 0;
+    IEnumerator RotateOtherPiece(int pieceIndex) {
+        indexRotate = pieceIndex;
+        while (indexRotate < pieces.Count)
         {
-            vectorRotateTo = new Vector3(0, rotates[i + 1], 0);
-            pieces[i].transform.DORotate(vectorRotateTo, .25f, RotateMode.FastBeyond360);
+            vectorRotateTo = new Vector3(0, rotates[indexRotate], 0);
+            pieces[indexRotate].transform.DORotate(vectorRotateTo, .25f).SetEase(curveRotate);
+            indexRotate++;
+            yield return new WaitForSeconds(.15f);
         }
     }
 
-    public void RotateOtherPieceRightWay(int pieceIndex) {
-        for (int i = pieceIndex; i < pieces.Count; i++)
-        {
-            vectorRotateTo = new Vector3(0, rotates[i], 0);
-            pieces[i].transform.DORotate(vectorRotateTo, .25f, RotateMode.FastBeyond360);
+    public void RotateOtherPieceRight(int pieceIndex) {
+        indexRotate = pieceIndex;
+        StartCoroutine(RotateOtherPieceRightWay());
+       
+    }
+
+    IEnumerator RotateOtherPieceRightWay() {
+       while (indexRotate < pieces.Count) { 
+            vectorRotateTo = new Vector3(0, rotates[indexRotate], 0);
+            pieces[indexRotate].transform.DORotate(vectorRotateTo, .25f).SetEase(curveRotate);
+            indexRotate++;
+            yield return new WaitForSeconds(.15f);
         }
     }
 
@@ -278,5 +307,23 @@ public class Cake : MonoBehaviour
                 return true;
         }
         return false;
+    }
+
+    public void DoneCakeMode()
+    {
+        GameObject objecPref = Resources.Load("Pieces/Cake_" + pieces[0].cakeID) as GameObject;
+        CakeFullAnimation trs = Instantiate(objecPref).GetComponent<CakeFullAnimation>();
+        trs.transform.position = transform.position;
+        trs.AnimDoneCake();
+        Transform trsEffect = GameManager.Instance.objectPooling.GetCakeDoneEffect();
+        trsEffect.transform.position = transform.position + vectorOffsetEffect;
+        trsEffect.gameObject.SetActive(true);
+
+        ExpEffect expEffect = GameManager.Instance.objectPooling.GetExpEffect();
+        expEffect.transform.position = Camera.main.WorldToScreenPoint(transform.position) + vectorOffsetExp;
+        expEffect.ChangeTextExp("10");
+        expEffect.gameObject.SetActive(true);
+        ProfileManager.Instance.playerData.playerResourseSave.AddExp(10);
+        DOVirtual.DelayedCall(.25f, () => { Destroy(gameObject); });
     }
 }
