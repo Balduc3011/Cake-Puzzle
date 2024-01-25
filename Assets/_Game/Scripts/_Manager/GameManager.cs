@@ -11,6 +11,7 @@ public class GameManager : Singleton<GameManager>
     public ObjectPooling objectPooling;
     public SpinManager spinManager;
     public DailyRewardManager dailyRewardManager;
+    public DecorationManager decorationManager;
 
     public List<ItemData> rewardItems;
 

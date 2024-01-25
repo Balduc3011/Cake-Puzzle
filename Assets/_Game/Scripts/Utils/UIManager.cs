@@ -22,6 +22,7 @@ public class UIManager : MonoBehaviour {
     public Camera mainCamera;
     public PanelTotal panelTotal;
     PanelBakery panelBakery;
+    PanelDecorations panelDecorations;
 
     // Start is called before the first frame update
     void Awake() {
@@ -94,6 +95,9 @@ public class UIManager : MonoBehaviour {
                     break;
                 case UIPanelType.PanelSetting:
                     panel = Instantiate(Resources.Load("UI/PanelSetting") as GameObject, mainCanvas);
+                    break;
+                case UIPanelType.PanelDecorations:
+                    panel = Instantiate(Resources.Load("UI/PanelDecorations") as GameObject, mainCanvas);
                     break;
             }
             if (panel) panel.SetActive(true);
@@ -222,6 +226,13 @@ public class UIManager : MonoBehaviour {
                 panelBakery.OnClose();
             }
         }
+        if (panelDecorations != null && ignorePanel != UIPanelType.PanelDecorations)
+        {
+            if (panelDecorations.gameObject.activeSelf)
+            {
+                panelDecorations.OnClose();
+            }
+        }
     }
 
     public void ShowPanelSetting()
@@ -234,6 +245,26 @@ public class UIManager : MonoBehaviour {
     {
         isHasPopupOnScene = false;
         GameObject go = GetPanel(UIPanelType.PanelSetting);
+        go.SetActive(false);
+    }
+
+    public void ShowPanelDecorations()
+    {
+        CloseOtherMenu(UIPanelType.PanelDecorations);
+        isHasPopupOnScene = true;
+        GameObject go = GetPanel(UIPanelType.PanelDecorations);
+        go.SetActive(true);
+        panelTotal.ShowMainSceneContent(false);
+        panelTotal.Transform.SetAsLastSibling();
+        if (panelDecorations == null)
+        {
+            panelDecorations = go.GetComponent<PanelDecorations>();
+        }
+    }
+    public void ClosePanelDecorations()
+    {
+        isHasPopupOnScene = false;
+        GameObject go = GetPanel(UIPanelType.PanelDecorations);
         go.SetActive(false);
     }
 }

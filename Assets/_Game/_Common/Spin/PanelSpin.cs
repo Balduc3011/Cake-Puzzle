@@ -14,6 +14,10 @@ public class PanelSpin : UIPanel
     [SerializeField] RectTransform dynamicSpinWheel;
     [SerializeField] List<SpinSlide> slides;
     bool spin;
+    bool stopClicked;
+    float stopCounter;
+    float stopCooldow = 2.5f;
+
     [SerializeField] SpinState spinState;
     float defaultSpinSpeed = 25f;
     float maxSpinSpeed = 600f;
@@ -41,6 +45,8 @@ public class PanelSpin : UIPanel
         spin = true;
         CheckFreeSpin();
         Transform.SetAsLastSibling();
+        stopClicked = false;
+        stopCounter = stopCooldow;
     }
 
     void CheckFreeSpin()
@@ -52,7 +58,7 @@ public class PanelSpin : UIPanel
     {
         closeBtn.onClick.AddListener(OnClose);
         spinBtn.onClick.AddListener(OnSpin);
-        stopBtn.onClick.AddListener(OnStopSpin);
+        //stopBtn.onClick.AddListener(OnStopSpin);
         Init();
         acceleration = (maxSpinSpeed - defaultSpinSpeed) / accelerationTime;
         markValue = 360 / slides.Count;
@@ -83,20 +89,22 @@ public class PanelSpin : UIPanel
         spinState = SpinState.Spin;
         spin = true;
         spinBtn.gameObject.SetActive(false);
-        stopBtn.gameObject.SetActive(false);
+        //stopBtn.gameObject.SetActive(false);
         selectedSlide = GameManager.Instance.spinManager.OnSpin();
+        stopClicked = false;
+        stopCounter = stopCooldow;
     }
 
     void OnSpinToMax()
     {
         spinBtn.gameObject.SetActive(false);
-        stopBtn.gameObject.SetActive(true);
+        //stopBtn.gameObject.SetActive(true);
     }
 
     void OnStopSpin()
     {
         spinBtn.gameObject.SetActive(false);
-        stopBtn.gameObject.SetActive(false);
+        //stopBtn.gameObject.SetActive(false);
         if (selectedSlide >= 0)
         {
             spinState = SpinState.WaitToStop;
@@ -137,7 +145,7 @@ public class PanelSpin : UIPanel
         spin = false;
         spinBtn.gameObject.SetActive(true);
         CheckFreeSpin();
-        stopBtn.gameObject.SetActive(false);
+        //stopBtn.gameObject.SetActive(false);
         CheckResult();
     }
 
@@ -164,6 +172,15 @@ public class PanelSpin : UIPanel
     {
         if (spin)
         {
+            if(!stopClicked)
+            {
+                stopCounter -= Time.deltaTime;
+                if(stopCounter <= 0)
+                {
+                    OnStopSpin();
+                    stopClicked = true;
+                }
+            }
             switch (spinState)
             {
                 case SpinState.Default:

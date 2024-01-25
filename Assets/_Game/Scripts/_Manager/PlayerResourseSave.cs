@@ -35,6 +35,27 @@ public class PlayerResourseSave : SaveBase
         }
     }
 
+    public bool IsHasEnoughMoney(float amount)
+    {
+        return coins.IsBigger(amount);
+    }
+
+    public void AddMoney(float amount)
+    {
+        coins.Add(amount);
+        IsMarkChangeData();
+        SaveData();
+        EventManager.TriggerEvent(EventName.ChangeCoin.ToString());
+    }
+
+    public void ConsumeMoney(float amount)
+    {
+        coins.Substract(amount);
+        IsMarkChangeData();
+        SaveData();
+        EventManager.TriggerEvent(EventName.ChangeCoin.ToString());
+    }
+
     public bool IsHasFreeSpin()
     {
         if (!String.IsNullOrEmpty(lastFreeSpin))
@@ -102,7 +123,7 @@ public class PlayerResourseSave : SaveBase
     {
         if(item.ItemType == ItemType.Coin)
         {
-            coins.Add(item.amount);
+            AddMoney(item.amount);
         }
         for (int i = 0; i < ownedItem.Count; i++)
         {

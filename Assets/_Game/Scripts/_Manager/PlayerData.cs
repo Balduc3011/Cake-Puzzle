@@ -8,12 +8,16 @@ public class PlayerData
     public SaveBase saveBase;
     public CakeSaveData cakeSaveData;
     public PlayerResourseSave playerResourseSave;
+    public DecorationSave decorationSave;
+    public CakeSave cakeSave;
 
     public void LoadData()
     {
         cakeSaveData.LoadData();
         saveBase.LoadData();
         playerResourseSave.LoadData();
+        decorationSave.LoadData();
+        cakeSave.LoadData();
     }
 
     public void SaveData()

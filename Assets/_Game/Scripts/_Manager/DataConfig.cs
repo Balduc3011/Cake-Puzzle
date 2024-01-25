@@ -10,4 +10,6 @@ public class DataConfig
     public SpinDataConfig spinDataConfig;
     public DailyRewardDataConfig dailyRewardDataConfig;
     public SpriteDataConfig spriteDataConfig;
+    public DecorationDataConfig decorationDataConfig;
+    public CakeDataConfig cakeDataConfig;
 }

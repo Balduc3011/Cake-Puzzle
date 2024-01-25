@@ -49,12 +49,25 @@ public class UIPanelShowUp : MonoBehaviour
     {
         if(startOnAwake)
         {
-            panelTrs.position = hidePosition;
-            canvasGroup.alpha = 0;
-            panelTrs.DOMove(showPosition, 0.25f);
-            canvasGroup.DOFade(1, 0.25f);
+            if(floatDirection == FloatDirection.None)
+            {
+                PopOut();
+            }
+            else
+            {
+                panelTrs.position = hidePosition;
+                canvasGroup.alpha = 0;
+                panelTrs.DOMove(showPosition, 0.25f);
+                canvasGroup.DOFade(1, 0.25f);
+            }
         }
         startOnAwake = true;
+    }
+
+    void PopOut()
+    {
+        panelTrs.localScale = Vector3.zero;
+        panelTrs.DOScale(1, 0.25f);
     }
 
     public void OnClose(UnityAction actionDone = null)

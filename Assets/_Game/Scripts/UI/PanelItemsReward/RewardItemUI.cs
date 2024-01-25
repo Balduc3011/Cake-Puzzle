@@ -11,6 +11,7 @@ public class RewardItemUI : MonoBehaviour
     [SerializeField] Image iconImg;
     [SerializeField] TextMeshProUGUI titleTxt;
     [SerializeField] TextMeshProUGUI amountTxt;
+    [SerializeField] CanvasGroup canvasGroup;
     
     public void Init(ItemData itemData)
     {
@@ -18,7 +19,9 @@ public class RewardItemUI : MonoBehaviour
         amountTxt.text = itemData.amount.ToString();
         iconImg.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetSprite(itemData.ItemType);
         if (Transform == null) Transform = transform;
-        Transform.localScale = Vector3.zero;
+        Transform.localScale = Vector3.one * 2;
+        canvasGroup.alpha = 0;
         Transform.DOScale(1, 0.1f);
+        canvasGroup.DOFade(1, 0.15f);
     }
 }

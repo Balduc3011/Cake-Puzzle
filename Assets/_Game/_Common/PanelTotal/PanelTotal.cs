@@ -15,6 +15,7 @@ public class PanelTotal : UIPanel
     [SerializeField] Button decorBtn;
     [SerializeField] Button mainGameNavBtn;
     [SerializeField] Button bakeryNavBtn;
+    [SerializeField] Button decorationNavBtn;
     [SerializeField] GameObject mainSceneContent;
     [SerializeField] GameObject commonContent;
     [SerializeField] GameObject mainMenuContent;
@@ -33,6 +34,7 @@ public class PanelTotal : UIPanel
         decorBtn.onClick.AddListener(ShowPanelDecor);
         mainGameNavBtn.onClick.AddListener(() => { UIManager.instance.ShowPanelTotalContent(); });
         bakeryNavBtn.onClick.AddListener(() => { UIManager.instance.ShowPanelBakery(); });
+        decorationNavBtn.onClick.AddListener(() => { UIManager.instance.ShowPanelDecorations(); });
     }
 
     public void ShowMainSceneContent(bool show)

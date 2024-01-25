@@ -10,7 +10,8 @@ public enum UIPanelType {
     PanelItemsReward,
     PanelBakery,
     PanelPlayGame,
-    PanelSetting
+    PanelSetting,
+    PanelDecorations
 }
 public class UIPanel : MonoBehaviour {
     public bool isRegisterInUI = true;

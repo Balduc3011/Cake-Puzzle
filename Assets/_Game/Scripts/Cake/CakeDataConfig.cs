@@ -1,0 +1,25 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+[CreateAssetMenu(fileName = "CakeDataConfig", menuName = "ScriptableObject/CakeDataConfig")]
+public class CakeDataConfig : ScriptableObject
+{
+    public List<CakeData> cakeDatas;
+    public CakeData GetCakeData(int id)
+    {
+        for (int i = 0; i < cakeDatas.Count; i++)
+        {
+            if (cakeDatas[i].id == id)
+            { return cakeDatas[i]; }
+        }
+        return null;
+    }
+}
+
+[System.Serializable]
+public class CakeData
+{
+    public int id;
+    public Sprite icon;
+}

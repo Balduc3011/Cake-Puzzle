@@ -31,6 +31,7 @@ public class PanelItemsReward : UIPanel
     private void OnEnable()
     {
         titleTrs.DOScaleX(1, 0.25f);
+        DisableOldItem();
         InitReward();
     }
 
@@ -55,6 +56,7 @@ public class PanelItemsReward : UIPanel
             RewardItemUI rewardItemUI = GetRewardItemUI();
             rewardItemUI.Init(rewards[spawnedCount]);
             spawnedCount++;
+            StartCoroutine(SpawnReward());
         }
         else
         {
@@ -68,11 +70,21 @@ public class PanelItemsReward : UIPanel
         {
             if (!rewardItemUIs[i].gameObject.activeSelf)
             {
+                rewardItemUIs[i].gameObject.SetActive(true);
                 return rewardItemUIs[i];
             }
         }
         RewardItemUI newRewardItemUI = Instantiate(itemUIPrefab, rewardItemUIsContainer);
+        rewardItemUIs.Add(newRewardItemUI);
         return newRewardItemUI;
+    }
+
+    void DisableOldItem()
+    {
+        for (int i = 0; i < rewardItemUIs.Count; i++)
+        {
+            rewardItemUIs[i].gameObject.SetActive(false);
+        }
     }
 
     void ClosePanel()

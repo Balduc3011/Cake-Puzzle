@@ -11,24 +11,9 @@ public class UnityEventObject : UnityEvent<object>
 
 public enum EventName
 {
-    BloodCoinChange,
-    LevelBloodCount,
-    AddBloodCountOnBodyPath,
-    AddBodyPath,
-    LevelUp,
-    ExpChange,
-    UpdateTutorial,
-    LaserEnergyChange,
-    RemoveFixVein,
-    ChangePlayModeToVeinConnect,
-    AddVein,
-    PieceDryDone,
-    SkeletonCurrentcyChange,
-    AddBloodOnAdding,
-    ConsumeBloodOnAdding,
-    TurnOffADSUpgradeOnOrgan,
-    OnDraw,
-    TurnOffAllADS
+    None = 0,
+    TurnOffAllADS = 1,
+    ChangeCoin = 2,
 }
 
 public class EventManager : Singleton<EventManager>
