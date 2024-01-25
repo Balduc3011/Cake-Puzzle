@@ -221,7 +221,7 @@ Camera:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingPath: -1
-  m_TargetTexture: {fileID: 8400000, guid: 680e03329fb15a14dbdb68f0d5c731c0, type: 2}
+  m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
@@ -346,6 +346,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCanvas: {fileID: 517492293}
+  backGround: {fileID: 0}
   isHasPopupOnScene: 0
   isHasTutorial: 0
   isHasShopPanel: 0
@@ -469,6 +470,8 @@ MonoBehaviour:
       lastFreeSpin: 
       firstDay: 
       dailyRewardedDay: 0
+      currentLevel: 0
+      currentExp: 0
     decorationSave:
       IsChangeData: 0
       ownedDecorationDatas: []

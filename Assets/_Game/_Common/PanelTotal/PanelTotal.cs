@@ -33,6 +33,7 @@ public class PanelTotal : UIPanel
         base.Awake();
         EventManager.AddListener(EventName.ChangeLevel.ToString(), ChangeLevel);
         EventManager.AddListener(EventName.ChangeExp.ToString(), ChangeExp);
+        backGround = UIManager.instance.backGround;
     }
 
     float currentExp= 0;
