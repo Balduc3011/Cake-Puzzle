@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UIAnimation;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,12 +21,40 @@ public class PanelTotal : UIPanel
     [SerializeField] GameObject commonContent;
     [SerializeField] GameObject mainMenuContent;
     [SerializeField] GameObject navBarContent;
-    [SerializeField] GameObject backGround;    
+    [SerializeField] GameObject backGround;
+    [SerializeField] TextMeshProUGUI txtCurrentLevel;
+    [SerializeField] TextMeshProUGUI txtCurrentExp;
+    [SerializeField] Image imgNextCake;
+    [SerializeField] Slider sliderLevelExp;
     public override void Awake()
     {
         panelType = UIPanelType.PanelTotal;
         base.Awake();
+        EventManager.AddListener(EventName.ChangeLevel.ToString(), ChangeLevel);
+        EventManager.AddListener(EventName.ChangeExp.ToString(), ChangeExp);
     }
+
+    float currentExp= 0;
+    private void ChangeExp()
+    {
+        currentExp = ProfileManager.Instance.playerData.playerResourseSave.currentExp;
+        txtCurrentExp.text = ProfileManager.Instance.playerData.playerResourseSave.GetCurrentExp();
+        sliderLevelExp.value = currentExp;
+        sliderLevelExp.maxValue = ProfileManager.Instance.playerData.playerResourseSave.GetMaxExp();
+    }
+    LevelData levelData;
+    private void ChangeLevel()
+    {
+        txtCurrentLevel.text = ProfileManager.Instance.playerData.playerResourseSave.GetCurrentLevel();
+        levelData = ProfileManager.Instance.dataConfig.levelDataConfig.GetLevel(ProfileManager.Instance.playerData.playerResourseSave.currentLevel);
+        if (levelData.cakeUnlockID != -1)
+        {
+            imgNextCake.gameObject.SetActive(true);
+            imgNextCake.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetCakeSprite(levelData.cakeUnlockID);
+        }
+        else { imgNextCake.gameObject.SetActive(false); }
+    }
+
     void Start()
     {
         playBtn.onClick.AddListener(PlayGame);
@@ -34,6 +64,8 @@ public class PanelTotal : UIPanel
         decorBtn.onClick.AddListener(ShowPanelDecor);
         mainGameNavBtn.onClick.AddListener(() => { UIManager.instance.ShowPanelTotalContent(); });
         bakeryNavBtn.onClick.AddListener(() => { UIManager.instance.ShowPanelBakery(); });
+        ChangeLevel();
+        ChangeExp();
     }
 
     public void ShowMainSceneContent(bool show)

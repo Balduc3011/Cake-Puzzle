@@ -7,6 +7,7 @@ using UnityEngine;
 public class SpriteDataConfig : ScriptableObject
 {
     public List<Sprite> itemSprites;
+    public List<Sprite> cakeSprite;
 
     public Sprite GetSprite(ItemType itemType)
     {
@@ -18,5 +19,10 @@ public class SpriteDataConfig : ScriptableObject
             }
         }
         return null;
+    }
+
+    public Sprite GetCakeSprite(int cakeUnlockID)
+    {
+        return cakeSprite[cakeUnlockID];
     }
 }

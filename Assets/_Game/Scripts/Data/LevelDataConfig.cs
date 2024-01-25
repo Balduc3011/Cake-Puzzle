@@ -24,5 +24,5 @@ public class LevelDataConfig : ScriptableObject
 [System.Serializable]
 public class LevelData {
     public float expUnlock;
-    public float cakeUnlockID;
+    public int cakeUnlockID;
 }

@@ -151,13 +151,32 @@ public class PlayerResourseSave : SaveBase
             currentExp = 0;
             LevelUp();
         }
+        EventManager.TriggerEvent(EventName.ChangeExp.ToString());
+        IsMarkChangeData();
+        SaveData();
     }
 
     public void LevelUp() {
         if (currentLevel < levelMax)
         {
             currentLevel++;
+            EventManager.TriggerEvent(EventName.ChangeLevel.ToString());
             expMax = ProfileManager.Instance.dataConfig.levelDataConfig.GetExpToNextLevel(currentLevel);
         }
+    }
+
+    public string GetCurrentExp()
+    {
+        return currentExp + "/" + expMax;
+    }
+
+    public string GetCurrentLevel()
+    {
+        return currentLevel.ToString();
+    }
+
+    public float GetMaxExp()
+    {
+        return expMax;
     }
 }
