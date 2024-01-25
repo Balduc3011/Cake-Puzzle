@@ -5,6 +5,7 @@ using UnityEngine;
 public class DecorationManager : MonoBehaviour
 {
     PanelDecorations panelDecorations;
+    public DecorationComponent decorationComponent;
     public bool IsOwned(DecorationType type, int id)
     {
         return ProfileManager.Instance.playerData.decorationSave.IsOwned(type, id);
