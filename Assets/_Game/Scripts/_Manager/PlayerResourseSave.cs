@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Progress;
+//using static UnityEditor.Progress;
 
 [System.Serializable]
 public class PlayerResourseSave : SaveBase
@@ -13,6 +13,12 @@ public class PlayerResourseSave : SaveBase
     public string lastFreeSpin;
     public string firstDay;
     public int dailyRewardedDay;
+
+    public int currentLevel;
+    public float currentExp;
+
+    int levelMax;
+    float expMax;
     public override void LoadData()
     {
         SetStringSave("PlayerResourseSave");
@@ -26,6 +32,8 @@ public class PlayerResourseSave : SaveBase
             lastFreeSpin = data.lastFreeSpin;
             firstDay = data.firstDay;
             dailyRewardedDay = data.dailyRewardedDay;
+            currentLevel = data.currentLevel;
+            currentExp = data.currentExp;
         }
         else
         {
@@ -33,6 +41,8 @@ public class PlayerResourseSave : SaveBase
             IsMarkChangeData();
             SaveData();
         }
+        levelMax = ProfileManager.Instance.dataConfig.levelDataConfig.GetLevelMax();
+        expMax = ProfileManager.Instance.dataConfig.levelDataConfig.GetExpToNextLevel(currentLevel);
     }
 
     public bool IsHasEnoughMoney(float amount)
@@ -152,5 +162,42 @@ public class PlayerResourseSave : SaveBase
             }
         }
         return 0;
+    }
+
+    public void AddExp(float expAdd) {
+        if (currentLevel >= levelMax && currentExp==expMax) { return; }
+        currentExp += expAdd;
+        if (currentExp >= expMax)
+        {
+            currentExp = 0;
+            LevelUp();
+        }
+        EventManager.TriggerEvent(EventName.ChangeExp.ToString());
+        IsMarkChangeData();
+        SaveData();
+    }
+
+    public void LevelUp() {
+        if (currentLevel < levelMax)
+        {
+            currentLevel++;
+            EventManager.TriggerEvent(EventName.ChangeLevel.ToString());
+            expMax = ProfileManager.Instance.dataConfig.levelDataConfig.GetExpToNextLevel(currentLevel);
+        }
+    }
+
+    public string GetCurrentExp()
+    {
+        return currentExp + "/" + expMax;
+    }
+
+    public string GetCurrentLevel()
+    {
+        return currentLevel.ToString();
+    }
+
+    public float GetMaxExp()
+    {
+        return expMax;
     }
 }

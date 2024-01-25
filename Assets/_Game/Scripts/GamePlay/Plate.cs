@@ -92,7 +92,7 @@ public class Plate : MonoBehaviour
     {
         if (currentCake == null)
             return;
-        currentCake.RotateOtherPieceRightWay(0);
+        currentCake.RotateOtherPieceRight(0);
         if (currentCake.pieces.Count == 0) {
             //Destroy(currentCake.gameObject);
             //currentCake = null;
@@ -102,7 +102,9 @@ public class Plate : MonoBehaviour
     }
 
     public void ClearCake() {
-        Destroy(currentCake.gameObject);
+        currentCake.transform.DOScale(Vector3.zero, .5f).OnComplete(() => {
+            //Destroy(currentCake.gameObject);
+        });
         currentCake = null;
     }
 
@@ -115,7 +117,8 @@ public class Plate : MonoBehaviour
     {
         if (currentCake != null)
         {
-            Destroy(currentCake.gameObject);
+            currentCake.DoneCakeMode();
+            //Destroy(currentCake.gameObject);
             currentCake = null;
         }
     }

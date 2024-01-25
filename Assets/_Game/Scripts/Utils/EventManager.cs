@@ -14,6 +14,8 @@ public enum EventName
     None = 0,
     TurnOffAllADS = 1,
     ChangeCoin = 2,
+    ChangeExp = 3,
+    ChangeLevel = 4
 }
 
 public class EventManager : Singleton<EventManager>
