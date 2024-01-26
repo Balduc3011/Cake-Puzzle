@@ -291,14 +291,18 @@ MonoBehaviour:
   groupCakeParents: {fileID: 1842485385}
   groupCakes: []
   groupCakePref: {fileID: 1524842705077448868, guid: 2f2ecc08ee355664d87f4bd6b90b4cdc, type: 3}
-  trsEffect: {fileID: 0}
+  trsEffect: {fileID: 1183081023}
   cakeDoneEffects: []
-  cakeDoneEffect: {fileID: 0}
+  cakeDoneEffect: {fileID: 3951564413595435855, guid: b8f8ec1946d4a7b40b5285d4c912d406, type: 3}
   pieceDoneEffects: []
-  piecesEffect: {fileID: 0}
-  trsPanel: {fileID: 0}
+  piecesEffect: {fileID: 7335881209472704915, guid: 48357a300966df74d8d70bf8fc408d24, type: 3}
+  trsPanel: {fileID: 1842180408}
   expEffects: []
-  expEffect: {fileID: 0}
+  expEffect: {fileID: 332401951, guid: 5fb79efdba7713c4dac4503ab17ad73b, type: 3}
+  expEffectMoves: []
+  expEffectMove: {fileID: 298526862, guid: 6f518d80dc94b0e4b8386625f5c24caa, type: 3}
+  effectAddExps: []
+  effectAddExp: {fileID: 1204966178008762478, guid: f82c425828044434787b6ac5b499d457, type: 3}
 --- !u!1 &482468383
 GameObject:
   m_ObjectHideFlags: 0
@@ -429,6 +433,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2055044990}
+  - {fileID: 1260847587}
   - {fileID: 1842180408}
   m_Father: {fileID: 0}
   m_RootOrder: 3
@@ -450,7 +455,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94ecd3f3fbaba5844a18241c3e5be5a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainCanvas: {fileID: 517492293}
+  mainCanvas: {fileID: 1260847587}
   backGround: {fileID: 2055044986}
   isHasPopupOnScene: 0
   isHasTutorial: 0
@@ -776,6 +781,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 225389a6ac6661c488bf3cf77823bdf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  decorationComponent: {fileID: 0}
 --- !u!4 &697761622 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8645710701527451667, guid: d913742d99758774cb97c834c1c1d0fa, type: 3}
@@ -1237,6 +1243,42 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8645710701527451667, guid: d913742d99758774cb97c834c1c1d0fa, type: 3}
   m_PrefabInstance: {fileID: 7365330548460889845}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1260847586
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1260847587}
+  m_Layer: 5
+  m_Name: trsSpawnPanel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1260847587
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1260847586}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 517492293}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1269635175
 GameObject:
   m_ObjectHideFlags: 0
@@ -1489,7 +1531,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 517492293}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -1590,7 +1632,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.6784314, b: 0.99607843, a: 1}
+  m_Color: {r: 0, g: 0.6811023, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

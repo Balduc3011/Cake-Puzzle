@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -37,12 +38,17 @@ public class PanelTotal : UIPanel
     }
 
     float currentExp= 0;
+    float currentValue = 0;
     private void ChangeExp()
     {
         currentExp = ProfileManager.Instance.playerData.playerResourseSave.currentExp;
         txtCurrentExp.text = ProfileManager.Instance.playerData.playerResourseSave.GetCurrentExp();
-        sliderLevelExp.value = currentExp;
+
+        currentValue = sliderLevelExp.value;
         sliderLevelExp.maxValue = ProfileManager.Instance.playerData.playerResourseSave.GetMaxExp();
+        DOVirtual.Float(currentValue, currentExp, 1f, (value) =>{
+            sliderLevelExp.value = value;
+        });
     }
     LevelData levelData;
     private void ChangeLevel()
@@ -112,5 +118,9 @@ public class PanelTotal : UIPanel
     {
         UIAnimationController.BasicButton(decorBtn.transform, .1f, UIManager.instance.ShowPanelSpin);
         //UIManager.instance.ShowPanelSpin();
+    }
+
+    public Transform GetPointSlider() {
+        return sliderLevelExp.handleRect.transform;
     }
 }

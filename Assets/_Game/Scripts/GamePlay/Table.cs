@@ -137,7 +137,15 @@ public class Table : MonoBehaviour
             ClearDoneSetWayPoint();
             FindPlateBest(currentCakeID);
             StartCreateWay();
-            StartMove(currentCakeID);
+            if (ways.Count>0)
+            {
+                StartMove(currentCakeID);
+            }
+            else
+            {
+                GameManager.Instance.cakeManager.CheckIDOfCake();
+            }
+
         }
         else
         {
@@ -240,7 +248,7 @@ public class Table : MonoBehaviour
     {
         for (int i = 0; i < mapPlate.Count; i++)
         {
-            if (mapPlate[i].currentCake != null)
+            if (mapPlate[i].currentCake != null && mapPlate[i] != bestPlate)
             {
                 mapPlate[i].currentCake.RotateOtherPieceRight(0);
                 if (mapPlate[i].currentCake.cakeDone)

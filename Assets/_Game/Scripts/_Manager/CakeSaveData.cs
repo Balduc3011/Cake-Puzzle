@@ -26,8 +26,8 @@ public class CakeSaveData : SaveBase
         }
     }
 
-    public void AddPieces(int piecesID) {
-        cakeID.Add(piecesID);
+    public void AddCake(int cakeId) {
+        cakeID.Add(cakeId);
         IsMarkChangeData();
         SaveData();
     }

@@ -20,6 +20,11 @@ public class LevelDataConfig : ScriptableObject
     {
         return levelDatas.Count - 1;
     }
+
+    public int GetCakeID(int currentLevel)
+    {
+        return levelDatas[currentLevel].cakeUnlockID;
+    }
 }
 [System.Serializable]
 public class LevelData {

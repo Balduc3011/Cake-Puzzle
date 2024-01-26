@@ -172,7 +172,6 @@ public class PlayerResourseSave : SaveBase
             currentExp = 0;
             LevelUp();
         }
-        EventManager.TriggerEvent(EventName.ChangeExp.ToString());
         IsMarkChangeData();
         SaveData();
     }
@@ -183,6 +182,11 @@ public class PlayerResourseSave : SaveBase
             currentLevel++;
             EventManager.TriggerEvent(EventName.ChangeLevel.ToString());
             expMax = ProfileManager.Instance.dataConfig.levelDataConfig.GetExpToNextLevel(currentLevel);
+            int cakeID = ProfileManager.Instance.dataConfig.levelDataConfig.GetCakeID(currentLevel);
+            if (cakeID != -1)
+            {
+                ProfileManager.Instance.playerData.cakeSaveData.AddCake(cakeID);
+            }
         }
     }
 

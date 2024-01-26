@@ -323,7 +323,9 @@ public class Cake : MonoBehaviour
         expEffect.transform.position = Camera.main.WorldToScreenPoint(transform.position) + vectorOffsetExp;
         expEffect.ChangeTextExp("10");
         expEffect.gameObject.SetActive(true);
+
         ProfileManager.Instance.playerData.playerResourseSave.AddExp(10);
-        DOVirtual.DelayedCall(.25f, () => { Destroy(gameObject); });
+        Destroy(gameObject);
+        //DOVirtual.DelayedCall(.25f, () => { Destroy(gameObject); });
     }
 }

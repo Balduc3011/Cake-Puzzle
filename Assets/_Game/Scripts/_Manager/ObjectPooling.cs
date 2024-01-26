@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -91,6 +92,46 @@ public class ObjectPooling : MonoBehaviour
         }
         ExpEffect newEffect = Instantiate(expEffect, trsPanel);
         expEffects.Add(newEffect);
+        return newEffect;
+    }
+
+    public List<EffectMove> expEffectMoves = new List<EffectMove>();
+    public EffectMove expEffectMove;
+
+
+    public EffectMove GetEffectMove()
+    {
+        for (int i = expEffectMoves.Count - 1; i >= 0; i--)
+        {
+            if (expEffectMoves[i] == null)
+            {
+                expEffectMoves.RemoveAt(i);
+                continue;
+            }
+            if (!expEffectMoves[i].gameObject.activeSelf) return expEffectMoves[i];
+        }
+        EffectMove newEffect = Instantiate(expEffectMove, trsPanel);
+        expEffectMoves.Add(newEffect);
+        return newEffect;
+    }
+
+    public List<Transform> effectAddExps = new List<Transform>();
+    public Transform effectAddExp;
+
+
+    public Transform GetEffectExp()
+    {
+        for (int i = effectAddExps.Count - 1; i >= 0; i--)
+        {
+            if (effectAddExps[i] == null)
+            {
+                effectAddExps.RemoveAt(i);
+                continue;
+            }
+            if (!effectAddExps[i].gameObject.activeSelf) return effectAddExps[i];
+        }
+        Transform newEffect = Instantiate(effectAddExp, trsPanel);
+        effectAddExps.Add(newEffect);
         return newEffect;
     }
 }
