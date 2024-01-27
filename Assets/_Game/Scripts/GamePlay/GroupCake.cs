@@ -125,23 +125,18 @@ public class GroupCake : MonoBehaviour
         transform.position = pointSpawn.position;
     }
 
-    public void InitData(int countCake, Transform pointSpawn)
+    public void InitData(int countCake, Transform pointSpawn, int cakeWaitIndex)
     {
         this.pointSpawn = pointSpawn;
-        if (transform.GetSiblingIndex() == 2) countCake = 1;
+        if (cakeWaitIndex == 2) countCake = 1;
         if (countCake == 2)
         {
             Init2Cakes();
         }
         else
         {
-
-            for (int i = 0; i < countCake; i++)
-            {
-                cake[i].gameObject.SetActive(true);
-                cake[i].InitData();
-            }
-          
+            cake[0].gameObject.SetActive(true);
+            cake[0].InitData();
         }
 
         objConnects[0].SetActive(cake[1].gameObject.activeSelf);

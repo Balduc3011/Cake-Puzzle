@@ -61,7 +61,7 @@ public class Cake : MonoBehaviour
 
     List<int> cakeID = new List<int>();
     void SetUpCakeID() {
-        cakeID = ProfileManager.Instance.playerData.cakeSaveData.cakeIDs;
+        cakeID = ProfileManager.Instance.playerData.cakeSaveData.cakeIDUsing;
         for (int i = 0; i < pieceCakeID.Count; i++)
         {
             int randomID = GetRandomCakeID();
@@ -333,6 +333,7 @@ public class Cake : MonoBehaviour
         expEffect.gameObject.SetActive(true);
 
         ProfileManager.Instance.playerData.playerResourseSave.AddExp(10);
+        ProfileManager.Instance.playerData.playerResourseSave.AddMoney(1);
         Destroy(gameObject);
         //DOVirtual.DelayedCall(.25f, () => { Destroy(gameObject); });
     }

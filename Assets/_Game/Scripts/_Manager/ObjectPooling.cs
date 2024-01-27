@@ -115,11 +115,11 @@ public class ObjectPooling : MonoBehaviour
         return newEffect;
     }
 
-    public List<Transform> effectAddExps = new List<Transform>();
-    public Transform effectAddExp;
+    public List<EffectAdd> effectAddExps = new List<EffectAdd>();
+    public EffectAdd effectAddExp;
 
 
-    public Transform GetEffectExp()
+    public EffectAdd GetEffectExp()
     {
         for (int i = effectAddExps.Count - 1; i >= 0; i--)
         {
@@ -130,8 +130,28 @@ public class ObjectPooling : MonoBehaviour
             }
             if (!effectAddExps[i].gameObject.activeSelf) return effectAddExps[i];
         }
-        Transform newEffect = Instantiate(effectAddExp, trsPanel);
+        EffectAdd newEffect = Instantiate(effectAddExp, trsPanel);
         effectAddExps.Add(newEffect);
+        return newEffect;
+    }
+
+    public List<CoinEffect> effectCoins = new List<CoinEffect>();
+    public CoinEffect effectCoin;
+
+
+    public CoinEffect GetCoinEffect()
+    {
+        for (int i = effectCoins.Count - 1; i >= 0; i--)
+        {
+            if (effectCoins[i] == null)
+            {
+                effectCoins.RemoveAt(i);
+                continue;
+            }
+            if (!effectCoins[i].gameObject.activeSelf) return effectCoins[i];
+        }
+        CoinEffect newEffect = Instantiate(effectCoin, trsPanel);
+        effectCoins.Add(newEffect);
         return newEffect;
     }
 }

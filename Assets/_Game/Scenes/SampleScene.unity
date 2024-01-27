@@ -302,7 +302,9 @@ MonoBehaviour:
   expEffectMoves: []
   expEffectMove: {fileID: 298526862, guid: 6f518d80dc94b0e4b8386625f5c24caa, type: 3}
   effectAddExps: []
-  effectAddExp: {fileID: 1204966178008762478, guid: f82c425828044434787b6ac5b499d457, type: 3}
+  effectAddExp: {fileID: 9174844195086467122, guid: f82c425828044434787b6ac5b499d457, type: 3}
+  effectCoins: []
+  effectCoin: {fileID: 2895559290921696373, guid: 9f6396c3fff499b459badedac26ac9ed, type: 3}
 --- !u!1 &482468383
 GameObject:
   m_ObjectHideFlags: 0
@@ -606,7 +608,7 @@ MonoBehaviour:
     cakeSaveData:
       IsChangeData: 0
       cakeIDs: 
-      cakeIDReturn: 
+      cakeIDUsing: 
     playerResourseSave:
       IsChangeData: 0
       coins:
@@ -622,10 +624,6 @@ MonoBehaviour:
     decorationSave:
       IsChangeData: 0
       ownedDecorationDatas: []
-    cakeSave:
-      IsChangeData: 0
-      ownedCakes: 
-      usingCake: 
   dataConfig:
     rateDataConfig: {fileID: 11400000, guid: 30dcfba3ba80b9845b3f3aec7591cbce, type: 2}
     levelDataConfig: {fileID: 11400000, guid: 434da5e0ab6acd94798cf5db96e2c9ca, type: 2}
@@ -1101,7 +1099,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0.60181504, y: 0, z: 0, w: 0.79863554}
-  m_LocalPosition: {x: 0, y: 7.5, z: -0.31}
+  m_LocalPosition: {x: 0, y: 7.5, z: 0.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2398,6 +2396,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3531146470266842729, guid: 45518ead4b0306e4aa6a2f6c96e4ea0c, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 33c2cff547861e84b8109e48d24167a6, type: 2}
+    - target: {fileID: 3531146470266842729, guid: 45518ead4b0306e4aa6a2f6c96e4ea0c, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 33c2cff547861e84b8109e48d24167a6, type: 2}
+    - target: {fileID: 3531146472183416776, guid: 45518ead4b0306e4aa6a2f6c96e4ea0c, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 33c2cff547861e84b8109e48d24167a6, type: 2}
+    - target: {fileID: 3531146472183416776, guid: 45518ead4b0306e4aa6a2f6c96e4ea0c, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 33c2cff547861e84b8109e48d24167a6, type: 2}
     - target: {fileID: 6634108931774521122, guid: 45518ead4b0306e4aa6a2f6c96e4ea0c, type: 3}
       propertyPath: m_Name
       value: Table
@@ -2445,38 +2459,6 @@ PrefabInstance:
     - target: {fileID: 6634108931774521126, guid: 45518ead4b0306e4aa6a2f6c96e4ea0c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6634108932961434506, guid: 45518ead4b0306e4aa6a2f6c96e4ea0c, type: 3}
-      propertyPath: curveMove.m_Curve.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6634108932961434506, guid: 45518ead4b0306e4aa6a2f6c96e4ea0c, type: 3}
-      propertyPath: curveRotate.m_Curve.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6634108932961434506, guid: 45518ead4b0306e4aa6a2f6c96e4ea0c, type: 3}
-      propertyPath: curveMove.m_Curve.Array.data[1].time
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6634108932961434506, guid: 45518ead4b0306e4aa6a2f6c96e4ea0c, type: 3}
-      propertyPath: curveMove.m_Curve.Array.data[1].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6634108932961434506, guid: 45518ead4b0306e4aa6a2f6c96e4ea0c, type: 3}
-      propertyPath: curveRotate.m_Curve.Array.data[1].time
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6634108932961434506, guid: 45518ead4b0306e4aa6a2f6c96e4ea0c, type: 3}
-      propertyPath: curveMove.m_Curve.Array.data[0].inSlope
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6634108932961434506, guid: 45518ead4b0306e4aa6a2f6c96e4ea0c, type: 3}
-      propertyPath: curveRotate.m_Curve.Array.data[1].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6634108932961434506, guid: 45518ead4b0306e4aa6a2f6c96e4ea0c, type: 3}
-      propertyPath: curveMove.m_Curve.Array.data[0].outSlope
-      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 45518ead4b0306e4aa6a2f6c96e4ea0c, type: 3}

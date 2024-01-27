@@ -11,7 +11,7 @@ public class Table : MonoBehaviour
     public List<Plate> plates = new List<Plate>();
     [SerializeField] AnimationCurve curveRotate;
     [SerializeField] AnimationCurve curveMove;
-    Plate[,] plateArray = new Plate[5, 4];
+    Plate[,] plateArray = new Plate[6, 4];
 
     private void Start()
     {

@@ -7,6 +7,8 @@ public class EffectMove : MonoBehaviour
 {
     [SerializeField] float speed;
     [SerializeField] AnimationCurve curvePosition, curveNoise;
+    [SerializeField] float magnitudeRange = 1;
+    [SerializeField] bool fixedMagnitude;
     Transform targetPoint;
     Vector3 startPoint;
     Transform trsMove;
@@ -26,7 +28,8 @@ public class EffectMove : MonoBehaviour
     {
         this.startPoint = startPoint;
         this.targetPoint = targetPoint;
-        magnitude = Random.Range(-1, 1);
+        if (fixedMagnitude) magnitude = magnitudeRange;
+        else magnitude = Random.Range(-magnitudeRange, magnitudeRange);
         Vector2 direction = (Vector2)(targetPoint.position - startPoint);
         horizontalVector = Vector2.Perpendicular(direction);
         timeMove = 0f;
@@ -52,7 +55,6 @@ public class EffectMove : MonoBehaviour
                 if (actionDone != null)
                     actionDone();
                 needMove = false;
-                EventManager.TriggerEvent(EventName.ChangeExp.ToString());
                 Destroy(gameObject);
             }
         }

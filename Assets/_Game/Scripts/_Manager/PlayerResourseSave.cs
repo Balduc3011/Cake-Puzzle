@@ -55,7 +55,6 @@ public class PlayerResourseSave : SaveBase
         coins.Add(amount);
         IsMarkChangeData();
         SaveData();
-        EventManager.TriggerEvent(EventName.ChangeCoin.ToString());
     }
 
     public void ConsumeMoney(float amount)
@@ -183,9 +182,9 @@ public class PlayerResourseSave : SaveBase
             if (cakeID != -1)
             {
                 ProfileManager.Instance.playerData.cakeSaveData.AddCake(cakeID);
+                ProfileManager.Instance.playerData.cakeSaveData.UseCake(cakeID);
             }
             currentLevel++;
-            EventManager.TriggerEvent(EventName.ChangeLevel.ToString());
             expMax = ProfileManager.Instance.dataConfig.levelDataConfig.GetExpToNextLevel(currentLevel);
         }
     }
@@ -194,12 +193,6 @@ public class PlayerResourseSave : SaveBase
     {
         return currentExp + "/" + expMax;
     }
-
-    public string GetCurrentLevel()
-    {
-        return currentLevel.ToString();
-    }
-
     public float GetMaxExp()
     {
         return expMax;

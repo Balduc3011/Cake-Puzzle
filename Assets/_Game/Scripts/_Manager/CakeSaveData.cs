@@ -40,37 +40,21 @@ public class CakeSaveData : SaveBase
     {
         return cakeIDs.Count > 3;
     }
-    public List<int> cakeIDReturn = new List<int>();
-    public List<int> GetCakeIDs(int totalCakeID) {
-        for (int i = 0; i < totalCakeID; i++) {
-            int randomID = GetRandomCakeID();
-            cakeIDReturn[i] = randomID;
-        }
-        cakeIDReturn.Clear();
-        return cakeIDs;
-
-    }
-
-    int GetRandomCakeID()
-    {
-        int randomIndexX = Random.Range(0, cakeIDs.Count);
-        while (cakeIDReturn.Contains(cakeIDs[randomIndexX]))
-        {
-            randomIndexX = Random.Range(0, cakeIDs.Count);
-        }
-        return randomIndexX;
-    }
 
     public bool IsOwnedCake(int cake)
     {
         return cakeIDs.Contains(cake);
     }
+
     public bool IsUsingCake(int cake)
     {
         return cakeIDUsing.Contains(cake);
     }
+
     public void UseCake(int cake)
     {
+        if (cakeIDUsing.Count >= 5)
+            return;
         if (!cakeIDUsing.Contains(cake))
         {
             cakeIDUsing.Add(cake);
@@ -78,6 +62,7 @@ public class CakeSaveData : SaveBase
             SaveData();
         }
     }
+
     public void RemoveUsingCake(int cake)
     {
         if (cakeIDUsing.Contains(cake))

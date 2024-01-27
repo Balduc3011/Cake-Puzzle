@@ -68,7 +68,7 @@ public class CakeManager : MonoBehaviour
             groupCake = GameManager.Instance.objectPooling.GetGroupCake();
             cakesWait.Add(groupCake);
             groupCake.transform.position = pointSpawnGroupCake[i].position;
-            groupCake.InitData((int)countCake[i], pointSpawnGroupCake[i]);
+            groupCake.InitData((int)countCake[i], pointSpawnGroupCake[i], i);
         }
     }
 
