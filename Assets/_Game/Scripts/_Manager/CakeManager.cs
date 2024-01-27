@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -18,6 +19,9 @@ public class CakeManager : MonoBehaviour
     bool haveMoreThan3Cake;
     public float posYDefault;
     public bool onMove;
+
+    public CakeShowComponent cakeShowComponent;
+    public int justUnlockedCake;
 
     private void Start()
     {
@@ -171,5 +175,16 @@ public class CakeManager : MonoBehaviour
         }
         if (countFaild == cakesWait.Count) Debug.Log("Loose game");
         //Debug.Log( countFaild == cakesWait.Count);
+    }
+
+    public Mesh GetNewUnlockedCakePieceMesh()
+    {
+        return ProfileManager.Instance.dataConfig.cakeDataConfig.GetCakePieceMesh(justUnlockedCake);
+    }
+
+    public Mesh GetNextUnlockedCakePieceMesh()
+    {
+        int nextUnlockCake = ProfileManager.Instance.dataConfig.levelDataConfig.GetLevel(ProfileManager.Instance.playerData.playerResourseSave.currentLevel).cakeUnlockID;
+        return ProfileManager.Instance.dataConfig.cakeDataConfig.GetCakePieceMesh(nextUnlockCake);
     }
 }

@@ -99,6 +99,9 @@ public class UIManager : MonoBehaviour {
                 case UIPanelType.PanelDecorations:
                     panel = Instantiate(Resources.Load("UI/PanelDecorations") as GameObject, mainCanvas);
                     break;
+                case UIPanelType.PanelCakeReward:
+                    panel = Instantiate(Resources.Load("UI/PanelCakeReward") as GameObject, mainCanvas);
+                    break;
             }
             if (panel) panel.SetActive(true);
             return panel;
@@ -256,6 +259,7 @@ public class UIManager : MonoBehaviour {
         go.SetActive(true);
         panelTotal.ShowMainSceneContent(false);
         panelTotal.Transform.SetAsLastSibling();
+        GameManager.Instance.decorationManager.StartCamera(true);
         if (panelDecorations == null)
         {
             panelDecorations = go.GetComponent<PanelDecorations>();
@@ -265,6 +269,20 @@ public class UIManager : MonoBehaviour {
     {
         isHasPopupOnScene = false;
         GameObject go = GetPanel(UIPanelType.PanelDecorations);
+        go.SetActive(false);
+        GameManager.Instance.decorationManager.StartCamera(false);
+    }
+
+    public void ShowPanelCakeReward()
+    {
+        isHasPopupOnScene = true;
+        GameObject go = GetPanel(UIPanelType.PanelCakeReward);
+        go.SetActive(true);
+    }
+    public void ClosePanelCakeReward()
+    {
+        isHasPopupOnScene = false;
+        GameObject go = GetPanel(UIPanelType.PanelCakeReward);
         go.SetActive(false);
     }
 }

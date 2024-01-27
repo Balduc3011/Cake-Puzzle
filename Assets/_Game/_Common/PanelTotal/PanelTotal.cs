@@ -140,7 +140,8 @@ public class PanelTotal : UIPanel
     }
     void ShowPanelDecor()
     {
-        UIAnimationController.BasicButton(decorBtn.transform, .1f, UIManager.instance.ShowPanelSpin);
+        //UIAnimationController.BasicButton(decorBtn.transform, .1f, UIManager.instance.ShowPanelSpin);
+        UIAnimationController.BasicButton(decorBtn.transform, .1f, UIManager.instance.ShowPanelCakeReward);
         //UIManager.instance.ShowPanelSpin();
     }
 

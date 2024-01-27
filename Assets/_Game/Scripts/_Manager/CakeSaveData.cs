@@ -53,7 +53,7 @@ public class CakeSaveData : SaveBase
 
     public void UseCake(int cake)
     {
-        if (cakeIDUsing.Count >= 5)
+        if (cakeIDUsing.Count >= 5 || !IsOwnedCake(cake))
             return;
         if (!cakeIDUsing.Contains(cake))
         {

@@ -15,6 +15,16 @@ public class CakeDataConfig : ScriptableObject
         }
         return null;
     }
+
+    public Mesh GetCakePieceMesh(int id)
+    {
+        for (int i = 0; i < cakeDatas.Count; i++)
+        {
+            if (cakeDatas[i].id == id)
+            { return cakeDatas[i].pieceMesh; }
+        }
+        return null;
+    }
 }
 
 [System.Serializable]
@@ -22,4 +32,5 @@ public class CakeData
 {
     public int id;
     public Sprite icon;
+    public Mesh pieceMesh;
 }

@@ -6,6 +6,11 @@ public class DecorationComponent : MonoBehaviour
 {
     [SerializeField] Camera decorationCamera;
     [SerializeField] List<DecorationComponentInfo> decorations;
+
+    public void StartCamera(bool start)
+    {
+        decorationCamera.gameObject.SetActive(start);
+    }
 }
 
 [System.Serializable]
