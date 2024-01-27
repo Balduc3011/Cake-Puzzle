@@ -21,7 +21,7 @@ public class UsingCake : MonoBehaviour
         transform.DOScale(0, 0.25f).SetEase(Ease.InBack).OnComplete(() =>
         {
             gameObject.SetActive(false);
-            ProfileManager.Instance.playerData.cakeSave.RemoveUsingCake(cakeData.id);
+            ProfileManager.Instance.playerData.cakeSaveData.RemoveUsingCake(cakeData.id);
             panelBakery.RemoveUsingCake(this);
             panelBakery.ReloadPanel();
         });

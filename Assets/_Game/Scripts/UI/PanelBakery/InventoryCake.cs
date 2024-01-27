@@ -30,7 +30,7 @@ public class InventoryCake : MonoBehaviour
             {
                 offIconImg.transform.DOScale(1, 0.05f);
             });
-        ProfileManager.Instance.playerData.cakeSave.UseCake(cakeData.id);
+        ProfileManager.Instance.playerData.cakeSaveData.UseCake(cakeData.id);
         UIManager.instance.GetPanel(UIPanelType.PanelBakery).GetComponent<PanelBakery>().ReloadPanel();
     }
 
@@ -44,12 +44,12 @@ public class InventoryCake : MonoBehaviour
 
     public void InitUsing()
     {
-        if(ProfileManager.Instance.playerData.cakeSave.IsOwnedCake(cakeData.id))
+        if(ProfileManager.Instance.playerData.cakeSaveData.IsOwnedCake(cakeData.id))
         {
             lockingMarkObj.SetActive(false);
             offIconImg.gameObject.SetActive(false);
             onIconImg.gameObject.SetActive(true);
-            usingMarkObj.SetActive(ProfileManager.Instance.playerData.cakeSave.IsUsingCake(cakeData.id));
+            usingMarkObj.SetActive(ProfileManager.Instance.playerData.cakeSaveData.IsUsingCake(cakeData.id));
         }
         else
         {

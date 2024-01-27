@@ -22,6 +22,7 @@ public class Cake : MonoBehaviour
     [SerializeField] Vector3 vectorOffsetExp;
 
     public void InitData() {
+        transform.DOScale(1f, .5f).From(1.2f).SetEase(Ease.InOutBack);
         totalPieces = GameManager.Instance.cakeManager.GetPiecesTotal() + 1;
         SetupPiecesCakeID();
         pieceIndex = 0;
@@ -60,21 +61,21 @@ public class Cake : MonoBehaviour
 
     List<int> cakeID = new List<int>();
     void SetUpCakeID() {
-        cakeID = ProfileManager.Instance.playerData.cakeSaveData.cakeID;
+        cakeID = ProfileManager.Instance.playerData.cakeSaveData.cakeIDs;
         for (int i = 0; i < pieceCakeID.Count; i++)
         {
-            int randomIndexX = GetRandomCakeID();
-            pieceCakeID[i] = cakeID[randomIndexX];
+            int randomID = GetRandomCakeID();
+            pieceCakeID[i] = randomID;
         }
     }
 
     int GetRandomCakeID() {
         int randomIndexX = Random.Range(0, cakeID.Count);
-        while (pieceCakeID.Contains(randomIndexX))
+        while (pieceCakeID.Contains(cakeID[randomIndexX]))
         {
             randomIndexX = Random.Range(0, cakeID.Count);
         }
-        return randomIndexX;
+        return cakeID[randomIndexX];
     }
 
     int pieceIndex;
@@ -133,9 +134,9 @@ public class Cake : MonoBehaviour
 
     RaycastHit hitInfor;
     [SerializeField] LayerMask mask;
-
+    [SerializeField] Vector3 vectorCheckOffset;
     public void CheckOnMouse() {
-        if (Physics.SphereCast(transform.position, radiusCheck, -transform.up * .1f, out hitInfor))
+        if (Physics.SphereCast(transform.position, radiusCheck, -transform.up * .1f+ vectorCheckOffset, out hitInfor))
         {
             if (hitInfor.collider.gameObject.layer == 6)
             {
@@ -145,13 +146,20 @@ public class Cake : MonoBehaviour
                 if (plate.currentCake != null)
                 {
                     currentPlate = null;
+                    DeActiveCurrentPlate();
                     return;
                 }
                 currentPlate = plate;
                 plate.Active();
             }
+            else DeActiveCurrentPlate();
         }
-        else if (currentPlate != null) {
+        else DeActiveCurrentPlate();
+    }
+
+    void DeActiveCurrentPlate() {
+        if (currentPlate != null)
+        {
             currentPlate.Deactive();
             currentPlate = null;
         }

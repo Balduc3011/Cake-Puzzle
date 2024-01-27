@@ -16,5 +16,6 @@ public class Piece : MonoBehaviour
         trs.parent = parent;
         //trs.eulerAngles = new Vector3(90, 0, 0);
         trs.localPosition = objectOffset;
+        trs.localScale = Vector3.one;
     }
 }

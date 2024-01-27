@@ -23,7 +23,7 @@ public class PanelBakery : UIPanel
 
     void InitCakes()
     {
-        List<int> usingCakeIndex = ProfileManager.Instance.playerData.cakeSave.usingCake;
+        List<int> usingCakeIndex = ProfileManager.Instance.playerData.cakeSaveData.cakeIDUsing;
         for (int i = 0; i < usingCakeIndex.Count; i++)
         {
             UsingCake cake = GetUsingCake();
@@ -52,7 +52,7 @@ public class PanelBakery : UIPanel
         {
             inventoryCakeList[i].InitUsing();
         }
-        List<int> usingCakeIndex = ProfileManager.Instance.playerData.cakeSave.usingCake;
+        List<int> usingCakeIndex = ProfileManager.Instance.playerData.cakeSaveData.cakeIDUsing;
         for (int i = 0; i < usingCakeIndex.Count; i++)
         {
             if(i < usingCakeList.Count)

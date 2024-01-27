@@ -9,7 +9,6 @@ public class PlayerData
     public CakeSaveData cakeSaveData;
     public PlayerResourseSave playerResourseSave;
     public DecorationSave decorationSave;
-    public CakeSave cakeSave;
 
     public void LoadData()
     {
@@ -17,7 +16,6 @@ public class PlayerData
         saveBase.LoadData();
         playerResourseSave.LoadData();
         decorationSave.LoadData();
-        cakeSave.LoadData();
     }
 
     public void SaveData()

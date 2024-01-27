@@ -11,14 +11,13 @@ GameObject:
   - component: {fileID: 1783503989}
   - component: {fileID: 1783503992}
   - component: {fileID: 1783503991}
-  - component: {fileID: 1783503990}
   m_Layer: 0
   m_Name: Connector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1783503989
 Transform:
   m_ObjectHideFlags: 0
@@ -27,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1783503988}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.5607}
+  m_LocalPosition: {x: 0, y: -0.100000024, z: 0.5607}
   m_LocalScale: {x: 0.8, y: 0.02, z: 1.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -84,19 +83,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &1783503990
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1783503988}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2017498969
 GameObject:
   m_ObjectHideFlags: 0
@@ -108,14 +94,13 @@ GameObject:
   - component: {fileID: 2017498970}
   - component: {fileID: 2017498973}
   - component: {fileID: 2017498972}
-  - component: {fileID: 2017498971}
   m_Layer: 0
   m_Name: Connector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2017498970
 Transform:
   m_ObjectHideFlags: 0
@@ -124,7 +109,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2017498969}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.6, y: 0, z: 0}
+  m_LocalPosition: {x: 0.6, y: -0.100000024, z: 0}
   m_LocalScale: {x: 1.2, y: 0.02, z: 0.8}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -181,19 +166,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &2017498971
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2017498969}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1524842705077448874
 GameObject:
   m_ObjectHideFlags: 0
@@ -247,6 +219,10 @@ MonoBehaviour:
   - {fileID: 4471258894822420267}
   - {fileID: 4471258894684438785}
   - {fileID: 4471258894402212643}
+  objConnects:
+  - {fileID: 1783503988}
+  - {fileID: 2017498969}
+  cakePosition: 0
 --- !u!1001 &1524842704374398143
 PrefabInstance:
   m_ObjectHideFlags: 0

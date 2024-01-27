@@ -298,6 +298,25 @@ public class Table : MonoBehaviour
         return false;
 
     }
+
+    int countTotalCakeCurrent = 0;
+    int totalCakeReturn;
+    public int GetCountID() {
+        countTotalCakeCurrent = 0;
+        totalCakeReturn = ProfileManager.Instance.playerData.cakeSaveData.cakeIDs.Count;
+        for (int i = 0; i < plates.Count; i++)
+        {
+            if (plates[i].currentCake!=null)
+            {
+                countTotalCakeCurrent++;
+            }
+        }
+        switch (countTotalCakeCurrent)
+        {
+            default:
+                return 3;
+        }
+    }
 }
 
 [System.Serializable]
