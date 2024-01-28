@@ -102,6 +102,9 @@ public class UIManager : MonoBehaviour {
                 case UIPanelType.PanelCakeReward:
                     panel = Instantiate(Resources.Load("UI/PanelCakeReward") as GameObject, mainCanvas);
                     break;
+                case UIPanelType.PanelLevelComplete:
+                    panel = Instantiate(Resources.Load("UI/PanelLevelComplete") as GameObject, mainCanvas);
+                    break;
             }
             if (panel) panel.SetActive(true);
             return panel;
@@ -283,6 +286,18 @@ public class UIManager : MonoBehaviour {
     {
         isHasPopupOnScene = false;
         GameObject go = GetPanel(UIPanelType.PanelCakeReward);
+        go.SetActive(false);
+    }
+    public void ShowPanelLevelComplete()
+    {
+        isHasPopupOnScene = true;
+        GameObject go = GetPanel(UIPanelType.PanelLevelComplete);
+        go.SetActive(true);
+    }
+    public void ClosePanelLevelComplete()
+    {
+        isHasPopupOnScene = false;
+        GameObject go = GetPanel(UIPanelType.PanelLevelComplete);
         go.SetActive(false);
     }
 }
