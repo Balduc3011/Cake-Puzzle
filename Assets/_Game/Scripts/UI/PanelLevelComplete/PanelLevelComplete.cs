@@ -7,9 +7,10 @@ using UnityEngine.UI;
 
 public class PanelLevelComplete : UIPanel
 {
-    [SerializeField] Button loseGameContinueBtn;
-    [SerializeField] Button loseGameCloseBtn;
+    [SerializeField] Button btnReviveCoin;
+    [SerializeField] Button btnReviveAds;
     [SerializeField] Button winGameCloseBtn;
+    [SerializeField] Button btnExit;
     [SerializeField] Transform panelWrapTrs;
     [SerializeField] CanvasGroup bgCanvanGroup;
     public override void Awake()
@@ -19,19 +20,21 @@ public class PanelLevelComplete : UIPanel
     }
     void Start()
     {
-        loseGameCloseBtn.onClick.AddListener(OnLoseClose);
-        loseGameContinueBtn.onClick.AddListener(OnContinueAdsClick);
+        btnReviveCoin.onClick.AddListener(ReviveCoin);
+        btnReviveAds.onClick.AddListener(ReviveADS);
+        btnExit.onClick.AddListener(OnClose);
     }
 
     private void OnEnable()
     {
         panelWrapTrs.DOScale(1, 0.35f).From(0);
         bgCanvanGroup.DOFade(1, 0.35f).From(0);
+        btnReviveCoin.interactable = ProfileManager.Instance.playerData.playerResourseSave.IsHasEnoughMoney(750);
     }
 
     void OnClose()
     {
-        panelWrapTrs.DOScale(0, 0.35f).From(1);
+        panelWrapTrs.DOScale(0, 0.35f).From(1).SetEase(Ease.InOutBack);
         bgCanvanGroup.DOFade(0, 0.35f).From(1).OnComplete(ClosePanel);
     }
 
@@ -40,13 +43,16 @@ public class PanelLevelComplete : UIPanel
         UIManager.instance.ClosePanelLevelComplete();
     }
 
-    void OnContinueAdsClick()
+    void ReviveADS()
     {
         OnClose();
     }
 
-    void OnLoseClose()
+    void ReviveCoin()
     {
+        ProfileManager.Instance.playerData.playerResourseSave.ConsumeMoney(750);
+        UIManager.instance.OpenBlockAll();
+        GameManager.Instance.cakeManager.TrashIn(GameManager.Instance.cakeManager.ClearCake);
         OnClose();
     }
 

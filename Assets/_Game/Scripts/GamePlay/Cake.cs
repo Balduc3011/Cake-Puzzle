@@ -2,6 +2,7 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Cake : MonoBehaviour
 {
@@ -100,6 +101,8 @@ public class Cake : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (EventSystem.current.IsPointerOverGameObject() || EventSystem.current.IsPointerOverGameObject(0))
+            return;
         if (myGroupCake != null)
         {
             myGroupCake.OnFollowMouse();
@@ -333,7 +336,7 @@ public class Cake : MonoBehaviour
         expEffect.gameObject.SetActive(true);
 
         ProfileManager.Instance.playerData.playerResourseSave.AddExp(10);
-        ProfileManager.Instance.playerData.playerResourseSave.AddMoney(1);
+        ProfileManager.Instance.playerData.playerResourseSave.AddMoney(10);
         Destroy(gameObject);
         //DOVirtual.DelayedCall(.25f, () => { Destroy(gameObject); });
     }

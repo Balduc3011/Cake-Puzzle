@@ -112,6 +112,15 @@ public class UIManager : MonoBehaviour {
         return listPanel[type];
     }
 
+    public void OpenBlockAll() {
+        panelTotal.OpenObjBlockAll();
+    }
+
+    public void CloseBlockAll()
+    {
+        panelTotal.CloseObjBlockAll();
+    }
+
     public void ShowPanelBase()
     {
         GameObject go = GetPanel(UIPanelType.PanelBase);

@@ -317,6 +317,29 @@ public class Table : MonoBehaviour
                 return 3;
         }
     }
+
+    int indexCakeClear = 0;
+    public void ClearAllCake()
+    {
+        indexCakeClear = 0;
+        StartCoroutine(IE_WaitClearCake());
+    }
+
+    IEnumerator IE_WaitClearCake() {
+       
+        while (indexCakeClear < plates.Count)
+        {
+            if (plates[indexCakeClear].currentCake != null)
+            {
+                plates[indexCakeClear].ClearCakeFromItem();
+                yield return new WaitForSeconds(.25f);
+            }
+            indexCakeClear++;
+        }
+        
+        GameManager.Instance.cakeManager.TrashOut(UIManager.instance.CloseBlockAll);
+    }
+
 }
 
 [System.Serializable]
@@ -324,7 +347,7 @@ public class Way {
     public Plate plateCurrent;
     public Plate plateGo;
     //bool moveDone;
-
+    Vector3 vectorOffSet = new Vector3(0,1,0);
     Piece pieces;
     public void Move(int cakeID,AnimationCurve curveRotate, AnimationCurve curveMove, UnityAction<int> actionDone = null)
     {
@@ -352,7 +375,7 @@ public class Way {
             pieces.transform.DOMoveY(pieces.transform.position.y + 1f, .25f).OnComplete(() => {
                 pieces.transform.DOMove(plateGo.pointStay.position, .25f).OnComplete(() => {
                     Transform trs = GameManager.Instance.objectPooling.GetPieceDoneEffect();
-                    trs.position = pieces.transform.position;
+                    trs.position = pieces.transform.position + vectorOffSet;
                     trs.gameObject.SetActive(true);
                     
                 });

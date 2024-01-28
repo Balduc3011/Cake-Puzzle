@@ -24,6 +24,7 @@ public class PanelTotal : UIPanel
     [SerializeField] GameObject mainMenuContent;
     [SerializeField] GameObject navBarContent;
     [SerializeField] GameObject backGround;
+    [SerializeField] GameObject objBlockAll;
     [SerializeField] TextMeshProUGUI txtCurrentLevel;
     [SerializeField] TextMeshProUGUI txtCurrentExp;
     [SerializeField] Image imgNextCake;
@@ -152,4 +153,7 @@ public class PanelTotal : UIPanel
     public Transform GetCoinTrs() {
         return trsCoin;
     }
+
+    public void OpenObjBlockAll() { objBlockAll.SetActive(true); }
+    public void CloseObjBlockAll() { objBlockAll.SetActive(false); }
 }

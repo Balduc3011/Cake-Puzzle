@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,6 +6,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UIElements;
 
 public class CakeManager : MonoBehaviour
 {
@@ -22,6 +24,9 @@ public class CakeManager : MonoBehaviour
 
     public CakeShowComponent cakeShowComponent;
     public int justUnlockedCake;
+    public Transform trashBin;
+    [SerializeField] Transform pointStart;
+    [SerializeField] Transform pointEnd;
 
     private void Start()
     {
@@ -66,13 +71,22 @@ public class CakeManager : MonoBehaviour
 
     GroupCake groupCake;
     public List<float> countCake = new List<float>();
+    int indexGroupCake;
     public void InitGroupCake() {
         SetCountPieces();
-        for (int i = 0; i < 3; i++) {
+        indexGroupCake = 0;
+        StartCoroutine(IE_WaitToInitGroupCake());
+    }
+
+    IEnumerator IE_WaitToInitGroupCake() {
+        while (indexGroupCake < 3)
+        {
             groupCake = GameManager.Instance.objectPooling.GetGroupCake();
             cakesWait.Add(groupCake);
-            groupCake.transform.position = pointSpawnGroupCake[i].position;
-            groupCake.InitData((int)countCake[i], pointSpawnGroupCake[i], i);
+            groupCake.transform.position = pointSpawnGroupCake[indexGroupCake].position;
+            groupCake.InitData((int)countCake[indexGroupCake], pointSpawnGroupCake[indexGroupCake], indexGroupCake);
+            yield return new WaitForSeconds(.25f);
+            indexGroupCake++;
         }
     }
 
@@ -80,6 +94,15 @@ public class CakeManager : MonoBehaviour
     {
         cakesWait.Remove(gCake);
         if (cakesWait.Count <= 0) { InitGroupCake(); }
+    }
+
+    public void RemoveAllCakeWait() {
+        for (int i = cakesWait.Count - 1; i >= 0; i--)
+        {
+            Destroy(cakesWait[i].gameObject);
+            cakesWait.RemoveAt(i);
+        }
+        InitGroupCake();
     }
 
     bool haveMoreCake;
@@ -173,7 +196,11 @@ public class CakeManager : MonoBehaviour
                     countFaild++;
             }
         }
-        if (countFaild == cakesWait.Count) Debug.Log("Loose game");
+        if (countFaild == cakesWait.Count)
+        {
+            Debug.Log("Loose game");
+            UIManager.instance.ShowPanelLevelComplete();
+        }
         //Debug.Log( countFaild == cakesWait.Count);
     }
 
@@ -186,5 +213,22 @@ public class CakeManager : MonoBehaviour
     {
         int nextUnlockCake = ProfileManager.Instance.dataConfig.levelDataConfig.GetLevel(ProfileManager.Instance.playerData.playerResourseSave.currentLevel).cakeUnlockID;
         return ProfileManager.Instance.dataConfig.cakeDataConfig.GetCakePieceMesh(nextUnlockCake);
+    }
+
+    public void ClearCake()
+    {
+        table.ClearAllCake();
+        RemoveAllCakeWait();
+    }
+
+    public void TrashIn(UnityAction actioncallBack) {
+        trashBin.DOMove(pointEnd.position, .25f).SetEase(Ease.InQuad).OnComplete(() => {
+            actioncallBack();
+        });
+    }
+    public void TrashOut(UnityAction actioncallBack) {
+        trashBin.DOMove(pointStart.position, .25f).SetEase(Ease.InQuad).OnComplete(() => {
+            actioncallBack();
+        });
     }
 }

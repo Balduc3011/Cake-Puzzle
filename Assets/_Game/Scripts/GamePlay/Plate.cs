@@ -108,6 +108,21 @@ public class Plate : MonoBehaviour
         currentCake = null;
     }
 
+    Transform pointTrashBin;
+    Vector3 vectorRotate = new Vector3(0, -35, -25);
+    public void ClearCakeFromItem() {
+        pointTrashBin = GameManager.Instance.cakeManager.trashBin;
+        currentCake.transform.DORotate(vectorRotate, .25f);
+        currentCake.transform.DOJump(pointTrashBin.position, 3, 1, .25f).SetEase(Ease.OutCubic).OnComplete(() => {
+            if (currentCake != null)
+            {
+                Destroy(currentCake.gameObject);
+                currentCake = null;
+            }
+        });
+        
+    }
+
     public bool CheckCakeIsDone(int cakeID) {
         if (currentCake == null) return true;
         return currentCake.CheckCakeIsDone(cakeID);

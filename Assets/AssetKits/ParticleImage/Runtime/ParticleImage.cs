@@ -926,15 +926,15 @@ namespace AssetKits.ParticleImage
         /// <summary>
         /// Called when the first piece of a particle finishes.
         /// </summary>
-        public UnityEvent onFirstParticleFinish {get => _onFirstParticleFinish; set => _onFirstParticleFinish = value;}
+        public UnityEvent onFirstParticleFinish => _onFirstParticleFinish;
         
         [SerializeField]
         private UnityEvent _onParticleFinish = new UnityEvent();
-            
+        
         /// <summary>
         /// Called when any piece of a particle finishes.
         /// </summary>
-        public UnityEvent onParticleFinish {get => _onParticleFinish; set => _onParticleFinish = value;}
+        public UnityEvent onParticleFinish => _onParticleFinish;
         
         [SerializeField]
         private UnityEvent _onLastParticleFinish = new UnityEvent();
