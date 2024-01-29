@@ -13,9 +13,9 @@ public class PanelSpin : UIPanel
     [SerializeField] GameObject adsSpinObj;
     [SerializeField] RectTransform dynamicSpinWheel;
     [SerializeField] List<SpinSlide> slides;
-    bool spin;
-    bool stopClicked;
-    float stopCounter;
+    [SerializeField] bool spin;
+    [SerializeField] bool stopClicked;
+    [SerializeField] float stopCounter;
     float stopCooldow = 2.5f;
 
     [SerializeField] SpinState spinState;
@@ -42,7 +42,7 @@ public class PanelSpin : UIPanel
         stopBtn.gameObject.SetActive(false);
         spinSpeed = defaultSpinSpeed;
         spinState = SpinState.Default;
-        spin = true;
+        //spin = true;
         CheckFreeSpin();
         Transform.SetAsLastSibling();
         stopClicked = false;
