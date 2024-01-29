@@ -103,7 +103,7 @@ public class GroupCake : MonoBehaviour
         }
         else {
             GameManager.Instance.cakeManager.SetOnMove(false);
-            GameManager.Instance.cakeManager.CheckLoseGame();
+            DOVirtual.DelayedCall(.5f, GameManager.Instance.cakeManager.CheckLoseGame);
         }
     }
 

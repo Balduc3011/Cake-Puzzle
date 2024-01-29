@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +9,7 @@ public class CakeSaveData : SaveBase
 {
     public List<int> cakeIDs = new List<int>();
     public List<int> cakeIDUsing = new List<int>();
-
+    public List<CakeOnPlate> cakeOnPlates = new List<CakeOnPlate>();
     public override void LoadData()
     {
         SetStringSave("CakeSaveData");
@@ -18,6 +19,7 @@ public class CakeSaveData : SaveBase
             CakeSaveData data = JsonUtility.FromJson<CakeSaveData>(jsonData);
             cakeIDs = data.cakeIDs;
             cakeIDUsing = data.cakeIDUsing;
+            cakeOnPlates = data.cakeOnPlates;
         }
         else {
             cakeIDs.Add(0);
@@ -71,5 +73,54 @@ public class CakeSaveData : SaveBase
             IsMarkChangeData();
             SaveData();
         }
+    }
+
+    public void SaveCake(PlateIndex plate, Cake cake)
+    {
+        foreach (CakeOnPlate c in cakeOnPlates) {
+            if (c.plateIndex == plate)
+            {
+                c.SetCakeID(cake.pieces);
+                IsMarkChangeData();
+                SaveData();
+                return;
+            }
+        }
+        CakeOnPlate newCakeOnPlate = new CakeOnPlate();
+        newCakeOnPlate.plateIndex = plate;
+        newCakeOnPlate.SetCakeID(cake.pieces);
+        cakeOnPlates.Add(newCakeOnPlate);
+        IsMarkChangeData();
+        SaveData();
+    }
+
+    public void RemoveCake(PlateIndex plate) {
+        foreach (CakeOnPlate c in cakeOnPlates)
+        {
+            if (c.plateIndex == plate)
+            {
+                cakeOnPlates.Remove(c);
+                IsMarkChangeData();
+                SaveData();
+                return;
+            }
+        }
+    }
+
+    public void ClearAllCake()
+    {
+        cakeOnPlates.Clear();
+        IsMarkChangeData();
+        SaveData();
+    }
+}
+
+[System.Serializable]
+public class CakeOnPlate {
+    public PlateIndex plateIndex;
+    public List<int> cakeIDs = new List<int>();
+    public void SetCakeID(List<Piece> pieces) {
+        cakeIDs.Clear();
+        for (int i = 0; i < pieces.Count; i++) { cakeIDs.Add(pieces[i].cakeID); }
     }
 }

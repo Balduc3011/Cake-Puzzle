@@ -33,17 +33,26 @@ public class Plate : MonoBehaviour
     public void CakeDone() { currentCake = null; }
 
     public void Active() {
-        //anim.SetBool("Active", true);
+        anim.SetBool("Active", true);
         trsMove.DOMove(pointMoveUp, .15f);
+    }
+
+    public void ActiveByItem() {
+        anim.SetBool("Active", true);
     }
 
     public void Deactive()
     {
-        //anim.SetBool("Active", false);
+        anim.SetBool("Active", false);
         trsMove.DOMove(pointMoveDown, .15f);
     }
 
-    public int CalculatePoint(int cakeID)
+    public void DeActiveByItem()
+    { 
+        anim.SetBool("Active", false);
+    }
+
+        public int CalculatePoint(int cakeID)
     {
         if (currentCake == null) return 0;
         int point = 0;
@@ -99,13 +108,19 @@ public class Plate : MonoBehaviour
             currentCake.cakeDone = true;
         }
         else { currentCake.cakeDone = false;}
+        ProfileManager.Instance.playerData.cakeSaveData.SaveCake(plateIndex, currentCake);
     }
 
     public void ClearCake() {
         currentCake.transform.DOScale(Vector3.zero, .5f).OnComplete(() => {
-            //Destroy(currentCake.gameObject);
+            if (currentCake != null)
+            {
+                Destroy(currentCake.gameObject);
+                ProfileManager.Instance.playerData.cakeSaveData.RemoveCake(plateIndex);
+            }
+            currentCake = null;
         });
-        currentCake = null;
+      
     }
 
     Transform pointTrashBin;
@@ -133,6 +148,7 @@ public class Plate : MonoBehaviour
         if (currentCake != null)
         {
             currentCake.DoneCakeMode();
+            ProfileManager.Instance.playerData.cakeSaveData.RemoveCake(plateIndex);
             //Destroy(currentCake.gameObject);
             currentCake = null;
         }

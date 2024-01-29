@@ -250,11 +250,12 @@ public class Table : MonoBehaviour
         {
             if (mapPlate[i].currentCake != null && mapPlate[i] != bestPlate)
             {
-                mapPlate[i].currentCake.RotateOtherPieceRight(0);
+               
                 if (mapPlate[i].currentCake.cakeDone)
                 {
                     mapPlate[i].ClearCake();
                 }
+                else mapPlate[i].currentCake.RotateOtherPieceRight(0);
             }
         }
     }

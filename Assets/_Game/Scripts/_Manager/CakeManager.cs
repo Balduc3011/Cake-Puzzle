@@ -199,6 +199,7 @@ public class CakeManager : MonoBehaviour
         if (countFaild == cakesWait.Count)
         {
             Debug.Log("Loose game");
+            ProfileManager.Instance.playerData.cakeSaveData.ClearAllCake();
             UIManager.instance.ShowPanelLevelComplete();
         }
         //Debug.Log( countFaild == cakesWait.Count);

@@ -34,6 +34,7 @@ public class UIManager : MonoBehaviour {
         //StartCoroutine(WaitToSpawnUIPool());
         //ingameDebugConsole.SetActive(ProfileManager.Instance.IsShowDebug());
         ShowPanelTotal();
+        ShowPanelLoading();
     }
 
     public bool isDoneFirstLoadPanel = false;
@@ -104,6 +105,9 @@ public class UIManager : MonoBehaviour {
                     break;
                 case UIPanelType.PanelLevelComplete:
                     panel = Instantiate(Resources.Load("UI/PanelLevelComplete") as GameObject, mainCanvas);
+                    break;
+                case UIPanelType.PanelLoading:
+                    panel = Instantiate(Resources.Load("UI/PanelLoading") as GameObject, mainCanvas);
                     break;
             }
             if (panel) panel.SetActive(true);
@@ -307,6 +311,17 @@ public class UIManager : MonoBehaviour {
     {
         isHasPopupOnScene = false;
         GameObject go = GetPanel(UIPanelType.PanelLevelComplete);
+        go.SetActive(false);
+    }
+
+    public void ShowPanelLoading() {
+        isHasPopupOnScene = true;
+        GameObject go = GetPanel(UIPanelType.PanelLoading);
+        go.SetActive(true);
+    }
+    public void ClosePanelLoading() {
+        isHasPopupOnScene = false;
+        GameObject go = GetPanel(UIPanelType.PanelLoading);
         go.SetActive(false);
     }
 }

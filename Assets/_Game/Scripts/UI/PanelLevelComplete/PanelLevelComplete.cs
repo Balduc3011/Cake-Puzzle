@@ -22,7 +22,7 @@ public class PanelLevelComplete : UIPanel
     {
         btnReviveCoin.onClick.AddListener(ReviveCoin);
         btnReviveAds.onClick.AddListener(ReviveADS);
-        btnExit.onClick.AddListener(OnClose);
+        btnExit.onClick.AddListener(ExitPanel);
     }
 
     private void OnEnable()
@@ -36,6 +36,11 @@ public class PanelLevelComplete : UIPanel
     {
         panelWrapTrs.DOScale(0, 0.35f).From(1).SetEase(Ease.InOutBack);
         bgCanvanGroup.DOFade(0, 0.35f).From(1).OnComplete(ClosePanel);
+    }
+
+    void ExitPanel() {
+        OnClose();
+        UIManager.instance.ShowPanelLoading();
     }
 
     void ClosePanel()
