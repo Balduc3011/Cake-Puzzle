@@ -42,7 +42,7 @@ public class Table : MonoBehaviour
         ClearDoneSetWayPoint();
         mapPlate.Clear();
         currentCakeID = cakeID;
-        stepIndex = -1; 
+        stepIndex = -1;
     }
 
     public void AddFirstPlate(Plate firstPlate) { mapPlate.Add(firstPlate); }
@@ -100,7 +100,7 @@ public class Table : MonoBehaviour
     public void StartMove(int cakeID) {
         if (CheckWayDone(cakeID))
         {
-            
+
             if (bestPlate.CheckCakeIsDone(cakeID))
             {
                 bestPlate.DoneCake();
@@ -113,7 +113,7 @@ public class Table : MonoBehaviour
             //GameManager.Instance.cakeManager.CheckIDOfCake();
 
 
-            return; 
+            return;
         }
         stepIndex = -1;
         Move(cakeID);
@@ -137,7 +137,7 @@ public class Table : MonoBehaviour
             ClearDoneSetWayPoint();
             FindPlateBest(currentCakeID);
             StartCreateWay();
-            if (ways.Count>0)
+            if (ways.Count > 0)
             {
                 StartMove(currentCakeID);
             }
@@ -174,7 +174,7 @@ public class Table : MonoBehaviour
 
     public void StartCreateWay()
     {
-       
+
         bestPlate.wayPoint.setDone = true;
         currentPieces = 0;
         ways.Clear();
@@ -182,7 +182,7 @@ public class Table : MonoBehaviour
     }
     int piecesSame;
     public void SetNextWayPoint(PlateIndex plateIndex) {
-       
+
         if ((plateIndex.indexX + 1) < plateArray.GetLength(0))
             CheckPlateCondition(plateArray[plateIndex.indexX, plateIndex.indexY], plateArray[plateIndex.indexX + 1, plateIndex.indexY]);
 
@@ -199,7 +199,7 @@ public class Table : MonoBehaviour
         {
             CreateWay(plateArray[plateIndex.indexX, plateIndex.indexY]);
         }
-        
+
     }
     public List<Way> ways = new List<Way>();
 
@@ -215,7 +215,7 @@ public class Table : MonoBehaviour
     }
 
     void CheckPlateCondition(Plate plateCurrent, Plate plateSetNext) {
-       
+
         if (currentPieces >= totalPieceMerge) return;
         if (mapPlate.Contains(plateSetNext))
         {
@@ -250,7 +250,7 @@ public class Table : MonoBehaviour
         {
             if (mapPlate[i].currentCake != null && mapPlate[i] != bestPlate)
             {
-               
+
                 if (mapPlate[i].currentCake.cakeDone)
                 {
                     mapPlate[i].ClearCake();
@@ -307,7 +307,7 @@ public class Table : MonoBehaviour
         totalCakeReturn = ProfileManager.Instance.playerData.cakeSaveData.cakeIDs.Count;
         for (int i = 0; i < plates.Count; i++)
         {
-            if (plates[i].currentCake!=null)
+            if (plates[i].currentCake != null)
             {
                 countTotalCakeCurrent++;
             }
@@ -327,7 +327,7 @@ public class Table : MonoBehaviour
     }
 
     IEnumerator IE_WaitClearCake() {
-       
+
         while (indexCakeClear < plates.Count)
         {
             if (plates[indexCakeClear].currentCake != null)
@@ -337,10 +337,24 @@ public class Table : MonoBehaviour
             }
             indexCakeClear++;
         }
-        
+
         GameManager.Instance.cakeManager.TrashOut(UIManager.instance.CloseBlockAll);
     }
 
+    public void ActivePlate(int indexX, int indexY) {
+        if (indexX >= 0 && indexX <= 5 && indexY >= 0 && indexY <= 3)
+        {
+            plateArray[indexX, indexY].ActiveByItem();
+        }
+        
+    }
+
+    public void DeActivePlate(int indexX, int indexY) {
+        if (indexX >= 0 && indexX <= 5 && indexY >= 0 && indexY <= 3)
+        {
+            plateArray[indexX, indexY].DeActiveByItem();
+        }
+    }
 }
 
 [System.Serializable]

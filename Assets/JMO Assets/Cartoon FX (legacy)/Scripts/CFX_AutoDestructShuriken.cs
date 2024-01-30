@@ -12,6 +12,7 @@ public class CFX_AutoDestructShuriken : MonoBehaviour
 {
 	// If true, deactivate the object instead of destroying it
 	public bool OnlyDeactivate;
+	[SerializeField] GameObject objParent;
 	
 	void OnEnable()
 	{
@@ -27,16 +28,21 @@ public class CFX_AutoDestructShuriken : MonoBehaviour
 			yield return new WaitForSeconds(0.5f);
 			if(!ps.IsAlive(true))
 			{
-				if(OnlyDeactivate)
+				if (OnlyDeactivate)
 				{
-					#if UNITY_3_5
+#if UNITY_3_5
 						this.gameObject.SetActiveRecursively(false);
-					#else
-						this.gameObject.SetActive(false);
-					#endif
+#else
+					this.gameObject.SetActive(false);
+#endif
 				}
 				else
-					GameObject.Destroy(this.gameObject);
+				{ 
+					if(objParent != null)
+						Destroy(objParent);
+					else
+						GameObject.Destroy(this.gameObject); 
+				}
 				break;
 			}
 		}

@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6259142211696413909}
   - component: {fileID: 6259142211696413910}
+  - component: {fileID: 6259142211723352007}
+  - component: {fileID: 6259142211723352006}
   m_Layer: 0
   m_Name: Bomb
   m_TagString: Untagged
@@ -55,6 +57,34 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!135 &6259142211723352007
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6259142211696413908}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6259142211723352006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6259142211696413908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6201ccdf70d1844aa1137fe9bfc5bdc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radiusCheck: 0.5
+  vectorCheckOffset: {x: 0, y: 0, z: 0}
+  myAnim: {fileID: 6259142211696413910}
 --- !u!1001 &6259142211288055921
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -114,6 +144,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114324878773532104, guid: 7e48ba6b1b968764490bbc70b66e3fe1, type: 3}
+      propertyPath: objParent
+      value: 
+      objectReference: {fileID: 6259142211696413908}
     - target: {fileID: 199028399385819452, guid: 7e48ba6b1b968764490bbc70b66e3fe1, type: 3}
       propertyPath: m_Materials.Array.size
       value: 1
