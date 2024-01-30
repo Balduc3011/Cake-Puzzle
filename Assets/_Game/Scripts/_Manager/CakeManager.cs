@@ -227,9 +227,16 @@ public class CakeManager : MonoBehaviour
             actioncallBack();
         });
     }
-    public void TrashOut(UnityAction actioncallBack) {
-        trashBin.DOMove(pointStart.position, .25f).SetEase(Ease.InQuad).OnComplete(() => {
+    public void TrashOut(UnityAction actioncallBack)
+    {
+        trashBin.DOMove(pointStart.position, .25f).SetEase(Ease.InQuad).OnComplete(() =>
+        {
             actioncallBack();
         });
+    }
+    public Mesh GetNextUnlockedCakeMesh()
+    {
+        int nextUnlockCake = ProfileManager.Instance.dataConfig.levelDataConfig.GetLevel(ProfileManager.Instance.playerData.playerResourseSave.currentLevel).cakeUnlockID;
+        return ProfileManager.Instance.dataConfig.cakeDataConfig.GetCakeMesh(nextUnlockCake);
     }
 }

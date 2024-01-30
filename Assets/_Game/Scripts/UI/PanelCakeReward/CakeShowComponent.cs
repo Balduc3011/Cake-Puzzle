@@ -43,11 +43,8 @@ public class CakeShowComponent : MonoBehaviour
 
     public void ShowNextToUnlockCake()
     {
-        Mesh cakeSlideMesh = GameManager.Instance.cakeManager.GetNextUnlockedCakePieceMesh();
-        for (int i = 0; i < cakeSlideMeshs.Count; i++)
-        {
-            cakeSlideMeshs[i].mesh = cakeSlideMesh;
-        }
+        Mesh cakeSlideMesh = GameManager.Instance.cakeManager.GetNextUnlockedCakeMesh();
+        cakeMesh.mesh = cakeSlideMesh;
     }
 
 }
