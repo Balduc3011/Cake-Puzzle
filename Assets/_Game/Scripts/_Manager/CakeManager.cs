@@ -28,11 +28,6 @@ public class CakeManager : MonoBehaviour
     [SerializeField] Transform pointStart;
     [SerializeField] Transform pointEnd;
 
-    private void Start()
-    {
-        InitGroupCake();
-    }
-
     private void Update()
     {
         if (currentGCake != null) {
@@ -199,7 +194,7 @@ public class CakeManager : MonoBehaviour
         if (countFaild == cakesWait.Count)
         {
             Debug.Log("Loose game");
-            ProfileManager.Instance.playerData.cakeSaveData.ClearAllCake();
+           
             UIManager.instance.ShowPanelLevelComplete();
         }
         //Debug.Log( countFaild == cakesWait.Count);
@@ -218,7 +213,7 @@ public class CakeManager : MonoBehaviour
 
     public void ClearCake()
     {
-        table.ClearAllCake();
+        table.ClearAllCakeByItem();
         RemoveAllCakeWait();
     }
 
@@ -238,5 +233,31 @@ public class CakeManager : MonoBehaviour
     {
         int nextUnlockCake = ProfileManager.Instance.dataConfig.levelDataConfig.GetLevel(ProfileManager.Instance.playerData.playerResourseSave.currentLevel).cakeUnlockID;
         return ProfileManager.Instance.dataConfig.cakeDataConfig.GetCakeMesh(nextUnlockCake);
+    }
+
+    public void ClearAllCake()
+    {
+        table.ClearAllCake();
+        for (int i = 0; i < cakesWait.Count; i++)
+        {
+            Destroy(cakesWait[i].gameObject);
+        }
+        cakesWait.Clear();
+        InitGroupCake();
+    }
+
+    public void PlayGame()
+    {
+        if (ProfileManager.Instance.playerData.cakeSaveData.IsHaveCakeSave())
+        {
+            LoadData();
+        }
+        else { 
+            InitGroupCake();
+        }
+    }
+
+    void LoadData() { 
+    
     }
 }

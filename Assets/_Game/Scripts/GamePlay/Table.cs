@@ -320,7 +320,7 @@ public class Table : MonoBehaviour
     }
 
     int indexCakeClear = 0;
-    public void ClearAllCake()
+    public void ClearAllCakeByItem()
     {
         indexCakeClear = 0;
         StartCoroutine(IE_WaitClearCake());
@@ -339,6 +339,16 @@ public class Table : MonoBehaviour
         }
 
         GameManager.Instance.cakeManager.TrashOut(UIManager.instance.CloseBlockAll);
+    }
+
+    public void ClearAllCake() {
+        for (int i = 0; i < plates.Count; i++)
+        {
+            if (plates[i].currentCake != null)
+            {
+                Destroy(plates[i].currentCake.gameObject);
+            }
+        }
     }
 
     public void ActivePlate(int indexX, int indexY) {

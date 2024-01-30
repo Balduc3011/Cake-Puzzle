@@ -10,6 +10,7 @@ public class CakeSaveData : SaveBase
     public List<int> cakeIDs = new List<int>();
     public List<int> cakeIDUsing = new List<int>();
     public List<CakeOnPlate> cakeOnPlates = new List<CakeOnPlate>();
+    public List<CakeOnWait> cakeOnWaits = new List<CakeOnWait>();
     public override void LoadData()
     {
         SetStringSave("CakeSaveData");
@@ -20,6 +21,7 @@ public class CakeSaveData : SaveBase
             cakeIDs = data.cakeIDs;
             cakeIDUsing = data.cakeIDUsing;
             cakeOnPlates = data.cakeOnPlates;
+            cakeOnWaits = data.cakeOnWaits;
         }
         else {
             cakeIDs.Add(0);
@@ -110,8 +112,30 @@ public class CakeSaveData : SaveBase
     public void ClearAllCake()
     {
         cakeOnPlates.Clear();
+        cakeOnWaits.Clear();
         IsMarkChangeData();
         SaveData();
+    }
+
+
+    public void AddCakeWait(GroupCake groupCake, int cakeIndex) {
+        if (cakeIndex >= cakeOnWaits.Count)
+        {
+            CakeOnWait newCakeOnWait = new CakeOnWait();
+            cakeOnWaits.Add(newCakeOnWait);
+        }
+        for (int i = 0; i < groupCake.cake.Count; i++)
+        {
+            cakeOnWaits[cakeIndex].SaveCake(i, groupCake.cake[i]);
+        }
+    }
+    public void RemoveCakeWait(int cakeIndex) {
+        cakeOnWaits[cakeIndex] = null;
+    }
+
+    public bool IsHaveCakeSave()
+    {
+        return cakeOnPlates.Count > 0;
     }
 }
 
@@ -120,6 +144,32 @@ public class CakeOnPlate {
     public PlateIndex plateIndex;
     public List<int> cakeIDs = new List<int>();
     public void SetCakeID(List<Piece> pieces) {
+        cakeIDs.Clear();
+        for (int i = 0; i < pieces.Count; i++) { cakeIDs.Add(pieces[i].cakeID); }
+    }
+}
+
+[System.Serializable]
+public class CakeOnWait {
+    public List<CakeSave> cakeSaves = new List<CakeSave>();
+    public void SaveCake(int cakeIndex, Cake cake) {
+        if (cakeIndex > cakeSaves.Count)
+        {
+            CakeSave cakeSave = new CakeSave();
+            cakeSave.SetCakeID(cake.pieces);
+            cakeSaves.Add(cakeSave);
+            return;
+        }
+
+        cakeSaves[cakeIndex].SetCakeID(cake.pieces);
+    }
+}
+
+[System.Serializable]
+public class CakeSave {
+    public List<int> cakeIDs = new List<int>();
+    public void SetCakeID(List<Piece> pieces)
+    {
         cakeIDs.Clear();
         for (int i = 0; i < pieces.Count; i++) { cakeIDs.Add(pieces[i].cakeID); }
     }

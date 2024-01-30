@@ -27,7 +27,7 @@ public class PanelTotal : UIPanel
     [SerializeField] GameObject objBlockAll;
     [SerializeField] TextMeshProUGUI txtCurrentLevel;
     [SerializeField] TextMeshProUGUI txtCurrentExp;
-    [SerializeField] Image imgNextCake;
+    //[SerializeField] Image imgNextCake;
     [SerializeField] Slider sliderLevelExp;
     [SerializeField] Transform trsCoin;
     public override void Awake()
@@ -76,15 +76,15 @@ public class PanelTotal : UIPanel
     {
         
         txtCurrentLevel.text = ProfileManager.Instance.playerData.playerResourseSave.currentLevel.ToString();
-        levelData = ProfileManager.Instance.dataConfig.levelDataConfig.GetLevel(ProfileManager.Instance.playerData.playerResourseSave.currentLevel);
-        if (levelData.cakeUnlockID != -1)
-        {
-            imgNextCake.gameObject.SetActive(true);
-            imgNextCake.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetCakeSprite(levelData.cakeUnlockID);
-        }
-        else { 
-            imgNextCake.gameObject.SetActive(false);
-        }
+        //levelData = ProfileManager.Instance.dataConfig.levelDataConfig.GetLevel(ProfileManager.Instance.playerData.playerResourseSave.currentLevel);
+        //if (levelData.cakeUnlockID != -1)
+        //{
+        //    imgNextCake.gameObject.SetActive(true);
+        //    imgNextCake.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetCakeSprite(levelData.cakeUnlockID);
+        //}
+        //else { 
+        //    imgNextCake.gameObject.SetActive(false);
+        //}
     }
 
     void Start()
@@ -109,6 +109,7 @@ public class PanelTotal : UIPanel
 
     void PlayGame()
     {
+        GameManager.Instance.cameraManager.FirstCamera();
         GameManager.Instance.PlayGame();
         navBarContent.SetActive(false);
         mainMenuContent.SetActive(false);
