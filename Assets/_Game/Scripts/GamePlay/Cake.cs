@@ -33,6 +33,32 @@ public class Cake : MonoBehaviour
             InitPiecesSame(pieceCakeIDCount[i], pieceCakeID[i]);
         }
     }
+
+    public void InitData(CakeSave cakeSaveData) {
+        transform.DOScale(1f, .5f).From(1.2f).SetEase(Ease.InOutBack);
+        pieceCakeIDCount = cakeSaveData.pieceCakeIDCount;
+        pieceCakeID = cakeSaveData.pieceCakeID;
+        pieceIndex = 0;
+        for (int i = 0; i < pieceCakeIDCount.Count; i++)
+        {
+            InitPiecesSame(pieceCakeIDCount[i], pieceCakeID[i]);
+        }
+    }
+
+    public void InitData(List<int> cakeIDs) {
+        transform.DOScale(1f, .5f).From(1.2f).SetEase(Ease.InOutBack);
+        
+        pieceIndex = 0;
+        for (int i = 0; i < cakeIDs.Count; i++)
+        {
+            if (!pieceCakeID.Contains(cakeIDs[i])) pieceCakeID.Add(cakeIDs[i]);
+            Piece newPiece = Instantiate(piecePref, transform);
+            pieces.Add(newPiece);
+            InitPiece(i, cakeIDs[i]);
+        }
+    }
+
+
     int indexRandom;
     void SetupPiecesCakeID() {
         pieceCakeIDCount.Clear();
@@ -124,7 +150,7 @@ public class Cake : MonoBehaviour
     public void DropDone() {
         transform.position = currentPlate.pointStay.position;
         transform.parent = currentPlate.pointStay;
-        ProfileManager.Instance.playerData.cakeSaveData.SaveCake(currentPlate.GetPlateIndex(), this);
+        //ProfileManager.Instance.playerData.cakeSaveData.SaveCake(currentPlate.GetPlateIndex(), this);
     }
 
     public void GroupDropFail() {

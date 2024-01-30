@@ -80,17 +80,27 @@ public class CakeSaveData : SaveBase
     public void SaveCake(PlateIndex plate, Cake cake)
     {
         foreach (CakeOnPlate c in cakeOnPlates) {
-            if (c.plateIndex == plate)
+            if (c.plateIndex.indexX == plate.indexX && c.plateIndex.indexY == plate.indexY)
             {
-                c.SetCakeID(cake.pieces);
-                IsMarkChangeData();
-                SaveData();
+                if (cake == null || cake.pieces.Count == 0 || cake.pieces.Count == 6)
+                {
+                    RemoveCake(plate);
+                }
+                else { 
+                    c.SetCakeID(cake);
+                    IsMarkChangeData();
+                    SaveData();
+                }
                 return;
             }
         }
+        if (cake == null || cake.pieces.Count == 0 || cake.pieces.Count == 6)
+        {
+            return;
+        }
         CakeOnPlate newCakeOnPlate = new CakeOnPlate();
         newCakeOnPlate.plateIndex = plate;
-        newCakeOnPlate.SetCakeID(cake.pieces);
+        newCakeOnPlate.SetCakeID(cake);
         cakeOnPlates.Add(newCakeOnPlate);
         IsMarkChangeData();
         SaveData();
@@ -99,7 +109,7 @@ public class CakeSaveData : SaveBase
     public void RemoveCake(PlateIndex plate) {
         foreach (CakeOnPlate c in cakeOnPlates)
         {
-            if (c.plateIndex == plate)
+            if (c.plateIndex.indexX == plate.indexX && c.plateIndex.indexY == plate.indexY)
             {
                 cakeOnPlates.Remove(c);
                 IsMarkChangeData();
@@ -126,14 +136,28 @@ public class CakeSaveData : SaveBase
         }
         for (int i = 0; i < groupCake.cake.Count; i++)
         {
+            if (cakeOnWaits[cakeIndex] == null)
+                cakeOnWaits[cakeIndex] = new CakeOnWait();
             cakeOnWaits[cakeIndex].SaveCake(i, groupCake.cake[i]);
         }
+        IsMarkChangeData();
+        SaveData();
     }
     public void RemoveCakeWait(int cakeIndex) {
         cakeOnWaits[cakeIndex] = null;
     }
 
-    public bool IsHaveCakeSave()
+    public bool IsHaveCakeWaitSave()
+    {
+        for (int i = 0; i < cakeOnWaits.Count; i++)
+        {
+            if (cakeOnWaits[i] != null)
+                return true;
+        }
+        return false;
+    }
+
+    public bool IsHaveCakeOnPlate()
     {
         return cakeOnPlates.Count > 0;
     }
@@ -143,9 +167,12 @@ public class CakeSaveData : SaveBase
 public class CakeOnPlate {
     public PlateIndex plateIndex;
     public List<int> cakeIDs = new List<int>();
-    public void SetCakeID(List<Piece> pieces) {
+    public void SetCakeID(Cake cake) {
         cakeIDs.Clear();
-        for (int i = 0; i < pieces.Count; i++) { cakeIDs.Add(pieces[i].cakeID); }
+        for (int i = 0; i < cake.pieces.Count; i++)
+        {
+            cakeIDs.Add(cake.pieces[i].cakeID);
+        }
     }
 }
 
@@ -153,24 +180,25 @@ public class CakeOnPlate {
 public class CakeOnWait {
     public List<CakeSave> cakeSaves = new List<CakeSave>();
     public void SaveCake(int cakeIndex, Cake cake) {
-        if (cakeIndex > cakeSaves.Count)
+        if (cakeIndex >= cakeSaves.Count)
         {
             CakeSave cakeSave = new CakeSave();
-            cakeSave.SetCakeID(cake.pieces);
+            cakeSave.SetCakeID(cake);
             cakeSaves.Add(cakeSave);
             return;
         }
 
-        cakeSaves[cakeIndex].SetCakeID(cake.pieces);
+        cakeSaves[cakeIndex].SetCakeID(cake);
     }
 }
 
 [System.Serializable]
 public class CakeSave {
-    public List<int> cakeIDs = new List<int>();
-    public void SetCakeID(List<Piece> pieces)
+    public List<int> pieceCakeIDCount = new List<int>();
+    public List<int> pieceCakeID = new List<int>();
+    public void SetCakeID(Cake cake)
     {
-        cakeIDs.Clear();
-        for (int i = 0; i < pieces.Count; i++) { cakeIDs.Add(pieces[i].cakeID); }
+        pieceCakeIDCount = cake.pieceCakeIDCount;
+        pieceCakeID = cake.pieceCakeID;
     }
 }

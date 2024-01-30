@@ -8,7 +8,7 @@ public class GroupCake : MonoBehaviour
 {
     public List<Cake> cake = new List<Cake>();
     [SerializeField] List<GameObject> objConnects = new List<GameObject>();
-
+    public int groupCakeIndex;
     //public Cake[,]cakes2 = new Cake[3, 3];
 
     Transform pointSpawn;
@@ -75,7 +75,6 @@ public class GroupCake : MonoBehaviour
         {
             objConnects[i].SetActive(false);
         }
-        GameManager.Instance.cakeManager.RemoveCakeWait(this);
         canTouch = false;
         indexCake = -1;
 
@@ -102,7 +101,9 @@ public class GroupCake : MonoBehaviour
             GameManager.Instance.cakeManager.StartCheckCake(cake[indexCake], CheckNextCake);
         }
         else {
+            GameManager.Instance.cakeManager.table.SaveCake();
             GameManager.Instance.cakeManager.SetOnMove(false);
+            GameManager.Instance.cakeManager.RemoveCakeWait(this);
             DOVirtual.DelayedCall(.5f, GameManager.Instance.cakeManager.CheckLoseGame);
         }
     }
@@ -125,34 +126,26 @@ public class GroupCake : MonoBehaviour
         transform.position = pointSpawn.position;
     }
 
-    public void InitData(int countCake, Transform pointSpawn, int cakeWaitIndex)
+    public void InitData(int countCake, Transform pointSpawn, int cakeWaitIndex, List<CakeSave> cakeSaveDatas = null)
     {
+        groupCakeIndex = cakeWaitIndex;
         this.pointSpawn = pointSpawn;
         if (cakeWaitIndex == 2) countCake = 1;
         if (countCake == 2)
         {
-            Init2Cakes();
+            Init2Cakes(cakeSaveDatas);
         }
         else
         {
             cake[0].gameObject.SetActive(true);
-            cake[0].InitData();
+            if (cakeSaveDatas != null)
+                cake[0].InitData(cakeSaveDatas[0]);
+            else 
+                cake[0].InitData();
         }
 
         objConnects[0].SetActive(cake[1].gameObject.activeSelf);
         objConnects[1].SetActive(cake[2].gameObject.activeSelf);
-
-        //cakes2[1, 1].gameObject.SetActive(true);
-        //cakes2[1, 1].InitData();
-
-        //for (int i = 0; i < countCake - 1; i++)
-        //{
-        //    System.Random rd = new System.Random();
-        //    int randomIndexX = (int)(rd.Next(cakes2.GetLength(0)));
-        //    int randomIndexY = (int)(rd.Next(cakes2.GetLength(1)));
-        //    cakes2[randomIndexX, randomIndexY].gameObject.SetActive(true);
-        //    cakes2[randomIndexX, randomIndexY].InitData();
-        //}
 
         for (int i = cake.Count - 1; i >= 0; i--)
         {
@@ -164,15 +157,24 @@ public class GroupCake : MonoBehaviour
         }
     }
     public int cakePosition;
-    void Init2Cakes() {
+    void Init2Cakes(List<CakeSave> cakeSaveDatas = null) {
 
         cake[0].gameObject.SetActive(true);
-        cake[0].InitData();
+        
 
         int indexRandom = UnityEngine.Random.Range(1, cake.Count);
         cakePosition = indexRandom == 1 ? -1 : 1;
         cake[indexRandom].gameObject.SetActive(true);
-        cake[indexRandom].InitData();
+        if (cakeSaveDatas != null)
+        {
+            cake[0].InitData(cakeSaveDatas[0]);
+            cake[indexRandom].InitData(cakeSaveDatas[1]);
+        }
+        else {
+            cake[0].InitData();
+            cake[indexRandom].InitData();
+        }
+        
 
     }
     int countCakeDone;

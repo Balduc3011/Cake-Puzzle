@@ -104,15 +104,10 @@ public class Table : MonoBehaviour
             if (bestPlate.CheckCakeIsDone(cakeID))
             {
                 bestPlate.DoneCake();
-                //CallBackCheckOtherCakeOnMap();
             }
             ClearCakeDone();
             CallBackCheckOtherCakeOnMap();
             // check other cake
-
-            //GameManager.Instance.cakeManager.CheckIDOfCake();
-
-
             return;
         }
         stepIndex = -1;
@@ -363,6 +358,22 @@ public class Table : MonoBehaviour
         if (indexX >= 0 && indexX <= 5 && indexY >= 0 && indexY <= 3)
         {
             plateArray[indexX, indexY].DeActiveByItem();
+        }
+    }
+    PlateIndex plateIndexTemp;
+    public void LoadCakeOnPlate(Cake newCake, CakeOnPlate cakeOnPlate)
+    {
+        plateIndexTemp = cakeOnPlate.plateIndex;
+        newCake.transform.parent = plateArray[plateIndexTemp.indexX, plateIndexTemp.indexY].pointStay.transform;
+        newCake.transform.localPosition = Vector3.zero;
+        plateArray[plateIndexTemp.indexX, plateIndexTemp.indexY].currentCake = newCake;
+        newCake.InitData(cakeOnPlate.cakeIDs);
+    }
+
+    public void SaveCake() {
+        for (int i = 0; i < plates.Count; i++)
+        {
+            ProfileManager.Instance.playerData.cakeSaveData.SaveCake(plates[i].GetPlateIndex(), plates[i].currentCake);
         }
     }
 }

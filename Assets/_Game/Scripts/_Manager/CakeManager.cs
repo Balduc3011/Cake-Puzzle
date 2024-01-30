@@ -80,6 +80,7 @@ public class CakeManager : MonoBehaviour
             cakesWait.Add(groupCake);
             groupCake.transform.position = pointSpawnGroupCake[indexGroupCake].position;
             groupCake.InitData((int)countCake[indexGroupCake], pointSpawnGroupCake[indexGroupCake], indexGroupCake);
+            ProfileManager.Instance.playerData.cakeSaveData.AddCakeWait(groupCake, indexGroupCake);
             yield return new WaitForSeconds(.25f);
             indexGroupCake++;
         }
@@ -87,6 +88,7 @@ public class CakeManager : MonoBehaviour
 
     public void RemoveCakeWait(GroupCake gCake)
     {
+        ProfileManager.Instance.playerData.cakeSaveData.RemoveCakeWait(gCake.groupCakeIndex);
         cakesWait.Remove(gCake);
         if (cakesWait.Count <= 0) { InitGroupCake(); }
     }
@@ -248,16 +250,56 @@ public class CakeManager : MonoBehaviour
 
     public void PlayGame()
     {
-        if (ProfileManager.Instance.playerData.cakeSaveData.IsHaveCakeSave())
+        if (ProfileManager.Instance.playerData.cakeSaveData.IsHaveCakeWaitSave())
         {
-            LoadData();
+            LoadCakeWaitData();
         }
         else { 
             InitGroupCake();
         }
+
+        if (ProfileManager.Instance.playerData.cakeSaveData.IsHaveCakeOnPlate())
+        {
+            LoadCakeOnPlate();
+        }
+    }
+    List<CakeOnWait> cakeOnWaits = new List<CakeOnWait>();
+    List<CakeOnPlate> cakeOnPlates = new List<CakeOnPlate>();
+    [SerializeField] Cake cakePref;
+    void LoadCakeOnPlate() {
+        cakeOnPlates = ProfileManager.Instance.playerData.cakeSaveData.cakeOnPlates;
+        for (int i = 0; i < cakeOnPlates.Count; i++)
+        {
+            Cake newCake = Instantiate(cakePref);
+            table.LoadCakeOnPlate(newCake, cakeOnPlates[i]);
+        }
+    
+    }
+    void LoadCakeWaitData() {
+        cakeOnWaits = ProfileManager.Instance.playerData.cakeSaveData.cakeOnWaits;
+        indexGroupCake = 0;
+        countCake.Clear();
+        for (int i = 0;i < cakeOnWaits.Count;i++)
+        {
+            countCake.Add(cakeOnWaits[i].cakeSaves.Count);
+        }
+        StartCoroutine(IE_WaitToInitGroupCakeFromSave());
     }
 
-    void LoadData() { 
-    
+    IEnumerator IE_WaitToInitGroupCakeFromSave()
+    {
+        while (indexGroupCake < 3)
+        {
+            if ((int)countCake[indexGroupCake] > 0)
+            {
+                groupCake = GameManager.Instance.objectPooling.GetGroupCake();
+                cakesWait.Add(groupCake);
+                groupCake.transform.position = pointSpawnGroupCake[indexGroupCake].position;
+                groupCake.InitData((int)countCake[indexGroupCake], pointSpawnGroupCake[indexGroupCake], indexGroupCake, cakeOnWaits[indexGroupCake].cakeSaves);
+                ProfileManager.Instance.playerData.cakeSaveData.AddCakeWait(groupCake, indexGroupCake);
+                yield return new WaitForSeconds(.25f);
+            }
+            indexGroupCake++;
+        }
     }
 }

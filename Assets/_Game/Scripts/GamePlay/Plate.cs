@@ -108,7 +108,6 @@ public class Plate : MonoBehaviour
             currentCake.cakeDone = true;
         }
         else { currentCake.cakeDone = false;}
-        ProfileManager.Instance.playerData.cakeSaveData.SaveCake(plateIndex, currentCake);
     }
 
     public void ClearCake() {
