@@ -21,6 +21,7 @@ public class UIManager : MonoBehaviour {
   
     public Camera mainCamera;
     public PanelTotal panelTotal;
+    public PanelPlayGame panelGamePlay;
     PanelBakery panelBakery;
     PanelDecorations panelDecorations;
 
@@ -169,6 +170,8 @@ public class UIManager : MonoBehaviour {
         GameObject go = GetPanel(UIPanelType.PanelPlayGame);
         go.SetActive(true);
         panelTotal.Transform.SetAsLastSibling();
+        if (panelGamePlay == null)
+            panelGamePlay = go.GetComponent<PanelPlayGame>();
     }
     public void ClosePanelPlayGame()
     {

@@ -119,7 +119,15 @@ public class Plate : MonoBehaviour
             }
             currentCake = null;
         });
-      
+    }
+
+    public void ClearCakeByBomb() {
+        if (currentCake != null)
+        {
+            Destroy(currentCake.gameObject);
+            ProfileManager.Instance.playerData.cakeSaveData.RemoveCake(plateIndex);
+            currentCake = null;
+        }
     }
 
     Transform pointTrashBin;

@@ -84,6 +84,7 @@ public class CakeManager : MonoBehaviour
             yield return new WaitForSeconds(.25f);
             indexGroupCake++;
         }
+        CheckLooseGame();
     }
 
     public void RemoveCakeWait(GroupCake gCake)
@@ -178,28 +179,33 @@ public class CakeManager : MonoBehaviour
     public void SetOnMove(bool onMove) { this.onMove = onMove; }
 
     int countFaild;
-    public void CheckLoseGame()
+    public void StartCheckLoseGame()
     {
+        if (cakesWait.Count > 0) { DOVirtual.DelayedCall(.5f, CheckLooseGame); }
+        //Debug.Log( countFaild == cakesWait.Count);
+    }
+
+    void CheckLooseGame() {
         countFaild = 0;
         for (int i = 0; i < cakesWait.Count; i++)
         {
             if (cakesWait[i].cake.Count == 1)
             {
                 if (!table.CheckGroupOneAble())
-                countFaild++;
+                    countFaild++;
             }
-            else {
-                if(!table.CheckGroupTwoAble(cakesWait[i].cakePosition))
+            else
+            {
+                if (!table.CheckGroupTwoAble(cakesWait[i].cakePosition))
                     countFaild++;
             }
         }
         if (countFaild == cakesWait.Count)
         {
             Debug.Log("Loose game");
-           
+
             UIManager.instance.ShowPanelLevelComplete();
         }
-        //Debug.Log( countFaild == cakesWait.Count);
     }
 
     public Mesh GetNewUnlockedCakePieceMesh()
@@ -248,11 +254,15 @@ public class CakeManager : MonoBehaviour
         InitGroupCake();
     }
 
+    bool loaded = false;
     public void PlayGame()
     {
+        if (loaded)
+            return;
         if (ProfileManager.Instance.playerData.cakeSaveData.IsHaveCakeWaitSave())
         {
             LoadCakeWaitData();
+            CheckLooseGame();
         }
         else { 
             InitGroupCake();
@@ -262,6 +272,7 @@ public class CakeManager : MonoBehaviour
         {
             LoadCakeOnPlate();
         }
+        loaded = true;
     }
     List<CakeOnWait> cakeOnWaits = new List<CakeOnWait>();
     List<CakeOnPlate> cakeOnPlates = new List<CakeOnPlate>();

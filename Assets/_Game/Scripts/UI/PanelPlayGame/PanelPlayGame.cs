@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,5 +15,15 @@ public class PanelPlayGame : UIPanel
     {
         panelType = UIPanelType.PanelPlayGame;
         base.Awake();
+    }
+
+    public void OutItemMode()
+    {
+        
+    }
+
+    public void UsingItemMode()
+    {
+        
     }
 }

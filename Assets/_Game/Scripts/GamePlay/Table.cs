@@ -351,7 +351,13 @@ public class Table : MonoBehaviour
         {
             plateArray[indexX, indexY].ActiveByItem();
         }
-        
+    }
+
+    public void ClearPlateByBomb(int indexX, int indexY) {
+        if (indexX >= 0 && indexX <= 5 && indexY >= 0 && indexY <= 3)
+        {
+            plateArray[indexX, indexY].ClearCakeByBomb();
+        }
     }
 
     public void DeActivePlate(int indexX, int indexY) {

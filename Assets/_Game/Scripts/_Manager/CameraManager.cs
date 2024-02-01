@@ -8,6 +8,12 @@ public class CameraManager : MonoBehaviour
 {
     public Camera mainCamera;
     public CameraInfo mainCameraInfo;
+    [SerializeField] Vector3 positionDefault;
+    [SerializeField] Vector3 positionUsingItem;
+    [SerializeField] Vector3 rotateCameraUsingItem;
+    [SerializeField] Vector3 rotateCameraDefault;
+
+    float cameraSizeUsingItem;
 
     float currentSize;
     float widthScene;
@@ -24,6 +30,7 @@ public class CameraManager : MonoBehaviour
         persent = (widthScene / heightScene) / persent;
         currentCamerasize = currentSize / persent;
         mainCamera.orthographicSize = currentCamerasize + 1f;
+        cameraSizeUsingItem = currentCamerasize - 1f;
     }
 
     public Camera GetMainCamera()
@@ -48,6 +55,32 @@ public class CameraManager : MonoBehaviour
         {
             mainCamera.orthographicSize = value;
         });
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space)) { UsingItemMode(); }
+        if (Input.GetKeyDown(KeyCode.V)) { OutItemMode(); }
+    }
+
+    public void UsingItemMode() {
+        mainCamera.transform.DOMove(positionUsingItem, .5f).SetEase(Ease.OutCubic);
+        mainCamera.transform.DORotate(rotateCameraUsingItem, .5f).SetEase(Ease.OutCubic);
+        DOVirtual.Float(mainCamera.orthographicSize, cameraSizeUsingItem, 1f, (value) =>
+        {
+            mainCamera.orthographicSize = value;
+        }).SetEase(Ease.InOutSine);
+       
+    }
+
+    public void OutItemMode()
+    {
+        mainCamera.transform.DOMove(positionDefault, .5f).SetEase(Ease.OutCubic);
+        mainCamera.transform.DORotate(rotateCameraDefault, .5f).SetEase(Ease.OutCubic);
+        DOVirtual.Float(mainCamera.orthographicSize, currentCamerasize, 1f, (value) =>
+        {
+            mainCamera.orthographicSize = value;
+        }).SetEase(Ease.InOutSine);
     }
 }
 

@@ -21,9 +21,10 @@ public class Cake : MonoBehaviour
     [SerializeField] AnimationCurve curveRotate;
     [SerializeField] Vector3 vectorOffsetEffect;
     [SerializeField] Vector3 vectorOffsetExp;
+    [SerializeField] float scaleDefault;
 
     public void InitData() {
-        transform.DOScale(1f, .5f).From(1.2f).SetEase(Ease.InOutBack);
+        transform.DOScale(scaleDefault, .5f).From(1.2f).SetEase(Ease.InOutBack);
         totalPieces = GameManager.Instance.cakeManager.GetPiecesTotal() + 1;
         SetupPiecesCakeID();
         pieceIndex = 0;
@@ -35,7 +36,7 @@ public class Cake : MonoBehaviour
     }
 
     public void InitData(CakeSave cakeSaveData) {
-        transform.DOScale(1f, .5f).From(1.2f).SetEase(Ease.InOutBack);
+        transform.DOScale(scaleDefault, .5f).From(1.2f).SetEase(Ease.InOutBack);
         pieceCakeIDCount = cakeSaveData.pieceCakeIDCount;
         pieceCakeID = cakeSaveData.pieceCakeID;
         pieceIndex = 0;
@@ -46,7 +47,7 @@ public class Cake : MonoBehaviour
     }
 
     public void InitData(List<int> cakeIDs) {
-        transform.DOScale(1f, .5f).From(1.2f).SetEase(Ease.InOutBack);
+        transform.DOScale(scaleDefault, .5f).From(1.2f).SetEase(Ease.InOutBack);
         
         pieceIndex = 0;
         for (int i = 0; i < cakeIDs.Count; i++)

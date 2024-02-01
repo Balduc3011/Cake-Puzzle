@@ -7,6 +7,7 @@ public class Bomb : MonoBehaviour
 {
     private void OnMouseDown()
     {
+        if (bang) return;
         needCheck = true;
     }
     private void OnMouseUp()
@@ -15,6 +16,8 @@ public class Bomb : MonoBehaviour
         if (currentPlate != null)
         {
             myAnim.SetBool("Active", true);
+            bang = true;
+            StartCoroutine(WaitBombUsing());
         }
     }
 
@@ -24,8 +27,9 @@ public class Bomb : MonoBehaviour
     RaycastHit hitInfor;
     Plate currentPlate;
     bool needCheck;
+    bool bang;
     Vector3 pointFollowMouse;
-    Vector3 vectorOffset = new Vector3(0, 0, 2f);
+    Vector3 vectorOffset = new Vector3(0, 0, .5f);
 
     private void Update()
     {
@@ -34,7 +38,7 @@ public class Bomb : MonoBehaviour
             pointFollowMouse.y = 1.5f;
             transform.position = pointFollowMouse + vectorOffset;
             CheckOnMouse();
-        }else DeActiveCurrentPlate();
+        } else DeActiveCurrentPlate();
     }
     public void CheckOnMouse()
     {
@@ -47,20 +51,24 @@ public class Bomb : MonoBehaviour
                 if (currentPlate != null)
                     DeActiveCurrentPlate();
                 currentPlate = plate;
-                StartCoroutine(IE_WaitToActivePlate());
+                ActivePlate(currentPlate);
             }
-            else DeActiveCurrentPlate();
+            else
+            {
+                DeActiveCurrentPlate();
+                currentPlate = null;
+            }
         }
-        else DeActiveCurrentPlate();
+        else {
+            DeActiveCurrentPlate();
+            currentPlate = null;
+        } 
     }
 
-    IEnumerator IE_WaitToActivePlate() {
-        yield return new WaitForSeconds(0.1f);
-        ActivePlate(currentPlate);
-    }
 
     PlateIndex plateIndex;
     void ActivePlate(Plate plate) {
+        if (plateIndex == null) return;
         plate.ActiveByItem();
         plateIndex = plate.GetPlateIndex();
         GameManager.Instance.cakeManager.table.ActivePlate(plateIndex.indexX, plateIndex.indexY);
@@ -77,7 +85,7 @@ public class Bomb : MonoBehaviour
         GameManager.Instance.cakeManager.table.ActivePlate(plateIndex.indexX + 1, plateIndex.indexY + 1);
     }
 
-    void DeActiveCurrentPlate() { 
+    void DeActiveCurrentPlate() {
         if (currentPlate != null) {
             currentPlate.DeActiveByItem();
             plateIndex = currentPlate.GetPlateIndex();
@@ -94,5 +102,27 @@ public class Bomb : MonoBehaviour
             GameManager.Instance.cakeManager.table.DeActivePlate(plateIndex.indexX + 1, plateIndex.indexY - 1);
             GameManager.Instance.cakeManager.table.DeActivePlate(plateIndex.indexX + 1, plateIndex.indexY + 1);
         }
+    }
+
+    void ClearCake() {
+        currentPlate.DeActiveByItem();
+        plateIndex = currentPlate.GetPlateIndex();
+        GameManager.Instance.cakeManager.table.ClearPlateByBomb(plateIndex.indexX, plateIndex.indexY);
+
+        GameManager.Instance.cakeManager.table.ClearPlateByBomb(plateIndex.indexX, plateIndex.indexY - 1);
+        GameManager.Instance.cakeManager.table.ClearPlateByBomb(plateIndex.indexX, plateIndex.indexY + 1);
+
+        GameManager.Instance.cakeManager.table.ClearPlateByBomb(plateIndex.indexX - 1, plateIndex.indexY);
+        GameManager.Instance.cakeManager.table.ClearPlateByBomb(plateIndex.indexX - 1, plateIndex.indexY - 1);
+        GameManager.Instance.cakeManager.table.ClearPlateByBomb(plateIndex.indexX - 1, plateIndex.indexY + 1);
+
+        GameManager.Instance.cakeManager.table.ClearPlateByBomb(plateIndex.indexX + 1, plateIndex.indexY);
+        GameManager.Instance.cakeManager.table.ClearPlateByBomb(plateIndex.indexX + 1, plateIndex.indexY - 1);
+        GameManager.Instance.cakeManager.table.ClearPlateByBomb(plateIndex.indexX + 1, plateIndex.indexY + 1);
+    }
+
+    IEnumerator WaitBombUsing() { 
+        yield return new WaitForSeconds(1f);
+        ClearCake();
     }
 }

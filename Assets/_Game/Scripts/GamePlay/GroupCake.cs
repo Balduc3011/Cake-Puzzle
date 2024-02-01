@@ -8,6 +8,10 @@ public class GroupCake : MonoBehaviour
 {
     public List<Cake> cake = new List<Cake>();
     [SerializeField] List<GameObject> objConnects = new List<GameObject>();
+    [SerializeField] List<Transform> pointDefaults;
+    [SerializeField] List<Transform> pointMoveOnSelects;
+    Transform pointDefault;
+    Transform pointMove;
     public int groupCakeIndex;
     //public Cake[,]cakes2 = new Cake[3, 3];
 
@@ -27,6 +31,7 @@ public class GroupCake : MonoBehaviour
         {
             cake[i].SetGroupCake(this);
             cake[i].gameObject.SetActive(false);
+            cake[i].transform.position = pointDefaults[i].transform.position;
         }
         //int cakeIndex = 0;
 
@@ -53,6 +58,10 @@ public class GroupCake : MonoBehaviour
         if (canTouch)
         {
             GameManager.Instance.cakeManager.SetCurrentGroupCake(this);
+            for (int i = 1; i < cake.Count; i++)
+            {
+                cake[i].transform.DOLocalMove(pointMove.localPosition, .25f).SetEase(Ease.InOutQuad);
+            }
             onFollow = true;
         }
     }
@@ -104,7 +113,7 @@ public class GroupCake : MonoBehaviour
             GameManager.Instance.cakeManager.table.SaveCake();
             GameManager.Instance.cakeManager.SetOnMove(false);
             GameManager.Instance.cakeManager.RemoveCakeWait(this);
-            DOVirtual.DelayedCall(.5f, GameManager.Instance.cakeManager.CheckLoseGame);
+            GameManager.Instance.cakeManager.StartCheckLoseGame();
         }
     }
 
@@ -121,6 +130,8 @@ public class GroupCake : MonoBehaviour
             if (cake[i].gameObject.activeSelf)
             {
                 cake[i].GroupDropFail();
+                if (i > 0)
+                    cake[i].transform.DOLocalMove(pointDefault.localPosition, .2f).SetEase(Ease.InOutQuad);
             }
         }
         transform.position = pointSpawn.position;
@@ -146,6 +157,17 @@ public class GroupCake : MonoBehaviour
 
         objConnects[0].SetActive(cake[1].gameObject.activeSelf);
         objConnects[1].SetActive(cake[2].gameObject.activeSelf);
+
+        if (objConnects[0].activeSelf)
+        {
+            pointDefault = pointDefaults[1];
+            pointMove = pointMoveOnSelects[0];
+        }
+        if (objConnects[1].activeSelf)
+        {
+            pointDefault = pointDefaults[2];
+            pointMove = pointMoveOnSelects[1];
+        }
 
         for (int i = cake.Count - 1; i >= 0; i--)
         {

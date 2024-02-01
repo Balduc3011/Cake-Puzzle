@@ -157,4 +157,14 @@ public class PanelTotal : UIPanel
 
     public void OpenObjBlockAll() { objBlockAll.SetActive(true); }
     public void CloseObjBlockAll() { objBlockAll.SetActive(false); }
+
+    public void UsingItemMode()
+    {
+
+    }
+
+    public void OutItemMode()
+    {
+       
+    }
 }
