@@ -12,4 +12,5 @@ public class DataConfig
     public SpriteDataConfig spriteDataConfig;
     public DecorationDataConfig decorationDataConfig;
     public CakeDataConfig cakeDataConfig;
+    public ItemDataConfig itemDataConfig;
 }

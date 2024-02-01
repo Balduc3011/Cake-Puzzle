@@ -114,6 +114,9 @@ public class UIManager : MonoBehaviour {
                 case UIPanelType.PanelShop:
                     panel = Instantiate(Resources.Load("UI/PanelShop") as GameObject, mainCanvas);
                     break;
+                case UIPanelType.PanelUsingItem:
+                    panel = Instantiate(Resources.Load("UI/PanelUsingItem") as GameObject, mainCanvas);
+                    break;
             }
             if (panel) panel.SetActive(true);
             return panel;
@@ -356,6 +359,19 @@ public class UIManager : MonoBehaviour {
     public void ClosePanelLoading() {
         isHasPopupOnScene = false;
         GameObject go = GetPanel(UIPanelType.PanelLoading);
+        go.SetActive(false);
+    }
+
+    public void ShowPanelUsingItem()
+    {
+        isHasPopupOnScene = true;
+        GameObject go = GetPanel(UIPanelType.PanelUsingItem);
+        go.SetActive(true);
+    }
+    public void ClosePanelUsingItem()
+    {
+        isHasPopupOnScene = false;
+        GameObject go = GetPanel(UIPanelType.PanelUsingItem);
         go.SetActive(false);
     }
 }

@@ -16,6 +16,6 @@ public class SpinSlide : MonoBehaviour
         this.spinItemData = spinItemData;
         //itemAmountTxt.text = spinItemData.amount.ToString();
         itemAmountTxt.text = spinItemData.itemData.amount.ToString();
-        itemIconImg.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetSprite(spinItemData.itemData.ItemType);
+        itemIconImg.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetItemSprite(spinItemData.itemData.ItemType);
     }
 }

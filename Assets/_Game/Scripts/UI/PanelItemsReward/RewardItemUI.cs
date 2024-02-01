@@ -17,7 +17,7 @@ public class RewardItemUI : MonoBehaviour
     {
         titleTxt.text = itemData.ItemType.ToString();
         amountTxt.text = itemData.amount.ToString();
-        iconImg.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetSprite(itemData.ItemType);
+        iconImg.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetItemSprite(itemData.ItemType);
         if (Transform == null) Transform = transform;
         Transform.localScale = Vector3.one * 2;
         canvasGroup.alpha = 0;

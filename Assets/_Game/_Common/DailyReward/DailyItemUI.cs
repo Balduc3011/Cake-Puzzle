@@ -63,6 +63,6 @@ public class ItemToShow
     public void Init(ItemData dailyRewardData)
     {
         amoutTxt.text = dailyRewardData.amount.ToString();
-        itemIconImg.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetSprite(dailyRewardData.ItemType);
+        itemIconImg.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetItemSprite(dailyRewardData.ItemType);
     }
 }
