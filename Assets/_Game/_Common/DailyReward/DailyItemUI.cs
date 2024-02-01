@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -14,6 +15,7 @@ public class DailyItemUI : MonoBehaviour
     [SerializeField] GameObject hideObj;
     [SerializeField] GameObject todayObj;
     [SerializeField] bool toHide;
+    [SerializeField] Animator animator;
 
     string STR_DAY = "DAY ";
     void Start()
@@ -51,6 +53,7 @@ public class DailyItemUI : MonoBehaviour
             hideObj.SetActive(!GameManager.Instance.dailyRewardManager.IsAbleToGetDailyReward(dailyRewardConfig.dayIndex) &&
                 !GameManager.Instance.dailyRewardManager.CheckDailyRewardCollectted(dailyRewardConfig.dayIndex));
         }
+        animator.SetBool("ToDay", itemBtn.interactable);
     }
 }
 

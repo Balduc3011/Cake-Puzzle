@@ -31,6 +31,8 @@ public class PanelTotal : UIPanel
     //[SerializeField] Image imgNextCake;
     [SerializeField] Slider sliderLevelExp;
     [SerializeField] Transform trsCoin;
+    [SerializeField] CanvasGroup canvasGroup;
+    [SerializeField] List<TransitionUI> transitionUIList;
     public override void Awake()
     {
         panelType = UIPanelType.PanelTotal;
@@ -162,11 +164,29 @@ public class PanelTotal : UIPanel
 
     public void UsingItemMode()
     {
-
+        for (int i = 0; i < transitionUIList.Count; i++)
+        {
+            transitionUIList[i].OnShow(false);
+        }
     }
 
     public void OutItemMode()
     {
-       
+        for (int i = 0; i < transitionUIList.Count; i++)
+        {
+            transitionUIList[i].OnShow(true);
+        }
+    }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            UsingItemMode();
+        }
+
+        if (Input.GetKeyUp(KeyCode.Tab))
+        {
+            OutItemMode();
+        }
     }
 }
