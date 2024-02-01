@@ -19,6 +19,7 @@ public class PanelTotal : UIPanel
     [SerializeField] Button mainGameNavBtn;
     [SerializeField] Button bakeryNavBtn;
     [SerializeField] Button decorationNavBtn;
+    [SerializeField] Button shopNavBtn;
     [SerializeField] GameObject mainSceneContent;
     [SerializeField] GameObject commonContent;
     [SerializeField] GameObject mainMenuContent;
@@ -97,6 +98,7 @@ public class PanelTotal : UIPanel
         mainGameNavBtn.onClick.AddListener(() => { UIManager.instance.ShowPanelTotalContent(); });
         bakeryNavBtn.onClick.AddListener(() => { UIManager.instance.ShowPanelBakery(); });
         decorationNavBtn.onClick.AddListener(() => { UIManager.instance.ShowPanelDecorations(); });
+        shopNavBtn.onClick.AddListener(() => { UIManager.instance.ShowPanelShop(); });
         currentLevel = ProfileManager.Instance.playerData.playerResourseSave.currentLevel;
         ChangeLevel();
         ChangeExp();

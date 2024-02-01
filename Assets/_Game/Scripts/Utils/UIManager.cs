@@ -24,6 +24,7 @@ public class UIManager : MonoBehaviour {
     public PanelPlayGame panelGamePlay;
     PanelBakery panelBakery;
     PanelDecorations panelDecorations;
+    PanelShop panelShop;
 
     // Start is called before the first frame update
     void Awake() {
@@ -109,6 +110,9 @@ public class UIManager : MonoBehaviour {
                     break;
                 case UIPanelType.PanelLoading:
                     panel = Instantiate(Resources.Load("UI/PanelLoading") as GameObject, mainCanvas);
+                    break;
+                case UIPanelType.PanelShop:
+                    panel = Instantiate(Resources.Load("UI/PanelShop") as GameObject, mainCanvas);
                     break;
             }
             if (panel) panel.SetActive(true);
@@ -255,6 +259,13 @@ public class UIManager : MonoBehaviour {
                 panelDecorations.OnClose();
             }
         }
+        if (panelShop != null && ignorePanel != UIPanelType.PanelShop)
+        {
+            if (panelShop.gameObject.activeSelf)
+            {
+                panelShop.OnClose();
+            }
+        }
     }
 
     public void ShowPanelSetting()
@@ -290,6 +301,26 @@ public class UIManager : MonoBehaviour {
         GameObject go = GetPanel(UIPanelType.PanelDecorations);
         go.SetActive(false);
         GameManager.Instance.decorationManager.StartCamera(false);
+    }
+
+    public void ShowPanelShop()
+    {
+        CloseOtherMenu(UIPanelType.PanelShop);
+        isHasPopupOnScene = true;
+        GameObject go = GetPanel(UIPanelType.PanelShop);
+        go.SetActive(true);
+        panelTotal.ShowMainSceneContent(false);
+        panelTotal.Transform.SetAsLastSibling();
+        if (panelShop == null)
+        {
+            panelShop = go.GetComponent<PanelShop>();
+        }
+    }
+    public void ClosePanelShop()
+    {
+        isHasPopupOnScene = false;
+        GameObject go = GetPanel(UIPanelType.PanelShop);
+        go.SetActive(false);
     }
 
     public void ShowPanelCakeReward()
