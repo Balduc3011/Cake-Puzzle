@@ -21,13 +21,13 @@ public class PanelUsingItem : UIPanel
         txtDescript.text = currentItemData.description;
         iconItem.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetItemSprite(itemType);
         
-        UIManager.instance.ClosePanelPlayGame();
-        UIManager.instance.ClosePanelTotal();
+        UIManager.instance.panelTotal.UsingItemMode();
+        UIManager.instance.panelGamePlay.UsingItemMode();
     }
 
     public void UsingItemDone() {
-        UIManager.instance.ShowPanelPlayGame();
-        UIManager.instance.ShowPanelTotal();
+        UIManager.instance.panelGamePlay.OutItemMode();
+        UIManager.instance.panelTotal.OutItemMode();
         UIManager.instance.ClosePanelUsingItem();
     }
 }

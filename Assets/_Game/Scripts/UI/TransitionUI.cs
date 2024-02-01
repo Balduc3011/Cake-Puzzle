@@ -41,11 +41,11 @@ public class TransitionUI : MonoBehaviour
     {
         if(show)
         {
-            objTrs.DOMove(pinPos, moveTime);
+            objTrs.DOMove(pinPos, moveTime).SetEase(Ease.InOutBack);
         }
         else
         {
-            objTrs.DOMove(movePos, moveTime);
+            objTrs.DOMove(movePos, moveTime).SetEase(Ease.InOutBack);
         }
     } 
 }
