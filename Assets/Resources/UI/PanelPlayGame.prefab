@@ -145,6 +145,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3062646178990232558}
   - component: {fileID: 1309197755989481093}
+  - component: {fileID: 8102513090852470770}
   m_Layer: 5
   m_Name: Left
   m_TagString: Untagged
@@ -200,6 +201,24 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &8102513090852470770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2379855278942165419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5266ea7b683cf044be3e7543c0cf5e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objTrs: {fileID: 3062646178990232558}
+  pinPos: {x: 0, y: 0, z: 0}
+  movePos: {x: 0, y: 0, z: 0}
+  moveDistance: 250
+  moveTime: 0.5
+  floatDirection: 3
 --- !u!1 &2872121855190522728
 GameObject:
   m_ObjectHideFlags: 0
@@ -571,6 +590,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2731518233194546829}
   - component: {fileID: 5461906047497761061}
+  - component: {fileID: 7176466881454968406}
   m_Layer: 5
   m_Name: Right
   m_TagString: Untagged
@@ -627,6 +647,24 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &7176466881454968406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5232049276258547998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5266ea7b683cf044be3e7543c0cf5e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objTrs: {fileID: 2731518233194546829}
+  pinPos: {x: 0, y: 0, z: 0}
+  movePos: {x: 0, y: 0, z: 0}
+  moveDistance: 250
+  moveTime: 0.5
+  floatDirection: 4
 --- !u!1 &5682805068296512231
 GameObject:
   m_ObjectHideFlags: 0
@@ -878,6 +916,9 @@ MonoBehaviour:
   topRectBase: {fileID: 0}
   x2BoosterBtn: {fileID: 7349707875938470898}
   coinBoosterBtn: {fileID: 8601882550101977512}
+  transitionUIList:
+  - {fileID: 8102513090852470770}
+  - {fileID: 7176466881454968406}
 --- !u!114 &8915571571156893091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -885,7 +926,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6291954913945805677}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e46c43f55f5ff054ab6850b52b3e5999, type: 3}
   m_Name: 
