@@ -45,6 +45,7 @@ public class ItemManager : MonoBehaviour
 
         if (panelUsingItem == null) { panelUsingItem = UIManager.instance.GetPanel(UIPanelType.PanelUsingItem).GetComponent<PanelUsingItem>(); }
         GameManager.Instance.cameraManager.UsingItemMode();
+        GameManager.Instance.lightManager.UsingItemMode();
         panelUsingItem.OnUsingItem(itemType);
         ProfileManager.Instance.playerData.playerResourseSave.UsingItem(itemType);
     }
@@ -53,5 +54,6 @@ public class ItemManager : MonoBehaviour
         if (panelUsingItem == null) { panelUsingItem = UIManager.instance.GetPanel(UIPanelType.PanelUsingItem).GetComponent<PanelUsingItem>(); }
         panelUsingItem.UsingItemDone();
         GameManager.Instance.cameraManager.OutItemMode();
+        GameManager.Instance.lightManager.OutItemMode();
     }
 }

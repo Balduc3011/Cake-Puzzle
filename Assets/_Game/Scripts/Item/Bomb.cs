@@ -8,9 +8,11 @@ public class Bomb : MonoBehaviour
     {
         if (bang) return;
         needCheck = true;
+        myAnim.SetBool("Using", true);
     }
     private void OnMouseUp()
     {
+        myAnim.SetBool("Using", false);
         needCheck = false;
         if (currentPlate != null)
         {
