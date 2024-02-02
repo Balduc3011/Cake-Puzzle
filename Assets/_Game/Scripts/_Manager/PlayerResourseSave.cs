@@ -17,8 +17,6 @@ public class PlayerResourseSave : SaveBase
     public int currentLevel;
     public float currentExp;
 
-    public int itemBomb;
-
     int levelMax;
     float expMax;
     public override void LoadData()
@@ -36,12 +34,9 @@ public class PlayerResourseSave : SaveBase
             dailyRewardedDay = data.dailyRewardedDay;
             currentLevel = data.currentLevel;
             currentExp = data.currentExp;
-
-            itemBomb = data.itemBomb;
         }
         else
         {
-            itemBomb = 100;
             firstDay = DateTime.Now.ToString();
             IsMarkChangeData();
             SaveData();
@@ -168,6 +163,20 @@ public class PlayerResourseSave : SaveBase
         return 0;
     }
 
+    public void UsingItem(ItemType itemType)
+    {
+        for (int i = 0; i < ownedItem.Count; i++)
+        {
+            if (ownedItem[i].ItemType == itemType)
+            {
+                ownedItem[i].amount--;
+                return;
+            }
+        }
+        IsMarkChangeData();
+        SaveData();
+    }
+
     public void AddExp(float expAdd) {
         if (currentLevel >= levelMax && currentExp==expMax) { return; }
         currentExp += expAdd;
@@ -201,43 +210,5 @@ public class PlayerResourseSave : SaveBase
     public float GetMaxExp()
     {
         return expMax;
-    }
-
-    public void AddItemBomb(ItemType itemType) {
-        switch (itemType)
-        {
-            case ItemType.Swap:
-                break;
-            case ItemType.Hammer:
-                break;
-            case ItemType.ReRoll:
-                break;
-            case ItemType.Bomb:
-                itemBomb++;
-                break;
-            default:
-                break;
-        }
-        IsMarkChangeData();
-        SaveData();
-    }
-
-    public void UsingItem(ItemType itemType) {
-        switch (itemType)
-        {
-            case ItemType.Swap:
-                break;
-            case ItemType.Hammer:
-                break;
-            case ItemType.ReRoll:
-                break;
-            case ItemType.Bomb:
-                itemBomb--;
-                break;
-            default:
-                break;
-        }
-        IsMarkChangeData();
-        SaveData();
     }
 }
