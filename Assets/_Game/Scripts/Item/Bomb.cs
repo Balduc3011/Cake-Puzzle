@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class Bomb : MonoBehaviour
@@ -9,9 +8,11 @@ public class Bomb : MonoBehaviour
     {
         if (bang) return;
         needCheck = true;
+        myAnim.SetBool("Using", true);
     }
     private void OnMouseUp()
     {
+        myAnim.SetBool("Using", false);
         needCheck = false;
         if (currentPlate != null)
         {
@@ -19,6 +20,7 @@ public class Bomb : MonoBehaviour
             bang = true;
             StartCoroutine(WaitBombUsing());
         }
+        else { transform.position = GameManager.Instance.itemManager.GetPointItemIn(); }
     }
 
     [SerializeField] float radiusCheck;
@@ -53,16 +55,15 @@ public class Bomb : MonoBehaviour
                 currentPlate = plate;
                 ActivePlate(currentPlate);
             }
-            else
-            {
-                DeActiveCurrentPlate();
-                currentPlate = null;
-            }
+            else ResetPoint();
         }
-        else {
-            DeActiveCurrentPlate();
-            currentPlate = null;
-        } 
+        else ResetPoint();
+    }
+
+    void ResetPoint() {
+        DeActiveCurrentPlate();
+        currentPlate = null;
+        
     }
 
 
@@ -119,6 +120,8 @@ public class Bomb : MonoBehaviour
         GameManager.Instance.cakeManager.table.ClearPlateByBomb(plateIndex.indexX + 1, plateIndex.indexY);
         GameManager.Instance.cakeManager.table.ClearPlateByBomb(plateIndex.indexX + 1, plateIndex.indexY - 1);
         GameManager.Instance.cakeManager.table.ClearPlateByBomb(plateIndex.indexX + 1, plateIndex.indexY + 1);
+
+        GameManager.Instance.itemManager.UsingItemDone();
     }
 
     IEnumerator WaitBombUsing() { 

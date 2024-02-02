@@ -9,7 +9,7 @@ public class SpriteDataConfig : ScriptableObject
     public List<Sprite> itemSprites;
     public List<Sprite> cakeSprite;
 
-    public Sprite GetSprite(ItemType itemType)
+    public Sprite GetItemSprite(ItemType itemType)
     {
         for (int i = 0; i < itemSprites.Count; i++)
         {
@@ -25,4 +25,5 @@ public class SpriteDataConfig : ScriptableObject
     {
         return cakeSprite[cakeUnlockID];
     }
+
 }

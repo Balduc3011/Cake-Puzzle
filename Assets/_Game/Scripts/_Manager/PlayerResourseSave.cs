@@ -17,6 +17,8 @@ public class PlayerResourseSave : SaveBase
     public int currentLevel;
     public float currentExp;
 
+    public int itemBomb;
+
     int levelMax;
     float expMax;
     public override void LoadData()
@@ -34,9 +36,12 @@ public class PlayerResourseSave : SaveBase
             dailyRewardedDay = data.dailyRewardedDay;
             currentLevel = data.currentLevel;
             currentExp = data.currentExp;
+
+            itemBomb = data.itemBomb;
         }
         else
         {
+            itemBomb = 100;
             firstDay = DateTime.Now.ToString();
             IsMarkChangeData();
             SaveData();
@@ -196,5 +201,43 @@ public class PlayerResourseSave : SaveBase
     public float GetMaxExp()
     {
         return expMax;
+    }
+
+    public void AddItemBomb(ItemType itemType) {
+        switch (itemType)
+        {
+            case ItemType.Swap:
+                break;
+            case ItemType.Hammer:
+                break;
+            case ItemType.ReRoll:
+                break;
+            case ItemType.Bomb:
+                itemBomb++;
+                break;
+            default:
+                break;
+        }
+        IsMarkChangeData();
+        SaveData();
+    }
+
+    public void UsingItem(ItemType itemType) {
+        switch (itemType)
+        {
+            case ItemType.Swap:
+                break;
+            case ItemType.Hammer:
+                break;
+            case ItemType.ReRoll:
+                break;
+            case ItemType.Bomb:
+                itemBomb--;
+                break;
+            default:
+                break;
+        }
+        IsMarkChangeData();
+        SaveData();
     }
 }

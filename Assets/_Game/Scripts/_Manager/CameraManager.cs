@@ -12,8 +12,8 @@ public class CameraManager : MonoBehaviour
     [SerializeField] Vector3 positionUsingItem;
     [SerializeField] Vector3 rotateCameraUsingItem;
     [SerializeField] Vector3 rotateCameraDefault;
-
-    float cameraSizeUsingItem;
+    [SerializeField] Transform showRoomParents;
+    [SerializeField] float cameraSizeUsingItem;
 
     float currentSize;
     float widthScene;
@@ -29,8 +29,9 @@ public class CameraManager : MonoBehaviour
         persent = 1080f / 1920f;
         persent = (widthScene / heightScene) / persent;
         currentCamerasize = currentSize / persent;
+        cameraSizeUsingItem = cameraSizeUsingItem / persent;
         mainCamera.orthographicSize = currentCamerasize + 1f;
-        cameraSizeUsingItem = currentCamerasize - 1f;
+        //cameraSizeUsingItem = currentCamerasize - 1f;
     }
 
     public Camera GetMainCamera()
@@ -81,6 +82,10 @@ public class CameraManager : MonoBehaviour
         {
             mainCamera.orthographicSize = value;
         }).SetEase(Ease.InOutSine);
+    }
+
+    public void ShowRoom(int showRoomIndex) {
+    
     }
 }
 

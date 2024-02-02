@@ -221,6 +221,7 @@ public class CakeManager : MonoBehaviour
 
     public void ClearCake()
     {
+        ProfileManager.Instance.playerData.cakeSaveData.ClearAllCake();
         table.ClearAllCakeByItem();
         RemoveAllCakeWait();
     }
