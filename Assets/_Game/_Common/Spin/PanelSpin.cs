@@ -17,6 +17,7 @@ public class PanelSpin : UIPanel
     [SerializeField] bool stopClicked;
     [SerializeField] float stopCounter;
     float stopCooldow = 2.5f;
+    [SerializeField] GameObject blocker;
 
     [SerializeField] SpinState spinState;
     float defaultSpinSpeed = 25f;
@@ -93,6 +94,7 @@ public class PanelSpin : UIPanel
         selectedSlide = GameManager.Instance.spinManager.OnSpin();
         stopClicked = false;
         stopCounter = stopCooldow;
+        blocker.SetActive(true);
     }
 
     void OnSpinToMax()
@@ -151,6 +153,7 @@ public class PanelSpin : UIPanel
 
     void CheckResult()
     {
+        blocker.SetActive(false);
         float stopAngle = dynamicSpinWheel.eulerAngles.z;
         stopAngle = stopAngle % 360;
         int index = 0;

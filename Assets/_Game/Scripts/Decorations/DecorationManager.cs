@@ -43,4 +43,9 @@ public class DecorationManager : MonoBehaviour
             panelDecorations = UIManager.instance.GetPanel(UIPanelType.PanelDecorations).GetComponent<PanelDecorations>();
         panelDecorations.InitDecorationData(type, true);
     }
+
+    public void ShowComponent(DecorationType decorationType)
+    {
+        decorationComponent.ShowComponent(decorationType);
+    }
 }

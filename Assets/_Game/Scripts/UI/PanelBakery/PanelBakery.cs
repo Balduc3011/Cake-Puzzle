@@ -13,12 +13,22 @@ public class PanelBakery : UIPanel
     [SerializeField] List<UsingCake> usingCakeList;
     [SerializeField] Transform usingCakeContainer;
 
-
+    bool inited = false;
     public override void Awake()
     {
         panelType = UIPanelType.PanelBakery;
         base.Awake();
+    }
+
+    private void Start()
+    {
         InitCakes();
+    }
+
+    private void OnEnable()
+    {
+        if(inited)
+            ReloadPanel();
     }
 
     void InitCakes()
@@ -37,6 +47,7 @@ public class PanelBakery : UIPanel
             inventoryCakeList.Add(cake);
             cake.Init(cakeDatas[i]);
         }
+        inited = true;
     }
 
     public void RemoveUsingCake(UsingCake cake)

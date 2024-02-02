@@ -1,12 +1,15 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class InventoryCake : MonoBehaviour
 {
     CakeData cakeData;
+    [SerializeField] TextMeshProUGUI cakeNameTxt;
+    [SerializeField] TextMeshProUGUI cakePointTxt;
     [SerializeField] Button button;
     [SerializeField] Image onIconImg;
     [SerializeField] Image offIconImg;
@@ -15,6 +18,12 @@ public class InventoryCake : MonoBehaviour
     void Start()
     {
         button.onClick.AddListener(OnCakeClick);
+    }
+
+    private void OnEnable()
+    {
+        if(cakeData != null)
+            InitUsing();
     }
 
     void OnCakeClick()
@@ -39,6 +48,8 @@ public class InventoryCake : MonoBehaviour
         this.cakeData = cakeData;
         onIconImg.sprite = cakeData.icon;
         offIconImg.sprite = cakeData.icon;
+        cakeNameTxt.text = "Cake " + cakeData.id.ToString();
+        cakePointTxt.text = cakeData.id.ToString();
         InitUsing();
     }
 

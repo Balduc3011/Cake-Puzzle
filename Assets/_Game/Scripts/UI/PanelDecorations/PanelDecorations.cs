@@ -26,6 +26,7 @@ public class PanelDecorations : UIPanel
         InitDecorationData(DecorationType.Table);
         selectedNavBtn = decorNavButtonList[0];
         decorNavButtonList[0].SelectBtn(true);
+        GameManager.Instance.decorationManager.ShowComponent(DecorationType.Table);
     }
 
     public void SetSelectedNavBtn(DecorNavButton selectedNavBtn)
@@ -49,6 +50,7 @@ public class PanelDecorations : UIPanel
                 DecorSlotUI decorSlotUI = GetDecorSlotUI();
                 decorSlotUI.InitSlot(currentDecoration, dataList.decorationDatas[i]);
             }
+            GameManager.Instance.decorationManager.ShowComponent(currentDecoration);
         }
     }
 
