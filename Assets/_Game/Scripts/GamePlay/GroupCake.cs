@@ -47,7 +47,7 @@ public class GroupCake : MonoBehaviour
 
     private void Update()
     {
-        if (onFollow) { 
+        if (onFollow && !GameManager.Instance.cakeManager.onCheckLooseGame) { 
             for (int i = 0;i < cake.Count;i++) {
                 if (cake[i].gameObject.activeSelf) cake[i].CheckOnMouse();
             }
