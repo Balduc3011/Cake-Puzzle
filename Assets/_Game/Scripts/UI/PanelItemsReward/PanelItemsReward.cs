@@ -33,6 +33,7 @@ public class PanelItemsReward : UIPanel
         titleTrs.DOScaleX(1, 0.25f);
         DisableOldItem();
         InitReward();
+        transform.SetAsLastSibling();
     }
 
     void InitReward()

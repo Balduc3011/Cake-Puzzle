@@ -10,6 +10,7 @@ public class DecorationManager : MonoBehaviour
     public void StartCamera(bool start)
     {
         decorationComponent.StartCamera(start);
+        GameManager.Instance.cameraManager.mainCamera.gameObject.SetActive(!start);
     }
 
     public bool IsOwned(DecorationType type, int id)
