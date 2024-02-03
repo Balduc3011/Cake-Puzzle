@@ -6,11 +6,13 @@ public class DecorationManager : MonoBehaviour
 {
     PanelDecorations panelDecorations;
     public DecorationComponent decorationComponent;
+    public Transform floorDecorSpawnContainer;
 
     public void StartCamera(bool start)
     {
         decorationComponent.StartCamera(start);
         GameManager.Instance.cameraManager.mainCamera.gameObject.SetActive(!start);
+        GameManager.Instance.cameraManager.ShowRoomCamera(!start);
     }
 
     public bool IsOwned(DecorationType type, int id)
@@ -48,5 +50,10 @@ public class DecorationManager : MonoBehaviour
     public void ShowComponent(DecorationType decorationType)
     {
         decorationComponent.ShowComponent(decorationType);
+    }
+
+    public void SpawnFloorDecoration()
+    {
+
     }
 }

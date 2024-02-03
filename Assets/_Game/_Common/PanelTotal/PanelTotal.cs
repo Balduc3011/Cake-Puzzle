@@ -9,6 +9,7 @@ using UnityEngine.UI;
 
 public class PanelTotal : UIPanel
 {
+    public RectTransform subTopRect;
     [SerializeField] UIPanelShowUp uiPanelShowUp;
     public Transform Transform;
     [SerializeField] Button playBtn;
@@ -39,6 +40,26 @@ public class PanelTotal : UIPanel
         base.Awake();
         EventManager.AddListener(EventName.ChangeExp.ToString(), ChangeExp);
         //backGround = UIManager.instance.backGround;
+        CheckSubScreenObstacleBase();
+    }
+
+    void CheckSubScreenObstacleBase()
+    {
+        if (subTopRect == null)
+        {
+            return;
+        }
+        float screenRatio = (float)Screen.height / (float)Screen.width;
+        if (screenRatio > 2.1f) // Now we got problem 
+        {
+            subTopRect.sizeDelta = new Vector2(0, -100);
+            subTopRect.anchoredPosition = new Vector2(0, -50);
+        }
+        else
+        {
+            subTopRect.sizeDelta = new Vector2(0, 0);
+            subTopRect.anchoredPosition = new Vector2(0, 0);
+        }
     }
 
     float currentExp= 0;

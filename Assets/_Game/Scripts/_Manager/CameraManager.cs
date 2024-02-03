@@ -115,6 +115,21 @@ public class CameraManager : MonoBehaviour
         mainCamera.gameObject.SetActive(true);
         if (currentShowRoom != null) currentShowRoom.CloseCamera();
     }
+
+    public void ShowRoomCamera(bool show)
+    {
+        if (currentShowRoom != null)
+        {
+            if(show)
+            {
+                currentShowRoom.ShowCamera();
+            }
+            else
+            {
+                currentShowRoom.CloseCamera();
+            }
+        }
+    }
 }
 
 [System.Serializable]

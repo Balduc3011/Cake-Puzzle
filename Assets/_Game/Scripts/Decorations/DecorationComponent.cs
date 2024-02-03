@@ -8,6 +8,12 @@ public class DecorationComponent : MonoBehaviour
     [SerializeField] Camera decorationCamera;
     [SerializeField] List<DecorationComponentInfo> decorations;
 
+    private void Start()
+    {
+        SpawnDecoration(DecorationType.Floor, 0);
+        SpawnDecoration(DecorationType.Plate, 3);
+    }
+
     public void StartCamera(bool start)
     {
         decorationCamera.gameObject.SetActive(start);
@@ -32,6 +38,25 @@ public class DecorationComponent : MonoBehaviour
         }
         return null;
     }
+
+    public GameObject SpawnDecoration(DecorationType decorationType, int decorId)
+    {
+        DecorationComponentInfo decorationComponentInfo = GetDecorationComponentInfo(decorationType);
+        GameObject newDecor = Instantiate(Resources.Load("Decoration/" + decorationType.ToString() + "/" + decorId.ToString()) as GameObject, decorationComponentInfo.spawnContainer);
+        decorationComponentInfo.objectDecoration.Add(decorId, newDecor);
+        return newDecor;
+    }
+
+    public GameObject GetDecorationObject(DecorationType decorationType, int decorId)
+    {
+        DecorationComponentInfo decorationComponentInfo = GetDecorationComponentInfo(decorationType);
+        GameObject decorObj = decorationComponentInfo.objectDecoration[decorId];
+        if (decorObj == null) 
+        {
+            decorObj = SpawnDecoration(decorationType, decorId);
+        }
+        return decorObj;
+    }
 }
 
 [System.Serializable]
@@ -39,6 +64,10 @@ public class DecorationComponentInfo
 {
     public DecorationType decorationType;
     public GameObject decorationObj;
+    public Transform spawnContainer;
     public Transform toMoveCamPosition;
     public float zoomSize;
+    public Dictionary<int, GameObject> objectDecoration = new Dictionary<int, GameObject>();
+
+    
 }
