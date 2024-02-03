@@ -387,7 +387,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 6200827891118500824}
   m_RootOrder: 0
@@ -979,7 +979,6 @@ MonoBehaviour:
   commonContent: {fileID: 7121226521229171834}
   mainMenuContent: {fileID: 5540636385591553070}
   navBarContent: {fileID: 5146549181539866706}
-  backGround: {fileID: 0}
   objBlockAll: {fileID: 1085087180}
   txtCurrentLevel: {fileID: 6146157908449335212}
   txtCurrentExp: {fileID: 6146157908711204822}
@@ -2172,6 +2171,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemType: 2
   amountTxt: {fileID: 1152320068402186343}
+  myAnim: {fileID: 7696727530921891627}
 --- !u!95 &7696727530921891627
 Animator:
   serializedVersion: 5
@@ -2182,7 +2182,7 @@ Animator:
   m_GameObject: {fileID: 5327429066390967943}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0dfa950827e317b46b5152e2aba76f1a, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

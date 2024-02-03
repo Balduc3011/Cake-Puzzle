@@ -68,9 +68,11 @@ public class CakeManager : MonoBehaviour
     GroupCake groupCake;
     public List<float> countCake = new List<float>();
     int indexGroupCake;
+    bool onInitGroup;
     public void InitGroupCake() {
         SetCountPieces();
         indexGroupCake = 0;
+        onInitGroup = true;
         StartCoroutine(IE_WaitToInitGroupCake());
     }
 
@@ -85,6 +87,7 @@ public class CakeManager : MonoBehaviour
             yield return new WaitForSeconds(.25f);
             indexGroupCake++;
         }
+        onInitGroup = false;
         Debug.Log("Check onInit group done");
         CheckLooseGame(true);
     }
@@ -188,14 +191,17 @@ public class CakeManager : MonoBehaviour
     public void StartCheckLoseGame()
     {
         if (cakesWait.Count > 0) {
-            Debug.Log("Check on move done");
-            CheckLooseGame(false);
+            DOVirtual.DelayedCall(.5f, () => {
+                Debug.Log("Check on move done");
+                CheckLooseGame(false);
+            });
+        
         }
         //Debug.Log( countFaild == cakesWait.Count);
     }
     int countCheckFaild;
     void CheckLooseGame(bool isCheckOnInit = false) {
-        if (cakesWait.Count == 0) return;
+        if (cakesWait.Count == 0 || onInitGroup) return;
         onCheckLooseGame = true;
         countCheckFaild = isCheckOnInit ? 3 : cakesWait.Count;
         countFaild = 0;

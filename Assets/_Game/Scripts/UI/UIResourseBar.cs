@@ -7,6 +7,7 @@ public class UIResourseBar : MonoBehaviour
 {
     [SerializeField] ItemType itemType;
     [SerializeField] TextMeshProUGUI amountTxt;
+    [SerializeField] Animator myAnim;
     void Start()
     {
         switch (itemType)
@@ -50,5 +51,6 @@ public class UIResourseBar : MonoBehaviour
             default:
                 break;
         }
+        myAnim.SetTrigger("Active");
     }
 }

@@ -278,12 +278,14 @@ public class Table : MonoBehaviour
             {
                 if (positionSecondCake == -1)
                 {
+                    Debug.Log(i + " " + j + " " + plateArray[i, j].currentCake);
                     if (plateArray[i, j].currentCake == null && plateArray[i - 1, j].currentCake == null)
                     {
                         return true;
                     }
                 }
                 else {
+                    Debug.Log(i+" "+j+" "+ plateArray[i, j].currentCake);
                     if (plateArray[i, j].currentCake == null && plateArray[i, j + 1].currentCake == null)
                     {
                         return true;

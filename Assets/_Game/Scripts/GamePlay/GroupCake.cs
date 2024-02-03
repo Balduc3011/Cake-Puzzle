@@ -91,9 +91,11 @@ public class GroupCake : MonoBehaviour
         {
             cake[i].DropDone();
         }
+        timeCheck = 0;
         DOVirtual.DelayedCall(.15f, CheckNextCake);
     }
     int indexCake;
+    int timeCheck;
     void CheckNextCake() {
         indexCake++;
         ClearCake();
@@ -104,11 +106,20 @@ public class GroupCake : MonoBehaviour
             GameManager.Instance.cakeManager.StartCheckCake(cake[indexCake], CheckNextCake);
         }
         else {
-            GameManager.Instance.cakeManager.table.SaveCake();
-            GameManager.Instance.cakeManager.SetOnMove(false);
-            GameManager.Instance.cakeManager.RemoveCakeWait(this);
-            GameManager.Instance.cakeManager.StartCheckLoseGame();
-            GameManager.Instance.cakeManager.CheckSpawnCakeGroup();
+
+            timeCheck++;
+            if (timeCheck == 3)
+            {
+                GameManager.Instance.cakeManager.table.SaveCake();
+                GameManager.Instance.cakeManager.SetOnMove(false);
+                GameManager.Instance.cakeManager.RemoveCakeWait(this);
+                GameManager.Instance.cakeManager.StartCheckLoseGame();
+                GameManager.Instance.cakeManager.CheckSpawnCakeGroup();
+            }
+            else {
+                indexCake = -1;
+                CheckNextCake();
+            }
         }
     }
 

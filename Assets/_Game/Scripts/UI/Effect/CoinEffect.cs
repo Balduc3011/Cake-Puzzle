@@ -20,10 +20,8 @@ public class CoinEffect : MonoBehaviour
             DOVirtual.DelayedCall(.5f, () => {
                 effectMove.PrepareToMove(transform.position, target, () => {
                     EffectAdd trsExpEffect = GameManager.Instance.objectPooling.GetEffectExp();
-                    trsExpEffect.SetActionCallBack(() => {
-                        EventManager.TriggerEvent(EventName.ChangeCoin.ToString());
-                    });
                     trsExpEffect.transform.position = target.position;
+                    EventManager.TriggerEvent(EventName.ChangeCoin.ToString());
                     Destroy(gameObject); 
                 });
             });

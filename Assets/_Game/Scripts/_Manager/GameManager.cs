@@ -32,6 +32,8 @@ public class GameManager : Singleton<GameManager>
     {
         UIManager.instance.ClosePanelPlayGame();
         UIManager.instance.panelTotal.BackToMenu();
+        cameraManager.ShowARoom(0);
+        cameraManager.CloseMainCamera();
         playing = false;
     }
 
