@@ -47,7 +47,7 @@ public class GroupCake : MonoBehaviour
 
     private void Update()
     {
-        if (onFollow) { 
+        if (onFollow && !GameManager.Instance.cakeManager.onCheckLooseGame) { 
             for (int i = 0;i < cake.Count;i++) {
                 if (cake[i].gameObject.activeSelf) cake[i].CheckOnMouse();
             }
@@ -89,13 +89,7 @@ public class GroupCake : MonoBehaviour
 
         for (int i = 0; i < cake.Count; i++)
         {
-            if (cake[i].gameObject.activeSelf)
-            {
-                if (i == cake.Count - 1)
-                    cake[i].DropDone();
-                else
-                    cake[i].DropDone();
-            }
+            cake[i].DropDone();
         }
         DOVirtual.DelayedCall(.15f, CheckNextCake);
     }
@@ -114,6 +108,7 @@ public class GroupCake : MonoBehaviour
             GameManager.Instance.cakeManager.SetOnMove(false);
             GameManager.Instance.cakeManager.RemoveCakeWait(this);
             GameManager.Instance.cakeManager.StartCheckLoseGame();
+            GameManager.Instance.cakeManager.CheckSpawnCakeGroup();
         }
     }
 

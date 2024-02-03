@@ -10,7 +10,7 @@ using Unity.VisualScripting;
 public class UIManager : MonoBehaviour {
     public static UIManager instance;
     [SerializeField] Transform mainCanvas;
-    public GameObject backGround;
+    //public GameObject backGround;
     Dictionary<UIPanelType, GameObject> listPanel = new Dictionary<UIPanelType, GameObject>();
     public bool isHasPopupOnScene = false;
     public bool isHasTutorial = false;

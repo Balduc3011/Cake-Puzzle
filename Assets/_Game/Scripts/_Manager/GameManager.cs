@@ -17,7 +17,10 @@ public class GameManager : Singleton<GameManager>
     public ItemManager itemManager;
     public LightManager lightManager;
     public List<ItemData> rewardItems;
-
+    private void Start()
+    {
+        cameraManager.ShowARoom(0);
+    }
     public void PlayGame()
     {
         UIManager.instance.ShowPanelPlayGame();
