@@ -47,7 +47,6 @@ public class ItemManager : MonoBehaviour
         GameManager.Instance.cameraManager.UsingItemMode();
         GameManager.Instance.lightManager.UsingItemMode();
         panelUsingItem.OnUsingItem(itemType);
-        ProfileManager.Instance.playerData.playerResourseSave.UsingItem(itemType);
     }
 
     public void UsingItemDone() {

@@ -122,6 +122,8 @@ public class Bomb : MonoBehaviour
         GameManager.Instance.cakeManager.table.ClearPlateByBomb(plateIndex.indexX + 1, plateIndex.indexY + 1);
 
         GameManager.Instance.itemManager.UsingItemDone();
+
+        ProfileManager.Instance.playerData.playerResourseSave.UsingItem(ItemType.Bomb);
     }
 
     IEnumerator WaitBombUsing() { 

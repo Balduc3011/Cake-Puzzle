@@ -47,7 +47,7 @@ public class GroupCake : MonoBehaviour
 
     private void Update()
     {
-        if (onFollow) { 
+        if (onFollow && !GameManager.Instance.cakeManager.onCheckLooseGame) { 
             for (int i = 0;i < cake.Count;i++) {
                 if (cake[i].gameObject.activeSelf) cake[i].CheckOnMouse();
             }
@@ -89,17 +89,13 @@ public class GroupCake : MonoBehaviour
 
         for (int i = 0; i < cake.Count; i++)
         {
-            if (cake[i].gameObject.activeSelf)
-            {
-                if (i == cake.Count - 1)
-                    cake[i].DropDone();
-                else
-                    cake[i].DropDone();
-            }
+            cake[i].DropDone();
         }
+        timeCheck = 0;
         DOVirtual.DelayedCall(.15f, CheckNextCake);
     }
     int indexCake;
+    int timeCheck;
     void CheckNextCake() {
         indexCake++;
         ClearCake();
@@ -110,10 +106,20 @@ public class GroupCake : MonoBehaviour
             GameManager.Instance.cakeManager.StartCheckCake(cake[indexCake], CheckNextCake);
         }
         else {
-            GameManager.Instance.cakeManager.table.SaveCake();
-            GameManager.Instance.cakeManager.SetOnMove(false);
-            GameManager.Instance.cakeManager.RemoveCakeWait(this);
-            GameManager.Instance.cakeManager.StartCheckLoseGame();
+
+            timeCheck++;
+            if (timeCheck == 3)
+            {
+                GameManager.Instance.cakeManager.table.SaveCake();
+                GameManager.Instance.cakeManager.SetOnMove(false);
+                GameManager.Instance.cakeManager.RemoveCakeWait(this);
+                GameManager.Instance.cakeManager.StartCheckLoseGame();
+                GameManager.Instance.cakeManager.CheckSpawnCakeGroup();
+            }
+            else {
+                indexCake = -1;
+                CheckNextCake();
+            }
         }
     }
 

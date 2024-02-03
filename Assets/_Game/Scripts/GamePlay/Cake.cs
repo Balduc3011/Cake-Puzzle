@@ -148,9 +148,11 @@ public class Cake : MonoBehaviour
         return false;
     }
 
+    bool onDrop;
     public void DropDone() {
-        transform.position = currentPlate.pointStay.position;
+        onDrop = true;
         transform.parent = currentPlate.pointStay;
+        transform.DOLocalMove(Vector3.zero, .1f);
         //ProfileManager.Instance.playerData.cakeSaveData.SaveCake(currentPlate.GetPlateIndex(), this);
     }
 
@@ -167,6 +169,7 @@ public class Cake : MonoBehaviour
     [SerializeField] LayerMask mask;
     [SerializeField] Vector3 vectorCheckOffset;
     public void CheckOnMouse() {
+        if (onDrop) return;
         if (Physics.SphereCast(transform.position, radiusCheck, -transform.up * .1f+ vectorCheckOffset, out hitInfor))
         {
             if (hitInfor.collider.gameObject.layer == 6)

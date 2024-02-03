@@ -20,6 +20,7 @@ public class CakeManager : MonoBehaviour
     Vector3 currentPos;
     bool haveMoreThan3Cake;
     public float posYDefault;
+    public bool onCheckLooseGame;
     public bool onMove;
 
     public CakeShowComponent cakeShowComponent;
@@ -67,9 +68,11 @@ public class CakeManager : MonoBehaviour
     GroupCake groupCake;
     public List<float> countCake = new List<float>();
     int indexGroupCake;
+    bool onInitGroup;
     public void InitGroupCake() {
         SetCountPieces();
         indexGroupCake = 0;
+        onInitGroup = true;
         StartCoroutine(IE_WaitToInitGroupCake());
     }
 
@@ -84,13 +87,19 @@ public class CakeManager : MonoBehaviour
             yield return new WaitForSeconds(.25f);
             indexGroupCake++;
         }
-        CheckLooseGame();
+        onInitGroup = false;
+        Debug.Log("Check onInit group done");
+        CheckLooseGame(true);
     }
 
     public void RemoveCakeWait(GroupCake gCake)
     {
         ProfileManager.Instance.playerData.cakeSaveData.RemoveCakeWait(gCake.groupCakeIndex);
         cakesWait.Remove(gCake);
+    }
+
+    public void CheckSpawnCakeGroup()
+    {
         if (cakesWait.Count <= 0) { InitGroupCake(); }
     }
 
@@ -181,11 +190,20 @@ public class CakeManager : MonoBehaviour
     int countFaild;
     public void StartCheckLoseGame()
     {
-        if (cakesWait.Count > 0) { DOVirtual.DelayedCall(.5f, CheckLooseGame); }
+        if (cakesWait.Count > 0) {
+            DOVirtual.DelayedCall(.5f, () => {
+                Debug.Log("Check on move done");
+                CheckLooseGame(false);
+            });
+        
+        }
         //Debug.Log( countFaild == cakesWait.Count);
     }
-
-    void CheckLooseGame() {
+    int countCheckFaild;
+    void CheckLooseGame(bool isCheckOnInit = false) {
+        if (cakesWait.Count == 0 || onInitGroup) return;
+        onCheckLooseGame = true;
+        countCheckFaild = isCheckOnInit ? 3 : cakesWait.Count;
         countFaild = 0;
         for (int i = 0; i < cakesWait.Count; i++)
         {
@@ -200,12 +218,14 @@ public class CakeManager : MonoBehaviour
                     countFaild++;
             }
         }
-        if (countFaild == cakesWait.Count)
+        if (countFaild == countCheckFaild && countFaild > 0)
         {
+            Debug.Log(countFaild + " " + countCheckFaild);
             Debug.Log("Loose game");
 
             UIManager.instance.ShowPanelLevelComplete();
         }
+        onCheckLooseGame = false;
     }
 
     public Mesh GetNewUnlockedCakePieceMesh()
@@ -263,7 +283,8 @@ public class CakeManager : MonoBehaviour
         if (ProfileManager.Instance.playerData.cakeSaveData.IsHaveCakeWaitSave())
         {
             LoadCakeWaitData();
-            CheckLooseGame();
+            Debug.Log("Check on first game");
+            CheckLooseGame(true);
         }
         else { 
             InitGroupCake();
@@ -273,6 +294,7 @@ public class CakeManager : MonoBehaviour
         {
             LoadCakeOnPlate();
         }
+        //CheckLooseGame();
         loaded = true;
     }
     List<CakeOnWait> cakeOnWaits = new List<CakeOnWait>();

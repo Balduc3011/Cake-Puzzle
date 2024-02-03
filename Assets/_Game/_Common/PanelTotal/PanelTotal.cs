@@ -24,7 +24,7 @@ public class PanelTotal : UIPanel
     [SerializeField] GameObject commonContent;
     [SerializeField] GameObject mainMenuContent;
     [SerializeField] GameObject navBarContent;
-    [SerializeField] GameObject backGround;
+    //[SerializeField] GameObject backGround;
     [SerializeField] GameObject objBlockAll;
     [SerializeField] TextMeshProUGUI txtCurrentLevel;
     [SerializeField] TextMeshProUGUI txtCurrentExp;
@@ -38,7 +38,7 @@ public class PanelTotal : UIPanel
         panelType = UIPanelType.PanelTotal;
         base.Awake();
         EventManager.AddListener(EventName.ChangeExp.ToString(), ChangeExp);
-        backGround = UIManager.instance.backGround;
+        //backGround = UIManager.instance.backGround;
     }
 
     float currentExp= 0;
@@ -114,17 +114,18 @@ public class PanelTotal : UIPanel
     void PlayGame()
     {
         GameManager.Instance.cameraManager.FirstCamera();
+        GameManager.Instance.cameraManager.OpenMainCamera();
         GameManager.Instance.PlayGame();
         navBarContent.SetActive(false);
         mainMenuContent.SetActive(false);
-        backGround.SetActive(false);
+        //backGround.SetActive(false);
     }
 
     public void BackToMenu()
     {
         navBarContent.SetActive(true);
         mainMenuContent.SetActive(true);
-        backGround.SetActive(true);
+        //backGround.SetActive(true);
     }
 
     void ShowPanelSetting()
