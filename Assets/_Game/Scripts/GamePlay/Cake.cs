@@ -23,6 +23,14 @@ public class Cake : MonoBehaviour
     [SerializeField] Vector3 vectorOffsetExp;
     [SerializeField] float scaleDefault;
 
+    [SerializeField] Transform spawnContainer;
+    public Dictionary<int, GameObject> objectDecoration = new Dictionary<int, GameObject>();
+
+    private void Start()
+    {
+        EventManager.AddListener(EventName.ChangePlateDecor.ToString(), UpdatePlateDecor);
+    }
+
     public void InitData() {
         transform.DOScale(scaleDefault, .5f).From(1.2f).SetEase(Ease.InOutBack);
         totalPieces = GameManager.Instance.cakeManager.GetPiecesTotal() + 1;
@@ -33,6 +41,7 @@ public class Cake : MonoBehaviour
         {
             InitPiecesSame(pieceCakeIDCount[i], pieceCakeID[i]);
         }
+        UpdatePlateDecor();
     }
 
     public void InitData(CakeSave cakeSaveData) {
@@ -44,6 +53,7 @@ public class Cake : MonoBehaviour
         {
             InitPiecesSame(pieceCakeIDCount[i], pieceCakeID[i]);
         }
+        UpdatePlateDecor();
     }
 
     public void InitData(List<int> cakeIDs) {
@@ -57,6 +67,7 @@ public class Cake : MonoBehaviour
             pieces.Add(newPiece);
             InitPiece(i, cakeIDs[i]);
         }
+        UpdatePlateDecor();
     }
 
 
@@ -370,5 +381,30 @@ public class Cake : MonoBehaviour
         ProfileManager.Instance.playerData.playerResourseSave.AddMoney(10);
         Destroy(gameObject);
         //DOVirtual.DelayedCall(.25f, () => { Destroy(gameObject); });
+    }
+
+    public void UpdatePlateDecor()
+    {
+        int allPlateCount = ProfileManager.Instance.dataConfig.decorationDataConfig.GetDecorationDataList(DecorationType.Plate).decorationDatas.Count;
+        int currentId = ProfileManager.Instance.playerData.decorationSave.GetUsingDecor(DecorationType.Plate);
+        for (int i = 0; i < allPlateCount; i++)
+        {
+            if (objectDecoration.ContainsKey(i))
+            {
+                if(i != currentId)
+                {
+                    objectDecoration[i].SetActive(false);
+                }
+                else
+                {
+                    objectDecoration[i].SetActive(true);
+                }
+            }
+        }
+        if (!objectDecoration.ContainsKey(currentId))
+        {
+            GameObject newDecor = Instantiate(Resources.Load("Decoration/Plate/" + currentId.ToString()) as GameObject, spawnContainer);
+            objectDecoration.Add(currentId, newDecor);
+        }   
     }
 }

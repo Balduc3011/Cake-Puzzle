@@ -6,7 +6,15 @@ public class DecorationManager : MonoBehaviour
 {
     PanelDecorations panelDecorations;
     public DecorationComponent decorationComponent;
-    public Transform floorDecorSpawnContainer;
+
+    public Dictionary<int, GameObject> floorObjectDecoration = new Dictionary<int, GameObject>();
+    public Transform spawnContainer;
+
+    private void Start()
+    {
+        UpdateFloorDecor();
+        EventManager.AddListener(EventName.ChangeFloorDecor.ToString(), UpdateFloorDecor);
+    }
 
     public void StartCamera(bool start)
     {
@@ -31,6 +39,26 @@ public class DecorationManager : MonoBehaviour
         if (panelDecorations == null)
             panelDecorations = UIManager.instance.GetPanel(UIPanelType.PanelDecorations).GetComponent<PanelDecorations>();
         panelDecorations.InitDecorationData(type, true);
+        decorationComponent.InitDecoration(type);
+        switch (type)
+        {
+            case DecorationType.None:
+                break;
+            case DecorationType.Table:
+                EventManager.TriggerEvent(EventName.ChangeTableDecor.ToString());
+                break;
+            case DecorationType.Plate:
+                EventManager.TriggerEvent(EventName.ChangePlateDecor.ToString());
+                break;
+            case DecorationType.Floor:
+                EventManager.TriggerEvent(EventName.ChangeFloorDecor.ToString());
+                break;
+            case DecorationType.Effect:
+                break;
+            default:
+                break;
+        }
+        
     }
 
     public void BuyDecor(DecorationType type, int id)
@@ -52,8 +80,28 @@ public class DecorationManager : MonoBehaviour
         decorationComponent.ShowComponent(decorationType);
     }
 
-    public void SpawnFloorDecoration()
+    public void UpdateFloorDecor()
     {
-
+        int allPlateCount = ProfileManager.Instance.dataConfig.decorationDataConfig.GetDecorationDataList(DecorationType.Floor).decorationDatas.Count;
+        int currentId = ProfileManager.Instance.playerData.decorationSave.GetUsingDecor(DecorationType.Floor);
+        for (int i = 0; i < allPlateCount; i++)
+        {
+            if (floorObjectDecoration.ContainsKey(i))
+            {
+                if (i != currentId)
+                {
+                    floorObjectDecoration[i].SetActive(false);
+                }
+                else
+                {
+                    floorObjectDecoration[i].SetActive(true);
+                }
+            }
+        }
+        if (!floorObjectDecoration.ContainsKey(currentId))
+        {
+            GameObject newDecor = Instantiate(Resources.Load("Decoration/Floor/" + currentId.ToString()) as GameObject, spawnContainer);
+            floorObjectDecoration.Add(currentId, newDecor);
+        }
     }
 }

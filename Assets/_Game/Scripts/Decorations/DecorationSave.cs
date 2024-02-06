@@ -89,4 +89,16 @@ public class DecorationSave : SaveBase
             }
         }
     }
+
+    public int GetUsingDecor(DecorationType type)
+    {
+        for (int i = 0; i < ownedDecorationDatas.Count; i++)
+        {
+            if (ownedDecorationDatas[i].decorationType == type)
+            {
+                return ownedDecorationDatas[i].usingId;
+            }
+        }
+        return 0;
+    }
 }

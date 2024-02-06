@@ -10,8 +10,9 @@ public class DecorationComponent : MonoBehaviour
 
     private void Start()
     {
-        SpawnDecoration(DecorationType.Floor, 0);
-        SpawnDecoration(DecorationType.Plate, 3);
+        InitDecoration(DecorationType.Table);
+        InitDecoration(DecorationType.Floor);
+        InitDecoration(DecorationType.Plate);
     }
 
     public void StartCamera(bool start)
@@ -39,9 +40,21 @@ public class DecorationComponent : MonoBehaviour
         return null;
     }
 
+    public void InitDecoration(DecorationType decorationType)
+    {
+        int usingDecorId = ProfileManager.Instance.playerData.decorationSave.GetUsingDecor(decorationType);
+        DecorationComponentInfo decorationComponentInfo = GetDecorationComponentInfo(decorationType);
+        if (decorationComponentInfo != null)
+        {
+            decorationComponentInfo.SetUpDecorationShow(usingDecorId);
+        }
+        GameObject newDecor = GetDecorationObject(decorationType, usingDecorId);
+    }
+
     public GameObject SpawnDecoration(DecorationType decorationType, int decorId)
     {
         DecorationComponentInfo decorationComponentInfo = GetDecorationComponentInfo(decorationType);
+
         GameObject newDecor = Instantiate(Resources.Load("Decoration/" + decorationType.ToString() + "/" + decorId.ToString()) as GameObject, decorationComponentInfo.spawnContainer);
         decorationComponentInfo.objectDecoration.Add(decorId, newDecor);
         return newDecor;
@@ -50,12 +63,13 @@ public class DecorationComponent : MonoBehaviour
     public GameObject GetDecorationObject(DecorationType decorationType, int decorId)
     {
         DecorationComponentInfo decorationComponentInfo = GetDecorationComponentInfo(decorationType);
-        GameObject decorObj = decorationComponentInfo.objectDecoration[decorId];
-        if (decorObj == null) 
+        if (decorationComponentInfo.objectDecoration.ContainsKey(decorId))
         {
-            decorObj = SpawnDecoration(decorationType, decorId);
+            decorationComponentInfo.objectDecoration[decorId].SetActive(true);
+            return decorationComponentInfo.objectDecoration[decorId];
         }
-        return decorObj;
+             
+        return SpawnDecoration(decorationType, decorId);
     }
 }
 
@@ -69,5 +83,15 @@ public class DecorationComponentInfo
     public float zoomSize;
     public Dictionary<int, GameObject> objectDecoration = new Dictionary<int, GameObject>();
 
-    
+    public void SetUpDecorationShow(int currentId)
+    {
+        int allPlateCount = ProfileManager.Instance.dataConfig.decorationDataConfig.GetDecorationDataList(decorationType).decorationDatas.Count;
+        for (int i = 0; i < allPlateCount; i++)
+        {
+            if(objectDecoration.ContainsKey(i) && i != currentId)
+            {
+                objectDecoration[i].SetActive(false);
+            }
+        }
+    }
 }

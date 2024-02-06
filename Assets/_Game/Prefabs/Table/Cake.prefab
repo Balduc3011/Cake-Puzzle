@@ -83,6 +83,7 @@ MonoBehaviour:
   vectorOffsetEffect: {x: 0, y: 0.5, z: 0}
   vectorOffsetExp: {x: 0, y: 30, z: 0}
   scaleDefault: 0.8
+  spawnContainer: {fileID: 8741631682399602288}
   mask:
     serializedVersion: 2
     m_Bits: 64
@@ -151,9 +152,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 28b79a392a12bd545a70524d3bb519a3, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 28b79a392a12bd545a70524d3bb519a3, type: 3}
       propertyPath: m_Name
-      value: plate
+      value: PlateSpawn
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28b79a392a12bd545a70524d3bb519a3, type: 3}
