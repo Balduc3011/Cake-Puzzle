@@ -24,9 +24,18 @@ public class PanelDecorations : UIPanel
     private void OnEnable()
     {
         InitDecorationData(DecorationType.Table);
+        InitSelectedTab();
+        GameManager.Instance.decorationManager.ShowComponent(DecorationType.Table);
+    }
+
+    void InitSelectedTab()
+    {
+        for (int i = 0; i < decorNavButtonList.Count; i++)
+        {
+            decorNavButtonList[i].SelectBtn(false);
+        }
         selectedNavBtn = decorNavButtonList[0];
         decorNavButtonList[0].SelectBtn(true);
-        GameManager.Instance.decorationManager.ShowComponent(DecorationType.Table);
     }
 
     public void SetSelectedNavBtn(DecorNavButton selectedNavBtn)

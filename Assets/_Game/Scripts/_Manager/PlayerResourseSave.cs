@@ -12,6 +12,7 @@ public class PlayerResourseSave : SaveBase
     public int trophy;
     public string lastFreeSpin;
     public string firstDay;
+    public string lastDay;
     public int dailyRewardedDay;
 
     public int currentLevel;
@@ -31,6 +32,7 @@ public class PlayerResourseSave : SaveBase
             trophy = data.trophy;
             lastFreeSpin = data.lastFreeSpin;
             firstDay = data.firstDay;
+            lastDay = data.lastDay;
             dailyRewardedDay = data.dailyRewardedDay;
             currentLevel = data.currentLevel;
             currentExp = data.currentExp;
@@ -96,7 +98,12 @@ public class PlayerResourseSave : SaveBase
             //if (span.Days >= dayIndex)
             if (DateTime.Now.Day - firstDayTime.Day >= dayIndex)
             {
-                return dayIndex == dailyRewardedDay;
+                if (!String.IsNullOrEmpty(lastDay))
+                {
+                    return dayIndex == dailyRewardedDay &&
+                        DateTime.Parse(lastDay).Date != DateTime.Now.Date;
+                }
+                return true;   
             }
             else return false;
 
@@ -124,6 +131,7 @@ public class PlayerResourseSave : SaveBase
     public void OnGetDailyReward()
     {
         dailyRewardedDay++;
+        lastDay = DateTime.Now.ToString();
         IsMarkChangeData();
         SaveData();
     }
