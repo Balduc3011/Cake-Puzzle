@@ -1,5 +1,6 @@
 using AssetKits.ParticleImage.Enumerations;
 using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,8 @@ public class PanelLevelComplete : UIPanel
     [SerializeField] Button btnExit;
     [SerializeField] Transform panelWrapTrs;
     [SerializeField] CanvasGroup bgCanvanGroup;
+    [SerializeField] GameObject objWinGame;
+    [SerializeField] GameObject objLooseGame;
     public override void Awake()
     {
         panelType = UIPanelType.PanelLevelComplete;
@@ -66,5 +69,11 @@ public class PanelLevelComplete : UIPanel
     void OnWinClose()
     {
         OnClose();
+    }
+
+    public void ShowPanel(bool isWinGame)
+    {
+        objLooseGame.SetActive(!isWinGame);
+        objWinGame.SetActive(isWinGame);
     }
 }

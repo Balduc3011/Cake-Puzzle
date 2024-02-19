@@ -88,7 +88,6 @@ public class CakeManager : MonoBehaviour
             indexGroupCake++;
         }
         onInitGroup = false;
-        Debug.Log("Check onInit group done");
         CheckLooseGame(true);
     }
 
@@ -159,7 +158,7 @@ public class CakeManager : MonoBehaviour
             {
                 //Debug.Log("=============START CHECK ID: " + currentCakeCheck.pieceCakeID[cakeIDIndex] + "==============");
                 //Debug.Log(currentCakeCheck.pieceCakeID.Count);
-                //Debug.Log("current id index: "+ cakeIDIndex);
+                //Debug.Log("current id index: " + cakeIDIndex);
                 //Debug.Log(currentCakeCheck.currentPlate);
                 table.ClearMapPlate(currentCakeCheck.pieceCakeID[cakeIDIndex]);
                 table.AddFirstPlate(currentCakeCheck.currentPlate);
@@ -192,7 +191,6 @@ public class CakeManager : MonoBehaviour
     {
         if (cakesWait.Count > 0) {
             DOVirtual.DelayedCall(.5f, () => {
-                Debug.Log("Check on move done");
                 CheckLooseGame(false);
             });
         
@@ -223,7 +221,7 @@ public class CakeManager : MonoBehaviour
             Debug.Log(countFaild + " " + countCheckFaild);
             Debug.Log("Loose game");
 
-            UIManager.instance.ShowPanelLevelComplete();
+            UIManager.instance.ShowPanelLevelComplete(false);
         }
         onCheckLooseGame = false;
     }

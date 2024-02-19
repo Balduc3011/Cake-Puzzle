@@ -273,6 +273,7 @@ public class Cake : MonoBehaviour
 
     public void RotateOtherPieceRight(int pieceIndex) {
         indexRotate = pieceIndex;
+        if (cakeDone) return;
         StartCoroutine(RotateOtherPieceRightWay());
        
     }
@@ -406,5 +407,10 @@ public class Cake : MonoBehaviour
             GameObject newDecor = Instantiate(Resources.Load("Decoration/Plate/" + currentId.ToString()) as GameObject, spawnContainer);
             objectDecoration.Add(currentId, newDecor);
         }   
+    }
+
+    public int GetPieceFree()
+    {
+        return 6 - pieces.Count;
     }
 }
