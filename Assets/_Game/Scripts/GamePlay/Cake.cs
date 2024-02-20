@@ -265,7 +265,7 @@ public class Cake : MonoBehaviour
         while (indexRotate < pieces.Count)
         {
             vectorRotateTo = new Vector3(0, rotates[indexRotate], 0);
-            pieces[indexRotate].transform.DORotate(vectorRotateTo, .25f).SetEase(curveRotate);
+            pieces[indexRotate].transform.DORotate(vectorRotateTo, .25f).SetEase(Ease.InOutSine);
             indexRotate++;
             yield return new WaitForSeconds(.15f);
         }
@@ -281,7 +281,7 @@ public class Cake : MonoBehaviour
     IEnumerator RotateOtherPieceRightWay() {
        while (indexRotate < pieces.Count) { 
             vectorRotateTo = new Vector3(0, rotates[indexRotate], 0);
-            pieces[indexRotate].transform.DORotate(vectorRotateTo, .25f).SetEase(curveRotate);
+            pieces[indexRotate].transform.DORotate(vectorRotateTo, .25f).SetEase(Ease.InOutSine);
             indexRotate++;
             yield return new WaitForSeconds(.15f);
         }

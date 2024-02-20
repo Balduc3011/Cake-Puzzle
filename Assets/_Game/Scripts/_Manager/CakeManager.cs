@@ -45,7 +45,7 @@ public class CakeManager : MonoBehaviour
                 return;
             }
             mousePos = Input.mousePosition;
-            mousePos.z = distance;
+            mousePos.z = Vector3.Distance(currentGCake.transform.position, Camera.main.transform.position);
             currentPos = Camera.main.ScreenToWorldPoint(mousePos) + vectorOffset;
             currentPos.y = posYDefault;
             currentGCake.transform.position = currentPos;
