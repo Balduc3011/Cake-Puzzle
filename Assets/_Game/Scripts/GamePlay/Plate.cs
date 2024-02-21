@@ -17,6 +17,8 @@ public class Plate : MonoBehaviour
     [SerializeField] Transform trsMove;
     [SerializeField] Vector3 pointMoveUp;
     [SerializeField] Vector3 pointMoveDown;
+    public int currentPieceSame;
+    public int currentSpace;
     private void Awake()
     {
         pointMoveUp = trsMove.position;
@@ -168,6 +170,11 @@ public class Plate : MonoBehaviour
 
     public void SetCountPieces(int countpieces) { currentPiecesCountGet = countpieces; }
     public void ResetPiecesCount() { currentPiecesCountGet = 0; }
+
+    public int GetPieceFree()
+    {
+        return currentCake.GetPieceFree();
+    }
 }
 [System.Serializable]
 public class PlateIndex {

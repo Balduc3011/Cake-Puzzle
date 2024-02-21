@@ -346,7 +346,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCanvas: {fileID: 517492293}
-  backGround: {fileID: 0}
   isHasPopupOnScene: 0
   isHasTutorial: 0
   isHasShopPanel: 0
@@ -355,6 +354,7 @@ MonoBehaviour:
   ingameDebugConsole: {fileID: 0}
   mainCamera: {fileID: 963194227}
   panelTotal: {fileID: 0}
+  panelGamePlay: {fileID: 0}
   isDoneFirstLoadPanel: 0
 --- !u!1 &592049714
 GameObject:
@@ -459,7 +459,10 @@ MonoBehaviour:
       IsChangeData: 0
     cakeSaveData:
       IsChangeData: 0
-      cakeID: 
+      cakeIDs: 
+      cakeIDUsing: 
+      cakeOnPlates: []
+      cakeOnWaits: []
     playerResourseSave:
       IsChangeData: 0
       coins:
@@ -469,16 +472,13 @@ MonoBehaviour:
       trophy: 0
       lastFreeSpin: 
       firstDay: 
+      lastDay: 
       dailyRewardedDay: 0
       currentLevel: 0
       currentExp: 0
     decorationSave:
       IsChangeData: 0
       ownedDecorationDatas: []
-    cakeSave:
-      IsChangeData: 0
-      ownedCakes: 
-      usingCake: 
   dataConfig:
     rateDataConfig: {fileID: 11400000, guid: 30dcfba3ba80b9845b3f3aec7591cbce, type: 2}
     levelDataConfig: {fileID: 0}
@@ -487,6 +487,7 @@ MonoBehaviour:
     spriteDataConfig: {fileID: 11400000, guid: 002208d3e2d65b649bba042b49503f42, type: 2}
     decorationDataConfig: {fileID: 11400000, guid: a20dd899958c35441aa0ea3d22d7fa58, type: 2}
     cakeDataConfig: {fileID: 11400000, guid: eefcf565fc29691429b628ec59749b28, type: 2}
+    itemDataConfig: {fileID: 0}
 --- !u!4 &604222128
 Transform:
   m_ObjectHideFlags: 0
@@ -648,6 +649,12 @@ MonoBehaviour:
   mainCameraInfo:
     position: {x: 0, y: 0, z: 0}
     zoomValue: 0
+  positionDefault: {x: 0, y: 0, z: 0}
+  positionUsingItem: {x: 0, y: 0, z: 0}
+  rotateCameraUsingItem: {x: 0, y: 0, z: 0}
+  rotateCameraDefault: {x: 0, y: 0, z: 0}
+  showRoomParents: {fileID: 0}
+  cameraSizeUsingItem: 0
 --- !u!114 &676604061
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -679,6 +686,8 @@ MonoBehaviour:
   spinManager: {fileID: 676604061}
   dailyRewardManager: {fileID: 676604063}
   decorationManager: {fileID: 676604064}
+  itemManager: {fileID: 0}
+  lightManager: {fileID: 0}
   rewardItems: []
 --- !u!114 &676604063
 MonoBehaviour:
@@ -704,6 +713,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 225389a6ac6661c488bf3cf77823bdf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  decorationComponent: {fileID: 0}
+  spawnContainer: {fileID: 0}
 --- !u!114 &676604065
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1222,7 +1233,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

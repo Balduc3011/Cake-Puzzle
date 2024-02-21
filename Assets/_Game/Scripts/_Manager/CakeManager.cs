@@ -45,7 +45,7 @@ public class CakeManager : MonoBehaviour
                 return;
             }
             mousePos = Input.mousePosition;
-            mousePos.z = distance;
+            mousePos.z = Vector3.Distance(currentGCake.transform.position, Camera.main.transform.position);
             currentPos = Camera.main.ScreenToWorldPoint(mousePos) + vectorOffset;
             currentPos.y = posYDefault;
             currentGCake.transform.position = currentPos;
@@ -88,7 +88,6 @@ public class CakeManager : MonoBehaviour
             indexGroupCake++;
         }
         onInitGroup = false;
-        Debug.Log("Check onInit group done");
         CheckLooseGame(true);
     }
 
@@ -151,15 +150,15 @@ public class CakeManager : MonoBehaviour
     }
 
     public void CheckIDOfCake() {
-        //Debug.Log("current id index: " + cakeIDIndex);
         cakeIDIndex++;
         if (cakeIDIndex < currentCakeCheck.pieceCakeID.Count)
         {
+            //Debug.Log("ID need check: "+ currentCakeCheck.pieceCakeID[cakeIDIndex]);
             if (CheckHaveCakeID(currentCakeCheck.pieceCakeID[cakeIDIndex]))
             {
                 //Debug.Log("=============START CHECK ID: " + currentCakeCheck.pieceCakeID[cakeIDIndex] + "==============");
                 //Debug.Log(currentCakeCheck.pieceCakeID.Count);
-                //Debug.Log("current id index: "+ cakeIDIndex);
+                //Debug.Log("current id index: " + cakeIDIndex);
                 //Debug.Log(currentCakeCheck.currentPlate);
                 table.ClearMapPlate(currentCakeCheck.pieceCakeID[cakeIDIndex]);
                 table.AddFirstPlate(currentCakeCheck.currentPlate);
@@ -171,7 +170,7 @@ public class CakeManager : MonoBehaviour
             else
             {
                 //Debug.Log("Check cake by call next cake");
-                actionCallBack();
+                CheckIDOfCake();
             }
         }
         else
@@ -192,7 +191,6 @@ public class CakeManager : MonoBehaviour
     {
         if (cakesWait.Count > 0) {
             DOVirtual.DelayedCall(.5f, () => {
-                Debug.Log("Check on move done");
                 CheckLooseGame(false);
             });
         
@@ -223,7 +221,7 @@ public class CakeManager : MonoBehaviour
             Debug.Log(countFaild + " " + countCheckFaild);
             Debug.Log("Loose game");
 
-            UIManager.instance.ShowPanelLevelComplete();
+            UIManager.instance.ShowPanelLevelComplete(false);
         }
         onCheckLooseGame = false;
     }

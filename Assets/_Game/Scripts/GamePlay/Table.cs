@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using DG.Tweening;
 using System.Linq;
+using UnityEditor.Experimental.GraphView;
 public class Table : MonoBehaviour
 {
     public List<Plate> plates = new List<Plate>();
@@ -32,6 +33,7 @@ public class Table : MonoBehaviour
     //List<Plate> plateNeedCheck = new List<Plate>();
 
     public List<Plate> mapPlate = new List<Plate>();
+    public List<Plate> mapWay = new List<Plate>();
 
     // 0 => right
     // 1 => left
@@ -125,6 +127,7 @@ public class Table : MonoBehaviour
         }
         if (mapPlate.Count > 1)
         {
+            //Debug.Log("Repeat check pieceID: " + currentCakeID);
             Plate plateCheck = mapPlate[0];
             ClearMapPlate(currentCakeID);
             AddFirstPlate(plateCheck);
@@ -164,7 +167,7 @@ public class Table : MonoBehaviour
             StartMove(cakeID);
             return;
         }
-        ways[stepIndex].Move(cakeID, curveRotate, curveMove, Move);
+        ways[stepIndex].Move(cakeID, curveRotate, curveMove, stepIndex == ways.Count - 1, Move);
     }
 
     public void StartCreateWay()
@@ -173,8 +176,54 @@ public class Table : MonoBehaviour
         bestPlate.wayPoint.setDone = true;
         currentPieces = 0;
         ways.Clear();
+        mapWay.Clear();
+        bestPlate.currentSpace = bestPlate.GetFreeSpace();
         SetNextWayPoint(bestPlate.GetPlateIndex());
+        CreateWayAfterSetNextPoint();
     }
+    int currentPlateIndex = 0;
+    void CreateWayAfterSetNextPoint()
+    {
+        if (!CheckDoneCreateWayMove()) { 
+            currentPlateIndex = 0;
+            CreateWayLoop();
+        }
+    }
+    bool CheckDoneCreateWayMove()
+    {
+        if (mapWay[mapWay.Count - 1].currentSpace == 0) return true;
+        for (int i = 0; i < mapWay.Count-1; i++) {
+            if (mapWay[i].currentPieceSame > 0)
+                return false;
+        }
+        return true;
+    }
+    void CreateWayLoop() {
+        while (currentPlateIndex < mapWay.Count - 1)
+        {
+            if (mapWay[currentPlateIndex].currentPieceSame > 0)
+            {
+                int wayCountLoop = 0;
+                int pieceFree = mapWay[currentPlateIndex].wayPoint.nextPlate.currentSpace;
+                int pieceSame = mapWay[currentPlateIndex].currentPieceSame;
+                if (pieceFree >= pieceSame) wayCountLoop = pieceSame;
+                else wayCountLoop = pieceFree;
+                for (int i = 0; i < wayCountLoop; i++)
+                {
+                    CreateWay(mapWay[currentPlateIndex]);
+                }
+                mapWay[currentPlateIndex].currentPieceSame -= wayCountLoop;
+                mapWay[currentPlateIndex].currentSpace += wayCountLoop;
+                mapWay[currentPlateIndex].wayPoint.nextPlate.currentPieceSame += wayCountLoop;
+                mapWay[currentPlateIndex].wayPoint.nextPlate.currentSpace -= wayCountLoop;
+
+               
+            }
+            currentPlateIndex++;
+        }
+        CreateWayAfterSetNextPoint();
+    }
+
     int piecesSame;
     public void SetNextWayPoint(PlateIndex plateIndex) {
 
@@ -189,11 +238,15 @@ public class Table : MonoBehaviour
 
         if ((plateIndex.indexY - 1) >= 0)
             CheckPlateCondition(plateArray[plateIndex.indexX, plateIndex.indexY], plateArray[plateIndex.indexX, plateIndex.indexY - 1]);
-        piecesSame = plateArray[plateIndex.indexX, plateIndex.indexY].currentPiecesCountGet;
-        for (int i = 0; i < piecesSame; i++)
-        {
-            CreateWay(plateArray[plateIndex.indexX, plateIndex.indexY]);
-        }
+
+        mapWay.Add(plateArray[plateIndex.indexX, plateIndex.indexY]);
+        //piecesSame = plateArray[plateIndex.indexX, plateIndex.indexY].currentPiecesCountGet;
+        //for (int i = 0; i < piecesSame; i++)
+        //{
+        //    CreateWay(plateArray[plateIndex.indexX, plateIndex.indexY]);
+        //}
+
+        //if (plateArray[plateIndex.indexX, plateIndex.indexY] == bestPlate) CreateWayAfterSetNextPoint();
 
     }
     public List<Way> ways = new List<Way>();
@@ -205,8 +258,8 @@ public class Table : MonoBehaviour
         newWay.plateCurrent = plateStart;
         newWay.plateGo = plateStart.wayPoint.nextPlate;
         ways.Add(newWay);
-        if (plateStart.wayPoint.nextPlate != bestPlate)
-            CreateWay(plateStart.wayPoint.nextPlate);
+        //if (plateStart.wayPoint.nextPlate != bestPlate)
+        //    CreateWay(plateStart.wayPoint.nextPlate);
     }
 
     void CheckPlateCondition(Plate plateCurrent, Plate plateSetNext) {
@@ -225,6 +278,8 @@ public class Table : MonoBehaviour
                     currentPieces = totalPieceMerge;
                 }
                 else currentPieces += pieceSame;
+                plateSetNext.currentPieceSame = pieceSame;
+                plateSetNext.currentSpace = plateSetNext.GetFreeSpace();
                 plateSetNext.SetCountPieces(pieceSame);
                 SetNextWayPoint(plateSetNext.GetPlateIndex());
             }
@@ -278,14 +333,12 @@ public class Table : MonoBehaviour
             {
                 if (positionSecondCake == -1)
                 {
-                    Debug.Log(i + " " + j + " " + plateArray[i, j].currentCake);
                     if (plateArray[i, j].currentCake == null && plateArray[i - 1, j].currentCake == null)
                     {
                         return true;
                     }
                 }
                 else {
-                    Debug.Log(i+" "+j+" "+ plateArray[i, j].currentCake);
                     if (plateArray[i, j].currentCake == null && plateArray[i, j + 1].currentCake == null)
                     {
                         return true;
@@ -393,7 +446,8 @@ public class Way {
     //bool moveDone;
     Vector3 vectorOffSet = new Vector3(0,1,0);
     Piece pieces;
-    public void Move(int cakeID,AnimationCurve curveRotate, AnimationCurve curveMove, UnityAction<int> actionDone = null)
+    float timeDelay;
+    public void Move(int cakeID,AnimationCurve curveRotate, AnimationCurve curveMove,bool lastMove, UnityAction<int> actionDone = null)
     {
         //if (moveDone)
         //{
@@ -416,20 +470,19 @@ public class Way {
            
             int rotateIndex = plateGo.currentCake.GetRotateIndex(cakeID);
             pieces.transform.parent = plateGo.currentCake.transform;
-            pieces.transform.DOMoveY(pieces.transform.position.y + 1f, .25f).OnComplete(() => {
-                pieces.transform.DOMove(plateGo.pointStay.position, .25f).OnComplete(() => {
-                    Transform trs = GameManager.Instance.objectPooling.GetPieceDoneEffect();
-                    trs.position = pieces.transform.position + vectorOffSet;
-                    trs.gameObject.SetActive(true);
-                    
-                });
+            pieces.transform.DOMove(plateGo.pointStay.position, .3f).SetEase(Ease.InOutSine).OnComplete(() => {
+                Transform trs = GameManager.Instance.objectPooling.GetPieceDoneEffect();
+                trs.position = pieces.transform.position + vectorOffSet;
+                trs.gameObject.SetActive(true);
             });
             
-            pieces.transform.DORotate(new Vector3(0, plateGo.currentCake.rotates[rotateIndex], 0), .5f).SetEase(curveRotate);
+            pieces.transform.DORotate(new Vector3(0, plateGo.currentCake.rotates[rotateIndex], 0), .3f).SetEase(Ease.InOutSine);
             plateGo.AddPiece(pieces, rotateIndex);
         }
         plateCurrent.MoveDoneOfCake();
-        DOVirtual.DelayedCall(.6f, () =>{
+        if(lastMove) timeDelay = .35f;
+        else timeDelay = .25f;
+        DOVirtual.DelayedCall(timeDelay, () =>{
             if (actionDone != null)
             {
                 actionDone(cakeID);

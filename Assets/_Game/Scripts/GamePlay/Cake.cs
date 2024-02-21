@@ -238,7 +238,8 @@ public class Cake : MonoBehaviour
                 if (otherCake && sameCake)
                 {
                     indexRotate = 0;
-                    StartCoroutine(RotateOtherPiece(i));
+                    if (!cakeDone)
+                        StartCoroutine(RotateOtherPiece(i));
                     return i;
                 }
             }
@@ -248,8 +249,8 @@ public class Cake : MonoBehaviour
                 sameCake = true;
                 if (otherCake && sameCake)
                 {
-                   
-                    StartCoroutine(RotateOtherPiece(i+1));
+                    if (!cakeDone)
+                        StartCoroutine(RotateOtherPiece(i+1));
                     return i+1;
                 }
             }
@@ -265,14 +266,15 @@ public class Cake : MonoBehaviour
         while (indexRotate < pieces.Count)
         {
             vectorRotateTo = new Vector3(0, rotates[indexRotate], 0);
-            pieces[indexRotate].transform.DORotate(vectorRotateTo, .25f).SetEase(curveRotate);
+            pieces[indexRotate].transform.DORotate(vectorRotateTo, .15f).SetEase(Ease.InOutSine);
             indexRotate++;
-            yield return new WaitForSeconds(.15f);
+            yield return new WaitForSeconds(.1f);
         }
     }
 
     public void RotateOtherPieceRight(int pieceIndex) {
         indexRotate = pieceIndex;
+        if (cakeDone) return;
         StartCoroutine(RotateOtherPieceRightWay());
        
     }
@@ -280,9 +282,9 @@ public class Cake : MonoBehaviour
     IEnumerator RotateOtherPieceRightWay() {
        while (indexRotate < pieces.Count) { 
             vectorRotateTo = new Vector3(0, rotates[indexRotate], 0);
-            pieces[indexRotate].transform.DORotate(vectorRotateTo, .25f).SetEase(curveRotate);
+            pieces[indexRotate].transform.DORotate(vectorRotateTo, .15f).SetEase(Ease.InOutSine);
             indexRotate++;
-            yield return new WaitForSeconds(.15f);
+            yield return new WaitForSeconds(.1f);
         }
     }
 
@@ -378,13 +380,12 @@ public class Cake : MonoBehaviour
         expEffect.ChangeTextExp(((pieces[0].cakeID + 1) * ConstantValue.VAL_DEFAULT_EXP).ToString());
         expEffect.gameObject.SetActive(true);
 
-        //ProfileManager.Instance.playerData.playerResourseSave.AddExp(10);
-        //ProfileManager.Instance.playerData.playerResourseSave.AddMoney(10);
         ProfileManager.Instance.playerData.playerResourseSave.AddExp((pieces[0].cakeID + 1) * ConstantValue.VAL_DEFAULT_EXP);
         ProfileManager.Instance.playerData.playerResourseSave.AddMoney((pieces[0].cakeID + 1) * ConstantValue.VAL_DEFAULT_EXP);
         ProfileManager.Instance.playerData.playerResourseSave.AddTrophy((pieces[0].cakeID + 1) * ConstantValue.VAL_DEFAULT_TROPHY);
-        Destroy(gameObject);
-        //DOVirtual.DelayedCall(.25f, () => { Destroy(gameObject); });
+        transform.localScale = Vector3.zero;
+        //Destroy(gameObject);
+        DOVirtual.DelayedCall(.5f, () => { Destroy(gameObject); });
     }
 
     public void UpdatePlateDecor()
@@ -410,5 +411,10 @@ public class Cake : MonoBehaviour
             GameObject newDecor = Instantiate(Resources.Load("Decoration/Plate/" + currentId.ToString()) as GameObject, spawnContainer);
             objectDecoration.Add(currentId, newDecor);
         }   
+    }
+
+    public int GetPieceFree()
+    {
+        return 6 - pieces.Count;
     }
 }

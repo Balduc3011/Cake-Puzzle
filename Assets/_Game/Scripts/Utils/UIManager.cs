@@ -341,11 +341,14 @@ public class UIManager : MonoBehaviour {
         GameObject go = GetPanel(UIPanelType.PanelCakeReward);
         go.SetActive(false);
     }
-    public void ShowPanelLevelComplete()
+    PanelLevelComplete panelLevelComplete;
+    public void ShowPanelLevelComplete(bool isWinGame)
     {
         isHasPopupOnScene = true;
         GameObject go = GetPanel(UIPanelType.PanelLevelComplete);
         go.SetActive(true);
+        if (panelLevelComplete == null) { panelLevelComplete = go.GetComponent<PanelLevelComplete>(); }
+        panelLevelComplete.ShowPanel(isWinGame);
     }
     public void ClosePanelLevelComplete()
     {
