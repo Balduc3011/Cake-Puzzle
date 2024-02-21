@@ -40,5 +40,7 @@ public class PanelCakeReward : UIPanel
         UIManager.instance.ClosePanelCakeReward();
         GameManager.Instance.cakeManager.cakeShowComponent.ShowNormalCake();
         GameManager.Instance.cakeManager.cakeShowComponent.ShowNextToUnlockCake();
+        GameManager.Instance.cakeManager.ClearAllCake();
+        UIManager.instance.ShowPanelLoading();
     }
 }

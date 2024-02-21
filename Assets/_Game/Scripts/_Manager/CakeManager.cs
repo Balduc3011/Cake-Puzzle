@@ -29,6 +29,11 @@ public class CakeManager : MonoBehaviour
     [SerializeField] Transform pointStart;
     [SerializeField] Transform pointEnd;
 
+    private void Start()
+    {
+        EventManager.AddListener(EventName.ChangeLevel.ToString(), LevelUp);
+    }
+
     private void Update()
     {
         if (currentGCake != null) {
@@ -231,6 +236,8 @@ public class CakeManager : MonoBehaviour
         return ProfileManager.Instance.dataConfig.cakeDataConfig.GetCakePieceMesh(justUnlockedCake);
     }
 
+    public void SetJustUnlockedCake(int cakeID) { justUnlockedCake = cakeID; }
+
     public Mesh GetNextUnlockedCakePieceMesh()
     {
         int nextUnlockCake = ProfileManager.Instance.dataConfig.levelDataConfig.GetLevel(ProfileManager.Instance.playerData.playerResourseSave.currentLevel).cakeUnlockID;
@@ -333,5 +340,16 @@ public class CakeManager : MonoBehaviour
             }
             indexGroupCake++;
         }
+    }
+
+    void LevelUp() {
+        int newCakeID = ProfileManager.Instance.dataConfig.levelDataConfig.GetCakeID(ProfileManager.Instance.playerData.playerResourseSave.currentLevel);
+        if (newCakeID != -1)
+        {
+            SetJustUnlockedCake(newCakeID);
+            UIManager.instance.ShowPanelCakeReward();
+        }
+        else
+            UIManager.instance.ShowPanelLevelComplete(true);
     }
 }

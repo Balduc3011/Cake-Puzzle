@@ -207,6 +207,7 @@ public class PlayerResourseSave : SaveBase
                 ProfileManager.Instance.playerData.cakeSaveData.UseCake(cakeID);
             }
             currentLevel++;
+            EventManager.TriggerEvent(EventName.ChangeLevel.ToString());
             expMax = ProfileManager.Instance.dataConfig.levelDataConfig.GetExpToNextLevel(currentLevel);
         }
     }
