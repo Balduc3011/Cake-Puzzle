@@ -374,11 +374,15 @@ public class Cake : MonoBehaviour
 
         ExpEffect expEffect = GameManager.Instance.objectPooling.GetExpEffect();
         expEffect.transform.position = Camera.main.WorldToScreenPoint(transform.position) + vectorOffsetExp;
-        expEffect.ChangeTextExp("10");
+        //expEffect.ChangeTextExp("10");
+        expEffect.ChangeTextExp(((pieces[0].cakeID + 1) * ConstantValue.VAL_DEFAULT_EXP).ToString());
         expEffect.gameObject.SetActive(true);
 
-        ProfileManager.Instance.playerData.playerResourseSave.AddExp(10);
-        ProfileManager.Instance.playerData.playerResourseSave.AddMoney(10);
+        //ProfileManager.Instance.playerData.playerResourseSave.AddExp(10);
+        //ProfileManager.Instance.playerData.playerResourseSave.AddMoney(10);
+        ProfileManager.Instance.playerData.playerResourseSave.AddExp((pieces[0].cakeID + 1) * ConstantValue.VAL_DEFAULT_EXP);
+        ProfileManager.Instance.playerData.playerResourseSave.AddMoney((pieces[0].cakeID + 1) * ConstantValue.VAL_DEFAULT_EXP);
+        ProfileManager.Instance.playerData.playerResourseSave.AddTrophy((pieces[0].cakeID + 1) * ConstantValue.VAL_DEFAULT_TROPHY);
         Destroy(gameObject);
         //DOVirtual.DelayedCall(.25f, () => { Destroy(gameObject); });
     }

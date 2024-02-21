@@ -48,6 +48,7 @@ public class PanelSpin : UIPanel
         Transform.SetAsLastSibling();
         stopClicked = false;
         stopCounter = stopCooldow;
+        dynamicSpinWheel.eulerAngles = Vector3.zero;
     }
 
     void CheckFreeSpin()

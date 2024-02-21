@@ -14,7 +14,8 @@ public class UIResourseBar : MonoBehaviour
         {
             case ItemType.None:
                 break;
-            case ItemType.Gem:
+            case ItemType.Trophy:
+                EventManager.AddListener(EventName.ChangeCoin.ToString(), UpdateValue);
                 break;
             case ItemType.Coin:
                 EventManager.AddListener(EventName.ChangeCoin.ToString(), UpdateValue);
@@ -37,7 +38,8 @@ public class UIResourseBar : MonoBehaviour
         {
             case ItemType.None:
                 break;
-            case ItemType.Gem:
+            case ItemType.Trophy:
+                amountTxt.text = ProfileManager.Instance.playerData.playerResourseSave.trophy.ToString();
                 break;
             case ItemType.Coin:
                 amountTxt.text = ProfileManager.Instance.playerData.playerResourseSave.coins.ToString();

@@ -16,7 +16,8 @@ public enum UIPanelType {
     PanelLevelComplete,
     PanelLoading,
     PanelShop,
-    PanelUsingItem
+    PanelUsingItem,
+    PanelLeaderBoard
 }
 public class UIPanel : MonoBehaviour {
     public bool isRegisterInUI = true;

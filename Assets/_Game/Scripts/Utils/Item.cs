@@ -13,7 +13,7 @@ public enum PackType
 public enum ItemType
 {
     None = 0,
-    Gem = 1,
+    Trophy = 1,
     Coin = 2,
     Swap = 3,
     Hammer = 4,

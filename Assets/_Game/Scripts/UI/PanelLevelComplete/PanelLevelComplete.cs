@@ -23,6 +23,7 @@ public class PanelLevelComplete : UIPanel
         btnReviveCoin.onClick.AddListener(ReviveCoin);
         btnReviveAds.onClick.AddListener(ReviveADS);
         btnExit.onClick.AddListener(ExitPanel);
+        winGameCloseBtn.onClick.AddListener(ExitPanel);
     }
 
     private void OnEnable()
@@ -52,12 +53,19 @@ public class PanelLevelComplete : UIPanel
 
     void ReviveADS()
     {
+        ReviveADSSucces();
         OnClose();
+    }
+
+    void ReviveADSSucces()
+    {
+        UIManager.instance.OpenBlockAll();
+        GameManager.Instance.cakeManager.TrashIn(GameManager.Instance.cakeManager.ClearCake);
     }
 
     void ReviveCoin()
     {
-        ProfileManager.Instance.playerData.playerResourseSave.ConsumeMoney(750);
+        ProfileManager.Instance.playerData.playerResourseSave.ConsumeMoney(ConstantValue.VAL_REVICE_PRICE);
         UIManager.instance.OpenBlockAll();
         GameManager.Instance.cakeManager.TrashIn(GameManager.Instance.cakeManager.ClearCake);
         OnClose();

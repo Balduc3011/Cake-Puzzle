@@ -10,6 +10,7 @@ public class PlayerResourseSave : SaveBase
     public BigNumber coins;
     public List<ItemData> ownedItem;
     public int trophy;
+    public int trophyRecord;
     public string lastFreeSpin;
     public string firstDay;
     public string lastDay;
@@ -30,6 +31,7 @@ public class PlayerResourseSave : SaveBase
             ownedItem = data.ownedItem;
             coins = data.coins;
             trophy = data.trophy;
+            trophyRecord = data.trophyRecord;
             lastFreeSpin = data.lastFreeSpin;
             firstDay = data.firstDay;
             lastDay = data.lastDay;
@@ -65,6 +67,13 @@ public class PlayerResourseSave : SaveBase
         IsMarkChangeData();
         SaveData();
         EventManager.TriggerEvent(EventName.ChangeCoin.ToString());
+    }
+
+    public void AddTrophy(int amount)
+    {
+        trophy += amount;
+        IsMarkChangeData();
+        SaveData();
     }
 
     public bool IsHasFreeSpin()

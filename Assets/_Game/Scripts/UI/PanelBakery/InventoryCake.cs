@@ -15,6 +15,7 @@ public class InventoryCake : MonoBehaviour
     [SerializeField] Image offIconImg;
     [SerializeField] GameObject usingMarkObj;
     [SerializeField] GameObject lockingMarkObj;
+    string PERCAKE = "/cake";
     void Start()
     {
         button.onClick.AddListener(OnCakeClick);
@@ -28,7 +29,6 @@ public class InventoryCake : MonoBehaviour
 
     void OnCakeClick()
     {
-        Debug.Log("Click cake");
         if(onIconImg.gameObject.activeSelf) 
             onIconImg.transform.DOScale(1.2f, 0.25f).OnComplete(() =>
             {
@@ -49,7 +49,7 @@ public class InventoryCake : MonoBehaviour
         onIconImg.sprite = cakeData.icon;
         offIconImg.sprite = cakeData.icon;
         cakeNameTxt.text = "Cake " + cakeData.id.ToString();
-        cakePointTxt.text = cakeData.id.ToString();
+        cakePointTxt.text = ((cakeData.id + 1) * 5).ToString() + ConstantValue.STR_SPACE + ConstantValue.STR_EXP + PERCAKE;
         InitUsing();
     }
 

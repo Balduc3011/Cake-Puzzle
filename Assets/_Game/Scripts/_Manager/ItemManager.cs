@@ -24,7 +24,7 @@ public class ItemManager : MonoBehaviour
         {
             case ItemType.None:
                 break;
-            case ItemType.Gem:
+            case ItemType.Trophy:
                 break;
             case ItemType.Coin:
                 break;

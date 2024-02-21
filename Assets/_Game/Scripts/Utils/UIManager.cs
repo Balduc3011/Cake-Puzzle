@@ -117,6 +117,9 @@ public class UIManager : MonoBehaviour {
                 case UIPanelType.PanelUsingItem:
                     panel = Instantiate(Resources.Load("UI/PanelUsingItem") as GameObject, mainCanvas);
                     break;
+                case UIPanelType.PanelLeaderBoard:
+                    panel = Instantiate(Resources.Load("UI/PanelLeaderBoard") as GameObject, mainCanvas);
+                    break;
             }
             if (panel) panel.SetActive(true);
             return panel;
@@ -372,6 +375,19 @@ public class UIManager : MonoBehaviour {
     {
         isHasPopupOnScene = false;
         GameObject go = GetPanel(UIPanelType.PanelUsingItem);
+        go.SetActive(false);
+    }
+
+    public void ShowPanelLeaderBoard()
+    {
+        isHasPopupOnScene = true;
+        GameObject go = GetPanel(UIPanelType.PanelLeaderBoard);
+        go.SetActive(true);
+    }
+    public void ClosePanelLeaderBoard()
+    {
+        isHasPopupOnScene = false;
+        GameObject go = GetPanel(UIPanelType.PanelLeaderBoard);
         go.SetActive(false);
     }
 }
