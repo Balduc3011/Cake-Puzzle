@@ -127,7 +127,7 @@ public class Table : MonoBehaviour
         }
         if (mapPlate.Count > 1)
         {
-            Debug.Log("Repeat check pieceID: " + currentCakeID);
+            //Debug.Log("Repeat check pieceID: " + currentCakeID);
             Plate plateCheck = mapPlate[0];
             ClearMapPlate(currentCakeID);
             AddFirstPlate(plateCheck);
@@ -177,6 +177,7 @@ public class Table : MonoBehaviour
         currentPieces = 0;
         ways.Clear();
         mapWay.Clear();
+        bestPlate.currentSpace = bestPlate.GetFreeSpace();
         SetNextWayPoint(bestPlate.GetPlateIndex());
         CreateWayAfterSetNextPoint();
     }
@@ -190,6 +191,7 @@ public class Table : MonoBehaviour
     }
     bool CheckDoneCreateWayMove()
     {
+        if (mapWay[mapWay.Count - 1].currentSpace == 0) return true;
         for (int i = 0; i < mapWay.Count-1; i++) {
             if (mapWay[i].currentPieceSame > 0)
                 return false;
@@ -202,7 +204,7 @@ public class Table : MonoBehaviour
             if (mapWay[currentPlateIndex].currentPieceSame > 0)
             {
                 int wayCountLoop = 0;
-                int pieceFree = mapWay[currentPlateIndex].wayPoint.nextPlate.GetPieceFree();
+                int pieceFree = mapWay[currentPlateIndex].wayPoint.nextPlate.currentSpace;
                 int pieceSame = mapWay[currentPlateIndex].currentPieceSame;
                 if (pieceFree >= pieceSame) wayCountLoop = pieceSame;
                 else wayCountLoop = pieceFree;
@@ -211,7 +213,11 @@ public class Table : MonoBehaviour
                     CreateWay(mapWay[currentPlateIndex]);
                 }
                 mapWay[currentPlateIndex].currentPieceSame -= wayCountLoop;
+                mapWay[currentPlateIndex].currentSpace += wayCountLoop;
                 mapWay[currentPlateIndex].wayPoint.nextPlate.currentPieceSame += wayCountLoop;
+                mapWay[currentPlateIndex].wayPoint.nextPlate.currentSpace -= wayCountLoop;
+
+               
             }
             currentPlateIndex++;
         }
@@ -273,6 +279,7 @@ public class Table : MonoBehaviour
                 }
                 else currentPieces += pieceSame;
                 plateSetNext.currentPieceSame = pieceSame;
+                plateSetNext.currentSpace = plateSetNext.GetFreeSpace();
                 plateSetNext.SetCountPieces(pieceSame);
                 SetNextWayPoint(plateSetNext.GetPlateIndex());
             }

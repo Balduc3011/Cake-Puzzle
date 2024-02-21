@@ -18,6 +18,7 @@ public class Plate : MonoBehaviour
     [SerializeField] Vector3 pointMoveUp;
     [SerializeField] Vector3 pointMoveDown;
     public int currentPieceSame;
+    public int currentSpace;
     private void Awake()
     {
         pointMoveUp = trsMove.position;

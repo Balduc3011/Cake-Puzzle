@@ -238,7 +238,8 @@ public class Cake : MonoBehaviour
                 if (otherCake && sameCake)
                 {
                     indexRotate = 0;
-                    StartCoroutine(RotateOtherPiece(i));
+                    if (!cakeDone)
+                        StartCoroutine(RotateOtherPiece(i));
                     return i;
                 }
             }
@@ -248,8 +249,8 @@ public class Cake : MonoBehaviour
                 sameCake = true;
                 if (otherCake && sameCake)
                 {
-                   
-                    StartCoroutine(RotateOtherPiece(i+1));
+                    if (!cakeDone)
+                        StartCoroutine(RotateOtherPiece(i+1));
                     return i+1;
                 }
             }
@@ -265,9 +266,9 @@ public class Cake : MonoBehaviour
         while (indexRotate < pieces.Count)
         {
             vectorRotateTo = new Vector3(0, rotates[indexRotate], 0);
-            pieces[indexRotate].transform.DORotate(vectorRotateTo, .25f).SetEase(Ease.InOutSine);
+            pieces[indexRotate].transform.DORotate(vectorRotateTo, .15f).SetEase(Ease.InOutSine);
             indexRotate++;
-            yield return new WaitForSeconds(.15f);
+            yield return new WaitForSeconds(.1f);
         }
     }
 
@@ -281,9 +282,9 @@ public class Cake : MonoBehaviour
     IEnumerator RotateOtherPieceRightWay() {
        while (indexRotate < pieces.Count) { 
             vectorRotateTo = new Vector3(0, rotates[indexRotate], 0);
-            pieces[indexRotate].transform.DORotate(vectorRotateTo, .25f).SetEase(Ease.InOutSine);
+            pieces[indexRotate].transform.DORotate(vectorRotateTo, .15f).SetEase(Ease.InOutSine);
             indexRotate++;
-            yield return new WaitForSeconds(.15f);
+            yield return new WaitForSeconds(.1f);
         }
     }
 
@@ -380,8 +381,9 @@ public class Cake : MonoBehaviour
 
         ProfileManager.Instance.playerData.playerResourseSave.AddExp(10);
         ProfileManager.Instance.playerData.playerResourseSave.AddMoney(10);
-        Destroy(gameObject);
-        //DOVirtual.DelayedCall(.25f, () => { Destroy(gameObject); });
+        transform.localScale = Vector3.zero;
+        //Destroy(gameObject);
+        DOVirtual.DelayedCall(.5f, () => { Destroy(gameObject); });
     }
 
     public void UpdatePlateDecor()

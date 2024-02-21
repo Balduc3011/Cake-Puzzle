@@ -150,10 +150,10 @@ public class CakeManager : MonoBehaviour
     }
 
     public void CheckIDOfCake() {
-        //Debug.Log("current id index: " + cakeIDIndex);
         cakeIDIndex++;
         if (cakeIDIndex < currentCakeCheck.pieceCakeID.Count)
         {
+            //Debug.Log("ID need check: "+ currentCakeCheck.pieceCakeID[cakeIDIndex]);
             if (CheckHaveCakeID(currentCakeCheck.pieceCakeID[cakeIDIndex]))
             {
                 //Debug.Log("=============START CHECK ID: " + currentCakeCheck.pieceCakeID[cakeIDIndex] + "==============");
@@ -170,7 +170,7 @@ public class CakeManager : MonoBehaviour
             else
             {
                 //Debug.Log("Check cake by call next cake");
-                actionCallBack();
+                CheckIDOfCake();
             }
         }
         else
