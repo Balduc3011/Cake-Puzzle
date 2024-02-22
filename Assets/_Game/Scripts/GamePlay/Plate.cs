@@ -8,7 +8,7 @@ using UnityEngine.Events;
 
 public class Plate : MonoBehaviour
 {
-    [SerializeField] PlateIndex plateIndex;
+    public PlateIndex plateIndex;
     [SerializeField] Animator anim;
     public Transform pointStay;
     public Cake currentCake;

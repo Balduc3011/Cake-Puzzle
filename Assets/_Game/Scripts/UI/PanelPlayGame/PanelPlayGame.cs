@@ -17,10 +17,20 @@ public class PanelPlayGame : UIPanel
         panelType = UIPanelType.PanelPlayGame;
         base.Awake();
         btnItemBomb.onClick.AddListener(UsingItemBomb);
+        btnFillUp.onClick.AddListener(UsingItemFillUp);
+        btnReroll.onClick.AddListener(UsingReroll);
     }
 
-    public void UsingItemBomb() {
+    void UsingItemBomb() {
         GameManager.Instance.itemManager.UsingItem(ItemType.Bomb);
+    }
+
+    void UsingItemFillUp() {
+        GameManager.Instance.itemManager.UsingItem(ItemType.FillUp);
+    }
+
+    void UsingReroll() {
+        GameManager.Instance.itemManager.UsingItem(ItemType.ReRoll);
     }
 
     public void UsingItemMode()

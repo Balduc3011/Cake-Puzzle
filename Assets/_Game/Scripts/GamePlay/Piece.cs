@@ -1,3 +1,5 @@
+using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,5 +19,12 @@ public class Piece : MonoBehaviour
         //trs.eulerAngles = new Vector3(90, 0, 0);
         trs.localPosition = objectOffset;
         trs.localScale = Vector3.one;
+    }
+
+    public void RemoveByFillUp()
+    {
+        transform.DOScale(Vector3.zero, .25f).OnComplete(() => { 
+            Destroy(gameObject);
+        });
     }
 }

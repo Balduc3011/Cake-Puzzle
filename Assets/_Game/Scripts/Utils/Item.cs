@@ -18,7 +18,8 @@ public enum ItemType
     Swap = 3,
     Hammer = 4,
     ReRoll = 5,
-    Bomb = 6
+    Bomb = 6,
+    FillUp
 }
 
 [System.Serializable]

@@ -19,6 +19,8 @@ public enum EventName
     ChangeFloorDecor = 5,
     ChangePlateDecor = 6,
     ChangeTableDecor = 7,
+    UsingFillUp = 8,
+    UsingFillUpDone = 9,
 }
 
 public class EventManager : Singleton<EventManager>

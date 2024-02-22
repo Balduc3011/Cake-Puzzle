@@ -19,30 +19,40 @@ public class ItemManager : MonoBehaviour
     }
 
     public void UsingItem(ItemType itemType) {
-     
-        switch (itemType)
-        {
-            case ItemType.None:
-                break;
-            case ItemType.Gem:
-                break;
-            case ItemType.Coin:
-                break;
-            case ItemType.Swap:
-                break;
-            case ItemType.Hammer:
-                break;
-            case ItemType.ReRoll:
-                break;
-            case ItemType.Bomb:
-                UIManager.instance.ShowPanelUsingItem();
-                itemTrsSpawned = Instantiate(bombPref, itemTrs).transform;
-                itemTrsSpawned.DOMove(pointBombIn.position, 1f).SetEase(Ease.InCubic);
-                break;
-            default:
-                break;
+        if (ProfileManager.Instance.playerData.playerResourseSave.IsHaveItem(itemType)){
+            switch (itemType)
+            {
+                case ItemType.None:
+                    break;
+                case ItemType.Gem:
+                    break;
+                case ItemType.Coin:
+                    break;
+                case ItemType.Swap:
+                    break;
+                case ItemType.Hammer:
+                    break;
+                case ItemType.ReRoll:
+                    GameManager.Instance.cakeManager.UsingReroll();
+                    break;
+                case ItemType.Bomb:
+                    UIManager.instance.ShowPanelUsingItem();
+                    itemTrsSpawned = Instantiate(bombPref, itemTrs).transform;
+                    itemTrsSpawned.DOMove(pointBombIn.position, 1f).SetEase(Ease.InCubic);
+                    UsingItemWithPanel(ItemType.Bomb);
+                    break;
+                case ItemType.FillUp:
+                    UIManager.instance.ShowPanelUsingItem();
+                    UsingItemWithPanel(ItemType.FillUp);
+                    GameManager.Instance.cakeManager.UsingFilUp();
+                    break;
+                default:
+                    break;
+            }
         }
+    }
 
+    void UsingItemWithPanel(ItemType itemType) {
         if (panelUsingItem == null) { panelUsingItem = UIManager.instance.GetPanel(UIPanelType.PanelUsingItem).GetComponent<PanelUsingItem>(); }
         GameManager.Instance.cameraManager.UsingItemMode();
         GameManager.Instance.lightManager.UsingItemMode();

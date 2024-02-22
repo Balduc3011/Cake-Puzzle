@@ -221,4 +221,13 @@ public class GroupCake : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    public void UsingRerollItem() {
+        Transform trsEffect = GameManager.Instance.objectPooling.GetCakeDoneEffect();
+        trsEffect.transform.position = transform.position;
+        trsEffect.gameObject.SetActive(true);
+        transform.DOScale(Vector3.zero, .25f).OnComplete(() => {
+            GameManager.Instance.cakeManager.RemoveCakeWait(this);
+        });
+    }
 }

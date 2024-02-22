@@ -220,4 +220,14 @@ public class PlayerResourseSave : SaveBase
     {
         return expMax;
     }
+
+    public bool IsHaveItem(ItemType itemType)
+    {
+        for (int i = 0; i < ownedItem.Count; i++)
+        {
+            if (ownedItem[i].ItemType == itemType && ownedItem.Count > 0)
+                return true;
+        }
+        return false;
+    }
 }

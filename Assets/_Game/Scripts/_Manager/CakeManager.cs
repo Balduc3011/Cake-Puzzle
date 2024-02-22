@@ -151,10 +151,13 @@ public class CakeManager : MonoBehaviour
     UnityAction actionCallBack;
 
     int indexCakeCheck;
+    int timeCheckCake;
     bool onCheckCake = false;
+
     public void SetupCheckCake() {
         indexCakeCheck = -1;
         table.SaveCake();
+        timeCheckCake = 0;
         if (!onCheckCake)
         {
             onCheckCake = true;
@@ -172,11 +175,21 @@ public class CakeManager : MonoBehaviour
         }
         else
         {
-            table.SaveCake();
-            StartCheckLoseGame();
-            CheckSpawnCakeGroup();
-            onCheckCake = false;
-            ClearCakeNeedCheck();
+            timeCheckCake++;
+            if (timeCheckCake == 2)
+            {
+                table.SaveCake();
+                StartCheckLoseGame();
+                CheckSpawnCakeGroup();
+                onCheckCake = false;
+                ClearCakeNeedCheck();
+            }
+            else
+            {
+                indexCakeCheck = -1;
+                CheckNextCake();
+            }
+            
         }
     }
 
@@ -383,7 +396,8 @@ public class CakeManager : MonoBehaviour
     }
 
     void LevelUp() {
-        int newCakeID = ProfileManager.Instance.dataConfig.levelDataConfig.GetCakeID(ProfileManager.Instance.playerData.playerResourseSave.currentLevel);
+        onMove = true;
+        int newCakeID = ProfileManager.Instance.dataConfig.levelDataConfig.GetCakeID(ProfileManager.Instance.playerData.playerResourseSave.currentLevel - 1);
         if (newCakeID != -1)
         {
             SetJustUnlockedCake(newCakeID);
@@ -391,5 +405,19 @@ public class CakeManager : MonoBehaviour
         }
         else
             UIManager.instance.ShowPanelLevelComplete(true);
+    }
+
+    public void UsingReroll() {
+        for (int i = 0; i < cakesWait.Count; i++)
+        {
+            cakesWait[i].UsingRerollItem();
+        }
+
+        InitGroupCake();
+    }
+
+    public void UsingFilUp()
+    {
+        EventManager.TriggerEvent(EventName.UsingFillUp.ToString());
     }
 }

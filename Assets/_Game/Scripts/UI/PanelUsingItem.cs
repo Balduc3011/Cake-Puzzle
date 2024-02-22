@@ -9,10 +9,14 @@ public class PanelUsingItem : UIPanel
     [SerializeField] Image iconItem;
     [SerializeField] TextMeshProUGUI txtTitle;
     [SerializeField] TextMeshProUGUI txtDescript;
+
+
+    [SerializeField] Button btnClose;
     public override void Awake()
     {
         panelType = UIPanelType.PanelUsingItem;
         base.Awake();
+        btnClose.onClick.AddListener(OnClosePanel);
     }
     ItemDataCF currentItemData;
     public void OnUsingItem(ItemType itemType) {
@@ -28,6 +32,11 @@ public class PanelUsingItem : UIPanel
     public void UsingItemDone() {
         UIManager.instance.panelGamePlay.OutItemMode();
         UIManager.instance.panelTotal.OutItemMode();
+        UIManager.instance.ClosePanelUsingItem();
+    }
+
+    void OnClosePanel()
+    {
         UIManager.instance.ClosePanelUsingItem();
     }
 }
