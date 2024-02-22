@@ -56,7 +56,8 @@ public class Cake : MonoBehaviour
         UpdatePlateDecor();
     }
 
-    public void InitData(List<int> cakeIDs) {
+    public void InitData(List<int> cakeIDs, Plate plate) {
+        currentPlate = plate;
         transform.DOScale(scaleDefault, .5f).From(1.2f).SetEase(Ease.InOutBack);
         
         pieceIndex = 0;
@@ -68,6 +69,7 @@ public class Cake : MonoBehaviour
             InitPiece(i, cakeIDs[i]);
         }
         UpdatePlateDecor();
+        GameManager.Instance.cakeManager.AddCakeNeedCheck(this);
     }
 
 
@@ -220,6 +222,8 @@ public class Cake : MonoBehaviour
     {
         myGroupCake = groupCake;
     }
+
+    public GroupCake GetGroupCake() { return myGroupCake; }
     Piece piece;
     public bool GetCakePieceSame(int cakeID) {
         piece = pieces.Find(e => (e.cakeID == cakeID && e.gameObject.activeSelf));

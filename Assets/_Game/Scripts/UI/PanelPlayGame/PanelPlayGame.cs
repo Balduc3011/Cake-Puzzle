@@ -9,8 +9,8 @@ public class PanelPlayGame : UIPanel
     [SerializeField] Button x2BoosterBtn;
     [SerializeField] Button coinBoosterBtn;
     [SerializeField] Button btnItemBomb;
-    //[SerializeField] Button item2Btn;
-    //[SerializeField] Button item3Btn;
+    [SerializeField] Button btnFillUp;
+    [SerializeField] Button btnReroll;
     [SerializeField] List<TransitionUI> transitionUIList;
     public override void Awake()
     {

@@ -85,43 +85,46 @@ public class GroupCake : MonoBehaviour
             objConnects[i].SetActive(false);
         }
         canTouch = false;
-        indexCake = -1;
+        //indexCake = -1;
 
         for (int i = 0; i < cake.Count; i++)
         {
             cake[i].DropDone();
+            GameManager.Instance.cakeManager.AddCakeNeedCheck(cake[i]);
         }
-        timeCheck = 0;
-        DOVirtual.DelayedCall(.15f, CheckNextCake);
+        //timeCheck = 0;
+        GameManager.Instance.cakeManager.RemoveCakeWait(this);
+       
+        DOVirtual.DelayedCall(.15f, GameManager.Instance.cakeManager.SetupCheckCake);
     }
-    int indexCake;
-    int timeCheck;
-    void CheckNextCake() {
-        indexCake++;
-        ClearCake();
-        GameManager.Instance.objectPooling.CheckGroupCake();
-        if (indexCake < cake.Count)
-        {
-            GameManager.Instance.cakeManager.SetOnMove(true);
-            GameManager.Instance.cakeManager.StartCheckCake(cake[indexCake], CheckNextCake);
-        }
-        else {
+    //int indexCake;
+    //int timeCheck;
+    //void CheckNextCake() {
+    //    indexCake++;
+    //    ClearCake();
+    //    GameManager.Instance.objectPooling.CheckGroupCake();
+    //    if (indexCake < cake.Count)
+    //    {
+    //        GameManager.Instance.cakeManager.SetOnMove(true);
+    //        GameManager.Instance.cakeManager.StartCheckCake(cake[indexCake], CheckNextCake);
+    //    }
+    //    else {
 
-            timeCheck++;
-            if (timeCheck == 3)
-            {
-                GameManager.Instance.cakeManager.table.SaveCake();
-                GameManager.Instance.cakeManager.SetOnMove(false);
-                GameManager.Instance.cakeManager.RemoveCakeWait(this);
-                GameManager.Instance.cakeManager.StartCheckLoseGame();
-                GameManager.Instance.cakeManager.CheckSpawnCakeGroup();
-            }
-            else {
-                indexCake = -1;
-                CheckNextCake();
-            }
-        }
-    }
+    //        timeCheck++;
+    //        if (timeCheck == 3)
+    //        {
+    //            GameManager.Instance.cakeManager.table.SaveCake();
+    //            GameManager.Instance.cakeManager.SetOnMove(false);
+    //            GameManager.Instance.cakeManager.RemoveCakeWait(this);
+    //            GameManager.Instance.cakeManager.StartCheckLoseGame();
+    //            GameManager.Instance.cakeManager.CheckSpawnCakeGroup();
+    //        }
+    //        else {
+    //            indexCake = -1;
+    //            CheckNextCake();
+    //        }
+    //    }
+    //}
 
     void ClearCake() {
         for (int i = cake.Count-1; i >= 0; i--)

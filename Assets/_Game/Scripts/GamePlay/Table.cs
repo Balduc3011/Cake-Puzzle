@@ -428,7 +428,7 @@ public class Table : MonoBehaviour
         newCake.transform.parent = plateArray[plateIndexTemp.indexX, plateIndexTemp.indexY].pointStay.transform;
         newCake.transform.localPosition = Vector3.zero;
         plateArray[plateIndexTemp.indexX, plateIndexTemp.indexY].currentCake = newCake;
-        newCake.InitData(cakeOnPlate.cakeIDs);
+        newCake.InitData(cakeOnPlate.cakeIDs, plateArray[plateIndexTemp.indexX, plateIndexTemp.indexY]);
     }
 
     public void SaveCake() {

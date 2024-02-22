@@ -29,6 +29,8 @@ public class CakeManager : MonoBehaviour
     [SerializeField] Transform pointStart;
     [SerializeField] Transform pointEnd;
 
+    public List<Cake> cakeNeedCheck = new List<Cake>();
+
     private void Start()
     {
         EventManager.AddListener(EventName.ChangeLevel.ToString(), LevelUp);
@@ -145,7 +147,45 @@ public class CakeManager : MonoBehaviour
 
     int cakeIDIndex = -1;
     Cake currentCakeCheck;
+    
     UnityAction actionCallBack;
+
+    int indexCakeCheck;
+    bool onCheckCake = false;
+    public void SetupCheckCake() {
+        indexCakeCheck = -1;
+        table.SaveCake();
+        if (!onCheckCake)
+        {
+            onCheckCake = true;
+            CheckNextCake();
+        }
+        
+    }
+
+    void CheckNextCake() {
+        indexCakeCheck++;
+        GameManager.Instance.objectPooling.CheckGroupCake();
+        if (indexCakeCheck < cakeNeedCheck.Count)
+        {
+            StartCheckCake(cakeNeedCheck[indexCakeCheck], CheckNextCake);
+        }
+        else
+        {
+            table.SaveCake();
+            StartCheckLoseGame();
+            CheckSpawnCakeGroup();
+            onCheckCake = false;
+            ClearCakeNeedCheck();
+        }
+    }
+
+    public void AddCakeNeedCheck(Cake cake) { 
+        cakeNeedCheck.Add(cake); 
+    }
+
+    public void ClearCakeNeedCheck() { cakeNeedCheck.Clear(); }
+
     public void StartCheckCake(Cake cake, UnityAction actionCallBack)
     {
         this.actionCallBack = actionCallBack;
@@ -312,7 +352,7 @@ public class CakeManager : MonoBehaviour
             Cake newCake = Instantiate(cakePref);
             table.LoadCakeOnPlate(newCake, cakeOnPlates[i]);
         }
-    
+        SetupCheckCake();
     }
     void LoadCakeWaitData() {
         cakeOnWaits = ProfileManager.Instance.playerData.cakeSaveData.cakeOnWaits;
