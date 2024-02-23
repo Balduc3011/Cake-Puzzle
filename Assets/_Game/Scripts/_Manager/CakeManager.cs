@@ -171,6 +171,8 @@ public class CakeManager : MonoBehaviour
         GameManager.Instance.objectPooling.CheckGroupCake();
         if (indexCakeCheck < cakeNeedCheck.Count)
         {
+            if (cakeNeedCheck[indexCakeCheck] == null)
+                cakeNeedCheck.RemoveAt(indexCakeCheck);
             StartCheckCake(cakeNeedCheck[indexCakeCheck], CheckNextCake);
         }
         else

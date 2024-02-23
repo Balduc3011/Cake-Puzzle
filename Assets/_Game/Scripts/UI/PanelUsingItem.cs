@@ -38,5 +38,7 @@ public class PanelUsingItem : UIPanel
     void OnClosePanel()
     {
         UIManager.instance.ClosePanelUsingItem();
+        GameManager.Instance.itemManager.UsingItemDone();
+        EventManager.TriggerEvent(EventName.UsingFillUpDone.ToString());
     }
 }

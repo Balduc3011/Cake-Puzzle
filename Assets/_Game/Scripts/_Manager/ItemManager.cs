@@ -11,7 +11,9 @@ public class ItemManager : MonoBehaviour
     [SerializeField] Transform pointBombIn;
 
     PanelUsingItem panelUsingItem;
-    Transform itemTrsSpawned;
+    Transform itemTrsSpawned = null;
+
+    public bool isUsingItem = false;
 
     public Vector3 GetPointItemIn()
     {
@@ -20,6 +22,7 @@ public class ItemManager : MonoBehaviour
 
     public void UsingItem(ItemType itemType) {
         if (ProfileManager.Instance.playerData.playerResourseSave.IsHaveItem(itemType)){
+            isUsingItem = true;
             switch (itemType)
             {
                 case ItemType.None:
@@ -60,8 +63,13 @@ public class ItemManager : MonoBehaviour
     }
 
     public void UsingItemDone() {
+        isUsingItem = false;
         if (panelUsingItem == null) { panelUsingItem = UIManager.instance.GetPanel(UIPanelType.PanelUsingItem).GetComponent<PanelUsingItem>(); }
         panelUsingItem.UsingItemDone();
+        if (itemTrsSpawned != null)
+        {
+            itemTrsSpawned.DOMove(itemTrs.position, 1f).SetEase(Ease.InCubic);
+        }
         GameManager.Instance.cameraManager.OutItemMode();
         GameManager.Instance.lightManager.OutItemMode();
     }
