@@ -117,7 +117,7 @@ public class PanelTotal : UIPanel
         settingBtn.onClick.AddListener(ShowPanelSetting);
         dailyBtn.onClick.AddListener(ShowPanelDailyReward);
         spinBtn.onClick.AddListener(ShowPanelSpin);
-        decorBtn.onClick.AddListener(ShowPanelDecor);
+        decorBtn.onClick.AddListener(ShowPanelTest);
         mainGameNavBtn.onClick.AddListener(() => { UIManager.instance.ShowPanelTotalContent(); });
         bakeryNavBtn.onClick.AddListener(() => { UIManager.instance.ShowPanelBakery(); });
         decorationNavBtn.onClick.AddListener(() => { UIManager.instance.ShowPanelDecorations(); });
@@ -166,10 +166,10 @@ public class PanelTotal : UIPanel
         UIAnimationController.BasicButton(spinBtn.transform, .1f, UIManager.instance.ShowPanelSpin);
         //UIManager.instance.ShowPanelSpin();
     }
-    void ShowPanelDecor()
+    void ShowPanelTest()
     {
         //UIAnimationController.BasicButton(decorBtn.transform, .1f, UIManager.instance.ShowPanelSpin);
-        UIAnimationController.BasicButton(decorBtn.transform, .1f, UIManager.instance.ShowPanelCakeReward);
+        UIAnimationController.BasicButton(decorBtn.transform, .1f, UIManager.instance.ShowPanelLeaderBoard);
         //UIManager.instance.ShowPanelSpin();
     }
 

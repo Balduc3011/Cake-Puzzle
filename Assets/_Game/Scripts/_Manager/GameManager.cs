@@ -20,6 +20,7 @@ public class GameManager : Singleton<GameManager>
     private void Start()
     {
         cameraManager.ShowARoom(0);
+        AddTempName();
     }
     public void PlayGame()
     {
@@ -60,6 +61,31 @@ public class GameManager : Singleton<GameManager>
     public void ClearAllCake()
     {
         cakeManager.ClearAllCake();
+    }
+
+    List<string> tempName;
+    void AddTempName()
+    {
+        tempName = new List<string>();
+        tempName.Add("Radago");
+        tempName.Add("GoonFray");
+        tempName.Add("Marikan");
+        tempName.Add("GoonGwen");
+        tempName.Add("Malenyn");
+        tempName.Add("Miqueler");
+        tempName.Add("Magget");
+        tempName.Add("Goondrake");
+        tempName.Add("Moogo");
+        tempName.Add("Randan");
+        tempName.Add("Raneen");
+        tempName.Add("Richard");
+        tempName.Add("Alexander");
+        tempName.Add("Patcher");
+    }
+
+    public string GetRandomName()
+    {
+        return tempName[UnityEngine.Random.Range(0, tempName.Count)];
     }
 }
 

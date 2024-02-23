@@ -76,6 +76,13 @@ public class PlayerResourseSave : SaveBase
         SaveData();
     }
 
+    public void SaveRecord()
+    {
+        trophyRecord = trophy;
+        IsMarkChangeData();
+        SaveData();
+    }
+
     public bool IsHasFreeSpin()
     {
         if (!String.IsNullOrEmpty(lastFreeSpin))

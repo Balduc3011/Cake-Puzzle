@@ -46,12 +46,14 @@ public class PanelLevelComplete : UIPanel
         OnClose();
         ProfileManager.Instance.playerData.cakeSaveData.ClearAllCake();
         GameManager.Instance.ClearAllCake();
-        UIManager.instance.ShowPanelLoading();
+        //UIManager.instance.ShowPanelLoading();
+        GameManager.Instance.BackToMenu();
     }
 
     void ClosePanel()
     {
         UIManager.instance.ClosePanelLevelComplete();
+        UIManager.instance.ShowPanelLeaderBoard();
     }
 
     void ReviveADS()
