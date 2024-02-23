@@ -11,7 +11,9 @@ public class ItemManager : MonoBehaviour
     [SerializeField] Transform pointBombIn;
 
     PanelUsingItem panelUsingItem;
-    Transform itemTrsSpawned;
+    Transform itemTrsSpawned = null;
+
+    public bool isUsingItem = false;
 
     public Vector3 GetPointItemIn()
     {
@@ -19,30 +21,41 @@ public class ItemManager : MonoBehaviour
     }
 
     public void UsingItem(ItemType itemType) {
-     
-        switch (itemType)
-        {
-            case ItemType.None:
-                break;
-            case ItemType.Trophy:
-                break;
-            case ItemType.Coin:
-                break;
-            case ItemType.Swap:
-                break;
-            case ItemType.Hammer:
-                break;
-            case ItemType.ReRoll:
-                break;
-            case ItemType.Bomb:
-                UIManager.instance.ShowPanelUsingItem();
-                itemTrsSpawned = Instantiate(bombPref, itemTrs).transform;
-                itemTrsSpawned.DOMove(pointBombIn.position, 1f).SetEase(Ease.InCubic);
-                break;
-            default:
-                break;
+        if (ProfileManager.Instance.playerData.playerResourseSave.IsHaveItem(itemType)){
+            isUsingItem = true;
+            switch (itemType)
+            {
+                case ItemType.None:
+                    break;
+                case ItemType.Trophy:
+                    break;
+                case ItemType.Coin:
+                    break;
+                case ItemType.Swap:
+                    break;
+                case ItemType.Hammer:
+                    break;
+                case ItemType.ReRoll:
+                    GameManager.Instance.cakeManager.UsingReroll();
+                    break;
+                case ItemType.Bomb:
+                    UIManager.instance.ShowPanelUsingItem();
+                    itemTrsSpawned = Instantiate(bombPref, itemTrs).transform;
+                    itemTrsSpawned.DOMove(pointBombIn.position, 1f).SetEase(Ease.InCubic);
+                    UsingItemWithPanel(ItemType.Bomb);
+                    break;
+                case ItemType.FillUp:
+                    UIManager.instance.ShowPanelUsingItem();
+                    UsingItemWithPanel(ItemType.FillUp);
+                    GameManager.Instance.cakeManager.UsingFilUp();
+                    break;
+                default:
+                    break;
+            }
         }
+    }
 
+    void UsingItemWithPanel(ItemType itemType) {
         if (panelUsingItem == null) { panelUsingItem = UIManager.instance.GetPanel(UIPanelType.PanelUsingItem).GetComponent<PanelUsingItem>(); }
         GameManager.Instance.cameraManager.UsingItemMode();
         GameManager.Instance.lightManager.UsingItemMode();
@@ -50,8 +63,13 @@ public class ItemManager : MonoBehaviour
     }
 
     public void UsingItemDone() {
+        isUsingItem = false;
         if (panelUsingItem == null) { panelUsingItem = UIManager.instance.GetPanel(UIPanelType.PanelUsingItem).GetComponent<PanelUsingItem>(); }
         panelUsingItem.UsingItemDone();
+        if (itemTrsSpawned != null)
+        {
+            itemTrsSpawned.DOMove(itemTrs.position, 1f).SetEase(Ease.InCubic);
+        }
         GameManager.Instance.cameraManager.OutItemMode();
         GameManager.Instance.lightManager.OutItemMode();
     }

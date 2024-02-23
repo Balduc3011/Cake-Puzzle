@@ -2,6 +2,7 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 public class Cake : MonoBehaviour
@@ -29,6 +30,18 @@ public class Cake : MonoBehaviour
     private void Start()
     {
         EventManager.AddListener(EventName.ChangePlateDecor.ToString(), UpdatePlateDecor);
+        EventManager.AddListener(EventName.UsingFillUp.ToString(), UsingFillUpMode);
+        EventManager.AddListener(EventName.UsingFillUpDone.ToString(), UsingFillUpDone);
+    }
+
+    bool onUsingFillUp;
+    void UsingFillUpMode()
+    {
+        onUsingFillUp = true;
+    }
+
+    void UsingFillUpDone() {
+        onUsingFillUp = false;
     }
 
     public void InitData() {
@@ -56,7 +69,8 @@ public class Cake : MonoBehaviour
         UpdatePlateDecor();
     }
 
-    public void InitData(List<int> cakeIDs) {
+    public void InitData(List<int> cakeIDs, Plate plate) {
+        currentPlate = plate;
         transform.DOScale(scaleDefault, .5f).From(1.2f).SetEase(Ease.InOutBack);
         
         pieceIndex = 0;
@@ -68,6 +82,7 @@ public class Cake : MonoBehaviour
             InitPiece(i, cakeIDs[i]);
         }
         UpdatePlateDecor();
+        GameManager.Instance.cakeManager.AddCakeNeedCheck(this);
     }
 
 
@@ -141,11 +156,39 @@ public class Cake : MonoBehaviour
     {
         if (EventSystem.current.IsPointerOverGameObject() || EventSystem.current.IsPointerOverGameObject(0))
             return;
+
+        if (onUsingFillUp)
+        {
+            Debug.Log("Choose on Fill up");
+            FillUp();
+            return;
+        }
+
         if (myGroupCake != null)
         {
             myGroupCake.OnFollowMouse();
         }
         else Debug.Log("Group cake null!");
+    }
+    List<int> listCakeIDFillUp = new List<int>();
+    void FillUp() {
+        Debug.Log("Fill up");
+        listCakeIDFillUp.Clear();
+        for (int i = pieces.Count - 1; i >= 0; i--)
+        {
+            pieces[i].RemoveByFillUp();
+            pieces.Remove(pieces[i]);
+        }
+        for (int i = 0; i < 6; i++)
+        {
+            listCakeIDFillUp.Add(pieceCakeID[0]);
+        }
+        InitData(listCakeIDFillUp, currentPlate);
+        GameManager.Instance.itemManager.UsingItemDone();
+        ProfileManager.Instance.playerData.playerResourseSave.UsingItem(ItemType.FillUp);
+        DoneCakeMode();
+        ProfileManager.Instance.playerData.cakeSaveData.RemoveCake(currentPlate.plateIndex);
+        EventManager.TriggerEvent(EventName.UsingFillUpDone.ToString());
     }
 
     public bool CheckDrop()
@@ -220,6 +263,8 @@ public class Cake : MonoBehaviour
     {
         myGroupCake = groupCake;
     }
+
+    public GroupCake GetGroupCake() { return myGroupCake; }
     Piece piece;
     public bool GetCakePieceSame(int cakeID) {
         piece = pieces.Find(e => (e.cakeID == cakeID && e.gameObject.activeSelf));

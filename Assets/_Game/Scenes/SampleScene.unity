@@ -1637,6 +1637,7 @@ MonoBehaviour:
   bombPref: {fileID: 6259142211723352006, guid: 7b771c162e5e2834db65ca7fc1626ed6, type: 3}
   itemTrs: {fileID: 1352786074}
   pointBombIn: {fileID: 1375711331}
+  isUsingItem: 0
 --- !u!4 &694964794 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 729191258741c614682a567e766108db, type: 3}
@@ -3344,7 +3345,7 @@ MonoBehaviour:
   - {fileID: 1269635176}
   table: {fileID: 2083511601}
   currentGCake: {fileID: 0}
-  vectorOffset: {x: 0, y: 0, z: 0.25}
+  vectorOffset: {x: 0, y: 0, z: 0.5}
   distance: 7
   posYDefault: 1.5
   onCheckLooseGame: 0
@@ -3354,6 +3355,7 @@ MonoBehaviour:
   trashBin: {fileID: 1862073161}
   pointStart: {fileID: 1908913122}
   pointEnd: {fileID: 96028231}
+  cakeNeedCheck: []
   countCake: []
   cakePref: {fileID: 3108695516489363356, guid: d4ffb10933757c2468e51ff9578a7e40, type: 3}
 --- !u!4 &1994074016 stripped

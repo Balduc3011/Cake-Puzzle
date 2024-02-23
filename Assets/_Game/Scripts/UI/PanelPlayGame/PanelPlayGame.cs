@@ -9,18 +9,28 @@ public class PanelPlayGame : UIPanel
     [SerializeField] Button x2BoosterBtn;
     [SerializeField] Button coinBoosterBtn;
     [SerializeField] Button btnItemBomb;
-    //[SerializeField] Button item2Btn;
-    //[SerializeField] Button item3Btn;
+    [SerializeField] Button btnFillUp;
+    [SerializeField] Button btnReroll;
     [SerializeField] List<TransitionUI> transitionUIList;
     public override void Awake()
     {
         panelType = UIPanelType.PanelPlayGame;
         base.Awake();
         btnItemBomb.onClick.AddListener(UsingItemBomb);
+        btnFillUp.onClick.AddListener(UsingItemFillUp);
+        btnReroll.onClick.AddListener(UsingReroll);
     }
 
-    public void UsingItemBomb() {
+    void UsingItemBomb() {
         GameManager.Instance.itemManager.UsingItem(ItemType.Bomb);
+    }
+
+    void UsingItemFillUp() {
+        GameManager.Instance.itemManager.UsingItem(ItemType.FillUp);
+    }
+
+    void UsingReroll() {
+        GameManager.Instance.itemManager.UsingItem(ItemType.ReRoll);
     }
 
     public void UsingItemMode()

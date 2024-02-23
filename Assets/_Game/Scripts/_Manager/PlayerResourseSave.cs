@@ -223,6 +223,7 @@ public class PlayerResourseSave : SaveBase
                 ProfileManager.Instance.playerData.cakeSaveData.UseCake(cakeID);
             }
             currentLevel++;
+            EventManager.TriggerEvent(EventName.ChangeLevel.ToString());
             expMax = ProfileManager.Instance.dataConfig.levelDataConfig.GetExpToNextLevel(currentLevel);
         }
     }
@@ -234,5 +235,15 @@ public class PlayerResourseSave : SaveBase
     public float GetMaxExp()
     {
         return expMax;
+    }
+
+    public bool IsHaveItem(ItemType itemType)
+    {
+        for (int i = 0; i < ownedItem.Count; i++)
+        {
+            if (ownedItem[i].ItemType == itemType && ownedItem[i].amount > 0)
+                return true;
+        }
+        return false;
     }
 }

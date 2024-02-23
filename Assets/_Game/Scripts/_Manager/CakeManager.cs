@@ -29,6 +29,13 @@ public class CakeManager : MonoBehaviour
     [SerializeField] Transform pointStart;
     [SerializeField] Transform pointEnd;
 
+    public List<Cake> cakeNeedCheck = new List<Cake>();
+
+    private void Start()
+    {
+        EventManager.AddListener(EventName.ChangeLevel.ToString(), LevelUp);
+    }
+
     private void Update()
     {
         if (currentGCake != null) {
@@ -140,7 +147,60 @@ public class CakeManager : MonoBehaviour
 
     int cakeIDIndex = -1;
     Cake currentCakeCheck;
+    
     UnityAction actionCallBack;
+
+    int indexCakeCheck;
+    int timeCheckCake;
+    bool onCheckCake = false;
+
+    public void SetupCheckCake() {
+        indexCakeCheck = -1;
+        table.SaveCake();
+        timeCheckCake = 0;
+        if (!onCheckCake)
+        {
+            onCheckCake = true;
+            CheckNextCake();
+        }
+        
+    }
+
+    void CheckNextCake() {
+        indexCakeCheck++;
+        GameManager.Instance.objectPooling.CheckGroupCake();
+        if (indexCakeCheck < cakeNeedCheck.Count)
+        {
+            if (cakeNeedCheck[indexCakeCheck] == null)
+                cakeNeedCheck.RemoveAt(indexCakeCheck);
+            StartCheckCake(cakeNeedCheck[indexCakeCheck], CheckNextCake);
+        }
+        else
+        {
+            timeCheckCake++;
+            if (timeCheckCake == 2)
+            {
+                table.SaveCake();
+                StartCheckLoseGame();
+                CheckSpawnCakeGroup();
+                onCheckCake = false;
+                ClearCakeNeedCheck();
+            }
+            else
+            {
+                indexCakeCheck = -1;
+                CheckNextCake();
+            }
+            
+        }
+    }
+
+    public void AddCakeNeedCheck(Cake cake) { 
+        cakeNeedCheck.Add(cake); 
+    }
+
+    public void ClearCakeNeedCheck() { cakeNeedCheck.Clear(); }
+
     public void StartCheckCake(Cake cake, UnityAction actionCallBack)
     {
         this.actionCallBack = actionCallBack;
@@ -231,6 +291,8 @@ public class CakeManager : MonoBehaviour
         return ProfileManager.Instance.dataConfig.cakeDataConfig.GetCakePieceMesh(justUnlockedCake);
     }
 
+    public void SetJustUnlockedCake(int cakeID) { justUnlockedCake = cakeID; }
+
     public Mesh GetNextUnlockedCakePieceMesh()
     {
         int nextUnlockCake = ProfileManager.Instance.dataConfig.levelDataConfig.GetLevel(ProfileManager.Instance.playerData.playerResourseSave.currentLevel).cakeUnlockID;
@@ -305,7 +367,7 @@ public class CakeManager : MonoBehaviour
             Cake newCake = Instantiate(cakePref);
             table.LoadCakeOnPlate(newCake, cakeOnPlates[i]);
         }
-    
+        SetupCheckCake();
     }
     void LoadCakeWaitData() {
         cakeOnWaits = ProfileManager.Instance.playerData.cakeSaveData.cakeOnWaits;
@@ -333,5 +395,31 @@ public class CakeManager : MonoBehaviour
             }
             indexGroupCake++;
         }
+    }
+
+    void LevelUp() {
+        onMove = true;
+        int newCakeID = ProfileManager.Instance.dataConfig.levelDataConfig.GetCakeID(ProfileManager.Instance.playerData.playerResourseSave.currentLevel - 1);
+        if (newCakeID != -1)
+        {
+            SetJustUnlockedCake(newCakeID);
+            UIManager.instance.ShowPanelCakeReward();
+        }
+        else
+            UIManager.instance.ShowPanelLevelComplete(true);
+    }
+
+    public void UsingReroll() {
+        for (int i = 0; i < cakesWait.Count; i++)
+        {
+            cakesWait[i].UsingRerollItem();
+        }
+
+        InitGroupCake();
+    }
+
+    public void UsingFilUp()
+    {
+        EventManager.TriggerEvent(EventName.UsingFillUp.ToString());
     }
 }

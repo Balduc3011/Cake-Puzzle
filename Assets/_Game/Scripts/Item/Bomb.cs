@@ -6,21 +6,27 @@ public class Bomb : MonoBehaviour
 {
     private void OnMouseDown()
     {
-        if (bang) return;
-        needCheck = true;
-        myAnim.SetBool("Using", true);
+        if (GameManager.Instance.itemManager.isUsingItem)
+        {
+            if (bang) return;
+            needCheck = true;
+            myAnim.SetBool("Using", true);  
+        }
     }
     private void OnMouseUp()
     {
-        myAnim.SetBool("Using", false);
-        needCheck = false;
-        if (currentPlate != null)
+        if (GameManager.Instance.itemManager.isUsingItem)
         {
-            myAnim.SetBool("Active", true);
-            bang = true;
-            StartCoroutine(WaitBombUsing());
+            myAnim.SetBool("Using", false);
+            needCheck = false;
+            if (currentPlate != null)
+            {
+                myAnim.SetBool("Active", true);
+                bang = true;
+                StartCoroutine(WaitBombUsing());
+            }
+            else { transform.position = GameManager.Instance.itemManager.GetPointItemIn(); }
         }
-        else { transform.position = GameManager.Instance.itemManager.GetPointItemIn(); }
     }
 
     [SerializeField] float radiusCheck;
