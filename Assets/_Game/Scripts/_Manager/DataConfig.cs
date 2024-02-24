@@ -13,4 +13,5 @@ public class DataConfig
     public DecorationDataConfig decorationDataConfig;
     public CakeDataConfig cakeDataConfig;
     public ItemDataConfig itemDataConfig;
+    public CakeAnimtionSetting cakeAnimationSetting;
 }

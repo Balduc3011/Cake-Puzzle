@@ -9,6 +9,7 @@ public class PlayerData
     public CakeSaveData cakeSaveData;
     public PlayerResourseSave playerResourseSave;
     public DecorationSave decorationSave;
+    
 
     public void LoadData()
     {

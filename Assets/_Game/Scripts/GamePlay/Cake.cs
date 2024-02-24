@@ -19,7 +19,8 @@ public class Cake : MonoBehaviour
     public Piece piecePref;
     public bool cakeDone;
 
-    [SerializeField] AnimationCurve curveRotate;
+    AnimationCurve curveRotate;
+    float timeRotate;
     [SerializeField] Vector3 vectorOffsetEffect;
     [SerializeField] Vector3 vectorOffsetExp;
     [SerializeField] float scaleDefault;
@@ -32,6 +33,7 @@ public class Cake : MonoBehaviour
         EventManager.AddListener(EventName.ChangePlateDecor.ToString(), UpdatePlateDecor);
         EventManager.AddListener(EventName.UsingFillUp.ToString(), UsingFillUpMode);
         EventManager.AddListener(EventName.UsingFillUpDone.ToString(), UsingFillUpDone);
+        curveRotate = ProfileManager.Instance.dataConfig.cakeAnimationSetting.GetCurveRightWay();
     }
 
     bool onUsingFillUp;
@@ -311,7 +313,7 @@ public class Cake : MonoBehaviour
         while (indexRotate < pieces.Count)
         {
             vectorRotateTo = new Vector3(0, rotates[indexRotate], 0);
-            pieces[indexRotate].transform.DORotate(vectorRotateTo, .15f).SetEase(Ease.InOutSine);
+            pieces[indexRotate].transform.DORotate(vectorRotateTo, timeRotate).SetEase(curveRotate);
             indexRotate++;
             yield return new WaitForSeconds(.1f);
         }
@@ -327,7 +329,7 @@ public class Cake : MonoBehaviour
     IEnumerator RotateOtherPieceRightWay() {
        while (indexRotate < pieces.Count) { 
             vectorRotateTo = new Vector3(0, rotates[indexRotate], 0);
-            pieces[indexRotate].transform.DORotate(vectorRotateTo, .15f).SetEase(Ease.InOutSine);
+            pieces[indexRotate].transform.DORotate(vectorRotateTo, timeRotate).SetEase(curveRotate);
             indexRotate++;
             yield return new WaitForSeconds(.1f);
         }

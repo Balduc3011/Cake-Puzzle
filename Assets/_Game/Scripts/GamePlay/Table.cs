@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using DG.Tweening;
-using System.Linq;
-using UnityEditor.Experimental.GraphView;
+using static UnityEditor.Rendering.InspectorCurveEditor;
+using UnityEngine.UIElements;
 public class Table : MonoBehaviour
 {
     public List<Plate> plates = new List<Plate>();
-    [SerializeField] AnimationCurve curveRotate;
-    [SerializeField] AnimationCurve curveMove;
+    AnimationCurve curveRotate;
+    AnimationCurve curveMove;
+    float timeRotate;
+    float timeMove;
     Plate[,] plateArray = new Plate[6, 4];
 
     private void Start()
@@ -167,7 +168,13 @@ public class Table : MonoBehaviour
             StartMove(cakeID);
             return;
         }
-        ways[stepIndex].Move(cakeID, curveRotate, curveMove, stepIndex == ways.Count - 1, Move);
+        if (timeMove == 0) {
+            timeMove = ProfileManager.Instance.dataConfig.cakeAnimationSetting.GetTimeMove();
+            timeRotate = ProfileManager.Instance.dataConfig.cakeAnimationSetting.GetTimeRotate();
+            curveRotate = ProfileManager.Instance.dataConfig.cakeAnimationSetting.GetCurveRotate();
+            curveMove = ProfileManager.Instance.dataConfig.cakeAnimationSetting.GetCurveMove();
+        }
+        ways[stepIndex].Move(cakeID, curveRotate, curveMove, timeRotate, timeMove, stepIndex == ways.Count - 1, Move);
     }
 
     public void StartCreateWay()
@@ -447,7 +454,7 @@ public class Way {
     Vector3 vectorOffSet = new Vector3(0,1,0);
     Piece pieces;
     float timeDelay;
-    public void Move(int cakeID,AnimationCurve curveRotate, AnimationCurve curveMove,bool lastMove, UnityAction<int> actionDone = null)
+    public void Move(int cakeID, AnimationCurve curveRotate, AnimationCurve curveMove, float timeRotate, float timeMove, bool lastMove, UnityAction<int> actionDone = null)
     {
         //if (moveDone)
         //{
@@ -470,18 +477,18 @@ public class Way {
            
             int rotateIndex = plateGo.currentCake.GetRotateIndex(cakeID);
             pieces.transform.parent = plateGo.currentCake.transform;
-            pieces.transform.DOMove(plateGo.pointStay.position, .3f).SetEase(Ease.InOutSine).OnComplete(() => {
+            pieces.transform.DOMove(plateGo.pointStay.position, timeMove).SetEase(curveMove).OnComplete(() => {
                 Transform trs = GameManager.Instance.objectPooling.GetPieceDoneEffect();
                 trs.position = pieces.transform.position + vectorOffSet;
                 trs.gameObject.SetActive(true);
             });
             
-            pieces.transform.DORotate(new Vector3(0, plateGo.currentCake.rotates[rotateIndex], 0), .3f).SetEase(Ease.InOutSine);
+            pieces.transform.DORotate(new Vector3(0, plateGo.currentCake.rotates[rotateIndex], 0), timeRotate).SetEase(curveRotate);
             plateGo.AddPiece(pieces, rotateIndex);
         }
         plateCurrent.MoveDoneOfCake();
-        if(lastMove) timeDelay = .35f;
-        else timeDelay = .25f;
+        if (lastMove) timeDelay = ProfileManager.Instance.dataConfig.cakeAnimationSetting.GetTimeEachCake();
+        else timeDelay = ProfileManager.Instance.dataConfig.cakeAnimationSetting.GetTimeEachPiece();
         DOVirtual.DelayedCall(timeDelay, () =>{
             if (actionDone != null)
             {
