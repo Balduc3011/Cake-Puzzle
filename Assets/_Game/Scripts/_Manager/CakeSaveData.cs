@@ -92,6 +92,31 @@ public class CakeSaveData : SaveBase
             if (cakeIDUsing[i] == oldId)
                 cakeIDUsing[i] = newId;
         }
+        for (int i = 0; i < cakeOnPlates.Count; i++)
+        {
+            for (int j = 0; j < cakeOnPlates[i].cakeIDs.Count; j++)
+            {
+                if(cakeOnPlates[i].cakeIDs[j] == oldId)
+                {
+                    cakeOnPlates[i].cakeIDs[j] = newId;
+                }
+            }
+        }
+        for (int i = 0; i < cakeOnWaits.Count; i++)
+        {
+            for (int j = 0; j < cakeOnWaits[i].cakeSaves.Count; j++)
+            {
+                for (int k = 0; k < cakeOnWaits[i].cakeSaves[j].pieceCakeID.Count; k++)
+                {
+                    if (cakeOnWaits[i].cakeSaves[j].pieceCakeID[k] == oldId)
+                    {
+                        cakeOnWaits[i].cakeSaves[j].pieceCakeID[k] = newId;
+                    }
+                }
+            }
+        }
+        IsMarkChangeData();
+        SaveData();
     }
 
     public void SaveCake(PlateIndex plate, Cake cake)
