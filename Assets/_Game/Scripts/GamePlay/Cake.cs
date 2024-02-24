@@ -34,6 +34,7 @@ public class Cake : MonoBehaviour
         EventManager.AddListener(EventName.UsingFillUp.ToString(), UsingFillUpMode);
         EventManager.AddListener(EventName.UsingFillUpDone.ToString(), UsingFillUpDone);
         curveRotate = ProfileManager.Instance.dataConfig.cakeAnimationSetting.GetCurveRightWay();
+        timeRotate = ProfileManager.Instance.dataConfig.cakeAnimationSetting.GetTimeRightWay();
     }
 
     bool onUsingFillUp;
