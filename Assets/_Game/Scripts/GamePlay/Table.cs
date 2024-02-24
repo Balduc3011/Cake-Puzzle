@@ -9,6 +9,7 @@ using UnityEngine.UIElements;
 public class Table : MonoBehaviour
 {
     public List<Plate> plates = new List<Plate>();
+    [SerializeField] List<Material> plateMaterial;
     AnimationCurve curveRotate;
     AnimationCurve curveMove;
     float timeRotate;
@@ -19,6 +20,17 @@ public class Table : MonoBehaviour
     {
         InitData();
     }
+
+    #region Decoration
+
+    public void SetPlateMatColor(List<Color> colors)
+    {
+        for (int i = 0; i < plateMaterial.Count; i++)
+        {
+            plateMaterial[i].color = colors[i];
+        }
+    }
+    #endregion
 
     void InitData() {
         int plateIndex = 0;
@@ -499,5 +511,7 @@ public class Way {
     }
 
     void DoActionDone(int cakeID, UnityAction<int> actionDone = null) { actionDone(cakeID); }
+
+    
 }
 

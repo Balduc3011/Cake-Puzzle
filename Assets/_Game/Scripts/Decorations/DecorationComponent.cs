@@ -48,7 +48,10 @@ public class DecorationComponent : MonoBehaviour
         {
             decorationComponentInfo.SetUpDecorationShow(usingDecorId);
         }
-        GameObject newDecor = GetDecorationObject(decorationType, usingDecorId);
+        if (decorationType != DecorationType.Table)
+        {
+            GameObject newDecor = GetDecorationObject(decorationType, usingDecorId);
+        }
     }
 
     public GameObject SpawnDecoration(DecorationType decorationType, int decorId)
@@ -83,15 +86,29 @@ public class DecorationComponentInfo
     public float zoomSize;
     public Dictionary<int, GameObject> objectDecoration = new Dictionary<int, GameObject>();
 
+    [SerializeField] Table table;
+    public Dictionary<int, Color> tableColor = new Dictionary<int, Color>();
+
     public void SetUpDecorationShow(int currentId)
     {
-        int allPlateCount = ProfileManager.Instance.dataConfig.decorationDataConfig.GetDecorationDataList(decorationType).decorationDatas.Count;
-        for (int i = 0; i < allPlateCount; i++)
+        if(decorationType != DecorationType.Table)
         {
-            if(objectDecoration.ContainsKey(i) && i != currentId)
+            int allPlateCount = ProfileManager.Instance.dataConfig.decorationDataConfig.GetDecorationDataList(decorationType).decorationDatas.Count;
+            for (int i = 0; i < allPlateCount; i++)
             {
-                objectDecoration[i].SetActive(false);
+                if (objectDecoration.ContainsKey(i) && i != currentId)
+                {
+                    objectDecoration[i].SetActive(false);
+                }
             }
+        }
+        else
+        {
+            List<Color> colors = ProfileManager.Instance.dataConfig.decorationDataConfig.GetDecorColor(decorationType, currentId);
+            if (colors == null) return;
+            if (colors.Count == 0) return;
+            table.SetPlateMatColor(colors);
         }
     }
 }
+
