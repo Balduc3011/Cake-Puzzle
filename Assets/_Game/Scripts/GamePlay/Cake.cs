@@ -206,10 +206,15 @@ public class Cake : MonoBehaviour
     }
 
     bool onDrop;
-    public void DropDone() {
+    public void DropDone(bool lastDrop, UnityAction actionCallback) {
         onDrop = true;
         transform.parent = currentPlate.pointStay;
         transform.DOLocalMove(Vector3.zero, .1f);
+        transform.DOScale(Vector3.one, .25f).OnComplete(()=> {
+            if (lastDrop)
+                actionCallback();
+            transform.DOScale(new Vector3(0.8f, 0.8f, 0.8f), .3f);
+        });
         //ProfileManager.Instance.playerData.cakeSaveData.SaveCake(currentPlate.GetPlateIndex(), this);
     }
 
@@ -411,13 +416,53 @@ public class Cake : MonoBehaviour
         }
         return false;
     }
-
+    PanelTotal panelTotal;
+    Vector3 vectorDefault = new Vector3(.8f, .8f, .8f);
+    Vector3 vectorScaleUp = new Vector3(1f, 1f, 1f);
+    Vector3 vectorScaleDown = new Vector3(.7f, .7f, .7f);
+    Vector3 vectorRotate = new Vector3(0, 720f, 0);
     public void DoneCakeMode()
     {
-        GameObject objecPref = Resources.Load("Pieces/Cake_" + pieces[0].cakeID) as GameObject;
-        CakeFullAnimation trs = Instantiate(objecPref).GetComponent<CakeFullAnimation>();
-        trs.transform.position = transform.position;
-        trs.AnimDoneCake();
+        //GameObject objecPref = Resources.Load("Pieces/Cake_" + pieces[0].cakeID) as GameObject;
+        //CakeFullAnimation trs = Instantiate(objecPref).GetComponent<CakeFullAnimation>();
+        //trs.transform.position = transform.position;
+        //trs.AnimDoneCake();
+
+        if (panelTotal==null)
+        {
+            panelTotal = UIManager.instance.panelTotal;
+        }
+
+        transform.DOScale(vectorScaleDown, .15f).OnComplete(()=> {
+            transform.DOScale(vectorScaleUp, .15f).OnComplete(() =>
+            {
+                transform.DOScale(vectorDefault, .15f).OnComplete(()=> {
+                    transform.DORotate(vectorRotate, .5f).OnComplete(()=> {
+                        EffectDoneCake();
+                    });
+                });
+            });
+        });
+
+      
+    }
+
+    void EffectDoneCake() {
+        CoinEffect coinEffect = GameManager.Instance.objectPooling.GetCoinEffect();
+        coinEffect.transform.position = Camera.main.WorldToScreenPoint(transform.position);
+        coinEffect.Move(panelTotal.GetCoinTrs());
+
+        EffectMove effectMove = GameManager.Instance.objectPooling.GetEffectMove();
+        effectMove.gameObject.SetActive(true);
+        effectMove.PrepareToMove(Camera.main.WorldToScreenPoint(transform.position), panelTotal.GetPointSlider(), () => {
+            EffectAdd trsExpEffect = GameManager.Instance.objectPooling.GetEffectExp();
+            trsExpEffect.SetActionCallBack(() => {
+                EventManager.TriggerEvent(EventName.ChangeExp.ToString());
+            });
+            trsExpEffect.transform.position = panelTotal.GetPointSlider().position;
+        });
+
+
         Transform trsEffect = GameManager.Instance.objectPooling.GetCakeDoneEffect();
         trsEffect.transform.position = transform.position + vectorOffsetEffect;
         trsEffect.gameObject.SetActive(true);

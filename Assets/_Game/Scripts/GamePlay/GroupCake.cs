@@ -89,12 +89,16 @@ public class GroupCake : MonoBehaviour
 
         for (int i = 0; i < cake.Count; i++)
         {
-            cake[i].DropDone();
+            cake[i].DropDone(i==cake.Count - 1, CallBackStartCheckCake);
             GameManager.Instance.cakeManager.AddCakeNeedCheck(cake[i]);
         }
         //timeCheck = 0;
         GameManager.Instance.cakeManager.RemoveCakeWait(this);
        
+       
+    }
+
+    void CallBackStartCheckCake() {
         DOVirtual.DelayedCall(.15f, GameManager.Instance.cakeManager.SetupCheckCake);
     }
     //int indexCake;
