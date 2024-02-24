@@ -494,6 +494,8 @@ public class Way {
                 Transform trs = GameManager.Instance.objectPooling.GetPieceDoneEffect();
                 trs.position = pieces.transform.position + vectorOffSet;
                 trs.gameObject.SetActive(true);
+                
+                plateGo?.currentCake?.DoAnimImpact();
             });
             
             pieces.transform.DORotate(new Vector3(0, plateGo.currentCake.rotates[rotateIndex], 0), timeRotate).SetEase(curveRotate);

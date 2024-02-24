@@ -501,6 +501,17 @@ public class Cake : MonoBehaviour
         }   
     }
 
+    private List<Tween> tweens = new();
+    public void DoAnimImpact()
+    {
+
+        tweens.ForEach(t => t?.Kill());
+        tweens.Clear();
+        tweens.Add(transform.DOScale(Vector3.one * 0.67f, 0.15f).SetEase(Ease.InSine));
+        tweens.Add(transform.DOScale(Vector3.one * 0.71f, 0.15f).SetEase(Ease.InOutSine).SetDelay(0.15f));
+        tweens.Add(transform.DOScale(Vector3.one * 0.7f, 0.15f).SetEase(Ease.OutSine).SetDelay(0.3f));
+    }
+
     public int GetPieceFree()
     {
         return 6 - pieces.Count;

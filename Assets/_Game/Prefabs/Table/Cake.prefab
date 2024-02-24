@@ -64,6 +64,48 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   vectorCheckOffset: {x: 0, y: 0, z: 0.03}
+  impactCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.7
+      inSlope: -0.20000005
+      outSlope: -0.20000005
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.25
+      value: 0.65
+      inSlope: -0.0018548965
+      outSlope: -0.0018548965
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.23333335
+      outWeight: 0.38696274
+    - serializedVersion: 3
+      time: 0.75
+      value: 0.75
+      inSlope: -0.0035169623
+      outSlope: -0.0035169623
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 1
+    - serializedVersion: 3
+      time: 1
+      value: 0.7
+      inSlope: 0.0083375955
+      outSlope: 0.0083375955
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!135 &6308411296484759747
 SphereCollider:
   m_ObjectHideFlags: 0
