@@ -89,7 +89,7 @@ public class GroupCake : MonoBehaviour
 
         for (int i = 0; i < cake.Count; i++)
         {
-            cake[i].DropDone(i==cake.Count - 1, CallBackStartCheckCake);
+            cake[i].DropDone(i == cake.Count - 1, CallBackStartCheckCake);
             GameManager.Instance.cakeManager.AddCakeNeedCheck(cake[i]);
         }
         //timeCheck = 0;
@@ -99,7 +99,7 @@ public class GroupCake : MonoBehaviour
     }
 
     void CallBackStartCheckCake() {
-        DOVirtual.DelayedCall(.15f, GameManager.Instance.cakeManager.SetupCheckCake);
+        GameManager.Instance.cakeManager.SetupCheckCake();
     }
     //int indexCake;
     //int timeCheck;

@@ -489,6 +489,7 @@ public class Way {
            
             int rotateIndex = plateGo.currentCake.GetRotateIndex(cakeID);
             pieces.transform.parent = plateGo.currentCake.transform;
+            pieces.transform.DOScale(Vector3.one, 0.25f);
             pieces.transform.DOMove(plateGo.pointStay.position, timeMove).SetEase(curveMove).OnComplete(() => {
                 Transform trs = GameManager.Instance.objectPooling.GetPieceDoneEffect();
                 trs.position = pieces.transform.position + vectorOffSet;

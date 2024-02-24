@@ -420,7 +420,7 @@ public class Cake : MonoBehaviour
     Vector3 vectorDefault = new Vector3(.8f, .8f, .8f);
     Vector3 vectorScaleUp = new Vector3(1f, 1f, 1f);
     Vector3 vectorScaleDown = new Vector3(.7f, .7f, .7f);
-    Vector3 vectorRotate = new Vector3(0, 720f, 0);
+    Vector3 vectorRotate = new Vector3(0, 360, 0);
     public void DoneCakeMode()
     {
         //GameObject objecPref = Resources.Load("Pieces/Cake_" + pieces[0].cakeID) as GameObject;
@@ -433,18 +433,13 @@ public class Cake : MonoBehaviour
             panelTotal = UIManager.instance.panelTotal;
         }
 
-        transform.DOScale(vectorScaleDown, .15f).OnComplete(()=> {
-            transform.DOScale(vectorScaleUp, .15f).OnComplete(() =>
-            {
-                transform.DOScale(vectorDefault, .15f).OnComplete(()=> {
-                    transform.DORotate(vectorRotate, .5f).OnComplete(()=> {
-                        EffectDoneCake();
-                    });
-                });
-            });
-        });
-
-      
+        Sequence sequence = DOTween.Sequence();
+        transform.DOScale(vectorScaleDown, .3f);
+        transform.DOScale(vectorScaleUp, .3f).SetDelay(0.3f);
+        transform.DOScale(vectorDefault, .3f).SetDelay(.6f);
+        transform.DORotate(vectorRotate, 1f, RotateMode.WorldAxisAdd).SetDelay(.4f).OnComplete(() => {
+            EffectDoneCake();
+        });      
     }
 
     void EffectDoneCake() {
