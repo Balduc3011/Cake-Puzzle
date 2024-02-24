@@ -9,6 +9,7 @@ public class UsingCake : MonoBehaviour
     CakeData cakeData;
     [SerializeField] Button button;
     [SerializeField] Image onIconImg;
+    [SerializeField] GameObject swapIcon;
     PanelBakery panelBakery;
     void Start()
     {
@@ -18,6 +19,9 @@ public class UsingCake : MonoBehaviour
 
     void OnCakeClick()
     {
+        SwapCake();
+        panelBakery.ReloadPanel();
+        return;
         transform.DOScale(0, 0.25f).SetEase(Ease.InBack).OnComplete(() =>
         {
             gameObject.SetActive(false);
@@ -25,6 +29,17 @@ public class UsingCake : MonoBehaviour
             panelBakery.RemoveUsingCake(this);
             panelBakery.ReloadPanel();
         });
+    }
+
+    public void SwapCake()
+    {
+        int newCakeId = panelBakery.toSwapCake;
+        if(newCakeId != -1)
+        {
+            ProfileManager.Instance.playerData.cakeSaveData.SwapCake(cakeData.id, newCakeId);
+            Init(ProfileManager.Instance.dataConfig.cakeDataConfig.GetCakeData(newCakeId));
+            panelBakery.OnCakeSwaped();
+        }
     }
 
     public void Init(CakeData cakeData)
@@ -37,5 +52,11 @@ public class UsingCake : MonoBehaviour
             transform.localScale = Vector3.zero;
             transform.DOScale(1, 0.25f).SetEase(Ease.OutBack);
         }
+    }
+
+    public void SetSwapable(bool active)
+    {
+        button.interactable = active;
+        swapIcon.SetActive(active);
     }
 }

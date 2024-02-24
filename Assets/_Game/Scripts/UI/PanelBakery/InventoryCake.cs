@@ -16,9 +16,12 @@ public class InventoryCake : MonoBehaviour
     [SerializeField] GameObject usingMarkObj;
     [SerializeField] GameObject lockingMarkObj;
     string PERCAKE = "/cake";
+    PanelBakery panelBakery;
+    bool isUsing;
     void Start()
     {
         button.onClick.AddListener(OnCakeClick);
+        panelBakery = UIManager.instance.GetPanel(UIPanelType.PanelBakery).GetComponent<PanelBakery>();
     }
 
     private void OnEnable()
@@ -39,8 +42,10 @@ public class InventoryCake : MonoBehaviour
             {
                 offIconImg.transform.DOScale(1, 0.05f);
             });
-        ProfileManager.Instance.playerData.cakeSaveData.UseCake(cakeData.id);
-        UIManager.instance.GetPanel(UIPanelType.PanelBakery).GetComponent<PanelBakery>().ReloadPanel();
+        //ProfileManager.Instance.playerData.cakeSaveData.UseCake(cakeData.id);
+        //UIManager.instance.GetPanel(UIPanelType.PanelBakery).GetComponent<PanelBakery>().ReloadPanel();
+        if(!isUsing)
+            panelBakery.SetCakeToSwap(cakeData.id);
     }
 
     public void Init(CakeData cakeData)
@@ -55,12 +60,15 @@ public class InventoryCake : MonoBehaviour
 
     public void InitUsing()
     {
+        isUsing = false;
         if(ProfileManager.Instance.playerData.cakeSaveData.IsOwnedCake(cakeData.id))
         {
             lockingMarkObj.SetActive(false);
             offIconImg.gameObject.SetActive(false);
             onIconImg.gameObject.SetActive(true);
             usingMarkObj.SetActive(ProfileManager.Instance.playerData.cakeSaveData.IsUsingCake(cakeData.id));
+
+            isUsing = ProfileManager.Instance.playerData.cakeSaveData.IsUsingCake(cakeData.id);
         }
         else
         {

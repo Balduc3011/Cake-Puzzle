@@ -12,6 +12,7 @@ public class PanelBakery : UIPanel
     [SerializeField] UsingCake usingCakePrefab;
     [SerializeField] List<UsingCake> usingCakeList;
     [SerializeField] Transform usingCakeContainer;
+    public int toSwapCake;
 
     bool inited = false;
     public override void Awake()
@@ -28,7 +29,8 @@ public class PanelBakery : UIPanel
     private void OnEnable()
     {
         if(inited)
-            ReloadPanel();
+            ReloadPanel(true);
+        OnCakeSwaped();
     }
 
     void InitCakes()
@@ -57,28 +59,30 @@ public class PanelBakery : UIPanel
         cake.transform.SetAsLastSibling();
     }
 
-    public void ReloadPanel()
+    public void ReloadPanel(bool reloadUsing = false)
     {
         for (int i = 0; i < inventoryCakeList.Count; i++)
         {
             inventoryCakeList[i].InitUsing();
         }
-        List<int> usingCakeIndex = ProfileManager.Instance.playerData.cakeSaveData.cakeIDUsing;
-        for (int i = 0; i < usingCakeIndex.Count; i++)
+        if(reloadUsing)
         {
-            if(i < usingCakeList.Count)
+            List<int> usingCakeIndex = ProfileManager.Instance.playerData.cakeSaveData.cakeIDUsing;
+            for (int i = 0; i < usingCakeIndex.Count; i++)
             {
-                if (!usingCakeList[i].gameObject.activeSelf)
+                if (i < usingCakeList.Count)
                 {
-                    usingCakeList[i].Init(ProfileManager.Instance.dataConfig.cakeDataConfig.GetCakeData(usingCakeIndex[i]));
+                    if (!usingCakeList[i].gameObject.activeSelf)
+                    {
+                        usingCakeList[i].Init(ProfileManager.Instance.dataConfig.cakeDataConfig.GetCakeData(usingCakeIndex[i]));
+                    }
+                }
+                else
+                {
+                    UsingCake cake = GetUsingCake();
+                    cake.Init(ProfileManager.Instance.dataConfig.cakeDataConfig.GetCakeData(usingCakeIndex[i]));
                 }
             }
-            else
-            {
-                UsingCake cake = GetUsingCake();
-                cake.Init(ProfileManager.Instance.dataConfig.cakeDataConfig.GetCakeData(usingCakeIndex[i]));
-            }
-
         }
     }
 
@@ -97,5 +101,23 @@ public class PanelBakery : UIPanel
     public void OnClose()
     {
         uiPanelShowUp.OnClose(UIManager.instance.ClosePanelBakery);
+    }
+
+    public void SetCakeToSwap(int toSwapCake)
+    {
+        this.toSwapCake = toSwapCake;
+        for (int i = 0; i < usingCakeList.Count; i++)
+        {
+            usingCakeList[i].SetSwapable(true);
+        }
+    }
+
+    public void OnCakeSwaped()
+    {
+        toSwapCake = -1;
+        for (int i = 0; i < usingCakeList.Count; i++)
+        {
+            usingCakeList[i].SetSwapable(false);
+        }
     }
 }

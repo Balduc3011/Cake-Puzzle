@@ -50,6 +50,14 @@ public class CakeSaveData : SaveBase
         return cakeIDs.Contains(cake);
     }
 
+    public int GetCakeIdByIndex(int index)
+    {
+        if(index < cakeIDUsing.Count)
+        {
+            return cakeIDUsing[index];
+        }
+        return 0;
+    } 
     public bool IsUsingCake(int cake)
     {
         return cakeIDUsing.Contains(cake);
@@ -57,7 +65,7 @@ public class CakeSaveData : SaveBase
 
     public void UseCake(int cake)
     {
-        if (cakeIDUsing.Count >= 5 || !IsOwnedCake(cake))
+        if (cakeIDUsing.Count >= 6 || !IsOwnedCake(cake))
             return;
         if (!cakeIDUsing.Contains(cake))
         {
@@ -74,6 +82,15 @@ public class CakeSaveData : SaveBase
             cakeIDUsing.Remove(cake);
             IsMarkChangeData();
             SaveData();
+        }
+    }
+
+    public void SwapCake(int oldId, int newId)
+    {
+        for (int i = 0; i < cakeIDUsing.Count; i++)
+        {
+            if (cakeIDUsing[i] == oldId)
+                cakeIDUsing[i] = newId;
         }
     }
 
