@@ -463,9 +463,9 @@ public class Way {
     public Plate plateCurrent;
     public Plate plateGo;
     //bool moveDone;
-    Vector3 vectorOffSet = new Vector3(0,1,0);
     Piece pieces;
     float timeDelay;
+    Cake cake;
     public void Move(int cakeID, AnimationCurve curveRotate, AnimationCurve curveMove, float timeRotate, float timeMove, bool lastMove, UnityAction<int> actionDone = null)
     {
         //if (moveDone)
@@ -488,14 +488,15 @@ public class Way {
         {
            
             int rotateIndex = plateGo.currentCake.GetRotateIndex(cakeID);
+            cake = plateGo.currentCake;
             pieces.transform.parent = plateGo.currentCake.transform;
             pieces.transform.DOScale(Vector3.one, 0.25f);
             pieces.transform.DOMove(plateGo.pointStay.position, timeMove).SetEase(curveMove).OnComplete(() => {
-                Transform trs = GameManager.Instance.objectPooling.GetPieceDoneEffect();
-                trs.position = pieces.transform.position + vectorOffSet;
-                trs.gameObject.SetActive(true);
-                
-                plateGo?.currentCake?.DoAnimImpact();
+                //Transform trs = GameManager.Instance.objectPooling.GetPieceDoneEffect();
+                //trs.position = pieces.transform.position + vectorOffSet;
+                //trs.gameObject.SetActive(true);
+                cake.DoAnimImpact();
+                //plateGo?.currentCake?.DoAnimImpact();
             });
             
             pieces.transform.DORotate(new Vector3(0, plateGo.currentCake.rotates[rotateIndex], 0), timeRotate).SetEase(curveRotate);

@@ -18,6 +18,7 @@ public class Cake : MonoBehaviour
     public List<int> pieceCakeID = new List<int>();
     public Piece piecePref;
     public bool cakeDone;
+    int indexFirstSpawn;
 
     AnimationCurve curveRotate;
     float timeRotate;
@@ -210,10 +211,11 @@ public class Cake : MonoBehaviour
         onDrop = true;
         transform.parent = currentPlate.pointStay;
         transform.DOLocalMove(Vector3.zero, .1f);
-        transform.DOScale(Vector3.one, .25f).OnComplete(()=> {
+        transform.DOScale(Vector3.one * .95f, .25f).OnComplete(()=> {
             if (lastDrop)
                 actionCallback();
-            transform.DOScale(new Vector3(0.8f, 0.8f, 0.8f), .3f);
+            transform.DOScale(Vector3.one * .75f, .2f);
+            transform.DOScale(Vector3.one * .8f, .2f).SetDelay(.2f);
         });
         //ProfileManager.Instance.playerData.cakeSaveData.SaveCake(currentPlate.GetPlateIndex(), this);
     }
@@ -428,18 +430,17 @@ public class Cake : MonoBehaviour
         //trs.transform.position = transform.position;
         //trs.AnimDoneCake();
 
-        if (panelTotal==null)
-        {
+        if (panelTotal == null)
             panelTotal = UIManager.instance.panelTotal;
-        }
-
-        Sequence sequence = DOTween.Sequence();
-        transform.DOScale(vectorScaleDown, .3f);
-        transform.DOScale(vectorScaleUp, .3f).SetDelay(0.3f);
-        transform.DOScale(vectorDefault, .3f).SetDelay(.6f);
-        transform.DORotate(vectorRotate, 1f, RotateMode.WorldAxisAdd).SetDelay(.4f).OnComplete(() => {
-            EffectDoneCake();
-        });      
+        DOVirtual.DelayedCall(.35f, () => {
+            transform.DOScale(vectorScaleDown, .3f);
+            transform.DOScale(vectorScaleUp, .3f).SetDelay(0.3f);
+            transform.DOScale(vectorDefault, .3f).SetDelay(.6f);
+            transform.DORotate(vectorRotate, 1f, RotateMode.WorldAxisAdd).SetDelay(.4f).OnComplete(() => {
+                EffectDoneCake();
+            });
+        });
+       
     }
 
     void EffectDoneCake() {
@@ -507,9 +508,9 @@ public class Cake : MonoBehaviour
 
         tweens.ForEach(t => t?.Kill());
         tweens.Clear();
-        tweens.Add(transform.DOScale(Vector3.one * 0.67f, 0.15f).SetEase(Ease.InSine));
-        tweens.Add(transform.DOScale(Vector3.one * 0.71f, 0.15f).SetEase(Ease.InOutSine).SetDelay(0.15f));
-        tweens.Add(transform.DOScale(Vector3.one * 0.7f, 0.15f).SetEase(Ease.OutSine).SetDelay(0.3f));
+        tweens.Add(transform.DOScale(Vector3.one * 0.67f, 0.13f).SetEase(Ease.InSine));
+        tweens.Add(transform.DOScale(Vector3.one * 0.71f, 0.13f).SetEase(Ease.InOutSine).SetDelay(0.13f));
+        tweens.Add(transform.DOScale(Vector3.one * 0.7f, 0.13f).SetEase(Ease.OutSine).SetDelay(0.26f));
     }
 
     public int GetPieceFree()
