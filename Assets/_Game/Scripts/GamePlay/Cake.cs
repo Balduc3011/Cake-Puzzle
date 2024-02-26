@@ -75,9 +75,13 @@ public class Cake : MonoBehaviour
 
     public void InitData(List<int> cakeIDs, Plate plate) {
         currentPlate = plate;
+        InitData(cakeIDs);
+        GameManager.Instance.cakeManager.AddCakeNeedCheck(this);
+    }
+
+    public void InitData(List<int> cakeIDs) {
         transform.DOScale(scaleDefault, .5f).From(1.2f).SetEase(Ease.InOutBack);
-        
-        pieceIndex = 0;
+
         for (int i = 0; i < cakeIDs.Count; i++)
         {
             if (!pieceCakeID.Contains(cakeIDs[i])) pieceCakeID.Add(cakeIDs[i]);
@@ -86,9 +90,26 @@ public class Cake : MonoBehaviour
             InitPiece(i, cakeIDs[i]);
         }
         UpdatePlateDecor();
-        GameManager.Instance.cakeManager.AddCakeNeedCheck(this);
     }
 
+    public void InitData(List<IDInfor> idInfors) {
+
+        transform.DOScale(scaleDefault, .5f).From(1.2f).SetEase(Ease.InOutBack);
+
+        for (int i = 0; i < idInfors.Count; i++)
+        {
+            pieceCakeID.Add(idInfors[i].ID);
+            pieceCakeIDCount.Add(idInfors[i].count);
+            for (int j = 0; j < idInfors[i].count; j++)
+            {
+                Piece newPiece = Instantiate(piecePref, transform);
+                pieces.Add(newPiece);
+                InitPiece(pieces.Count - 1, idInfors[i].ID);
+            }
+        }
+
+        UpdatePlateDecor();
+    }
 
     int indexRandom;
     void SetupPiecesCakeID() {
@@ -175,9 +196,11 @@ public class Cake : MonoBehaviour
         else Debug.Log("Group cake null!");
     }
     List<int> listCakeIDFillUp = new List<int>();
+    int pieceCakeIDFill = 0;
     void FillUp() {
         Debug.Log("Fill up");
         listCakeIDFillUp.Clear();
+        pieceCakeIDFill = pieces[0].cakeID;
         for (int i = pieces.Count - 1; i >= 0; i--)
         {
             pieces[i].RemoveByFillUp();
@@ -185,7 +208,7 @@ public class Cake : MonoBehaviour
         }
         for (int i = 0; i < 6; i++)
         {
-            listCakeIDFillUp.Add(pieceCakeID[0]);
+            listCakeIDFillUp.Add(pieceCakeIDFill);
         }
         InitData(listCakeIDFillUp, currentPlate);
         GameManager.Instance.itemManager.UsingItemDone();
@@ -516,5 +539,37 @@ public class Cake : MonoBehaviour
     public int GetPieceFree()
     {
         return 6 - pieces.Count;
+    }
+
+    List<int> listPieceIDReturn = new();
+    public List<int> GetCurrenPieceIDs()
+    {
+        for (int i = 0; i < pieces.Count; i++)
+        {
+            if (!listPieceIDReturn.Contains(pieces[i].cakeID))
+                listPieceIDReturn.Add(pieces[i].cakeID);
+        }
+        return listPieceIDReturn;
+    }
+    List<IDInfor> currentIDInfor = new();
+    IDInfor idInfor;
+    public List<IDInfor> GetIDInfor()
+    {
+        for (int i = 0; i < pieces.Count; i++)
+        {
+            idInfor = currentIDInfor.Find(e => e.ID == pieces[i].cakeID);
+            if (idInfor != null)
+            {
+                idInfor.count++;
+            }
+            else {
+                IDInfor newIDInfor = new();
+                newIDInfor.ID = pieces[i].cakeID;
+                newIDInfor.count = 1;
+                currentIDInfor.Add(newIDInfor);
+            }
+        }
+
+        return currentIDInfor;
     }
 }
