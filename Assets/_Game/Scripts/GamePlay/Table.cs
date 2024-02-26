@@ -456,6 +456,64 @@ public class Table : MonoBehaviour
             ProfileManager.Instance.playerData.cakeSaveData.SaveCake(plates[i].GetPlateIndex(), plates[i].currentCake);
         }
     }
+
+    List<IDInfor> iDNeedResolves = new();
+    int lastPlateIndexCheck = -1;
+
+    public void ResetPharse() {
+        lastPlateIndexCheck = -1;
+    } 
+
+    public List<IDInfor> GetIDInfor()
+    {
+        iDNeedResolves.Clear();
+        for (int i = lastPlateIndexCheck + 1; i < plates.Count; i++) {
+            iDNeedResolves = GetIDInforInPlate(plates[i]);
+            if (iDNeedResolves != null)
+            {
+                lastPlateIndexCheck = i;
+                return iDNeedResolves;
+            }
+        }
+        return null;
+    }
+
+    List<IDInfor> GetIDInforInPlate(Plate plate) {
+        if (plate.currentCake != null)
+            return null;
+        if (plate.plateIndex.indexX + 1 < plateArray.GetLength(0))
+        {
+            if (plateArray[plate.plateIndex.indexX + 1, plate.plateIndex.indexY].currentCake != null)
+            {
+                return plateArray[plate.plateIndex.indexX + 1, plate.plateIndex.indexY].currentCake.GetIDInfor();
+            }
+        }
+
+        if (plate.plateIndex.indexX - 1 > 0)
+        {
+            if (plateArray[plate.plateIndex.indexX - 1, plate.plateIndex.indexY].currentCake != null)
+            {
+                return plateArray[plate.plateIndex.indexX - 1, plate.plateIndex.indexY].currentCake.GetIDInfor();
+            }
+        }
+
+        if (plate.plateIndex.indexY + 1 < plateArray.GetLength(1))
+        {
+            if (plateArray[plate.plateIndex.indexX, plate.plateIndex.indexY + 1].currentCake != null)
+            {
+                return plateArray[plate.plateIndex.indexX, plate.plateIndex.indexY + 1].currentCake.GetIDInfor();
+            }
+        }
+
+        if (plate.plateIndex.indexY - 1 > 0)
+        {
+            if (plateArray[plate.plateIndex.indexX, plate.plateIndex.indexY - 1].currentCake != null)
+            {
+                return plateArray[plate.plateIndex.indexX, plate.plateIndex.indexY - 1].currentCake.GetIDInfor();
+            }
+        }
+        return null;
+    }
 }
 
 [System.Serializable]
@@ -518,3 +576,8 @@ public class Way {
     
 }
 
+[System.Serializable]
+public class IDInfor {
+    public int ID;
+    public int count;
+}

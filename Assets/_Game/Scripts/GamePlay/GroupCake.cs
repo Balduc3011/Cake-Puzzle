@@ -130,13 +130,6 @@ public class GroupCake : MonoBehaviour
     //    }
     //}
 
-    void ClearCake() {
-        for (int i = cake.Count-1; i >= 0; i--)
-        {
-            if (cake[i] == null) cake.RemoveAt(i);
-        }
-    }
-
     public void DropFail() {
         for (int i = 0; i < cake.Count; i++)
         {
@@ -182,6 +175,20 @@ public class GroupCake : MonoBehaviour
             pointMove = pointMoveOnSelects[1];
         }
 
+        ClearCakeNotUsing();
+    }
+
+    public void InitData(List<IDInfor> idInfors, Transform pointSpawn, int cakeWaitIndex) {
+        groupCakeIndex = cakeWaitIndex;
+        this.pointSpawn = pointSpawn;
+        cake[0].gameObject.SetActive(true);
+        ClearCakeNotUsing();
+        cake[0].InitData(idInfors);
+        objConnects[0].SetActive(false);
+        objConnects[1].SetActive(false);
+    }
+
+    void ClearCakeNotUsing() {
         for (int i = cake.Count - 1; i >= 0; i--)
         {
             if (!cake[i].gameObject.activeSelf)
@@ -191,6 +198,7 @@ public class GroupCake : MonoBehaviour
             }
         }
     }
+
     public int cakePosition;
     void Init2Cakes(List<CakeSave> cakeSaveDatas = null) {
 
