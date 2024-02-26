@@ -21,6 +21,7 @@ public enum EventName
     ChangeTableDecor = 7,
     UsingFillUp = 8,
     UsingFillUpDone = 9,
+    UpdateCakeOnPlate = 10
 }
 
 public class EventManager : Singleton<EventManager>

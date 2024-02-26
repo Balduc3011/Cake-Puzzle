@@ -144,6 +144,7 @@ public class CakeSaveData : SaveBase
         newCakeOnPlate.plateIndex = plate;
         newCakeOnPlate.SetCakeID(cake);
         cakeOnPlates.Add(newCakeOnPlate);
+        EventManager.TriggerEvent(EventName.UpdateCakeOnPlate.ToString());
         IsMarkChangeData();
         SaveData();
     }

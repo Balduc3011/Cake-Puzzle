@@ -466,7 +466,7 @@ public class Table : MonoBehaviour
 
     public List<IDInfor> GetIDInfor()
     {
-        iDNeedResolves.Clear();
+        if (iDNeedResolves != null) iDNeedResolves.Clear();
         for (int i = lastPlateIndexCheck + 1; i < plates.Count; i++) {
             iDNeedResolves = GetIDInforInPlate(plates[i]);
             if (iDNeedResolves != null)
