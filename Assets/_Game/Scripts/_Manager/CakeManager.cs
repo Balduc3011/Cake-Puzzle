@@ -94,7 +94,6 @@ public class CakeManager : MonoBehaviour
             if (indexGroupCake != 2) {
                 if (NeedResolve())
                 {
-                    Debug.Log("init by infor");
                     idInfor = GetIDInfor();
                     if (idInfor == null || idInfor.Count == 0 || idInfor[0].count==0)
                         groupCake.InitData((int)countCake[indexGroupCake], pointSpawnGroupCake[indexGroupCake], indexGroupCake);
@@ -475,8 +474,6 @@ public class CakeManager : MonoBehaviour
                     newIDInfor.count = countIDRemain;
                 if (newIDInfor.count == 0)
                     newIDInfor.count = 1;
-                Debug.Log(newIDInfor.ID);
-                Debug.Log(newIDInfor.count);
                 idReturn.Add(newIDInfor);
             }
         }

@@ -94,22 +94,25 @@ public class Plate : MonoBehaviour
         return currentCake.GetCurrentPiecesSame(cakeID);
     }
 
-    public void AddPiece(Piece piece, int indexChange)
+    public void AddPiece(Piece piece)
     {
-        currentCake.AddPieces(piece, indexChange);
+        currentCake.AddPieces(piece);
     }
-
+    public void CheckNullPieces() {
+        if (currentCake == null)
+            return;
+        //currentCake.RotateOtherPieceRight(0);
+        if (currentCake.pieces.Count == 0)
+        {
+            currentCake.cakeDone = true;
+        }
+        else { currentCake.cakeDone = false; }
+    }
     public void MoveDoneOfCake()
     {
         if (currentCake == null)
             return;
-        currentCake.RotateOtherPieceRight(0);
-        if (currentCake.pieces.Count == 0) {
-            //Destroy(currentCake.gameObject);
-            //currentCake = null;
-            currentCake.cakeDone = true;
-        }
-        else { currentCake.cakeDone = false;}
+        //currentCake.RotateOtherPieceRight(0);
     }
 
     public void ClearCake() {
