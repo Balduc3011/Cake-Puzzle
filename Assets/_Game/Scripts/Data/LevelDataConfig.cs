@@ -13,6 +13,8 @@ public class LevelDataConfig : ScriptableObject
 
     public float GetExpToNextLevel(int currentLevel)
     {
+        if (currentLevel >= levelDatas.Count)
+            return levelDatas[levelDatas.Count - 1].expUnlock * currentLevel - levelDatas.Count + 1;
         return levelDatas[currentLevel].expUnlock;
     }
 
@@ -23,6 +25,8 @@ public class LevelDataConfig : ScriptableObject
 
     public int GetCakeID(int currentLevel)
     {
+        if (currentLevel <= levelDatas.Count)
+            return -1;
         return levelDatas[currentLevel].cakeUnlockID;
     }
 }

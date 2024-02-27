@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.XR;
 
 public class Cake : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class Cake : MonoBehaviour
     public List<int> pieceCakeID = new List<int>();
     public Piece piecePref;
     public bool cakeDone;
+    int indexFirstSpawn;
 
     AnimationCurve curveRotate;
     float timeRotate;
@@ -48,6 +50,7 @@ public class Cake : MonoBehaviour
     }
 
     public void InitData() {
+        SetFirstIndexOfPiece();
         transform.DOScale(scaleDefault, .5f).From(1.2f).SetEase(Ease.InOutBack);
         totalPieces = GameManager.Instance.cakeManager.GetPiecesTotal() + 1;
         SetupPiecesCakeID();
@@ -61,6 +64,7 @@ public class Cake : MonoBehaviour
     }
 
     public void InitData(CakeSave cakeSaveData) {
+        SetFirstIndexOfPiece();
         transform.DOScale(scaleDefault, .5f).From(1.2f).SetEase(Ease.InOutBack);
         pieceCakeIDCount = cakeSaveData.pieceCakeIDCount;
         pieceCakeID = cakeSaveData.pieceCakeID;
@@ -73,10 +77,16 @@ public class Cake : MonoBehaviour
     }
 
     public void InitData(List<int> cakeIDs, Plate plate) {
+        SetFirstIndexOfPiece();
         currentPlate = plate;
+        InitData(cakeIDs);
+        GameManager.Instance.cakeManager.AddCakeNeedCheck(this);
+    }
+
+    public void InitData(List<int> cakeIDs) {
+        SetFirstIndexOfPiece();
         transform.DOScale(scaleDefault, .5f).From(1.2f).SetEase(Ease.InOutBack);
-        
-        pieceIndex = 0;
+
         for (int i = 0; i < cakeIDs.Count; i++)
         {
             if (!pieceCakeID.Contains(cakeIDs[i])) pieceCakeID.Add(cakeIDs[i]);
@@ -85,9 +95,32 @@ public class Cake : MonoBehaviour
             InitPiece(i, cakeIDs[i]);
         }
         UpdatePlateDecor();
-        GameManager.Instance.cakeManager.AddCakeNeedCheck(this);
     }
 
+    public void InitData(List<IDInfor> idInfors)
+    {
+        SetFirstIndexOfPiece();
+        transform.DOScale(scaleDefault, .5f).From(1.2f).SetEase(Ease.InOutBack);
+
+        for (int i = 0; i < idInfors.Count; i++)
+        {
+            pieceCakeID.Add(idInfors[i].ID);
+            pieceCakeIDCount.Add(idInfors[i].count);
+            for (int j = 0; j < idInfors[i].count; j++)
+            {
+                Piece newPiece = Instantiate(piecePref, transform);
+                pieces.Add(newPiece);
+                InitPiece(pieces.Count - 1, idInfors[i].ID);
+            }
+        }
+
+        UpdatePlateDecor();
+    }
+
+    void SetFirstIndexOfPiece() {
+        indexFirstSpawn = Random.Range(0, 6);
+        currentRotateIndex = indexFirstSpawn - 1;
+    }
 
     int indexRandom;
     void SetupPiecesCakeID() {
@@ -150,9 +183,19 @@ public class Cake : MonoBehaviour
     void InitPiece(int pieceInidex, int pieceCakeID) {
         pieces[pieceInidex].transform.eulerAngles = Vector3.zero;
         GameObject objecPref = Resources.Load("Pieces/Piece_" + pieceCakeID) as GameObject;
-        pieces[pieceInidex].InitData(objecPref, pieceCakeID);
+        currentRotateIndex++;
+        if (currentRotateIndex >= rotates.Count)
+            currentRotateIndex = 0;
+        pieces[pieceInidex].InitData(objecPref, pieceCakeID, currentRotateIndex);
 
-        pieces[pieceInidex].transform.eulerAngles = new Vector3(0, rotates[pieceInidex], 0);
+        pieces[pieceInidex].transform.eulerAngles = new Vector3(0, GetRotate(), 0);
+    }
+
+    int currentRotateIndex = 0;
+    float GetRotate() {
+      
+        return rotates[currentRotateIndex];
+      
     }
 
     private void OnMouseDown()
@@ -174,9 +217,11 @@ public class Cake : MonoBehaviour
         else Debug.Log("Group cake null!");
     }
     List<int> listCakeIDFillUp = new List<int>();
+    int pieceCakeIDFill = 0;
     void FillUp() {
         Debug.Log("Fill up");
         listCakeIDFillUp.Clear();
+        pieceCakeIDFill = pieces[0].cakeID;
         for (int i = pieces.Count - 1; i >= 0; i--)
         {
             pieces[i].RemoveByFillUp();
@@ -184,7 +229,7 @@ public class Cake : MonoBehaviour
         }
         for (int i = 0; i < 6; i++)
         {
-            listCakeIDFillUp.Add(pieceCakeID[0]);
+            listCakeIDFillUp.Add(pieceCakeIDFill);
         }
         InitData(listCakeIDFillUp, currentPlate);
         GameManager.Instance.itemManager.UsingItemDone();
@@ -210,10 +255,11 @@ public class Cake : MonoBehaviour
         onDrop = true;
         transform.parent = currentPlate.pointStay;
         transform.DOLocalMove(Vector3.zero, .1f);
-        transform.DOScale(Vector3.one, .25f).OnComplete(()=> {
+        transform.DOScale(Vector3.one * .95f, .25f).OnComplete(()=> {
             if (lastDrop)
                 actionCallback();
-            transform.DOScale(new Vector3(0.8f, 0.8f, 0.8f), .3f);
+            transform.DOScale(Vector3.one * .75f, .2f);
+            transform.DOScale(Vector3.one * .8f, .2f).SetDelay(.2f);
         });
         //ProfileManager.Instance.playerData.cakeSaveData.SaveCake(currentPlate.GetPlateIndex(), this);
     }
@@ -280,61 +326,66 @@ public class Cake : MonoBehaviour
     }
     bool otherCake = false;
     bool sameCake = false;
+    public int indexOfNewPiece;
     public int GetRotateIndex(int cakeID) {
         otherCake = false;
         sameCake = false;
         for (int i = 0; i < pieces.Count; i++)
         {
             if (pieces[i].cakeID != cakeID)
-            {
                 otherCake = true;
-                if (otherCake && sameCake)
-                {
-                    indexRotate = 0;
-                    if (!cakeDone)
-                        StartCoroutine(RotateOtherPiece(i));
-                    return i;
-                }
-            }
 
             if (pieces[i].cakeID == cakeID)
-            {
                 sameCake = true;
-                if (otherCake && sameCake)
-                {
-                    if (!cakeDone)
-                        StartCoroutine(RotateOtherPiece(i+1));
-                    return i+1;
-                }
+
+            if (otherCake && sameCake)
+            {
+                if (!cakeDone)
+                    StartCoroutine(RotateOtherPiece(i));
+                Debug.Log("return rotate index: " + pieces[i].currentRotateIndex);
+                indexOfNewPiece = i;
+                return pieces[i].currentRotateIndex - 1;
             }
 
-           
         }
-        return pieces.Count;
+        //StartCoroutine(RotateOtherPiece(pieces.Count - 1));
+        indexOfNewPiece = pieces.Count;
+        Debug.Log("return rotate index: " + (pieces[pieces.Count - 1].currentRotateIndex+1));
+        return pieces[pieces.Count - 1].currentRotateIndex+1;
     }
     Vector3 vectorRotateTo;
     int indexRotate = 0;
     IEnumerator RotateOtherPiece(int pieceIndex) {
+        Debug.Log("Call rotae other pieces");
         indexRotate = pieceIndex;
         while (indexRotate < pieces.Count)
         {
-            vectorRotateTo = new Vector3(0, rotates[indexRotate], 0);
+            pieces[indexRotate].currentRotateIndex++;
+            if (pieces[indexRotate].currentRotateIndex >= rotates.Count) pieces[indexRotate].currentRotateIndex = 0;
+            vectorRotateTo = new Vector3(0, rotates[pieces[indexRotate].currentRotateIndex], 0);
             pieces[indexRotate].transform.DORotate(vectorRotateTo, timeRotate).SetEase(curveRotate);
             indexRotate++;
-            yield return new WaitForSeconds(.1f);
+            yield return new WaitForSeconds(.25f);
         }
     }
 
     public void RotateOtherPieceRight(int pieceIndex) {
         indexRotate = pieceIndex;
+        Debug.Log("Call rotae right way");
         if (cakeDone) return;
+        currentRotateIndex = indexFirstSpawn - 1;
         StartCoroutine(RotateOtherPieceRightWay());
        
     }
 
     IEnumerator RotateOtherPieceRightWay() {
-       while (indexRotate < pieces.Count) { 
-            vectorRotateTo = new Vector3(0, rotates[indexRotate], 0);
+        
+        while (indexRotate < pieces.Count) {
+            currentRotateIndex++;
+            if (currentRotateIndex >= rotates.Count)
+                currentRotateIndex = 0;
+            pieces[indexRotate].currentRotateIndex = currentRotateIndex;
+            vectorRotateTo = new Vector3(0, rotates[currentRotateIndex], 0);
             pieces[indexRotate].transform.DORotate(vectorRotateTo, timeRotate).SetEase(curveRotate);
             indexRotate++;
             yield return new WaitForSeconds(.1f);
@@ -389,11 +440,11 @@ public class Cake : MonoBehaviour
     }
 
     Piece pieceTemp;
-    public void AddPieces(Piece piece, int indexChange)
+    public void AddPieces(Piece piece)
     {
         pieces.Add(piece);
-        pieceTemp = pieces[indexChange];
-        pieces[indexChange] = piece;
+        pieceTemp = pieces[indexOfNewPiece];
+        pieces[indexOfNewPiece] = piece;
         pieces[pieces.Count - 1] = pieceTemp;
     }
 
@@ -428,18 +479,17 @@ public class Cake : MonoBehaviour
         //trs.transform.position = transform.position;
         //trs.AnimDoneCake();
         GameManager.Instance.questManager.AddProgress(QuestType.CompleteCake, 1);
-        if (panelTotal==null)
-        {
+        if (panelTotal == null)
             panelTotal = UIManager.instance.panelTotal;
-        }
-
-        Sequence sequence = DOTween.Sequence();
-        transform.DOScale(vectorScaleDown, .3f);
-        transform.DOScale(vectorScaleUp, .3f).SetDelay(0.3f);
-        transform.DOScale(vectorDefault, .3f).SetDelay(.6f);
-        transform.DORotate(vectorRotate, 1f, RotateMode.WorldAxisAdd).SetDelay(.4f).OnComplete(() => {
-            EffectDoneCake();
-        });      
+        DOVirtual.DelayedCall(.35f, () => {
+            transform.DOScale(vectorScaleDown, .3f);
+            transform.DOScale(vectorScaleUp, .3f).SetDelay(0.3f);
+            transform.DOScale(vectorDefault, .3f).SetDelay(.6f);
+            transform.DORotate(vectorRotate, 1f, RotateMode.WorldAxisAdd).SetDelay(.4f).OnComplete(() => {
+                EffectDoneCake();
+            });
+        });
+       
     }
 
     void EffectDoneCake() {
@@ -507,13 +557,46 @@ public class Cake : MonoBehaviour
 
         tweens.ForEach(t => t?.Kill());
         tweens.Clear();
-        tweens.Add(transform.DOScale(Vector3.one * 0.67f, 0.15f).SetEase(Ease.InSine));
-        tweens.Add(transform.DOScale(Vector3.one * 0.71f, 0.15f).SetEase(Ease.InOutSine).SetDelay(0.15f));
-        tweens.Add(transform.DOScale(Vector3.one * 0.7f, 0.15f).SetEase(Ease.OutSine).SetDelay(0.3f));
+        tweens.Add(transform.DOScale(Vector3.one * 0.67f, 0.13f).SetEase(Ease.InSine));
+        tweens.Add(transform.DOScale(Vector3.one * 0.71f, 0.13f).SetEase(Ease.InOutSine).SetDelay(0.13f));
+        tweens.Add(transform.DOScale(Vector3.one * 0.7f, 0.13f).SetEase(Ease.OutSine).SetDelay(0.26f));
     }
 
     public int GetPieceFree()
     {
         return 6 - pieces.Count;
+    }
+
+    List<int> listPieceIDReturn = new();
+    public List<int> GetCurrenPieceIDs()
+    {
+        for (int i = 0; i < pieces.Count; i++)
+        {
+            if (!listPieceIDReturn.Contains(pieces[i].cakeID))
+                listPieceIDReturn.Add(pieces[i].cakeID);
+        }
+        return listPieceIDReturn;
+    }
+    List<IDInfor> currentIDInfor = new();
+    IDInfor idInfor;
+    public List<IDInfor> GetIDInfor()
+    {
+        currentIDInfor.Clear();
+        for (int i = 0; i < pieces.Count; i++)
+        {
+            idInfor = currentIDInfor.Find(e => e.ID == pieces[i].cakeID);
+            if (idInfor != null)
+            {
+                idInfor.count++;
+            }
+            else {
+                IDInfor newIDInfor = new();
+                newIDInfor.ID = pieces[i].cakeID;
+                newIDInfor.count = 1;
+                currentIDInfor.Add(newIDInfor);
+            }
+        }
+
+        return currentIDInfor;
     }
 }

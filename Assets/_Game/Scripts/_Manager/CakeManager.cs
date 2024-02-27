@@ -34,6 +34,7 @@ public class CakeManager : MonoBehaviour
     private void Start()
     {
         EventManager.AddListener(EventName.ChangeLevel.ToString(), LevelUp);
+        EventManager.AddListener(EventName.UpdateCakeOnPlate.ToString(), UpdateCake);
     }
 
     private void Update()
@@ -83,20 +84,37 @@ public class CakeManager : MonoBehaviour
         StartCoroutine(IE_WaitToInitGroupCake());
     }
 
+    List<IDInfor> idInfor = new();
     IEnumerator IE_WaitToInitGroupCake() {
         while (indexGroupCake < 3)
         {
             groupCake = GameManager.Instance.objectPooling.GetGroupCake();
             cakesWait.Add(groupCake);
             groupCake.transform.position = pointSpawnGroupCake[indexGroupCake].position;
-            groupCake.InitData((int)countCake[indexGroupCake], pointSpawnGroupCake[indexGroupCake], indexGroupCake);
+            if (indexGroupCake != 2) {
+                if (NeedResolve())
+                {
+                    idInfor = GetIDInfor();
+                    if (idInfor == null || idInfor.Count == 0 || idInfor[0].count==0)
+                        groupCake.InitData((int)countCake[indexGroupCake], pointSpawnGroupCake[indexGroupCake], indexGroupCake);
+                    else
+                        groupCake.InitData(idInfor, pointSpawnGroupCake[indexGroupCake], indexGroupCake);
+                }
+                else
+                    groupCake.InitData((int)countCake[indexGroupCake], pointSpawnGroupCake[indexGroupCake], indexGroupCake);
+            }
+            else 
+                groupCake.InitData((int)countCake[indexGroupCake], pointSpawnGroupCake[indexGroupCake], indexGroupCake);
             ProfileManager.Instance.playerData.cakeSaveData.AddCakeWait(groupCake, indexGroupCake);
             yield return new WaitForSeconds(.25f);
             indexGroupCake++;
         }
+        ResetPharse();
         onInitGroup = false;
         CheckLooseGame(true);
     }
+
+
 
     public void RemoveCakeWait(GroupCake gCake)
     {
@@ -122,18 +140,17 @@ public class CakeManager : MonoBehaviour
     void SetCountPieces() {
         countCake.Clear();
         haveMoreCake = ProfileManager.Instance.playerData.cakeSaveData.IsHaveMoreThanThreeCake();
-        for (int i = 0; i < pointSpawnGroupCake.Count; i++)
-        {
-            countCake.Add(ProfileManager.Instance.dataConfig.rateDataConfig.GetRandomSlot(haveMoreCake) + 1);
-        }
-        countCake.Sort((a, b) => CompareCountCake(a, b));
+        countCake.Add(1);
+        countCake.Add(ProfileManager.Instance.dataConfig.rateDataConfig.GetRandomSlot(haveMoreCake) + 1);
+        countCake.Add(1);
+        //countCake.Sort((a, b) => CompareCountCake(a, b));
     }
 
-    int CompareCountCake(float a, float b) {
-        if (a < b) return 1;
-        if (a > b) return -1;
-        return 0;
-    }
+    //int CompareCountCake(float a, float b) {
+    //    if (a < b) return 1;
+    //    if (a > b) return -1;
+    //    return 0;
+    //}
 
     public int GetPiecesTotal() {
         haveMoreThan3Cake = ProfileManager.Instance.playerData.cakeSaveData.IsHaveMoreThanThreeCake();
@@ -171,9 +188,12 @@ public class CakeManager : MonoBehaviour
         GameManager.Instance.objectPooling.CheckGroupCake();
         if (indexCakeCheck < cakeNeedCheck.Count)
         {
-            if (cakeNeedCheck[indexCakeCheck] == null)
+            while (cakeNeedCheck[indexCakeCheck] == null)
+            {
                 cakeNeedCheck.RemoveAt(indexCakeCheck);
-            StartCheckCake(cakeNeedCheck[indexCakeCheck], CheckNextCake);
+            }
+            if (indexCakeCheck < cakeNeedCheck.Count)
+                StartCheckCake(cakeNeedCheck[indexCakeCheck], CheckNextCake);
         }
         else
         {
@@ -306,6 +326,11 @@ public class CakeManager : MonoBehaviour
         RemoveAllCakeWait();
     }
 
+    void UpdateCake() {
+        if (cakeOnPlates.Count == 0)
+        cakeOnPlates = ProfileManager.Instance.playerData.cakeSaveData.cakeOnPlates;
+    }
+
     public void TrashIn(UnityAction actioncallBack) {
         trashBin.DOMove(pointEnd.position, .25f).SetEase(Ease.InQuad).OnComplete(() => {
             actioncallBack();
@@ -421,5 +446,62 @@ public class CakeManager : MonoBehaviour
     public void UsingFilUp()
     {
         EventManager.TriggerEvent(EventName.UsingFillUp.ToString());
+    }
+
+    public bool NeedResolve() { return cakeOnPlates.Count >= 10; }
+
+    List<IDInfor> idNeedResolves = new();
+    List<IDInfor> idReturn = new();
+    int countIDRemain = 0;
+    int limitRandom = 0;
+    public List<IDInfor> GetIDInfor() {
+        if (idNeedResolves != null)
+            idNeedResolves.Clear();
+        if (idReturn != null)
+            idReturn.Clear();
+        idNeedResolves = table.GetIDInfor();
+        countIDRemain = 0;
+        if(idNeedResolves != null)
+            if (idNeedResolves.Count > 0) {
+                for (int i = 0; i < idNeedResolves.Count; i++)
+                {
+                    countIDRemain = 4 - CalculateTotalPieces();
+                    if (countIDRemain <= 0)
+                        break;
+                    IDInfor newIDInfor = new();
+                    newIDInfor.ID = idNeedResolves[i].ID;
+                    limitRandom = (6 - idNeedResolves[i].count + 1) > 4 ? 4 : (6 - idNeedResolves[i].count + 1);
+                    newIDInfor.count = UnityEngine.Random.Range(1, limitRandom);
+                    if (newIDInfor.count > countIDRemain)
+                        newIDInfor.count = countIDRemain;
+                    if (newIDInfor.count == 0)
+                        newIDInfor.count = 1;
+                    Debug.Log(newIDInfor.ID);
+                    Debug.Log(newIDInfor.count);
+                    idReturn.Add(newIDInfor);
+                }
+        }
+
+        for (int i = 0; i < idReturn.Count; i++)
+        {
+            Debug.Log("ID: " + idReturn[i].ID);
+            Debug.Log("Count: " + idReturn[i].count);
+            Debug.Log("==========");
+        }
+        return idReturn;
+    }
+
+    int totalPieceInIDInfor = 0;
+    int CalculateTotalPieces() {
+        totalPieceInIDInfor = 0;
+        for (int i = 0; i < idReturn.Count; i++)
+        {
+            totalPieceInIDInfor += idReturn[i].count;
+        }
+        return totalPieceInIDInfor;
+    }
+
+    public void ResetPharse() {
+        table.ResetPharse();
     }
 }

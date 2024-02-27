@@ -10,7 +10,9 @@ public class Piece : MonoBehaviour
     public GameObject objPref;
     public Vector3 objectOffset;
     public int cakeID;
-    public void InitData(GameObject objPref, int cakeID) { 
+    public int currentRotateIndex;
+    public void InitData(GameObject objPref, int cakeID, int rotateIndex) { 
+        currentRotateIndex = rotateIndex;
         this.objPref = objPref;
         this.cakeID = cakeID;
         if (parent.childCount > 0) { Destroy(parent.GetChild(0).gameObject); }
