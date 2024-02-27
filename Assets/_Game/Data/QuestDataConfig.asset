@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0c255ce813b07643b25a3d4f0dcfb09, type: 3}
+  m_Name: QuestDataConfig
+  m_EditorClassIdentifier: 
+  questData:
+  - questName: Complete Cake
+    questRequirebase: 5
+    questType: 2
+    rewardData:
+      ItemType: 2
+      amount: 50
+    questStarEarn: 1
+  - questName: Complete Cake
+    questRequirebase: 10
+    questType: 2
+    rewardData:
+      ItemType: 2
+      amount: 100
+    questStarEarn: 1
+  - questName: Complete Cake
+    questRequirebase: 15
+    questType: 2
+    rewardData:
+      ItemType: 2
+      amount: 150
+    questStarEarn: 1
+  - questName: Complete Cake
+    questRequirebase: 20
+    questType: 2
+    rewardData:
+      ItemType: 5
+      amount: 2
+    questStarEarn: 1
+  - questName: Complete Cake
+    questRequirebase: 25
+    questType: 2
+    rewardData:
+      ItemType: 4
+      amount: 2
+    questStarEarn: 1
+  dailyRewards:
+  - rewardData:
+      ItemType: 2
+      amount: 100
+    pointGet: 10
+  - rewardData:
+      ItemType: 5
+      amount: 2
+    pointGet: 20
+  - rewardData:
+      ItemType: 4
+      amount: 2
+    pointGet: 30

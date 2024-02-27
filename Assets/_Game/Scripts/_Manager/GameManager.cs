@@ -16,6 +16,7 @@ public class GameManager : Singleton<GameManager>
     public DecorationManager decorationManager;
     public ItemManager itemManager;
     public LightManager lightManager;
+    public QuestManager questManager;
     public List<ItemData> rewardItems;
     private void Start()
     {

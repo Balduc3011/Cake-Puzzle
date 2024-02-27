@@ -1391,6 +1391,12 @@ MonoBehaviour:
     decorationSave:
       IsChangeData: 0
       ownedDecorationDatas: []
+    questDataSave:
+      IsChangeData: 0
+      timeOnQuest: 
+      starsEarned: 0
+      rewardEarned: 0
+      questSaves: []
   dataConfig:
     rateDataConfig: {fileID: 11400000, guid: 30dcfba3ba80b9845b3f3aec7591cbce, type: 2}
     levelDataConfig: {fileID: 11400000, guid: 434da5e0ab6acd94798cf5db96e2c9ca, type: 2}
@@ -1401,6 +1407,7 @@ MonoBehaviour:
     cakeDataConfig: {fileID: 11400000, guid: eefcf565fc29691429b628ec59749b28, type: 2}
     itemDataConfig: {fileID: 11400000, guid: f6871f9343fa3794184fe7ae9e550223, type: 2}
     cakeAnimationSetting: {fileID: 11400000, guid: 67116138ce75aae4aa8b12f2170da56f, type: 2}
+    questDataConfig: {fileID: 11400000, guid: c7500b1cd57dca640b3007bb202ea6e3, type: 2}
 --- !u!4 &604222128
 Transform:
   m_ObjectHideFlags: 0
@@ -1492,6 +1499,7 @@ GameObject:
   - component: {fileID: 676604063}
   - component: {fileID: 676604064}
   - component: {fileID: 676604065}
+  - component: {fileID: 676604066}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1520,6 +1528,7 @@ MonoBehaviour:
   decorationManager: {fileID: 676604064}
   itemManager: {fileID: 686047085}
   lightManager: {fileID: 230959658}
+  questManager: {fileID: 676604066}
   rewardItems: []
 --- !u!4 &676604059
 Transform:
@@ -1588,6 +1597,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 47bd604214c2f434ab58966899c5e2ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &676604066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 676604057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91e477692f193bc4d92a241c18c8e338, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &686047083

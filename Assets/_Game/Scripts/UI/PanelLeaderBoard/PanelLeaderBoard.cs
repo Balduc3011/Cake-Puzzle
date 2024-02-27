@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class PanelLeaderBoard : UIPanel
 {
     [SerializeField] Button confirmBtn;
+    [SerializeField] Button bgBtn;
     [SerializeField] List<UITopup> uITopups;
     [SerializeField] Transform topPos;
     [SerializeField] Transform botPos;
@@ -19,10 +20,12 @@ public class PanelLeaderBoard : UIPanel
     private void OnEnable()
     {
         DOVirtual.DelayedCall(0.5f, OnPlay);
+        transform.SetAsLastSibling();
     }
     void Start()
     {
         confirmBtn.onClick.AddListener(ClosePanel);
+        bgBtn.onClick.AddListener(ClosePanel);
         Setup();
     }
 

@@ -14,4 +14,5 @@ public class DataConfig
     public CakeDataConfig cakeDataConfig;
     public ItemDataConfig itemDataConfig;
     public CakeAnimtionSetting cakeAnimationSetting;
+    public QuestDataConfig questDataConfig;
 }
