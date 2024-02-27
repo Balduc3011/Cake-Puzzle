@@ -14,6 +14,7 @@ public class Plate : MonoBehaviour
     public Cake currentCake;
     public WayPointTemp wayPoint;
     public int currentPiecesCountGet;
+    public List<IDInfor> idInfors = new(); 
     [SerializeField] Transform trsMove;
     [SerializeField] Vector3 pointMoveUp;
     [SerializeField] Vector3 pointMoveDown;
@@ -175,6 +176,10 @@ public class Plate : MonoBehaviour
     {
         return currentCake.GetPieceFree();
     }
+
+    public void SetCurrentIDInfors() {
+        idInfors = currentCake.GetIDInfor();
+    }
 }
 [System.Serializable]
 public class PlateIndex {
@@ -186,4 +191,11 @@ public class PlateIndex {
 public class WayPointTemp {
     public Plate nextPlate;
     public bool setDone;
+}
+
+[System.Serializable]
+public class IDInfor
+{
+    public int ID;
+    public int count;
 }
