@@ -34,6 +34,7 @@ public class CakeManager : MonoBehaviour
     private void Start()
     {
         EventManager.AddListener(EventName.ChangeLevel.ToString(), LevelUp);
+        EventManager.AddListener(EventName.UpdateCakeOnPlate.ToString(), UpdateCake);
     }
 
     private void Update()
@@ -326,6 +327,11 @@ public class CakeManager : MonoBehaviour
         RemoveAllCakeWait();
     }
 
+    void UpdateCake() {
+        if (cakeOnPlates.Count == 0)
+        cakeOnPlates = ProfileManager.Instance.playerData.cakeSaveData.cakeOnPlates;
+    }
+
     public void TrashIn(UnityAction actioncallBack) {
         trashBin.DOMove(pointEnd.position, .25f).SetEase(Ease.InQuad).OnComplete(() => {
             actioncallBack();
@@ -450,8 +456,10 @@ public class CakeManager : MonoBehaviour
     int countIDRemain = 0;
     int limitRandom = 0;
     public List<IDInfor> GetIDInfor() {
-        idNeedResolves.Clear();
-        idReturn.Clear();
+        if (idNeedResolves != null)
+            idNeedResolves.Clear();
+        if (idReturn != null)
+            idReturn.Clear();
         idNeedResolves = table.GetIDInfor();
         countIDRemain = 0;
         if(idNeedResolves != null)
