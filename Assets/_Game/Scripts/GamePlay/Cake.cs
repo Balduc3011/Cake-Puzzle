@@ -581,6 +581,7 @@ public class Cake : MonoBehaviour
     IDInfor idInfor;
     public List<IDInfor> GetIDInfor()
     {
+        currentIDInfor.Clear();
         for (int i = 0; i < pieces.Count; i++)
         {
             idInfor = currentIDInfor.Find(e => e.ID == pieces[i].cakeID);

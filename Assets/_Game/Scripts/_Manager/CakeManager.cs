@@ -453,6 +453,7 @@ public class CakeManager : MonoBehaviour
     List<IDInfor> idNeedResolves = new();
     List<IDInfor> idReturn = new();
     int countIDRemain = 0;
+    int limitRandom = 0;
     public List<IDInfor> GetIDInfor() {
         if (idNeedResolves != null)
             idNeedResolves.Clear();
@@ -461,21 +462,31 @@ public class CakeManager : MonoBehaviour
         idNeedResolves = table.GetIDInfor();
         countIDRemain = 0;
         if(idNeedResolves != null)
-        if (idNeedResolves.Count > 0) {
-            for (int i = 0; i < idNeedResolves.Count; i++)
-            {
-                countIDRemain = 4 - CalculateTotalPieces();
-                if (countIDRemain <= 0)
-                    break;
-                IDInfor newIDInfor = new();
-                newIDInfor.ID = idNeedResolves[i].ID;
-                newIDInfor.count = UnityEngine.Random.Range(1, 6 - idNeedResolves[i].count + 1);
-                if (newIDInfor.count > countIDRemain)
-                    newIDInfor.count = countIDRemain;
-                if (newIDInfor.count == 0)
-                    newIDInfor.count = 1;
-                idReturn.Add(newIDInfor);
-            }
+            if (idNeedResolves.Count > 0) {
+                for (int i = 0; i < idNeedResolves.Count; i++)
+                {
+                    countIDRemain = 4 - CalculateTotalPieces();
+                    if (countIDRemain <= 0)
+                        break;
+                    IDInfor newIDInfor = new();
+                    newIDInfor.ID = idNeedResolves[i].ID;
+                    limitRandom = (6 - idNeedResolves[i].count + 1) > 4 ? 4 : (6 - idNeedResolves[i].count + 1);
+                    newIDInfor.count = UnityEngine.Random.Range(1, limitRandom);
+                    if (newIDInfor.count > countIDRemain)
+                        newIDInfor.count = countIDRemain;
+                    if (newIDInfor.count == 0)
+                        newIDInfor.count = 1;
+                    Debug.Log(newIDInfor.ID);
+                    Debug.Log(newIDInfor.count);
+                    idReturn.Add(newIDInfor);
+                }
+        }
+
+        for (int i = 0; i < idReturn.Count; i++)
+        {
+            Debug.Log("ID: " + idReturn[i].ID);
+            Debug.Log("Count: " + idReturn[i].count);
+            Debug.Log("==========");
         }
         return idReturn;
     }

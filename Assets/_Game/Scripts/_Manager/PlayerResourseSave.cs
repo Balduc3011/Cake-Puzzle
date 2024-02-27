@@ -202,7 +202,10 @@ public class PlayerResourseSave : SaveBase
     }
 
     public void AddExp(float expAdd) {
-        if (currentLevel >= levelMax && currentExp==expMax) { return; }
+        if (currentLevel >= levelMax && currentExp==expMax) {
+            LevelUp();
+            return;
+        }
         currentExp += expAdd;
         if (currentExp >= expMax)
         {
@@ -214,18 +217,15 @@ public class PlayerResourseSave : SaveBase
     }
 
     public void LevelUp() {
-        if (currentLevel < levelMax)
+        int cakeID = ProfileManager.Instance.dataConfig.levelDataConfig.GetCakeID(currentLevel);
+        if (cakeID != -1)
         {
-            int cakeID = ProfileManager.Instance.dataConfig.levelDataConfig.GetCakeID(currentLevel);
-            if (cakeID != -1)
-            {
-                ProfileManager.Instance.playerData.cakeSaveData.AddCake(cakeID);
-                ProfileManager.Instance.playerData.cakeSaveData.UseCake(cakeID);
-            }
-            currentLevel++;
-            EventManager.TriggerEvent(EventName.ChangeLevel.ToString());
-            expMax = ProfileManager.Instance.dataConfig.levelDataConfig.GetExpToNextLevel(currentLevel);
+            ProfileManager.Instance.playerData.cakeSaveData.AddCake(cakeID);
+            ProfileManager.Instance.playerData.cakeSaveData.UseCake(cakeID);
         }
+        currentLevel++;
+        EventManager.TriggerEvent(EventName.ChangeLevel.ToString());
+        expMax = ProfileManager.Instance.dataConfig.levelDataConfig.GetExpToNextLevel(currentLevel);
     }
 
     public string GetCurrentExp()

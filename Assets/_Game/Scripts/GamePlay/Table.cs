@@ -436,62 +436,55 @@ public class Table : MonoBehaviour
         }
     }
 
-    List<IDInfor> iDNeedResolves = new();
-    int lastPlateIndexCheck = -1;
+    List<Plate> currentPlateNeedResolve = new();
 
     public void ResetPharse() {
-        lastPlateIndexCheck = -1;
+        currentPlateNeedResolve.Clear();
     } 
 
     public List<IDInfor> GetIDInfor()
     {
-        if (iDNeedResolves != null) iDNeedResolves.Clear();
-        for (int i = lastPlateIndexCheck + 1; i < plates.Count; i++) {
-            iDNeedResolves = GetIDInforInPlate(plates[i]);
-            if (iDNeedResolves != null)
+        if (currentPlateNeedResolve.Count == 0)
+        {
+            for (int i = 0; i < plates.Count; i++)
             {
-                lastPlateIndexCheck = i;
-                return iDNeedResolves;
+                if (plates[i].currentCake != null && IsHaveASpace(plates[i].plateIndex))
+                {
+                    plates[i].SetCurrentIDInfors();
+                    currentPlateNeedResolve.Add(plates[i]);
+                }
             }
         }
-        return null;
+
+        return currentPlateNeedResolve[UnityEngine.Random.Range(0, currentPlateNeedResolve.Count)].idInfors;
     }
 
-    List<IDInfor> GetIDInforInPlate(Plate plate) {
-        if (plate.currentCake != null)
-            return null;
-        if (plate.plateIndex.indexX + 1 < plateArray.GetLength(0))
+    bool IsHaveASpace(PlateIndex plateIndex) {
+        if (plateIndex.indexX - 1 >= 0)
         {
-            if (plateArray[plate.plateIndex.indexX + 1, plate.plateIndex.indexY].currentCake != null)
-            {
-                return plateArray[plate.plateIndex.indexX + 1, plate.plateIndex.indexY].currentCake.GetIDInfor();
-            }
+            if (plateArray[plateIndex.indexX - 1, plateIndex.indexY].currentCake == null)
+                return true;
         }
 
-        if (plate.plateIndex.indexX - 1 > 0)
+        if (plateIndex.indexX + 1 < plateArray.GetLength(0))
         {
-            if (plateArray[plate.plateIndex.indexX - 1, plate.plateIndex.indexY].currentCake != null)
-            {
-                return plateArray[plate.plateIndex.indexX - 1, plate.plateIndex.indexY].currentCake.GetIDInfor();
-            }
+            if (plateArray[plateIndex.indexX + 1, plateIndex.indexY].currentCake == null)
+                return true;
         }
 
-        if (plate.plateIndex.indexY + 1 < plateArray.GetLength(1))
+        if (plateIndex.indexY - 1 >= 0)
         {
-            if (plateArray[plate.plateIndex.indexX, plate.plateIndex.indexY + 1].currentCake != null)
-            {
-                return plateArray[plate.plateIndex.indexX, plate.plateIndex.indexY + 1].currentCake.GetIDInfor();
-            }
+            if (plateArray[plateIndex.indexX, plateIndex.indexY-1].currentCake == null)
+                return true;
         }
 
-        if (plate.plateIndex.indexY - 1 > 0)
+        if (plateIndex.indexY + 1 < plateArray.GetLength(1))
         {
-            if (plateArray[plate.plateIndex.indexX, plate.plateIndex.indexY - 1].currentCake != null)
-            {
-                return plateArray[plate.plateIndex.indexX, plate.plateIndex.indexY - 1].currentCake.GetIDInfor();
-            }
+            if (plateArray[plateIndex.indexX, plateIndex.indexY + 1].currentCake == null)
+                return true;
         }
-        return null;
+
+        return false;
     }
 }
 
@@ -566,8 +559,4 @@ public class Way {
     
 }
 
-[System.Serializable]
-public class IDInfor {
-    public int ID;
-    public int count;
-}
+
