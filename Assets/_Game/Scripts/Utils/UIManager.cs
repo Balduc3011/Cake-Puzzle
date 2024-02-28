@@ -25,6 +25,7 @@ public class UIManager : MonoBehaviour {
     PanelBakery panelBakery;
     PanelDecorations panelDecorations;
     PanelShop panelShop;
+    PanelDailyQuest panelDailyQuest;
 
     // Start is called before the first frame update
     void Awake() {
@@ -119,6 +120,9 @@ public class UIManager : MonoBehaviour {
                     break;
                 case UIPanelType.PanelLeaderBoard:
                     panel = Instantiate(Resources.Load("UI/PanelLeaderBoard") as GameObject, mainCanvas);
+                    break;
+                case UIPanelType.PanelDailyQuest:
+                    panel = Instantiate(Resources.Load("UI/PanelDailyQuest") as GameObject, mainCanvas);
                     break;
             }
             if (panel) panel.SetActive(true);
@@ -272,6 +276,13 @@ public class UIManager : MonoBehaviour {
                 panelShop.OnClose();
             }
         }
+        if (panelDailyQuest != null && ignorePanel != UIPanelType.PanelDailyQuest)
+        {
+            if (panelDailyQuest.gameObject.activeSelf)
+            {
+                panelDailyQuest.OnClose();
+            }
+        }
     }
 
     public void ShowPanelSetting()
@@ -391,6 +402,27 @@ public class UIManager : MonoBehaviour {
     {
         isHasPopupOnScene = false;
         GameObject go = GetPanel(UIPanelType.PanelLeaderBoard);
+        go.SetActive(false);
+    }
+
+    public void ShowPanelDailyQuest()
+    {
+        CloseOtherMenu(UIPanelType.PanelDailyQuest);
+        isHasPopupOnScene = true;
+        GameObject go = GetPanel(UIPanelType.PanelDailyQuest);
+        go.SetActive(true);
+        panelTotal.ShowMainSceneContent(false);
+        panelTotal.Transform.SetAsLastSibling();
+        if (panelDailyQuest == null)
+        {
+            panelDailyQuest = go.GetComponent<PanelDailyQuest>();
+        }
+    }
+
+    public void ClosePanelDailyQuest()
+    {
+        isHasPopupOnScene = false;
+        GameObject go = GetPanel(UIPanelType.PanelDailyQuest);
         go.SetActive(false);
     }
 }

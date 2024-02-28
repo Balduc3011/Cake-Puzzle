@@ -21,6 +21,7 @@ public class PanelTotal : UIPanel
     [SerializeField] Button bakeryNavBtn;
     [SerializeField] Button decorationNavBtn;
     [SerializeField] Button shopNavBtn;
+    [SerializeField] Button questNavBtn;
     [SerializeField] GameObject mainSceneContent;
     [SerializeField] GameObject commonContent;
     [SerializeField] GameObject mainMenuContent;
@@ -122,6 +123,7 @@ public class PanelTotal : UIPanel
         bakeryNavBtn.onClick.AddListener(() => { UIManager.instance.ShowPanelBakery(); });
         decorationNavBtn.onClick.AddListener(() => { UIManager.instance.ShowPanelDecorations(); });
         shopNavBtn.onClick.AddListener(() => { UIManager.instance.ShowPanelShop(); });
+        questNavBtn.onClick.AddListener(() => { UIManager.instance.ShowPanelDailyQuest(); });
         currentLevel = ProfileManager.Instance.playerData.playerResourseSave.currentLevel;
         ChangeLevel();
         ChangeExp();
@@ -151,25 +153,25 @@ public class PanelTotal : UIPanel
 
     void ShowPanelSetting()
     {
-        UIAnimationController.BasicButton(settingBtn.transform, .1f, UIManager.instance.ShowPanelSetting);
+        UIAnimationController.BtnAnimZoomBasic(settingBtn.transform, .1f, UIManager.instance.ShowPanelSetting);
         //UIManager.instance.ShowPanelSpin();
     }
 
     void ShowPanelDailyReward()
     {
-        UIAnimationController.BasicButton(dailyBtn.transform, .1f, UIManager.instance.ShowPanelDailyReward);
+        UIAnimationController.BtnAnimZoomBasic(dailyBtn.transform, .1f, UIManager.instance.ShowPanelDailyReward);
         //UIManager.instance.ShowPanelDailyReward();
     }
 
     void ShowPanelSpin()
     {
-        UIAnimationController.BasicButton(spinBtn.transform, .1f, UIManager.instance.ShowPanelSpin);
+        UIAnimationController.BtnAnimZoomBasic(spinBtn.transform, .1f, UIManager.instance.ShowPanelSpin);
         //UIManager.instance.ShowPanelSpin();
     }
     void ShowPanelTest()
     {
         //UIAnimationController.BasicButton(decorBtn.transform, .1f, UIManager.instance.ShowPanelSpin);
-        UIAnimationController.BasicButton(decorBtn.transform, .1f, UIManager.instance.ShowPanelLeaderBoard);
+        UIAnimationController.BtnAnimZoomBasic(decorBtn.transform, .1f, UIManager.instance.ShowPanelLeaderBoard);
         //UIManager.instance.ShowPanelSpin();
     }
 

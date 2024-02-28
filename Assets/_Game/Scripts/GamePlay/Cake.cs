@@ -498,7 +498,7 @@ public class Cake : MonoBehaviour
         //CakeFullAnimation trs = Instantiate(objecPref).GetComponent<CakeFullAnimation>();
         //trs.transform.position = transform.position;
         //trs.AnimDoneCake();
-
+        GameManager.Instance.questManager.AddProgress(QuestType.CompleteCake, 1);
         if (panelTotal == null)
             panelTotal = UIManager.instance.panelTotal;
         DOVirtual.DelayedCall(.35f, () => {
