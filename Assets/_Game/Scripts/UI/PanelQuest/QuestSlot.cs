@@ -51,14 +51,26 @@ public class QuestSlot : SlotBase<QuestData>
             txtProgress.text = currentProgress.ToString() + ConstantValue.STR_SLASH + questRequire;
             sProgress.value = currentProgress;
 
-            bool isClaimed = ProfileManager.Instance.playerData.questDataSave.IsClaimQuest(data.questType, id);
-            btnChoose.interactable = currentProgress == questRequire && !isClaimed;
-            objHighlight.SetActive(btnChoose.interactable);
-            objHide.SetActive(currentProgress == questRequire && isClaimed);
-            if (isClaimed)
-            {
-                transform.SetAsLastSibling();
-            }
+            //bool isClaimed = ProfileManager.Instance.playerData.questDataSave.IsClaimQuest(data.questType, id);
+            //btnChoose.interactable = currentProgress == questRequire && !isClaimed;
+            //objHighlight.SetActive(btnChoose.interactable);
+            //objHide.SetActive(currentProgress == questRequire && isClaimed);
+            //if (isClaimed)
+            //{
+            //    transform.SetAsLastSibling();
+            //}
+        }
+    }
+
+    public void CheckCollect()
+    {
+        bool isClaimed = ProfileManager.Instance.playerData.questDataSave.IsClaimQuest(data.questType, id);
+        btnChoose.interactable = currentProgress == questRequire && !isClaimed;
+        objHighlight.SetActive(btnChoose.interactable);
+        objHide.SetActive(currentProgress == questRequire && isClaimed);
+        if (isClaimed)
+        {
+            transform.SetAsLastSibling();
         }
     }
 
