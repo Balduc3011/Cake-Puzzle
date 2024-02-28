@@ -369,7 +369,7 @@ public class Cake : MonoBehaviour
     Vector3 vectorRotateTo;
     int indexRotate = 0;
     IEnumerator RotateOtherPiece(int pieceIndex) {
-        Debug.Log("Call rotate other pieces");
+        //Debug.Log("Call rotate other pieces");
         indexRotate = pieceIndex;
         while (indexRotate < pieces.Count)
         {
@@ -377,18 +377,18 @@ public class Cake : MonoBehaviour
             if (pieces[indexRotate].currentRotateIndex >= rotates.Count) pieces[indexRotate].currentRotateIndex = 0;
             vectorRotateTo = new Vector3(0, rotates[pieces[indexRotate].currentRotateIndex], 0);
             pieces[indexRotate].transform.DORotate(vectorRotateTo, timeRotate).SetEase(curveRotate);
-            Debug.Log("Rotate in piece: " + indexRotate + " current rotate index: " + pieces[indexRotate].currentRotateIndex);
+            //Debug.Log("Rotate in piece: " + indexRotate + " current rotate index: " + pieces[indexRotate].currentRotateIndex);
             yield return new WaitForSeconds(timeRotate);
             indexRotate++;
         }
-        Debug.Log("Call action call back");
+        //Debug.Log("Call action call back");
         actionCallBackRotateDone();
     }
 
     int indexRotateRW = 0;
-    public void RotateOtherPieceRight(int pieceIndex) {
-        indexRotateRW = pieceIndex;
-        Debug.Log("Call rotate right way on plate: " + currentPlate);
+    public void RotateOtherPieceRight() {
+        indexRotateRW = 0;
+        //Debug.Log("Call rotate right way on plate: " + currentPlate);
         if (cakeDone) return;
         currentRotateIndex = indexFirstSpawn - 1;
         StartCoroutine(RotateOtherPieceRightWay());
@@ -401,12 +401,12 @@ public class Cake : MonoBehaviour
             currentRotateIndex++;
             if (currentRotateIndex >= rotates.Count)
                 currentRotateIndex = 0;
-            pieces[indexRotateRW].currentRotateIndex = currentRotateIndex;
-            
-            vectorRotateTo = new Vector3(0, rotates[currentRotateIndex], 0);
+            if (pieces[indexRotateRW].currentRotateIndex != currentRotateIndex)
+                pieces[indexRotateRW].currentRotateIndex = currentRotateIndex;
+            vectorRotateTo = new Vector3(0, rotates[pieces[indexRotateRW].currentRotateIndex], 0);
             pieces[indexRotateRW].transform.DORotate(vectorRotateTo, timeRotate).SetEase(curveRotate);
             indexRotateRW++;
-            yield return new WaitForSeconds(.1f);
+            yield return new WaitForSeconds(timeRotate);
         }
     }
 
@@ -461,7 +461,7 @@ public class Cake : MonoBehaviour
     public void AddPieces(Piece piece)
     {
         if (pieces.Contains(piece)) return;
-        Debug.Log("cake on plate: "+currentPlate+" add pieces: "+piece.cakeID);
+        //Debug.Log("cake on plate: "+currentPlate+" add pieces: "+piece.cakeID);
         pieces.Add(piece);
         pieceTemp = pieces[indexOfNewPiece];
         pieces[indexOfNewPiece] = piece;

@@ -322,7 +322,7 @@ public class Table : MonoBehaviour
                 {
                     mapPlate[i].ClearCake();
                 }
-                //else mapPlate[i].currentCake.RotateOtherPieceRight(0);
+                else mapPlate[i].currentCake.RotateOtherPieceRight();
             }
         }
     }
@@ -547,10 +547,10 @@ public class Way {
             if (pieces != null)
             {
                 
-                if (!plateGo.currentCake.cakeDone) { }
+                //if (!plateGo.currentCake.cakeDone) { }
                 //plateGo.currentCake.RotateOtherPieceRight(0);
-                if (!plateCurrent.currentCake.cakeDone)
-                    plateCurrent.currentCake.RotateOtherPieceRight(0);
+                //if (!plateCurrent.currentCake.cakeDone)
+                    //plateCurrent.currentCake.RotateOtherPieceRight(0);
             }
             DoActionDone();
         });
@@ -562,16 +562,17 @@ public class Way {
         else if (rotateIndex >= 6) rotateIndex = 0;
 
         cake = plateGo.currentCake;
-        pieces.transform.parent = plateGo.currentCake.transform;
+       
         //pieces.transform.SetSiblingIndex(rotateIndex);
         pieces.currentRotateIndex = rotateIndex;
         plateGo.AddPiece(pieces);
         plateGo.currentCake.StartRotateOtherPieceForNewPiece(() => {
+            pieces.transform.parent = plateGo.currentCake.transform;
             pieces.transform.DOScale(Vector3.one, 0.25f);
             pieces.transform.DOMove(plateGo.pointStay.position, timeMove).SetEase(curveMove).OnComplete(() => {
                 cake.DoAnimImpact();
             });
-            pieces.transform.DORotate(new Vector3(0, plateGo.currentCake.rotates[rotateIndex], 0), timeRotate).SetEase(curveRotate);
+            pieces.transform.DORotate(new Vector3(0, plateGo.currentCake.rotates[rotateIndex], 0), timeRotate).SetDelay(.2f).SetEase(curveRotate);
             CallDoneThatMove();
         });
         plateCurrent.CheckNullPieces();

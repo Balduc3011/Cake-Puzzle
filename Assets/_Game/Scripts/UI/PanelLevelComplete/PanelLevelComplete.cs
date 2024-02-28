@@ -45,6 +45,7 @@ public class PanelLevelComplete : UIPanel
     void ExitPanel() {
         OnClose();
         ProfileManager.Instance.playerData.cakeSaveData.ClearAllCake();
+        GameManager.Instance.cakeManager.SetOnMove(false);
         GameManager.Instance.ClearAllCake();
         //UIManager.instance.ShowPanelLoading();
         GameManager.Instance.BackToMenu();

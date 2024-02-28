@@ -368,7 +368,7 @@ public class CakeManager : MonoBehaviour
         if (ProfileManager.Instance.playerData.cakeSaveData.IsHaveCakeWaitSave())
         {
             LoadCakeWaitData();
-            Debug.Log("Check on first game");
+            //Debug.Log("Check on first game");
             CheckLooseGame(true);
         }
         else { 
@@ -476,18 +476,18 @@ public class CakeManager : MonoBehaviour
                         newIDInfor.count = countIDRemain;
                     if (newIDInfor.count == 0)
                         newIDInfor.count = 1;
-                    Debug.Log(newIDInfor.ID);
-                    Debug.Log(newIDInfor.count);
+                   // Debug.Log(newIDInfor.ID);
+                   // Debug.Log(newIDInfor.count);
                     idReturn.Add(newIDInfor);
                 }
         }
 
-        for (int i = 0; i < idReturn.Count; i++)
-        {
-            Debug.Log("ID: " + idReturn[i].ID);
-            Debug.Log("Count: " + idReturn[i].count);
-            Debug.Log("==========");
-        }
+        //for (int i = 0; i < idReturn.Count; i++)
+        //{
+        //    Debug.Log("ID: " + idReturn[i].ID);
+        //    Debug.Log("Count: " + idReturn[i].count);
+        //    Debug.Log("==========");
+        //}
         return idReturn;
     }
 
