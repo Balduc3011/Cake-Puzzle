@@ -147,7 +147,7 @@ public class QuestDataSave : SaveBase
         //    questSaves.Add(newQuestSave);
         //}
         //else questTemp.progress += amount;
-        Debug.Log(questType);
+        //Debug.Log(questType);
         for (int i = 0; i < questSaves.Count; i++)
         {
             if (questSaves[i].questType == questType)

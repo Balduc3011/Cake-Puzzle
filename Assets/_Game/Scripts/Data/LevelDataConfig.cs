@@ -8,6 +8,8 @@ public class LevelDataConfig : ScriptableObject
     public List<LevelData> levelDatas = new List<LevelData>();
 
     public LevelData GetLevel(int level) {
+        if (level >= levelDatas.Count)
+            return levelDatas[levelDatas.Count - 1];
         return levelDatas[level];
     }
 
@@ -25,7 +27,7 @@ public class LevelDataConfig : ScriptableObject
 
     public int GetCakeID(int currentLevel)
     {
-        if (currentLevel <= levelDatas.Count)
+        if (currentLevel >= levelDatas.Count)
             return -1;
         return levelDatas[currentLevel].cakeUnlockID;
     }
