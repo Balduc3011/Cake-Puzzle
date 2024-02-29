@@ -117,6 +117,9 @@ public class Plate : MonoBehaviour
     }
 
     public void ClearCake() {
+        if (currentCake == null)
+            return;
+        Debug.Log("bug scale");
         currentCake.transform.DOScale(Vector3.zero, .5f).OnComplete(() => {
             if (currentCake != null)
             {

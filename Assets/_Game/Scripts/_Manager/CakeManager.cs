@@ -186,7 +186,7 @@ public class CakeManager : MonoBehaviour
     void CheckNextCake() {
         indexCakeCheck++;
         GameManager.Instance.objectPooling.CheckGroupCake();
-        if (indexCakeCheck < cakeNeedCheck.Count)
+        if (indexCakeCheck < cakeNeedCheck.Count && cakeNeedCheck.Count > 0)
         {
             while (cakeNeedCheck[indexCakeCheck] == null)
             {
@@ -198,7 +198,7 @@ public class CakeManager : MonoBehaviour
         else
         {
             timeCheckCake++;
-            if (timeCheckCake == 2)
+            if (timeCheckCake >= 2)
             {
                 table.SaveCake();
                 StartCheckLoseGame();
@@ -245,6 +245,7 @@ public class CakeManager : MonoBehaviour
                 table.CreateMapPlate(currentCakeCheck.currentPlate.GetPlateIndex(), currentCakeCheck.pieceCakeID[cakeIDIndex]);
                 table.FindPlateBest(currentCakeCheck.pieceCakeID[cakeIDIndex]);
                 table.StartCreateWay();
+                Debug.Log("call start move from check other id");
                 table.StartMove(currentCakeCheck.pieceCakeID[cakeIDIndex]);
             }
             else

@@ -224,7 +224,7 @@ public class GroupCake : MonoBehaviour
     public void CheckGroupDone() {
         countCakeDone = 0;
         for (int i = 0; i < cake.Count; i++) {
-            if (cake[i] == null || cake[i].cakeDone)
+            if (cake[i] == null)
             {
                 countCakeDone++;
             }

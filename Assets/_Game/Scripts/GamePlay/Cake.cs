@@ -30,6 +30,8 @@ public class Cake : MonoBehaviour
     [SerializeField] Transform spawnContainer;
     public Dictionary<int, GameObject> objectDecoration = new Dictionary<int, GameObject>();
 
+    public bool needRotateRightWay = false;
+
     private void Start()
     {
         EventManager.AddListener(EventName.ChangePlateDecor.ToString(), UpdatePlateDecor);
@@ -361,13 +363,17 @@ public class Cake : MonoBehaviour
     public void StartRotateOtherPieceForNewPiece(UnityAction actionCallBack) {
         actionCallBackRotateDone = actionCallBack;
         if (!cakeDone)
+        {
+            flagDoActionCallBack = false;
             StartCoroutine(RotateOtherPiece(indexOfNewPiece + 1));
+        }
     }
 
     public int GetRotateIndex() { return indexReturn; }
 
     Vector3 vectorRotateTo;
     int indexRotate = 0;
+    bool flagDoActionCallBack = false;
     IEnumerator RotateOtherPiece(int pieceIndex) {
         //Debug.Log("Call rotate other pieces");
         indexRotate = pieceIndex;
@@ -376,27 +382,42 @@ public class Cake : MonoBehaviour
             pieces[indexRotate].currentRotateIndex++;
             if (pieces[indexRotate].currentRotateIndex >= rotates.Count) pieces[indexRotate].currentRotateIndex = 0;
             vectorRotateTo = new Vector3(0, rotates[pieces[indexRotate].currentRotateIndex], 0);
-            pieces[indexRotate].transform.DORotate(vectorRotateTo, timeRotate).SetEase(curveRotate);
+            pieces[indexRotate].transform.DORotate(vectorRotateTo, timeRotate).SetEase(curveRotate).OnComplete(() => {
+                if (indexRotate == pieces.Count - 1)
+                {
+                    flagDoActionCallBack = true;
+                    actionCallBackRotateDone();
+                }
+            });
             //Debug.Log("Rotate in piece: " + indexRotate + " current rotate index: " + pieces[indexRotate].currentRotateIndex);
-            yield return new WaitForSeconds(timeRotate);
+            yield return new WaitForSeconds(timeRotate - 0.15f);
             indexRotate++;
         }
         //Debug.Log("Call action call back");
-        actionCallBackRotateDone();
+        if (!flagDoActionCallBack) actionCallBackRotateDone();
+
     }
 
     int indexRotateRW = 0;
-    public void RotateOtherPieceRight() {
+    UnityAction rotateRWDone;
+    bool callBackRotateDone = false;
+    public void RotateOtherPieceRight(UnityAction actionCallRotateDone) {
+        rotateRWDone = actionCallRotateDone;
         indexRotateRW = 0;
         //Debug.Log("Call rotate right way on plate: " + currentPlate);
-        if (cakeDone) return;
+        callBackRotateDone = false;
+        if (cakeDone)
+        {
+            rotateRWDone();
+            return;
+        }
         currentRotateIndex = indexFirstSpawn - 1;
+        needRotateRightWay = false;
         StartCoroutine(RotateOtherPieceRightWay());
        
     }
 
     IEnumerator RotateOtherPieceRightWay() {
-        
         while (indexRotateRW < pieces.Count) {
             currentRotateIndex++;
             if (currentRotateIndex >= rotates.Count)
@@ -405,9 +426,20 @@ public class Cake : MonoBehaviour
                 pieces[indexRotateRW].currentRotateIndex = currentRotateIndex;
             vectorRotateTo = new Vector3(0, rotates[pieces[indexRotateRW].currentRotateIndex], 0);
             pieces[indexRotateRW].transform.DORotate(vectorRotateTo, timeRotate).SetEase(curveRotate);
+            DOVirtual.DelayedCall(timeRotate - .15f, () =>
+            {
+                if (indexRotateRW == pieces.Count)
+                {
+                    callBackRotateDone = true;
+                    rotateRWDone();
+                }
+            });
             indexRotateRW++;
-            yield return new WaitForSeconds(timeRotate);
+            yield return new WaitForSeconds(timeRotate-.15f);
         }
+
+        if (!callBackRotateDone)
+            rotateRWDone();
     }
 
     public Piece GetPieceMove(int cakeID)
@@ -418,6 +450,7 @@ public class Cake : MonoBehaviour
             {
                 piece = pieces[i];
                 pieces.Remove(pieces[i]);
+                needRotateRightWay = true;
                 return piece;
             }
         }
