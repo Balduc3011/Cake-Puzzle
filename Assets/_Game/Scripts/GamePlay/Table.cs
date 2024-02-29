@@ -597,7 +597,7 @@ public class Way {
             Debug.Log("call done move by move done!");
             CallDoneThatMove();
             //DOVirtual.DelayedCall(timeMove - 0.2f, CallDoneThatMove);
-            pieces.transform.DORotate(new Vector3(0, plateGo.currentCake.rotates[rotateIndex], 0), timeRotate).SetDelay(.2f).SetEase(curveRotate);
+            pieces.transform.DORotate(new Vector3(0, plateGo.currentCake.rotates[rotateIndex], 0), timeRotate).SetEase(curveRotate);
             
         });
         plateCurrent.CheckNullPieces();
