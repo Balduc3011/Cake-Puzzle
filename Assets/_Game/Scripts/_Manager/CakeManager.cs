@@ -69,10 +69,6 @@ public class CakeManager : MonoBehaviour
         currentGCake = null;
     }
 
-    public int GetRandomPieces() {
-        return 0;
-    }
-
     GroupCake groupCake;
     public List<float> countCake = new List<float>();
     int indexGroupCake;
@@ -143,14 +139,7 @@ public class CakeManager : MonoBehaviour
         countCake.Add(1);
         countCake.Add(ProfileManager.Instance.dataConfig.rateDataConfig.GetRandomSlot(haveMoreCake) + 1);
         countCake.Add(1);
-        //countCake.Sort((a, b) => CompareCountCake(a, b));
     }
-
-    //int CompareCountCake(float a, float b) {
-    //    if (a < b) return 1;
-    //    if (a > b) return -1;
-    //    return 0;
-    //}
 
     public int GetPiecesTotal() {
         haveMoreThan3Cake = ProfileManager.Instance.playerData.cakeSaveData.IsHaveMoreThanThreeCake();
@@ -231,15 +220,10 @@ public class CakeManager : MonoBehaviour
 
     public void CheckIDOfCake() {
         cakeIDIndex++;
-        if (cakeIDIndex < currentCakeCheck.pieceCakeID.Count)
-        {
-            //Debug.Log("ID need check: "+ currentCakeCheck.pieceCakeID[cakeIDIndex]);
+        if (cakeIDIndex < currentCakeCheck.pieceCakeID.Count) 
+        { 
             if (CheckHaveCakeID(currentCakeCheck.pieceCakeID[cakeIDIndex]))
             {
-                //Debug.Log("=============START CHECK ID: " + currentCakeCheck.pieceCakeID[cakeIDIndex] + "==============");
-                //Debug.Log(currentCakeCheck.pieceCakeID.Count);
-                //Debug.Log("current id index: " + cakeIDIndex);
-                //Debug.Log(currentCakeCheck.currentPlate);
                 table.ClearMapPlate(currentCakeCheck.pieceCakeID[cakeIDIndex]);
                 table.AddFirstPlate(currentCakeCheck.currentPlate);
                 table.CreateMapPlate(currentCakeCheck.currentPlate.GetPlateIndex(), currentCakeCheck.pieceCakeID[cakeIDIndex]);
@@ -250,13 +234,11 @@ public class CakeManager : MonoBehaviour
             }
             else
             {
-                //Debug.Log("Check cake by call next cake");
                 CheckIDOfCake();
             }
         }
         else
         {
-            //Debug.Log("Check cake by call next cake");
             actionCallBack();
         }
     }
@@ -276,7 +258,6 @@ public class CakeManager : MonoBehaviour
             });
         
         }
-        //Debug.Log( countFaild == cakesWait.Count);
     }
     int countCheckFaild;
     void CheckLooseGame(bool isCheckOnInit = false) {
@@ -299,9 +280,6 @@ public class CakeManager : MonoBehaviour
         }
         if (countFaild == countCheckFaild && countFaild > 0)
         {
-            Debug.Log(countFaild + " " + countCheckFaild);
-            Debug.Log("Loose game");
-
             UIManager.instance.ShowPanelLevelComplete(false);
         }
         onCheckLooseGame = false;
@@ -369,7 +347,6 @@ public class CakeManager : MonoBehaviour
         if (ProfileManager.Instance.playerData.cakeSaveData.IsHaveCakeWaitSave())
         {
             LoadCakeWaitData();
-            //Debug.Log("Check on first game");
             CheckLooseGame(true);
         }
         else { 
@@ -380,7 +357,6 @@ public class CakeManager : MonoBehaviour
         {
             LoadCakeOnPlate();
         }
-        //CheckLooseGame();
         loaded = true;
     }
     List<CakeOnWait> cakeOnWaits = new List<CakeOnWait>();
@@ -477,18 +453,9 @@ public class CakeManager : MonoBehaviour
                         newIDInfor.count = countIDRemain;
                     if (newIDInfor.count == 0)
                         newIDInfor.count = 1;
-                   // Debug.Log(newIDInfor.ID);
-                   // Debug.Log(newIDInfor.count);
                     idReturn.Add(newIDInfor);
                 }
         }
-
-        //for (int i = 0; i < idReturn.Count; i++)
-        //{
-        //    Debug.Log("ID: " + idReturn[i].ID);
-        //    Debug.Log("Count: " + idReturn[i].count);
-        //    Debug.Log("==========");
-        //}
         return idReturn;
     }
 
