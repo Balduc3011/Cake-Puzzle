@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using DG.Tweening;
-using static UnityEditor.Rendering.InspectorCurveEditor;
-using UnityEngine.UIElements;
 public class Table : MonoBehaviour
 {
     public List<Plate> plates = new List<Plate>();

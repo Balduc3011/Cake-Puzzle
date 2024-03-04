@@ -6,12 +6,12 @@ using UnityEngine;
 
 public class ExpEffect : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI txtExpAdd;
-    private void OnEnable()
+    public TextMeshProUGUI txtExpAdd;
+    public virtual void OnEnable()
     {
         DOVirtual.DelayedCall(1.5f, () => { gameObject.SetActive(false); });
     }
-    public void ChangeTextExp(string exp) {
+    public virtual void ChangeText(string exp) {
         txtExpAdd.text = "+" + exp + "EXP";
     }
 }

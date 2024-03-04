@@ -549,6 +549,11 @@ public class Cake : MonoBehaviour
         GameManager.Instance.questManager.AddProgress(QuestType.CompleteCake, 1);
         if (panelTotal == null)
             panelTotal = UIManager.instance.panelTotal;
+
+        GameManager.Instance.cakeManager.AddStreak(this);
+        ProfileManager.Instance.playerData.playerResourseSave.AddExp((pieces[0].cakeID + 1) * ConstantValue.VAL_DEFAULT_EXP);
+        ProfileManager.Instance.playerData.playerResourseSave.AddMoney((pieces[0].cakeID + 1) * ConstantValue.VAL_DEFAULT_EXP);
+        ProfileManager.Instance.playerData.playerResourseSave.AddTrophy((pieces[0].cakeID + 1) * ConstantValue.VAL_DEFAULT_TROPHY);
         DOVirtual.DelayedCall(CacheSourse.float035, () => {
             transform.DOScale(CacheSourse.vector07, CacheSourse.float03);
             transform.DOScale(CacheSourse.vector1, CacheSourse.float03).SetDelay(CacheSourse.float04);
@@ -582,12 +587,10 @@ public class Cake : MonoBehaviour
 
         ExpEffect expEffect = GameManager.Instance.objectPooling.GetExpEffect();
         expEffect.transform.position = Camera.main.WorldToScreenPoint(transform.position) + vectorOffsetExp;
-        expEffect.ChangeTextExp(((pieces[0].cakeID + 1) * ConstantValue.VAL_DEFAULT_EXP).ToString());
+        expEffect.ChangeText(((pieces[0].cakeID + 1) * ConstantValue.VAL_DEFAULT_EXP).ToString());
         expEffect.gameObject.SetActive(true);
 
-        ProfileManager.Instance.playerData.playerResourseSave.AddExp((pieces[0].cakeID + 1) * ConstantValue.VAL_DEFAULT_EXP);
-        ProfileManager.Instance.playerData.playerResourseSave.AddMoney((pieces[0].cakeID + 1) * ConstantValue.VAL_DEFAULT_EXP);
-        ProfileManager.Instance.playerData.playerResourseSave.AddTrophy((pieces[0].cakeID + 1) * ConstantValue.VAL_DEFAULT_TROPHY);
+       
         transform.localScale = CacheSourse.vector0;
 
         DOVirtual.DelayedCall(CacheSourse.float05, () => { Destroy(gameObject); });
@@ -626,7 +629,7 @@ public class Cake : MonoBehaviour
         tweens.Clear();
         tweens.Add(transform.DOScale(CacheSourse.vector067, CacheSourse.float013).SetEase(Ease.InSine));
         tweens.Add(transform.DOScale(CacheSourse.vector071, CacheSourse.float013).SetEase(Ease.InOutSine).SetDelay(CacheSourse.float013));
-        tweens.Add(transform.DOScale(CacheSourse.vector07, CacheSourse.float013).SetEase(Ease.OutSine).SetDelay(CacheSourse.float026));
+        tweens.Add(transform.DOScale(CacheSourse.vector08, CacheSourse.float013).SetEase(Ease.OutSine).SetDelay(CacheSourse.float026));
     }
 
     public int GetPieceFree()

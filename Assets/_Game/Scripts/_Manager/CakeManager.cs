@@ -12,24 +12,59 @@ public class CakeManager : MonoBehaviour
 {
     public List<GroupCake> cakesWait = new List<GroupCake>();
     public List<Transform> pointSpawnGroupCake = new List<Transform>();
-    public Table table;
-    public GroupCake currentGCake;
+    public List<Cake> cakeNeedCheck = new List<Cake>();
+    public List<float> countCake = new List<float>();
+
+    List<IDInfor> idInfor = new();
+    List<IDInfor> idNeedResolves = new();
+    List<IDInfor> idReturn = new();
+    List<CakeOnWait> cakeOnWaits = new List<CakeOnWait>();
+    List<CakeOnPlate> cakeOnPlates = new List<CakeOnPlate>();
+
     public Vector3 vectorOffset;
-    public float distance;
+    public Vector3 vectorOffsetStreak;
     Vector3 mousePos;
     Vector3 currentPos;
-    bool haveMoreThan3Cake;
+
     public float posYDefault;
+    public float distance;
+
     public bool onCheckLooseGame;
     public bool onMove;
 
+    bool haveMoreThan3Cake;
+    bool onInitGroup;
+    bool haveMoreCake; 
+    bool onCheckCake = false;
+    bool loaded = false;
+
+    public Table table;
+    public GroupCake currentGCake;
     public CakeShowComponent cakeShowComponent;
+    [SerializeField] Cake cakePref;
+
+    GroupCake groupCake;
+    Cake currentCakeCheck;
+    StreakEffect streakEffect;
+
     public int justUnlockedCake;
+
+    int currentStreak = 0;
+    int indexGroupCake;
+    int cakeIDIndex = -1;
+    int indexCakeCheck;
+    int timeCheckCake;
+    int countFaild;
+    int countIDRemain = 0;
+    int limitRandom = 0;
+    int countCheckFaild;
+    int totalPieceInIDInfor = 0;
+
     public Transform trashBin;
     [SerializeField] Transform pointStart;
     [SerializeField] Transform pointEnd;
 
-    public List<Cake> cakeNeedCheck = new List<Cake>();
+    UnityAction actionCallBack;
 
     private void Start()
     {
@@ -69,18 +104,15 @@ public class CakeManager : MonoBehaviour
         currentGCake = null;
     }
 
-    GroupCake groupCake;
-    public List<float> countCake = new List<float>();
-    int indexGroupCake;
-    bool onInitGroup;
     public void InitGroupCake() {
         SetCountPieces();
         indexGroupCake = 0;
         onInitGroup = true;
+        ResetStreak();
         StartCoroutine(IE_WaitToInitGroupCake());
     }
 
-    List<IDInfor> idInfor = new();
+
     IEnumerator IE_WaitToInitGroupCake() {
         while (indexGroupCake < 3)
         {
@@ -110,8 +142,6 @@ public class CakeManager : MonoBehaviour
         CheckLooseGame(true);
     }
 
-
-
     public void RemoveCakeWait(GroupCake gCake)
     {
         ProfileManager.Instance.playerData.cakeSaveData.RemoveCakeWait(gCake.groupCakeIndex);
@@ -132,7 +162,7 @@ public class CakeManager : MonoBehaviour
         InitGroupCake();
     }
 
-    bool haveMoreCake;
+  
     void SetCountPieces() {
         countCake.Clear();
         haveMoreCake = ProfileManager.Instance.playerData.cakeSaveData.IsHaveMoreThanThreeCake();
@@ -150,15 +180,6 @@ public class CakeManager : MonoBehaviour
         haveMoreThan3Cake = ProfileManager.Instance.playerData.cakeSaveData.IsHaveMoreThanThreeCake();
         return ProfileManager.Instance.dataConfig.rateDataConfig.GetTotalCakeID(haveMoreThan3Cake);
     }
-
-    int cakeIDIndex = -1;
-    Cake currentCakeCheck;
-    
-    UnityAction actionCallBack;
-
-    int indexCakeCheck;
-    int timeCheckCake;
-    bool onCheckCake = false;
 
     public void SetupCheckCake() {
         indexCakeCheck = -1;
@@ -249,7 +270,6 @@ public class CakeManager : MonoBehaviour
 
     public void SetOnMove(bool onMove) { this.onMove = onMove; }
 
-    int countFaild;
     public void StartCheckLoseGame()
     {
         if (cakesWait.Count > 0) {
@@ -259,7 +279,7 @@ public class CakeManager : MonoBehaviour
         
         }
     }
-    int countCheckFaild;
+    
     void CheckLooseGame(bool isCheckOnInit = false) {
         if (cakesWait.Count == 0 || onInitGroup) return;
         onCheckLooseGame = true;
@@ -339,7 +359,7 @@ public class CakeManager : MonoBehaviour
         InitGroupCake();
     }
 
-    bool loaded = false;
+  
     public void PlayGame()
     {
         if (loaded)
@@ -359,9 +379,7 @@ public class CakeManager : MonoBehaviour
         }
         loaded = true;
     }
-    List<CakeOnWait> cakeOnWaits = new List<CakeOnWait>();
-    List<CakeOnPlate> cakeOnPlates = new List<CakeOnPlate>();
-    [SerializeField] Cake cakePref;
+ 
     void LoadCakeOnPlate() {
         cakeOnPlates = ProfileManager.Instance.playerData.cakeSaveData.cakeOnPlates;
         for (int i = 0; i < cakeOnPlates.Count; i++)
@@ -427,10 +445,7 @@ public class CakeManager : MonoBehaviour
 
     public bool NeedResolve() { return cakeOnPlates.Count >= 10; }
 
-    List<IDInfor> idNeedResolves = new();
-    List<IDInfor> idReturn = new();
-    int countIDRemain = 0;
-    int limitRandom = 0;
+  
     public List<IDInfor> GetIDInfor() {
         if (idNeedResolves != null)
             idNeedResolves.Clear();
@@ -458,8 +473,7 @@ public class CakeManager : MonoBehaviour
         }
         return idReturn;
     }
-
-    int totalPieceInIDInfor = 0;
+ 
     int CalculateTotalPieces() {
         totalPieceInIDInfor = 0;
         for (int i = 0; i < idReturn.Count; i++)
@@ -472,4 +486,25 @@ public class CakeManager : MonoBehaviour
     public void ResetPharse() {
         table.ResetPharse();
     }
+
+
+    #region STREAK
+    void ResetStreak()
+    {
+        currentStreak = 0;
+    }
+  
+    public void AddStreak(Cake cakeStreak)
+    {
+        currentStreak++;
+        if (currentStreak > 1)
+        {
+            streakEffect = GameManager.Instance.objectPooling.GetStreakEffect();
+            streakEffect.SettingMaterial(cakeStreak.pieces[0].cakeID);
+            streakEffect.ChangeText(currentStreak.ToString());
+            streakEffect.transform.position = Camera.main.WorldToScreenPoint(cakeStreak.transform.position) + vectorOffsetStreak;
+            streakEffect.gameObject.SetActive(true);
+        }
+    }
+    #endregion
 }
