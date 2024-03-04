@@ -4,33 +4,75 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
-using UnityEngine.XR;
+using CacheEngine;
 
 public class Cake : MonoBehaviour
 {
+    [Header("LIST")]
     public List<Piece> pieces = new List<Piece>();
     public List<int> rotates = new List<int>();
-    public int totalPieces;
-    public int totalCakeID;
-    public float radiusCheck;
-    public Plate currentPlate;
-    GroupCake myGroupCake;
     public List<int> pieceCakeIDCount = new List<int>();
     public List<int> pieceCakeID = new List<int>();
-    public Piece piecePref;
-    public bool cakeDone;
-    int indexFirstSpawn;
+    List<int> cakeID = new List<int>();
+    List<int> listCakeIDFillUp = new List<int>();
+    List<Tween> tweens = new();
+    List<IDInfor> currentIDInfor = new();
 
-    AnimationCurve curveRotate;
-    float timeRotate;
-    [SerializeField] Vector3 vectorOffsetEffect;
-    [SerializeField] Vector3 vectorOffsetExp;
+    [Header("INT")]
+    public int totalPieces;
+    public int totalCakeID;
+    public int indexOfNewPiece;
+
+    int pieceIndex;
+    int indexFirstSpawn;
+    int indexRandom;
+    int currentRotateIndex = 0;
+    int pieceCakeIDFill = 0;
+    int indexRotate = 0;
+    int indexReturn;
+    int indexRotateRW = 0;
+
+    [Header("FLOAT")]
+    public float radiusCheck;
     [SerializeField] float scaleDefault;
+    float timeRotate;
+
+    [Header("BOOL")]
+    public bool cakeDone;
+    public bool needRotateRightWay = false;
+
+    bool onDrop;
+    bool callBackRotateDone = false;
+    bool otherCake = false;
+    bool sameCake = false;
+    bool flagDoActionCallBack = false;
+
+    [Header("OTHER COMPONENT")]
+    public Plate currentPlate;
+    public Piece piecePref;
 
     [SerializeField] Transform spawnContainer;
-    public Dictionary<int, GameObject> objectDecoration = new Dictionary<int, GameObject>();
+    [SerializeField] LayerMask mask;
+    RaycastHit hitInfor;
 
-    public bool needRotateRightWay = false;
+    GroupCake myGroupCake;
+    Piece piece;
+    Piece pieceTemp;
+    PanelTotal panelTotal;
+    IDInfor idInfor;
+
+    AnimationCurve curveRotate;
+
+    public Dictionary<int, GameObject> objectDecoration = new Dictionary<int, GameObject>();
+    UnityAction actionCallBackRotateDone;
+    UnityAction rotateRWDone;
+
+    [Header("VECTOR")]
+    [SerializeField] Vector3 vectorOffsetEffect;
+    [SerializeField] Vector3 vectorOffsetExp;
+    [SerializeField] Vector3 vectorCheckOffset;
+
+    Vector3 vectorRotateTo;
 
     private void Start()
     {
@@ -51,6 +93,7 @@ public class Cake : MonoBehaviour
         onUsingFillUp = false;
     }
 
+    #region INIT DATA
     public void InitData() {
         SetFirstIndexOfPiece();
         transform.DOScale(scaleDefault, .5f).From(1.2f).SetEase(Ease.InOutBack);
@@ -118,13 +161,14 @@ public class Cake : MonoBehaviour
 
         UpdatePlateDecor();
     }
+    #endregion
 
     void SetFirstIndexOfPiece() {
         indexFirstSpawn = Random.Range(0, 6);
         currentRotateIndex = indexFirstSpawn - 1;
     }
 
-    int indexRandom;
+    
     void SetupPiecesCakeID() {
         pieceCakeIDCount.Clear();
         totalCakeID = GameManager.Instance.cakeManager.GetTotalCakeID() + 1;
@@ -151,7 +195,7 @@ public class Cake : MonoBehaviour
         return 0;
     }
 
-    List<int> cakeID = new List<int>();
+    
     void SetUpCakeID() {
         cakeID = ProfileManager.Instance.playerData.cakeSaveData.cakeIDUsing;
         for (int i = 0; i < pieceCakeID.Count; i++)
@@ -170,7 +214,7 @@ public class Cake : MonoBehaviour
         return cakeID[randomIndexX];
     }
 
-    int pieceIndex;
+    
     void InitPiecesSame(int totalPiecesSame, int pieceCakeID) {
         int pieceCountSame = 0;
         while (pieceCountSame < totalPiecesSame) {
@@ -193,7 +237,7 @@ public class Cake : MonoBehaviour
         pieces[pieceInidex].transform.eulerAngles = new Vector3(0, GetRotate(), 0);
     }
 
-    int currentRotateIndex = 0;
+    
     float GetRotate() {
       
         return rotates[currentRotateIndex];
@@ -218,8 +262,7 @@ public class Cake : MonoBehaviour
         }
         else Debug.Log("Group cake null!");
     }
-    List<int> listCakeIDFillUp = new List<int>();
-    int pieceCakeIDFill = 0;
+    
     void FillUp() {
         Debug.Log("Fill up");
         listCakeIDFillUp.Clear();
@@ -252,7 +295,7 @@ public class Cake : MonoBehaviour
         return false;
     }
 
-    bool onDrop;
+    
     public void DropDone(bool lastDrop, UnityAction actionCallback) {
         onDrop = true;
         transform.parent = currentPlate.pointStay;
@@ -263,7 +306,6 @@ public class Cake : MonoBehaviour
             transform.DOScale(Vector3.one * .75f, .2f);
             transform.DOScale(Vector3.one * .8f, .2f).SetDelay(.2f);
         });
-        //ProfileManager.Instance.playerData.cakeSaveData.SaveCake(currentPlate.GetPlateIndex(), this);
     }
 
     public void GroupDropFail() {
@@ -275,9 +317,6 @@ public class Cake : MonoBehaviour
         }
     }
 
-    RaycastHit hitInfor;
-    [SerializeField] LayerMask mask;
-    [SerializeField] Vector3 vectorCheckOffset;
     public void CheckOnMouse() {
         if (onDrop) return;
         if (Physics.SphereCast(transform.position, radiusCheck, -transform.up * .1f+ vectorCheckOffset, out hitInfor))
@@ -320,18 +359,12 @@ public class Cake : MonoBehaviour
         myGroupCake = groupCake;
     }
 
-    public GroupCake GetGroupCake() { return myGroupCake; }
-
-    Piece piece;
+    
     public bool GetCakePieceSame(int cakeID) {
         piece = pieces.Find(e => (e.cakeID == cakeID && e.gameObject.activeSelf));
         return piece != null;
     }
-    bool otherCake = false;
-    bool sameCake = false;
-    public int indexOfNewPiece;
-    int indexReturn;
-    UnityAction actionCallBackRotateDone;
+  
     public void MakeRotateIndexForNewPiece(int cakeID) {
         otherCake = false;
         sameCake = false;
@@ -370,12 +403,8 @@ public class Cake : MonoBehaviour
     }
 
     public int GetRotateIndex() { return indexReturn; }
-
-    Vector3 vectorRotateTo;
-    int indexRotate = 0;
-    bool flagDoActionCallBack = false;
+ 
     IEnumerator RotateOtherPiece(int pieceIndex) {
-        //Debug.Log("Call rotate other pieces");
         indexRotate = pieceIndex;
         while (indexRotate < pieces.Count)
         {
@@ -390,22 +419,16 @@ public class Cake : MonoBehaviour
                     actionCallBackRotateDone();
                 }
             });
-            //Debug.Log("Rotate in piece: " + indexRotate + " current rotate index: " + pieces[indexRotate].currentRotateIndex);
             yield return new WaitForSeconds(timeRotate - 0.15f);
             indexRotate++;
         }
-        //Debug.Log("Call action call back");
         if (!flagDoActionCallBack) actionCallBackRotateDone();
 
     }
-
-    int indexRotateRW = 0;
-    UnityAction rotateRWDone;
-    bool callBackRotateDone = false;
+  
     public void RotateOtherPieceRight(UnityAction actionCallRotateDone) {
         rotateRWDone = actionCallRotateDone;
         indexRotateRW = 0;
-        //Debug.Log("Call rotate right way on plate: " + currentPlate);
         callBackRotateDone = false;
         if (cakeDone)
         {
@@ -491,12 +514,10 @@ public class Cake : MonoBehaviour
         }
         return pieceCount;
     }
-
-    Piece pieceTemp;
+   
     public void AddPieces(Piece piece)
     {
         if (pieces.Contains(piece)) return;
-        //Debug.Log("cake on plate: "+currentPlate+" add pieces: "+piece.cakeID);
         pieces.Add(piece);
         pieceTemp = pieces[indexOfNewPiece];
         pieces[indexOfNewPiece] = piece;
@@ -522,26 +543,17 @@ public class Cake : MonoBehaviour
         }
         return false;
     }
-    PanelTotal panelTotal;
-    Vector3 vectorDefault = new Vector3(.8f, .8f, .8f);
-    Vector3 vectorScaleUp = new Vector3(1f, 1f, 1f);
-    Vector3 vectorScaleDown = new Vector3(.7f, .7f, .7f);
-    Vector3 vectorRotate = new Vector3(0, 360, 0);
+   
     public void DoneCakeMode()
     {
-        //GameObject objecPref = Resources.Load("Pieces/Cake_" + pieces[0].cakeID) as GameObject;
-        //CakeFullAnimation trs = Instantiate(objecPref).GetComponent<CakeFullAnimation>();
-        //trs.transform.position = transform.position;
-        //trs.AnimDoneCake();
         GameManager.Instance.questManager.AddProgress(QuestType.CompleteCake, 1);
         if (panelTotal == null)
             panelTotal = UIManager.instance.panelTotal;
-        DOVirtual.DelayedCall(.35f, () => {
-            Debug.Log(gameObject);
-            transform.DOScale(vectorScaleDown, .3f);
-            transform.DOScale(vectorScaleUp, .3f).SetDelay(0.3f);
-            transform.DOScale(vectorDefault, .3f).SetDelay(.6f);
-            transform.DORotate(vectorRotate, 1f, RotateMode.WorldAxisAdd).SetDelay(.4f).OnComplete(() => {
+        DOVirtual.DelayedCall(CacheSourse.float035, () => {
+            transform.DOScale(CacheSourse.vector07, CacheSourse.float03);
+            transform.DOScale(CacheSourse.vector1, CacheSourse.float03).SetDelay(CacheSourse.float04);
+            transform.DOScale(CacheSourse.vector08, CacheSourse.float03).SetDelay(CacheSourse.float06);
+            transform.DORotate(CacheSourse.rotateY360, 1f, RotateMode.WorldAxisAdd).SetDelay(CacheSourse.float04).OnComplete(() => {
                 EffectDoneCake();
             });
         });
@@ -570,16 +582,15 @@ public class Cake : MonoBehaviour
 
         ExpEffect expEffect = GameManager.Instance.objectPooling.GetExpEffect();
         expEffect.transform.position = Camera.main.WorldToScreenPoint(transform.position) + vectorOffsetExp;
-        //expEffect.ChangeTextExp("10");
         expEffect.ChangeTextExp(((pieces[0].cakeID + 1) * ConstantValue.VAL_DEFAULT_EXP).ToString());
         expEffect.gameObject.SetActive(true);
 
         ProfileManager.Instance.playerData.playerResourseSave.AddExp((pieces[0].cakeID + 1) * ConstantValue.VAL_DEFAULT_EXP);
         ProfileManager.Instance.playerData.playerResourseSave.AddMoney((pieces[0].cakeID + 1) * ConstantValue.VAL_DEFAULT_EXP);
         ProfileManager.Instance.playerData.playerResourseSave.AddTrophy((pieces[0].cakeID + 1) * ConstantValue.VAL_DEFAULT_TROPHY);
-        transform.localScale = Vector3.zero;
-        //Destroy(gameObject);
-        DOVirtual.DelayedCall(.5f, () => { Destroy(gameObject); });
+        transform.localScale = CacheSourse.vector0;
+
+        DOVirtual.DelayedCall(CacheSourse.float05, () => { Destroy(gameObject); });
     }
 
     public void UpdatePlateDecor()
@@ -606,37 +617,23 @@ public class Cake : MonoBehaviour
             objectDecoration.Add(currentId, newDecor);
         }   
     }
-
-    private List<Tween> tweens = new();
+  
     public void DoAnimImpact()
     {
         if (cakeDone)
             return;
         tweens.ForEach(t => t?.Kill());
         tweens.Clear();
-        Debug.Log(transform);
-        tweens.Add(transform.DOScale(Vector3.one * 0.67f, 0.13f).SetEase(Ease.InSine));
-        tweens.Add(transform.DOScale(Vector3.one * 0.71f, 0.13f).SetEase(Ease.InOutSine).SetDelay(0.13f));
-        tweens.Add(transform.DOScale(Vector3.one * 0.7f, 0.13f).SetEase(Ease.OutSine).SetDelay(0.26f));
+        tweens.Add(transform.DOScale(CacheSourse.vector067, CacheSourse.float013).SetEase(Ease.InSine));
+        tweens.Add(transform.DOScale(CacheSourse.vector071, CacheSourse.float013).SetEase(Ease.InOutSine).SetDelay(CacheSourse.float013));
+        tweens.Add(transform.DOScale(CacheSourse.vector07, CacheSourse.float013).SetEase(Ease.OutSine).SetDelay(CacheSourse.float026));
     }
 
     public int GetPieceFree()
     {
         return 6 - pieces.Count;
     }
-
-    List<int> listPieceIDReturn = new();
-    public List<int> GetCurrenPieceIDs()
-    {
-        for (int i = 0; i < pieces.Count; i++)
-        {
-            if (!listPieceIDReturn.Contains(pieces[i].cakeID))
-                listPieceIDReturn.Add(pieces[i].cakeID);
-        }
-        return listPieceIDReturn;
-    }
-    List<IDInfor> currentIDInfor = new();
-    IDInfor idInfor;
+   
     public List<IDInfor> GetIDInfor()
     {
         currentIDInfor.Clear();
