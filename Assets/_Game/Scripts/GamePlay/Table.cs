@@ -139,7 +139,6 @@ public class Table : MonoBehaviour
         }
         if (mapPlate.Count > 1)
         {
-            //Debug.Log("Repeat check pieceID: " + currentCakeID);
             Plate plateCheck = mapPlate[0];
             ClearMapPlate(currentCakeID);
             AddFirstPlate(plateCheck);
@@ -259,13 +258,6 @@ public class Table : MonoBehaviour
             CheckPlateCondition(plateArray[plateIndex.indexX, plateIndex.indexY], plateArray[plateIndex.indexX, plateIndex.indexY - 1]);
 
         mapWay.Add(plateArray[plateIndex.indexX, plateIndex.indexY]);
-        //piecesSame = plateArray[plateIndex.indexX, plateIndex.indexY].currentPiecesCountGet;
-        //for (int i = 0; i < piecesSame; i++)
-        //{
-        //    CreateWay(plateArray[plateIndex.indexX, plateIndex.indexY]);
-        //}
-
-        //if (plateArray[plateIndex.indexX, plateIndex.indexY] == bestPlate) CreateWayAfterSetNextPoint();
 
     }
     public List<Way> ways = new List<Way>();
@@ -277,8 +269,6 @@ public class Table : MonoBehaviour
         newWay.plateCurrent = plateStart;
         newWay.plateGo = plateStart.wayPoint.nextPlate;
         ways.Add(newWay);
-        //if (plateStart.wayPoint.nextPlate != bestPlate)
-        //    CreateWay(plateStart.wayPoint.nextPlate);
     }
 
     void CheckPlateCondition(Plate plateCurrent, Plate plateSetNext) {
@@ -318,7 +308,6 @@ public class Table : MonoBehaviour
     {
         totalNeedRotate = 0;
         currentRotateDone = 0;
-        //Debug.Break();
         for (int i = 0; i < plates.Count; i++)
         {
             if (plates[i].currentCake != null && plates[i] != bestPlate)
@@ -334,7 +323,6 @@ public class Table : MonoBehaviour
                     Debug.Log("Rotate cake right way cake: " + plates[i]);
                     plates[i].currentCake.RotateOtherPieceRight(RotateDone);
                 }
-                //else mapPlate[i].currentCake.RotateOtherPieceRight();
             }
         }
         if (totalNeedRotate == 0)
@@ -512,7 +500,6 @@ public class Table : MonoBehaviour
 public class Way {
     public Plate plateCurrent;
     public Plate plateGo;
-    //bool moveDone;
     Piece pieces;
     float timeDelay;
     Cake cake;
@@ -565,13 +552,6 @@ public class Way {
         }
         else timeDelay = ProfileManager.Instance.dataConfig.cakeAnimationSetting.GetTimeEachPiece();
         DOVirtual.DelayedCall(timeDelay, () => {
-            //if (pieces != null)
-            //{
-            //    //if (!plateGo.currentCake.cakeDone) { }
-            //    //plateGo.currentCake.RotateOtherPieceRight(0);
-            //    //if (!plateCurrent.currentCake.cakeDone)
-            //        //plateCurrent.currentCake.RotateOtherPieceRight(0);
-            //}
             DoActionDone();
         });
     }
@@ -583,7 +563,6 @@ public class Way {
 
         cake = plateGo.currentCake;
        
-        //pieces.transform.SetSiblingIndex(rotateIndex);
         pieces.currentRotateIndex = rotateIndex;
         plateGo.AddPiece(pieces);
         plateGo.currentCake.StartRotateOtherPieceForNewPiece(() => {
@@ -592,11 +571,8 @@ public class Way {
             pieces.transform.DOMove(plateGo.pointStay.position, timeMove).SetEase(curveMove).OnComplete(() => {
                 cake.DoAnimImpact();
                 
-                //CallDoneThatMove();
             });
-            Debug.Log("call done move by move done!");
             CallDoneThatMove();
-            //DOVirtual.DelayedCall(timeMove - 0.2f, CallDoneThatMove);
             pieces.transform.DORotate(new Vector3(0, plateGo.currentCake.rotates[rotateIndex], 0), timeRotate).SetEase(curveRotate);
             
         });

@@ -123,7 +123,8 @@ public class Plate : MonoBehaviour
         currentCake.transform.DOScale(Vector3.zero, .5f).OnComplete(() => {
             if (currentCake != null)
             {
-                Destroy(currentCake.gameObject);
+                //Destroy(currentCake.gameObject);
+                currentCake.gameObject.SetActive(false);
                 ProfileManager.Instance.playerData.cakeSaveData.RemoveCake(plateIndex);
             }
             currentCake = null;
