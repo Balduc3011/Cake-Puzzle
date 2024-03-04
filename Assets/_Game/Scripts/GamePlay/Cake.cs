@@ -382,6 +382,7 @@ public class Cake : MonoBehaviour
             pieces[indexRotate].currentRotateIndex++;
             if (pieces[indexRotate].currentRotateIndex >= rotates.Count) pieces[indexRotate].currentRotateIndex = 0;
             vectorRotateTo = new Vector3(0, rotates[pieces[indexRotate].currentRotateIndex], 0);
+            Debug.Log(pieces[indexRotate]);
             pieces[indexRotate].transform.DORotate(vectorRotateTo, timeRotate).SetEase(curveRotate).OnComplete(() => {
                 if (indexRotate == pieces.Count - 1)
                 {
@@ -425,6 +426,7 @@ public class Cake : MonoBehaviour
             if (pieces[indexRotateRW].currentRotateIndex != currentRotateIndex)
                 pieces[indexRotateRW].currentRotateIndex = currentRotateIndex;
             vectorRotateTo = new Vector3(0, rotates[pieces[indexRotateRW].currentRotateIndex], 0);
+            Debug.Log(pieces[indexRotateRW]);
             pieces[indexRotateRW].transform.DORotate(vectorRotateTo, timeRotate).SetEase(curveRotate);
             DOVirtual.DelayedCall(timeRotate - .15f, () =>
             {
@@ -535,6 +537,7 @@ public class Cake : MonoBehaviour
         if (panelTotal == null)
             panelTotal = UIManager.instance.panelTotal;
         DOVirtual.DelayedCall(.35f, () => {
+            Debug.Log(gameObject);
             transform.DOScale(vectorScaleDown, .3f);
             transform.DOScale(vectorScaleUp, .3f).SetDelay(0.3f);
             transform.DOScale(vectorDefault, .3f).SetDelay(.6f);
@@ -607,9 +610,11 @@ public class Cake : MonoBehaviour
     private List<Tween> tweens = new();
     public void DoAnimImpact()
     {
-
+        if (cakeDone)
+            return;
         tweens.ForEach(t => t?.Kill());
         tweens.Clear();
+        Debug.Log(transform);
         tweens.Add(transform.DOScale(Vector3.one * 0.67f, 0.13f).SetEase(Ease.InSine));
         tweens.Add(transform.DOScale(Vector3.one * 0.71f, 0.13f).SetEase(Ease.InOutSine).SetDelay(0.13f));
         tweens.Add(transform.DOScale(Vector3.one * 0.7f, 0.13f).SetEase(Ease.OutSine).SetDelay(0.26f));
@@ -652,4 +657,6 @@ public class Cake : MonoBehaviour
 
         return currentIDInfor;
     }
+
+    public bool CakeIsNull() { return pieces.Count == 0; }
 }

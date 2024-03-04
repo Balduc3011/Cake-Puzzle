@@ -323,9 +323,10 @@ public class Table : MonoBehaviour
         {
             if (plates[i].currentCake != null && plates[i] != bestPlate)
             {
-                if (plates[i].currentCake.cakeDone)
+                if (plates[i].currentCake.CakeIsNull())
                 {
                     plates[i].ClearCake();
+                    continue;
                 }
 
                 if (plates[i].currentCake.needRotateRightWay && !plates[i].currentCake.cakeDone)
@@ -588,6 +589,7 @@ public class Way {
         plateGo.AddPiece(pieces);
         plateGo.currentCake.StartRotateOtherPieceForNewPiece(() => {
             pieces.transform.parent = plateGo.currentCake.transform;
+            Debug.Log(pieces);
             pieces.transform.DOScale(Vector3.one, 0.25f);
             pieces.transform.DOMove(plateGo.pointStay.position, timeMove).SetEase(curveMove).OnComplete(() => {
                 cake.DoAnimImpact();
