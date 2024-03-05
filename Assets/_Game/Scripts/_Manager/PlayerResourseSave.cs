@@ -12,7 +12,6 @@ public class PlayerResourseSave : SaveBase
     public int trophy;
     public int trophyRecord;
     public string lastFreeSpin;
-    public string firstDay;
     public string lastDay;
     public int dailyRewardedDay;
 
@@ -33,20 +32,31 @@ public class PlayerResourseSave : SaveBase
             trophy = data.trophy;
             trophyRecord = data.trophyRecord;
             lastFreeSpin = data.lastFreeSpin;
-            firstDay = data.firstDay;
             lastDay = data.lastDay;
             dailyRewardedDay = data.dailyRewardedDay;
             currentLevel = data.currentLevel;
             currentExp = data.currentExp;
+            CheckDay();
         }
         else
         {
-            firstDay = DateTime.Now.ToString();
             IsMarkChangeData();
             SaveData();
         }
         levelMax = ProfileManager.Instance.dataConfig.levelDataConfig.GetLevelMax();
         expMax = ProfileManager.Instance.dataConfig.levelDataConfig.GetExpToNextLevel(currentLevel);
+    }
+
+    void CheckDay()
+    {
+        if (!String.IsNullOrEmpty(lastDay))
+        {
+            DateTime lastDay = DateTime.Parse(this.lastDay);
+            if(lastDay.Date != DateTime.Now.Date)
+            {
+                if (dailyRewardedDay >= 7) dailyRewardedDay = 0;
+            }
+        }
     }
 
     public bool IsHasEnoughMoney(float amount)
@@ -107,36 +117,23 @@ public class PlayerResourseSave : SaveBase
 
     public bool IsAbleToGetDailyReward(int dayIndex)
     {
-        if (!String.IsNullOrEmpty(firstDay))
+        if (!String.IsNullOrEmpty(lastDay))
         {
-            DateTime firstDayTime = DateTime.Parse(firstDay);
-            TimeSpan span = (DateTime.Now).Subtract(firstDayTime);
-            //if (span.Days >= dayIndex)
-            if (DateTime.Now.Day - firstDayTime.Day >= dayIndex)
-            {
-                if (!String.IsNullOrEmpty(lastDay))
-                {
-                    return dayIndex == dailyRewardedDay &&
-                        DateTime.Parse(lastDay).Date != DateTime.Now.Date;
-                }
-                return true;   
-            }
-            else return false;
-
+            DateTime lastDay = DateTime.Parse(this.lastDay);
+            return dayIndex == dailyRewardedDay &&
+                        lastDay.Date != DateTime.Now.Date;
         }
         else
         {
-            firstDay = DateTime.Now.ToString();
             return dayIndex == dailyRewardedDay;
         }
     }
 
     public bool CheckDailyRewardCollectted(int dayIndex)
     {
-        if (!String.IsNullOrEmpty(firstDay))
+        if (!String.IsNullOrEmpty(lastDay))
         {
             return dayIndex < dailyRewardedDay;
-
         }
         else
         {
