@@ -32,13 +32,13 @@ public class ProfileManager : Singleton<ProfileManager>
         return (versionStatus is VersionStatus.Cheat or VersionStatus.NoCheat);
     }
 
-    public bool IsMusicOn()
+    public bool GetSettingStatus(SettingId settingId)
     {
-        return true;
+        return playerData.playerResourseSave.GetSettingStatus(settingId).status;
     }
 
-    public bool IsSoundOn()
+    public void ChangeSettingStatus(SettingId settingId)
     {
-        return true;
+        playerData.playerResourseSave.ChangeSettingStatus(settingId);
     }
 }

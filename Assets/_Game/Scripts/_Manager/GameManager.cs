@@ -9,6 +9,7 @@ public class GameManager : Singleton<GameManager>
 {
     public bool playing = false;
     public CameraManager cameraManager;
+    public AudioManager audioManager;
     public CakeManager cakeManager;
     public ObjectPooling objectPooling;
     public SpinManager spinManager;

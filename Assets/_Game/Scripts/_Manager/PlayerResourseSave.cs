@@ -18,6 +18,7 @@ public class PlayerResourseSave : SaveBase
 
     public int currentLevel;
     public float currentExp;
+    public List<SettingValue> settingValues;
 
     int levelMax;
     float expMax;
@@ -38,15 +39,27 @@ public class PlayerResourseSave : SaveBase
             dailyRewardedDay = data.dailyRewardedDay;
             currentLevel = data.currentLevel;
             currentExp = data.currentExp;
+            settingValues = data.settingValues;
             CheckDay();
         }
         else
         {
+            SetNewSetting();
             IsMarkChangeData();
             SaveData();
         }
         levelMax = ProfileManager.Instance.dataConfig.levelDataConfig.GetLevelMax();
         expMax = ProfileManager.Instance.dataConfig.levelDataConfig.GetExpToNextLevel(currentLevel);
+    }
+    void SetNewSetting()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            SettingValue setting = new SettingValue();
+            setting.settingId = (SettingId)i;
+            setting.status = true;
+            settingValues.Add(setting);
+        }
     }
 
     void CheckDay()
@@ -289,4 +302,41 @@ public class PlayerResourseSave : SaveBase
         }
         return false;
     }
+    public SettingValue GetSettingStatus(SettingId settingId)
+    {
+        for (int i = 0; i < settingValues.Count; i++)
+        {
+            if (settingValues[i].settingId == settingId)
+            {
+                return settingValues[i];
+            }
+        }
+        SettingValue setting = new SettingValue();
+        setting.settingId = settingId;
+        setting.status = true;
+        settingValues.Add(setting);
+        return setting;
+    }
+
+    public void ChangeSettingStatus(SettingId settingId)
+    {
+        SettingValue setting = GetSettingStatus(settingId);
+        setting.status = !setting.status;
+        IsMarkChangeData();
+        SaveData();
+    }
+}
+
+[System.Serializable]
+public class SettingValue
+{
+    public SettingId settingId;
+    public bool status;
+}
+public enum SettingId
+{
+    None = 0,
+    Music = 1,
+    Sound = 2,
+    Vibrate = 3,
 }

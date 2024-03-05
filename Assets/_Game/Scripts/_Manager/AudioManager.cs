@@ -14,19 +14,14 @@ public class AudioManager : MonoBehaviour
     [SerializeField]
     AudioClip sfx_Base;
 
-    [SerializeField] AudioSource lazerSource;
-    [SerializeField] AudioSource warningSource, organResource;
-
     private void Start()
     {
         PlayAudio();
     }
     public void PlayAudio()
     {
-        if (ProfileManager.Instance.IsMusicOn()) PlayMusic();
-        else PauseMusic();
-        if (ProfileManager.Instance.IsSoundOn()) PlaySound();
-        else PauseSound();
+        ChangeMusicState(ProfileManager.Instance.GetSettingStatus(SettingId.Music));
+        ChangeSoundState(ProfileManager.Instance.GetSettingStatus(SettingId.Sound));
     }
 
     public void ChangeMusicState(bool play)
@@ -46,7 +41,7 @@ public class AudioManager : MonoBehaviour
     }
     public void PlayMusic()
     {
-        if (ProfileManager.Instance.IsMusicOn())
+        if (ProfileManager.Instance.GetSettingStatus(SettingId.Music))
         {
             if (!_SourceBG.isPlaying) _SourceBG.Play();
             _SourceBG.volume = 1;
