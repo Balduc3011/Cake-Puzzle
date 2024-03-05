@@ -21,6 +21,7 @@ public class SaveBase
         if (!IsChangeData) return;
         IsChangeData = false;
         PlayerPrefs.SetString(stringSave, JsonUtility.ToJson(this).ToString());
+        PlayerPrefs.Save();
     }
 
     public string GetJsonData()

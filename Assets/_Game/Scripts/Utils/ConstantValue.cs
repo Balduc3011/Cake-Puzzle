@@ -36,6 +36,7 @@ public class ConstantValue
     public static Vector3 VEC3_VECTOR3_1 = new Vector3(1, 1, 1);
 
     // VALUE
+    public static int COIN_BOOSTER = 100;
     public static float VAL_MAX_EXCEED = 1000000000000;
     public static float VAL_REVICE_PRICE = 750f;
     public static float VAL_DEFAULT_EXP = 5f;

@@ -13,6 +13,7 @@ public class PlayerResourseSave : SaveBase
     public int trophyRecord;
     public string lastFreeSpin;
     public string lastDay;
+    public string x2BoosterEnd;
     public int dailyRewardedDay;
 
     public int currentLevel;
@@ -113,6 +114,20 @@ public class PlayerResourseSave : SaveBase
             IsMarkChangeData();
             SaveData();
         }
+        UIManager.instance.panelTotal.CheckNoti();
+    }
+
+    public bool IsHasDailyReward()
+    {
+        if (!String.IsNullOrEmpty(lastDay))
+        {
+            DateTime lastDay = DateTime.Parse(this.lastDay);
+            return lastDay.Date != DateTime.Now.Date;
+        }
+        else
+        {
+            return true;
+        }
     }
 
     public bool IsAbleToGetDailyReward(int dayIndex)
@@ -147,6 +162,7 @@ public class PlayerResourseSave : SaveBase
         lastDay = DateTime.Now.ToString();
         IsMarkChangeData();
         SaveData();
+        UIManager.instance.panelTotal.CheckNoti();
     }
 
     public void AddItem(ItemData item)

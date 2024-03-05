@@ -35,6 +35,9 @@ public class PanelTotal : UIPanel
     [SerializeField] Transform trsCoin;
     [SerializeField] CanvasGroup canvasGroup;
     [SerializeField] List<TransitionUI> transitionUIList;
+
+    [SerializeField] GameObject dailyNoti;
+    [SerializeField] GameObject spinNoti;
     public override void Awake()
     {
         panelType = UIPanelType.PanelTotal;
@@ -42,6 +45,12 @@ public class PanelTotal : UIPanel
         EventManager.AddListener(EventName.ChangeExp.ToString(), ChangeExp);
         //backGround = UIManager.instance.backGround;
         CheckSubScreenObstacleBase();
+    }
+
+    public void CheckNoti()
+    {
+        dailyNoti.SetActive(ProfileManager.Instance.playerData.playerResourseSave.IsHasDailyReward());
+        spinNoti.SetActive(ProfileManager.Instance.playerData.playerResourseSave.IsHasFreeSpin());
     }
 
     void CheckSubScreenObstacleBase()
@@ -127,6 +136,7 @@ public class PanelTotal : UIPanel
         currentLevel = ProfileManager.Instance.playerData.playerResourseSave.currentLevel;
         ChangeLevel();
         ChangeExp();
+        CheckNoti();
     }
 
     public void ShowMainSceneContent(bool show)

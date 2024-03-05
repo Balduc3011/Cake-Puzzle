@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using DG.Tweening;
-using static UnityEditor.Rendering.InspectorCurveEditor;
+//using static UnityEditor.Rendering.InspectorCurveEditor;
 using UnityEngine.UIElements;
 public class Table : MonoBehaviour
 {
