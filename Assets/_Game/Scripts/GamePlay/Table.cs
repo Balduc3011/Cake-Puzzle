@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using DG.Tweening;
-//using static UnityEditor.Rendering.InspectorCurveEditor;
-using UnityEngine.UIElements;
 public class Table : MonoBehaviour
 {
     public List<Plate> plates = new List<Plate>();
@@ -312,9 +310,10 @@ public class Table : MonoBehaviour
         {
             if (plates[i].currentCake != null && plates[i] != bestPlate)
             {
-                if (plates[i].currentCake.cakeDone)
+                if (plates[i].currentCake.CakeIsNull())
                 {
                     plates[i].ClearCake();
+                    continue;
                 }
 
                 if (plates[i].currentCake.needRotateRightWay && !plates[i].currentCake.cakeDone)

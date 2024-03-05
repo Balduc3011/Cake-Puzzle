@@ -154,4 +154,22 @@ public class ObjectPooling : MonoBehaviour
         effectCoins.Add(newEffect);
         return newEffect;
     }
+
+    public List<StreakEffect> streakEffects = new List<StreakEffect>();
+    public StreakEffect streakEffect;
+    public StreakEffect GetStreakEffect()
+    {
+        for (int i = streakEffects.Count - 1; i >= 0; i--)
+        {
+            if (streakEffects[i] == null)
+            {
+                streakEffects.RemoveAt(i);
+                continue;
+            }
+            if (!streakEffects[i].gameObject.activeSelf) return streakEffects[i];
+        }
+        StreakEffect newEffect = Instantiate(streakEffect, trsPanel);
+        streakEffects.Add(newEffect);
+        return newEffect;
+    }
 }

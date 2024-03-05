@@ -1176,6 +1176,8 @@ MonoBehaviour:
   effectAddExp: {fileID: 9174844195086467122, guid: f82c425828044434787b6ac5b499d457, type: 3}
   effectCoins: []
   effectCoin: {fileID: 2895559290921696373, guid: 9f6396c3fff499b459badedac26ac9ed, type: 3}
+  streakEffects: []
+  streakEffect: {fileID: -358996458366672833, guid: 7f81d7f35fe86d245b9c056779586024, type: 3}
 --- !u!1 &482468383
 GameObject:
   m_ObjectHideFlags: 0
@@ -3737,21 +3739,22 @@ MonoBehaviour:
   - {fileID: 599648504}
   - {fileID: 482468384}
   - {fileID: 1269635176}
-  table: {fileID: 2083511601}
-  currentGCake: {fileID: 0}
+  cakeNeedCheck: []
+  countCake: []
   vectorOffset: {x: 0, y: 0, z: 0.5}
-  distance: 7
+  vectorOffsetStreak: {x: 0, y: 100, z: 0}
   posYDefault: 1.5
+  distance: 7
   onCheckLooseGame: 0
   onMove: 0
+  table: {fileID: 2083511601}
+  currentGCake: {fileID: 0}
   cakeShowComponent: {fileID: 2144925757}
+  cakePref: {fileID: 3108695516489363356, guid: d4ffb10933757c2468e51ff9578a7e40, type: 3}
   justUnlockedCake: 0
   trashBin: {fileID: 1862073161}
   pointStart: {fileID: 1908913122}
   pointEnd: {fileID: 96028231}
-  cakeNeedCheck: []
-  countCake: []
-  cakePref: {fileID: 3108695516489363356, guid: d4ffb10933757c2468e51ff9578a7e40, type: 3}
 --- !u!4 &1994074016 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 729191258741c614682a567e766108db, type: 3}

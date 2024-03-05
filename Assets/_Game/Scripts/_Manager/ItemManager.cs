@@ -37,6 +37,7 @@ public class ItemManager : MonoBehaviour
                     break;
                 case ItemType.ReRoll:
                     GameManager.Instance.cakeManager.UsingReroll();
+                    ProfileManager.Instance.playerData.playerResourseSave.UsingItem(itemType);
                     break;
                 case ItemType.Bomb:
                     UIManager.instance.ShowPanelUsingItem();

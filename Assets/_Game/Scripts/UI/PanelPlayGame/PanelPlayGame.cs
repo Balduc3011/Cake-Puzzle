@@ -10,30 +10,36 @@ public class PanelPlayGame : UIPanel
     [SerializeField] Button x2BoosterBtn;
     [SerializeField] Button coinBoosterBtn;
     [SerializeField] TextMeshProUGUI coinBoosterEarnTxt;
-    [SerializeField] Button btnItemBomb;
-    [SerializeField] Button btnFillUp;
-    [SerializeField] Button btnReroll;
+
+    [SerializeField] BoosterItemButton btnItemBomb;
+    [SerializeField] BoosterItemButton btnFillUp;
+    [SerializeField] BoosterItemButton btnReroll;
+
     [SerializeField] List<TransitionUI> transitionUIList;
     public override void Awake()
     {
         panelType = UIPanelType.PanelPlayGame;
         base.Awake();
-        btnItemBomb.onClick.AddListener(UsingItemBomb);
-        btnFillUp.onClick.AddListener(UsingItemFillUp);
-        btnReroll.onClick.AddListener(UsingReroll);
         coinBoosterEarnTxt.text = ConstantValue.COIN_BOOSTER.ToString();
+        btnItemBomb.SetActionCallBack(UsingItemBomb);
+        btnFillUp.SetActionCallBack(UsingItemFillUp);
+        btnReroll.SetActionCallBack(UsingReroll);
     }
 
-    void UsingItemBomb() {
+    void UsingItemBomb()
+    {
         GameManager.Instance.itemManager.UsingItem(ItemType.Bomb);
+        btnItemBomb.UpdateStatus();
     }
 
     void UsingItemFillUp() {
         GameManager.Instance.itemManager.UsingItem(ItemType.FillUp);
+        btnFillUp.UpdateStatus();
     }
 
     void UsingReroll() {
         GameManager.Instance.itemManager.UsingItem(ItemType.ReRoll);
+        btnReroll.UpdateStatus();
     }
 
     public void UsingItemMode()

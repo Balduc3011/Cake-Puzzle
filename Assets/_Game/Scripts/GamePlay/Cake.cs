@@ -411,6 +411,7 @@ public class Cake : MonoBehaviour
             pieces[indexRotate].currentRotateIndex++;
             if (pieces[indexRotate].currentRotateIndex >= rotates.Count) pieces[indexRotate].currentRotateIndex = 0;
             vectorRotateTo = new Vector3(0, rotates[pieces[indexRotate].currentRotateIndex], 0);
+            Debug.Log(pieces[indexRotate]);
             pieces[indexRotate].transform.DORotate(vectorRotateTo, timeRotate).SetEase(curveRotate).OnComplete(() => {
                 if (indexRotate == pieces.Count - 1)
                 {
@@ -434,7 +435,7 @@ public class Cake : MonoBehaviour
             rotateRWDone();
             return;
         }
-        currentRotateIndex = indexFirstSpawn - 1;
+        currentRotateIndex = indexFirstSpawn;
         needRotateRightWay = false;
         StartCoroutine(RotateOtherPieceRightWay());
        
@@ -442,7 +443,6 @@ public class Cake : MonoBehaviour
 
     IEnumerator RotateOtherPieceRightWay() {
         while (indexRotateRW < pieces.Count) {
-            currentRotateIndex++;
             if (currentRotateIndex >= rotates.Count)
                 currentRotateIndex = 0;
             if (pieces[indexRotateRW].currentRotateIndex != currentRotateIndex)
@@ -458,6 +458,7 @@ public class Cake : MonoBehaviour
                 }
             });
             indexRotateRW++;
+            currentRotateIndex++;
             yield return new WaitForSeconds(timeRotate-.15f);
         }
 
@@ -547,6 +548,11 @@ public class Cake : MonoBehaviour
         GameManager.Instance.questManager.AddProgress(QuestType.CompleteCake, 1);
         if (panelTotal == null)
             panelTotal = UIManager.instance.panelTotal;
+
+        GameManager.Instance.cakeManager.AddStreak(this);
+        ProfileManager.Instance.playerData.playerResourseSave.AddExp((pieces[0].cakeID + 1) * ConstantValue.VAL_DEFAULT_EXP);
+        ProfileManager.Instance.playerData.playerResourseSave.AddMoney((pieces[0].cakeID + 1) * ConstantValue.VAL_DEFAULT_EXP);
+        ProfileManager.Instance.playerData.playerResourseSave.AddTrophy((pieces[0].cakeID + 1) * ConstantValue.VAL_DEFAULT_TROPHY);
         DOVirtual.DelayedCall(CacheSourse.float035, () => {
             transform.DOScale(CacheSourse.vector07, CacheSourse.float03);
             transform.DOScale(CacheSourse.vector1, CacheSourse.float03).SetDelay(CacheSourse.float04);
@@ -580,12 +586,10 @@ public class Cake : MonoBehaviour
 
         ExpEffect expEffect = GameManager.Instance.objectPooling.GetExpEffect();
         expEffect.transform.position = Camera.main.WorldToScreenPoint(transform.position) + vectorOffsetExp;
-        expEffect.ChangeTextExp(((pieces[0].cakeID + 1) * ConstantValue.VAL_DEFAULT_EXP).ToString());
+        expEffect.ChangeText(((pieces[0].cakeID + 1) * ConstantValue.VAL_DEFAULT_EXP).ToString());
         expEffect.gameObject.SetActive(true);
 
-        ProfileManager.Instance.playerData.playerResourseSave.AddExp((pieces[0].cakeID + 1) * ConstantValue.VAL_DEFAULT_EXP);
-        ProfileManager.Instance.playerData.playerResourseSave.AddMoney((pieces[0].cakeID + 1) * ConstantValue.VAL_DEFAULT_EXP);
-        ProfileManager.Instance.playerData.playerResourseSave.AddTrophy((pieces[0].cakeID + 1) * ConstantValue.VAL_DEFAULT_TROPHY);
+       
         transform.localScale = CacheSourse.vector0;
 
         DOVirtual.DelayedCall(CacheSourse.float05, () => { Destroy(gameObject); });
@@ -618,12 +622,13 @@ public class Cake : MonoBehaviour
   
     public void DoAnimImpact()
     {
-
+        if (cakeDone)
+            return;
         tweens.ForEach(t => t?.Kill());
         tweens.Clear();
         tweens.Add(transform.DOScale(CacheSourse.vector067, CacheSourse.float013).SetEase(Ease.InSine));
         tweens.Add(transform.DOScale(CacheSourse.vector071, CacheSourse.float013).SetEase(Ease.InOutSine).SetDelay(CacheSourse.float013));
-        tweens.Add(transform.DOScale(CacheSourse.vector07, CacheSourse.float013).SetEase(Ease.OutSine).SetDelay(CacheSourse.float026));
+        tweens.Add(transform.DOScale(CacheSourse.vector08, CacheSourse.float013).SetEase(Ease.OutSine).SetDelay(CacheSourse.float026));
     }
 
     public int GetPieceFree()
@@ -651,4 +656,6 @@ public class Cake : MonoBehaviour
 
         return currentIDInfor;
     }
+
+    public bool CakeIsNull() { return pieces.Count == 0; }
 }
