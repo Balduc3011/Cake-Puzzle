@@ -34,6 +34,7 @@ public class PlayerResourseSave : SaveBase
             trophyRecord = data.trophyRecord;
             lastFreeSpin = data.lastFreeSpin;
             lastDay = data.lastDay;
+            x2BoosterEnd = data.x2BoosterEnd;
             dailyRewardedDay = data.dailyRewardedDay;
             currentLevel = data.currentLevel;
             currentExp = data.currentExp;
@@ -256,6 +257,35 @@ public class PlayerResourseSave : SaveBase
         {
             if (ownedItem[i].ItemType == itemType && ownedItem[i].amount > 0)
                 return true;
+        }
+        return false;
+    }
+
+    public void OnGetX2Booster()
+    {
+        x2BoosterEnd = DateTime.Now.AddMinutes((double)ConstantValue.VAL_X2BOOSTER_TIME).ToString();
+        IsMarkChangeData();
+        SaveData();
+    }
+
+    public float GetX2BoosterRemain()
+    {
+        if (!String.IsNullOrEmpty(x2BoosterEnd))
+        {
+            DateTime lastSpinTime = DateTime.Parse(x2BoosterEnd);
+            TimeSpan span = lastSpinTime.Subtract(DateTime.Now);
+            return span.TotalSeconds > 0 ? (float)span.TotalSeconds : 0f;
+        }
+        return 0f;
+    }
+
+    public bool HasX2Booster()
+    {
+        if (!String.IsNullOrEmpty(x2BoosterEnd))
+        {
+            DateTime lastSpinTime = DateTime.Parse(x2BoosterEnd);
+            TimeSpan span = lastSpinTime.Subtract(DateTime.Now);
+            return span.TotalSeconds > 0;
         }
         return false;
     }

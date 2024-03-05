@@ -39,6 +39,11 @@ public class GameManager : Singleton<GameManager>
         playing = false;
     }
 
+    public float GetDefaultCakeProfit()
+    {
+        return ConstantValue.VAL_DEFAULT_EXP * (ProfileManager.Instance.playerData.playerResourseSave.HasX2Booster() ? 2 : 1);
+    }
+
     public void GetItemReward(List<ItemData> items)
     {
         rewardItems.Clear();
