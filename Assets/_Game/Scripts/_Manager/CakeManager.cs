@@ -250,7 +250,6 @@ public class CakeManager : MonoBehaviour
                 table.CreateMapPlate(currentCakeCheck.currentPlate.GetPlateIndex(), currentCakeCheck.pieceCakeID[cakeIDIndex]);
                 table.FindPlateBest(currentCakeCheck.pieceCakeID[cakeIDIndex]);
                 table.StartCreateWay();
-                Debug.Log("call start move from check other id");
                 table.StartMove(currentCakeCheck.pieceCakeID[cakeIDIndex]);
             }
             else

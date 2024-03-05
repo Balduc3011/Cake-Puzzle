@@ -566,7 +566,6 @@ public class Way {
         plateGo.AddPiece(pieces);
         plateGo.currentCake.StartRotateOtherPieceForNewPiece(() => {
             pieces.transform.parent = plateGo.currentCake.transform;
-            Debug.Log(pieces);
             pieces.transform.DOScale(Vector3.one, 0.25f);
             pieces.transform.DOMove(plateGo.pointStay.position, timeMove).SetEase(curveMove).OnComplete(() => {
                 cake.DoAnimImpact();

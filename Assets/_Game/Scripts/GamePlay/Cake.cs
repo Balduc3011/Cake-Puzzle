@@ -435,7 +435,7 @@ public class Cake : MonoBehaviour
             rotateRWDone();
             return;
         }
-        currentRotateIndex = indexFirstSpawn - 1;
+        currentRotateIndex = indexFirstSpawn;
         needRotateRightWay = false;
         StartCoroutine(RotateOtherPieceRightWay());
        
@@ -443,13 +443,11 @@ public class Cake : MonoBehaviour
 
     IEnumerator RotateOtherPieceRightWay() {
         while (indexRotateRW < pieces.Count) {
-            currentRotateIndex++;
             if (currentRotateIndex >= rotates.Count)
                 currentRotateIndex = 0;
             if (pieces[indexRotateRW].currentRotateIndex != currentRotateIndex)
                 pieces[indexRotateRW].currentRotateIndex = currentRotateIndex;
             vectorRotateTo = new Vector3(0, rotates[pieces[indexRotateRW].currentRotateIndex], 0);
-            Debug.Log(pieces[indexRotateRW]);
             pieces[indexRotateRW].transform.DORotate(vectorRotateTo, timeRotate).SetEase(curveRotate);
             DOVirtual.DelayedCall(timeRotate - .15f, () =>
             {
@@ -460,6 +458,7 @@ public class Cake : MonoBehaviour
                 }
             });
             indexRotateRW++;
+            currentRotateIndex++;
             yield return new WaitForSeconds(timeRotate-.15f);
         }
 
