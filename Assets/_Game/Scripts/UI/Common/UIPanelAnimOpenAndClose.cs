@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using DG.Tweening;
+using UnityEngine.UI;
 
 public class UIPanelAnimOpenAndClose : MonoBehaviour
 {
@@ -18,7 +19,6 @@ public class UIPanelAnimOpenAndClose : MonoBehaviour
     [HideInInspector] public Vector3 moveTarget;
     [HideInInspector] public Vector3 moveTargetOffset;
     Vector3 vectorScaleDefault = new Vector3(1f, 1f, 1f);
-
     private void OnEnable()
     {
         if (moveTarget == Vector3.zero && trsWrapPanel != null) moveTarget = trsWrapPanel.position;
@@ -42,8 +42,9 @@ public class UIPanelAnimOpenAndClose : MonoBehaviour
         }
 
         canvasGroup.DOFade(1, .5f).OnComplete(() => {
-            if (BGCanvasGroup != null) BGCanvasGroup.DOFade(1, 0.25f);
+            //if (BGCanvasGroup != null) BGCanvasGroup.DOFade(1, 0.25f);
         });
+        if (BGCanvasGroup != null) BGCanvasGroup.DOFade(1, 0.5f);
     }
 
     public void OnClose(UnityAction actionDone = null) {

@@ -5,69 +5,39 @@ using UnityEngine.Events;
 
 public class MainSheetBase<Data> : MonoBehaviour
 {
-    public List<Data> listData = new List<Data>();
-    public List<SlotBase<Data>> slotBases = new List<SlotBase<Data>>();
+    public List<SlotBase<Data>> listSlots;
     public SlotBase<Data> slotPref;
-    public Transform slotParents;
-
-    UnityAction<SlotBase<Data>> actionCallBackSlot;
-    SlotBase<Data> slotBaseTemp;
-
-    public virtual void SetActionCallBackOnSlot(UnityAction<SlotBase<Data>> actionCallBackSlot) { this.actionCallBackSlot = actionCallBackSlot; }
-
-    public virtual void SetData(List<Data> data) {
-        listData = data;
-    }
-
-    public virtual void LoadData() {
-
-        for (int i = 0; i < listData.Count; i++)
+    public Transform trsParents;
+    SlotBase<Data> slotTemp;
+    UnityAction<SlotBase<Data>> actionCallback;
+    public virtual void LoadData(List<Data> datas)
+    {
+        for (int i = 0; i < listSlots.Count; i++)
+            listSlots[i].gameObject.SetActive(false);
+        for (int i = 0; i < datas.Count; i++)
         {
-            slotBaseTemp = GetSlotBase();
-            slotBaseTemp.InitData(listData[i]);
-            slotBaseTemp.SetActionCallback(actionCallBackSlot);
-        }
-
-        for (int i = listData.Count; i < slotBases.Count; i++)
-        {
-            slotBases[i].gameObject.SetActive(false);
-        }
-        slotIndex = 0;
-        StartCoroutine(IEAnimation());
-    }
-    int slotIndex = 0;
-    IEnumerator IEAnimation() {
-        while (slotIndex<slotBases.Count)
-        {
-            slotBases[slotIndex].PlaySequence();
-            slotIndex++;
-            yield return new WaitForSeconds(.1f);
+            slotTemp = GetSlotFree();
+            slotTemp.gameObject.SetActive(true);
+            slotTemp.InitData(datas[i]);
+            slotTemp.SetActionCallback(ActioncallBackOnSlot);
         }
     }
+    public void SetActionCallBack(UnityAction<SlotBase<Data>> actionCallback) { this.actionCallback = actionCallback; }
+    void ActioncallBackOnSlot(SlotBase<Data> slot)
+    {
+        if (actionCallback != null)
+            actionCallback(slot);
+    }
 
-    SlotBase<Data> GetSlotBase() {
-
-        for (int i = 0; i < slotBases.Count; i++)
+    public SlotBase<Data> GetSlotFree()
+    {
+        for (int i = 0; i < listSlots.Count; i++)
         {
-            if (!slotBases[i].gameObject.activeSelf)
-                return slotBases[i];
+            if (!listSlots[i].gameObject.activeSelf)
+                return listSlots[i];
         }
-        SlotBase<Data> newSlot = Instantiate(slotPref, slotParents);
-        slotBases.Add(newSlot);
+        SlotBase<Data> newSlot = Instantiate(slotPref, trsParents);
+        listSlots.Add(newSlot);
         return newSlot;
-
-    }
-
-    public virtual void ReloadDataAll() { }
-    public virtual void ReloadDataOnSlot(Data slotData) { }
-    public virtual void KillSequence() {
-        StopCoroutine(IEAnimation());
-        for (int i = 0; i < slotBases.Count; i++)
-        {
-            if (slotBases[i].gameObject.activeSelf)
-            {
-                slotBases[i].StopSequence();
-            }
-        }
     }
 }

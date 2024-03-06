@@ -21,6 +21,7 @@ public class SaveBase
         if (!IsChangeData) return;
         IsChangeData = false;
         PlayerPrefs.SetString(stringSave, JsonUtility.ToJson(this).ToString());
+        PlayerPrefs.Save();
     }
 
     public string GetJsonData()
@@ -30,6 +31,6 @@ public class SaveBase
 
     public virtual void Update()
     {
-        throw new NotImplementedException();
+        //throw new NotImplementedException();
     }
 }

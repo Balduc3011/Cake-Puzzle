@@ -12,14 +12,19 @@ public enum PackType
 
 public enum ItemType
 {
-    NoAds,
-    Blood,
-    Skeleton,
+    None = 0,
+    Trophy = 1,
+    Coin = 2,
+    Swap = 3,
+    Hammer = 4,
+    ReRoll = 5,
+    Bomb = 6,
+    FillUp = 7
 }
 
 [System.Serializable]
-public class Item
+public class ItemData
 {
-    public ItemType itemType;
+    public ItemType ItemType;
     public float amount;
 }

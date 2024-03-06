@@ -29,15 +29,19 @@ public class ConstantValue
     public static string STR_LEVEL = "LEVEL ";
     public static string STR_FLOAT_ONE = "F1";
     public static string STR_FURNITURE = "Furniture";
+    public static string STR_EXP = "exp";
+    public static string STR_POINT = "p";
 
     // VECTOR3
     public static Vector3 VEC3_VECTOR3_1 = new Vector3(1, 1, 1);
 
     // VALUE
+    public static int VAL_COIN_BOOSTER = 100;
     public static float VAL_MAX_EXCEED = 1000000000000;
-    public static float BONE_CONSTRUCT_TIME = 240;
-    public static int FREE_UPGRADE_SKELETON_ADS = 3;
-    public static float FREE_UPGRADE_SKELETON_ADS_COOLDOWN = 3f * 60f;
+    public static float VAL_REVICE_PRICE = 750f;
+    public static float VAL_DEFAULT_EXP = 5f;
+    public static int VAL_DEFAULT_TROPHY = 5;
+    public static float VAL_X2BOOSTER_TIME = 2.5f;
 
     // Animation
 

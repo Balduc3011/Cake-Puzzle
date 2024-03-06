@@ -10,7 +10,7 @@ public class BigNumber {
     const int MAX_MAGNITUDE = 28; // Max power magnitude diff for operands.
     const int TEN_CUBED = (int)1E3; // Used for normalizing numbers.
     bool negative;
-    int minValueToConvert = 10000;
+    //int minValueToConvert = 10000;
     // Power of 10 names (only multiple of 3 for Engineering Notation).
     // Using  Conway-Wechsler notation system. http://mrob.com/pub/math/largenum.html#conway-wechsler
     // Note: Any name added to the list will be picked up automatically by the BigNum class.

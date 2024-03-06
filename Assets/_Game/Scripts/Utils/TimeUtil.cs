@@ -52,30 +52,30 @@ public class TimeUtil : MonoBehaviour {
         {
             if (timeSpan.TotalDays >= 1)
             {
-                return string.Format("{0:D1}: {1:D2}: {2:D2}:", timeSpan.Days, timeSpan.Hours, timeSpan.Minutes);
+                return string.Format("{0:D1}: {1:D2}: {2:D2}", timeSpan.Days, timeSpan.Hours, timeSpan.Minutes);
             }
             else if (timeSpan.TotalHours >= 1)
             {
                 if (timeSpan.Seconds == 0)
                 {
                     if (timeSpan.Minutes == 0)
-                        return string.Format("{0:D1}:", timeSpan.Hours);
+                        return string.Format("{0:D1}", timeSpan.Hours);
                     else
-                        return string.Format("{0:D1}: {1:D2}:", timeSpan.Hours, timeSpan.Minutes);
+                        return string.Format("{0:D1}: {1:D2}", timeSpan.Hours, timeSpan.Minutes);
                 }
-                return string.Format("{0:D1}: {1:D2}: {2:D2}:", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
+                return string.Format("{0:D1}: {1:D2}: {2:D2}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
             }
             else if (timeSpan.TotalMinutes >= 1)
             {
                 if (timeSpan.Seconds == 0)
-                    return string.Format("{0:D1}:", timeSpan.Minutes);
-                return string.Format("{0:D1}: {1:D2}:", timeSpan.Minutes, timeSpan.Seconds);
+                    return string.Format("{0:D1}", timeSpan.Minutes);
+                return string.Format("{0:D1}: {1:D2}", timeSpan.Minutes, timeSpan.Seconds);
             }
             if (timeSpan.TotalSeconds < 10)
             {
-                return string.Format("{0:D1}:", timeSpan.Seconds);
+                return string.Format("{0:D1}", timeSpan.Seconds);
             }
-            return string.Format("{0:D2}:", timeSpan.Seconds);
+            return string.Format("{0:D2}", timeSpan.Seconds);
         }
         return ConstantValue.STR_BLANK;
     }
