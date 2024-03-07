@@ -300,11 +300,11 @@ public class Cake : MonoBehaviour
         onDrop = true;
         transform.parent = currentPlate.pointStay;
         transform.DOLocalMove(Vector3.zero, .1f);
-        transform.DOScale(Vector3.one * .95f, .25f).OnComplete(()=> {
+        transform.DOScale(Vector3.one * .9f, .25f).OnComplete(()=> {
             if (lastDrop)
                 actionCallback();
-            transform.DOScale(Vector3.one * .75f, .2f);
-            transform.DOScale(Vector3.one * .8f, .2f).SetDelay(.2f);
+            transform.DOScale(Vector3.one * 1.3f, .2f);
+            transform.DOScale(Vector3.one * 1.2f, .2f).SetDelay(.2f);
         });
     }
 
@@ -556,7 +556,7 @@ public class Cake : MonoBehaviour
         DOVirtual.DelayedCall(CacheSourse.float035, () => {
             transform.DOScale(CacheSourse.vector07, CacheSourse.float03);
             transform.DOScale(CacheSourse.vector1, CacheSourse.float03).SetDelay(CacheSourse.float04);
-            transform.DOScale(CacheSourse.vector08, CacheSourse.float03).SetDelay(CacheSourse.float06);
+            transform.DOScale(CacheSourse.vector12, CacheSourse.float03).SetDelay(CacheSourse.float06);
             transform.DORotate(CacheSourse.rotateY360, 1f, RotateMode.WorldAxisAdd).SetDelay(CacheSourse.float04).OnComplete(() => {
                 EffectDoneCake();
             });

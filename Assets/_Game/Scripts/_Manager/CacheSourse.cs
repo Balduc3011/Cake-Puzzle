@@ -11,6 +11,7 @@ namespace CacheEngine {
         public static Vector3 vector071 = Vector3.one * .71f;
         public static Vector3 vector08 = Vector3.one * .8f;
         public static Vector3 vector1 = Vector3.one;
+        public static Vector3 vector12 = Vector3.one * 1.2f;
 
         public static Vector3 rotateY360 = new Vector3(0, 360, 0);
 
@@ -29,6 +30,7 @@ namespace CacheEngine {
         public static float float08 = .8f;
         public static float float095 = .95f;
         public static float float1 = 1f;
+        public static float float12 = 1.2f;
     }
 }
 
