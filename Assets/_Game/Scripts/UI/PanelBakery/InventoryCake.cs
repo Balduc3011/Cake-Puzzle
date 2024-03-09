@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class InventoryCake : MonoBehaviour
 {
     CakeData cakeData;
+    OwnedCake currentCake;
     [SerializeField] TextMeshProUGUI cakeNameTxt;
     [SerializeField] TextMeshProUGUI cakePointTxt;
     [SerializeField] Button button;
@@ -18,6 +19,10 @@ public class InventoryCake : MonoBehaviour
     string PERCAKE = "/cake";
     PanelBakery panelBakery;
     bool isUsing;
+
+    [SerializeField] Slider cardAmountSlider;
+    [SerializeField] TextMeshProUGUI cardAmountTxt;
+    [SerializeField] TextMeshProUGUI levelTxt;
     void Start()
     {
         button.onClick.AddListener(OnCakeClick);
@@ -55,6 +60,7 @@ public class InventoryCake : MonoBehaviour
         offIconImg.sprite = cakeData.icon;
         cakeNameTxt.text = "Cake " + cakeData.id.ToString();
         cakePointTxt.text = ((cakeData.id + 1) * 5).ToString() + ConstantValue.STR_SPACE + ConstantValue.STR_EXP + PERCAKE;
+        currentCake = ProfileManager.Instance.playerData.cakeSaveData.GetOwnedCake(cakeData.id);
         InitUsing();
     }
 
@@ -67,8 +73,14 @@ public class InventoryCake : MonoBehaviour
             offIconImg.gameObject.SetActive(false);
             onIconImg.gameObject.SetActive(true);
             usingMarkObj.SetActive(ProfileManager.Instance.playerData.cakeSaveData.IsUsingCake(cakeData.id));
-
             isUsing = ProfileManager.Instance.playerData.cakeSaveData.IsUsingCake(cakeData.id);
+            if(currentCake == null) currentCake = ProfileManager.Instance.playerData.cakeSaveData.GetOwnedCake(cakeData.id);
+            if(currentCake != null)
+            {
+                cardAmountTxt.text = currentCake.cardAmount.ToString() + ConstantValue.STR_SLASH + currentCake.CardRequire.ToString();
+                levelTxt.text = currentCake.level.ToString();
+                cardAmountSlider.value = (float)currentCake.cardAmount / (float)currentCake.CardRequire;
+            }
         }
         else
         {
@@ -76,6 +88,9 @@ public class InventoryCake : MonoBehaviour
             offIconImg.gameObject.SetActive(true);
             onIconImg.gameObject.SetActive(false);
             usingMarkObj.SetActive(false);
+            cardAmountTxt.text = ConstantValue.STR_BLANK;
+            levelTxt.text = ConstantValue.STR_BLANK;
+            cardAmountSlider.value = 0;
         }
     }
 }

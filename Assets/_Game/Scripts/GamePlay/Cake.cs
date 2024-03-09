@@ -550,9 +550,10 @@ public class Cake : MonoBehaviour
             panelTotal = UIManager.instance.panelTotal;
 
         GameManager.Instance.cakeManager.AddStreak(this);
-        ProfileManager.Instance.playerData.playerResourseSave.AddExp((pieces[0].cakeID + 1) * ConstantValue.VAL_DEFAULT_EXP);
-        ProfileManager.Instance.playerData.playerResourseSave.AddMoney((pieces[0].cakeID + 1) * GameManager.Instance.GetDefaultCakeProfit());
-        ProfileManager.Instance.playerData.playerResourseSave.AddTrophy((pieces[0].cakeID + 1) * ConstantValue.VAL_DEFAULT_TROPHY);
+        int cakeLevel = ProfileManager.Instance.playerData.cakeSaveData.GetOwnedCakeLevel(pieces[0].cakeID);
+        ProfileManager.Instance.playerData.playerResourseSave.AddExp(cakeLevel * ConstantValue.VAL_DEFAULT_EXP);
+        ProfileManager.Instance.playerData.playerResourseSave.AddMoney(cakeLevel * GameManager.Instance.GetDefaultCakeProfit());
+        ProfileManager.Instance.playerData.playerResourseSave.AddTrophy(cakeLevel * ConstantValue.VAL_DEFAULT_TROPHY);
         DOVirtual.DelayedCall(CacheSourse.float035, () => {
             transform.DOScale(CacheSourse.vector08, CacheSourse.float03);
             transform.DOScale(CacheSourse.vector11, CacheSourse.float03).SetDelay(CacheSourse.float04);
@@ -565,6 +566,7 @@ public class Cake : MonoBehaviour
     }
 
     void EffectDoneCake() {
+        int cakeLevel = ProfileManager.Instance.playerData.cakeSaveData.GetOwnedCakeLevel(pieces[0].cakeID);
         CoinEffect coinEffect = GameManager.Instance.objectPooling.GetCoinEffect();
         coinEffect.transform.position = Camera.main.WorldToScreenPoint(transform.position);
         coinEffect.Move(panelTotal.GetCoinTrs());
@@ -586,7 +588,7 @@ public class Cake : MonoBehaviour
 
         ExpEffect expEffect = GameManager.Instance.objectPooling.GetExpEffect();
         expEffect.transform.position = Camera.main.WorldToScreenPoint(transform.position) + vectorOffsetExp;
-        expEffect.ChangeText(((pieces[0].cakeID + 1) * ConstantValue.VAL_DEFAULT_EXP).ToString());
+        expEffect.ChangeText((cakeLevel * ConstantValue.VAL_DEFAULT_EXP).ToString());
         expEffect.gameObject.SetActive(true);
 
        

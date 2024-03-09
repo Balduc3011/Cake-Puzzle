@@ -19,6 +19,7 @@ public class CakeSaveData : SaveBase
         if (!string.IsNullOrEmpty(jsonData))
         {
             CakeSaveData data = JsonUtility.FromJson<CakeSaveData>(jsonData);
+            ownedCakes = data.ownedCakes;
             cakeIDs = data.cakeIDs;
             cakeIDUsing = data.cakeIDUsing;
             cakeOnPlates = data.cakeOnPlates;
@@ -43,6 +44,30 @@ public class CakeSaveData : SaveBase
 
         cakeIDUsing.Add(0);
         cakeIDUsing.Add(1);
+    }
+
+    public OwnedCake GetOwnedCake(int cakeId)
+    {
+        for (int i = 0; i < ownedCakes.Count; i++)
+        {
+            if (ownedCakes[i].cakeID == cakeId)
+            {
+                return ownedCakes[i];
+            }
+        }
+        return null;
+    }
+
+    public int GetOwnedCakeLevel(int cakeId)
+    {
+        for (int i = 0; i < ownedCakes.Count; i++)
+        {
+            if (ownedCakes[i].cakeID == cakeId)
+            {
+                return ownedCakes[i].level;
+            }
+        }
+        return 0;
     }
 
     void UpdateCardRequire()
@@ -313,6 +338,8 @@ public class OwnedCake
 
     public void UpdateCardRequire()
     {
-        cardRequire = ProfileManager.Instance.dataConfig.cakeDataConfig.GetCardAmountToLevelUp(level);
+        cardRequire = ProfileManager.Instance.dataConfig.cakeDataConfig.GetCardAmountToLevelUp(level + 1);
     }
+
+    public int CardRequire { get => cardRequire; }
 }
