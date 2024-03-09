@@ -23,7 +23,7 @@ public class RewardItemUI : MonoBehaviour
         else 
             iconImg.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetCakeSprite(itemData.subId);
         if (Transform == null) Transform = transform;
-        contentTransform.DOScale(1, 0.2f).From(2);
+        contentTransform.DOScale(1, 0.25f).From(2);
         canvasGroup.DOFade(1, 0.15f).From(0);
     }
 }
