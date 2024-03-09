@@ -511,7 +511,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: SUPER PACK
+  m_text: WHEAT FLOUR PACK
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f7650a24c9e9448698c5f4a82f465fc2, type: 2}
   m_sharedMaterial: {fileID: 7512481295523713106, guid: f7650a24c9e9448698c5f4a82f465fc2, type: 2}
@@ -18816,6 +18816,7 @@ GameObject:
   - component: {fileID: 1298203567151124690}
   - component: {fileID: 1811926351532725338}
   - component: {fileID: 8452894945480381475}
+  - component: {fileID: 3812645481620310081}
   m_Layer: 5
   m_Name: PanelShop
   m_TagString: Untagged
@@ -18871,6 +18872,7 @@ MonoBehaviour:
   openAndCloseAnim: {fileID: 0}
   topRectBase: {fileID: 0}
   uiPanelShowUp: {fileID: 1811926351532725338}
+  sheetAnimation: {fileID: 3812645481620310081}
 --- !u!114 &1811926351532725338
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18883,10 +18885,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e46c43f55f5ff054ab6850b52b3e5999, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  overflow: 0
   startOnAwake: 1
   floatDirection: 1
   canvasGroup: {fileID: 8452894945480381475}
   panelTrs: {fileID: 6250482684844348081}
+  popUpTrs: []
 --- !u!225 &8452894945480381475
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -18899,6 +18903,23 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &3812645481620310081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6250482684844348082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fce32c5db43d82a4084cc6ae487883e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  overflow: 1
+  itemAnimType: 0
+  itemTrs:
+  - {fileID: 927663255341128830}
+  itemCGs: []
 --- !u!1 &6250482685416020818
 GameObject:
   m_ObjectHideFlags: 0
@@ -21075,7 +21096,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -751, y: 85}
+  m_AnchoredPosition: {x: -751, y: 112}
   m_SizeDelta: {x: 373.192, y: 145}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5371001272737675559
@@ -22096,7 +22117,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Unlock Exclusive Reward!
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d2d1aeb954629457095df6b4603312c4, type: 2}
   m_sharedMaterial: {fileID: 8239769997508639612, guid: d2d1aeb954629457095df6b4603312c4, type: 2}
@@ -25663,7 +25684,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -268, y: 85}
+  m_AnchoredPosition: {x: -268, y: 112}
   m_SizeDelta: {x: 450, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1696255044363327502

@@ -80,7 +80,7 @@ public class QuestSlot : SlotBase<QuestData>
         GameManager.Instance.questManager.ClaimSmallQuest(data.questType, id);
         List<ItemData> rewards = new List<ItemData>();
         rewards.Add(data.rewardData);
-        GameManager.Instance.GetItemReward(rewards);
+        GameManager.Instance.GetItemRewards(rewards);
         btnChoose.interactable = false;
         objHighlight.SetActive(false);
         objHide.SetActive(true);

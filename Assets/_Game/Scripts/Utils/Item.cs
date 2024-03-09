@@ -12,6 +12,7 @@ public enum PackType
 
 public enum ItemType
 {
+    Cake = -1,
     None = 0,
     Trophy = 1,
     Coin = 2,
@@ -26,5 +27,6 @@ public enum ItemType
 public class ItemData
 {
     public ItemType ItemType;
+    public int subId;
     public float amount;
 }

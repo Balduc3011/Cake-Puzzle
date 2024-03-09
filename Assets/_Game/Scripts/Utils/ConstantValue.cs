@@ -46,6 +46,7 @@ public class ConstantValue
     // Animation
 
     // IE
+    public static WaitForSeconds WAIT_SEC01 = new WaitForSeconds(0.1f);
     public static WaitForSeconds WAIT_SEC025 = new WaitForSeconds(0.25f);
     public static WaitForSeconds WAIT_SEC05 = new WaitForSeconds(0.5f);
     public static WaitForSeconds WAIT_SEC1 = new WaitForSeconds(1f);

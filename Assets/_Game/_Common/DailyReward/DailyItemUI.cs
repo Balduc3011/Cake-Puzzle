@@ -14,6 +14,7 @@ public class DailyItemUI : MonoBehaviour
     [SerializeField] GameObject rewardedObj;
     [SerializeField] GameObject hideObj;
     [SerializeField] GameObject todayObj;
+    [SerializeField] GameObject todayParticle;
     [SerializeField] bool toHide;
     [SerializeField] Animator animator;
 
@@ -47,6 +48,7 @@ public class DailyItemUI : MonoBehaviour
         itemBtn.interactable = GameManager.Instance.dailyRewardManager.IsAbleToGetDailyReward(dailyRewardConfig.dayIndex) &&
             !GameManager.Instance.dailyRewardManager.CheckDailyRewardCollectted(dailyRewardConfig.dayIndex);
         todayObj.SetActive(itemBtn.interactable);
+        todayParticle.SetActive(itemBtn.interactable);
         if(itemBtn.interactable)
         {
             transform.SetAsLastSibling();

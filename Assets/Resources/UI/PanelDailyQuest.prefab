@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5331534649555782635}
   - component: {fileID: 5331534649555782634}
   - component: {fileID: 2708524592967650195}
+  - component: {fileID: 7570797501470594967}
   m_Layer: 5
   m_Name: PanelDailyQuest
   m_TagString: Untagged
@@ -68,6 +69,7 @@ MonoBehaviour:
   openAndCloseAnim: {fileID: 0}
   topRectBase: {fileID: 0}
   uiPanelShowUp: {fileID: 5331534649555782634}
+  sheetAnimation: {fileID: 7570797501470594967}
   pointClaimRewards: []
   dailyReward: []
   vectorScale: {x: 80, y: 80}
@@ -85,10 +87,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e46c43f55f5ff054ab6850b52b3e5999, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  overflow: 0
   startOnAwake: 1
   floatDirection: 1
   canvasGroup: {fileID: 2708524592967650195}
   panelTrs: {fileID: 461063760389475585}
+  popUpTrs: []
 --- !u!225 &2708524592967650195
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -101,6 +105,22 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &7570797501470594967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 461063760389475586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fce32c5db43d82a4084cc6ae487883e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  overflow: 1
+  itemAnimType: 0
+  itemTrs: []
+  itemCGs: []
 --- !u!1 &461063762032526562
 GameObject:
   m_ObjectHideFlags: 0
@@ -471,6 +491,7 @@ MonoBehaviour:
   listSlots: []
   slotPref: {fileID: 248580478920742143, guid: b0f39d2f9e5ed7f44a3fb9989eb5b8ff, type: 3}
   trsParents: {fileID: 3788316320672087881}
+  questSlots: []
 --- !u!1 &3788316320052378609
 GameObject:
   m_ObjectHideFlags: 0
@@ -1080,7 +1101,7 @@ MonoBehaviour:
     m_Left: 100
     m_Right: 100
     m_Top: 100
-    m_Bottom: 100
+    m_Bottom: 300
   m_ChildAlignment: 1
   m_Spacing: 35
   m_ChildForceExpandWidth: 1

@@ -7,6 +7,7 @@ using UnityEngine;
 [System.Serializable]
 public class CakeSaveData : SaveBase
 {
+    public List<OwnedCake> ownedCakes = new();
     public List<int> cakeIDs = new List<int>();
     public List<int> cakeIDUsing = new List<int>();
     public List<CakeOnPlate> cakeOnPlates = new List<CakeOnPlate>();
@@ -22,20 +23,65 @@ public class CakeSaveData : SaveBase
             cakeIDUsing = data.cakeIDUsing;
             cakeOnPlates = data.cakeOnPlates;
             cakeOnWaits = data.cakeOnWaits;
+            UpdateCardRequire();
         }
         else {
-            cakeIDs.Add(0);
-            cakeIDs.Add(1);
-
-            cakeIDUsing.Add(0);
-            cakeIDUsing.Add(1);
+            AddFirstCake();
+            UpdateCardRequire();
             IsMarkChangeData();
             SaveData();
         }
     }
 
-    public void AddCake(int cakeId) {
+    void AddFirstCake()
+    {
+        AddCakeCard(0, 1);
+        AddCakeCard(1, 1);
+
+        cakeIDs.Add(0);
+        cakeIDs.Add(1);
+
+        cakeIDUsing.Add(0);
+        cakeIDUsing.Add(1);
+    }
+
+    void UpdateCardRequire()
+    {
+        for (int i = 0; i < ownedCakes.Count; i++)
+        {
+            ownedCakes[i].UpdateCardRequire();
+        }
+    }
+
+    public int GetRandomUnlockedCake()
+    {
+        return cakeIDs[UnityEngine.Random.Range(0, cakeIDs.Count)];
+    }
+
+    public void AddCake(int cakeId) 
+    {
         cakeIDs.Add(cakeId);
+        IsMarkChangeData();
+        SaveData();
+    }
+
+    public void AddCakeCard(int cakeId, int amount)
+    {
+        for (int i = 0; i < ownedCakes.Count; i++)
+        {
+            if (ownedCakes[i].cakeID == cakeId)
+            {
+                ownedCakes[i].AddCard(amount);
+                IsMarkChangeData();
+                SaveData();
+                return;
+            }
+        }
+        OwnedCake cake = new();
+        cake.cakeID = cakeId;
+        cake.level = 1;
+        cake.cardAmount = amount;
+        ownedCakes.Add(cake);
         IsMarkChangeData();
         SaveData();
     }
@@ -243,5 +289,30 @@ public class CakeSave {
     {
         pieceCakeIDCount = cake.pieceCakeIDCount;
         pieceCakeID = cake.pieceCakeID;
+    }
+}
+
+[System.Serializable]
+public class OwnedCake
+{
+    public int cakeID;
+    public int level;
+    public int cardAmount;
+    int cardRequire;
+
+    public void AddCard(int amount)
+    {
+        cardAmount += amount;
+        if(cardAmount >= cardRequire)
+        {
+            level++;
+            cardAmount -= cardRequire;
+            UpdateCardRequire();
+        }
+    }
+
+    public void UpdateCardRequire()
+    {
+        cardRequire = ProfileManager.Instance.dataConfig.cakeDataConfig.GetCardAmountToLevelUp(level);
     }
 }

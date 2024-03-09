@@ -48,6 +48,7 @@ public class CakeManager : MonoBehaviour
     StreakEffect streakEffect;
 
     public int justUnlockedCake;
+    public bool levelUp;
 
     int currentStreak = 0;
     int indexGroupCake;
@@ -102,6 +103,7 @@ public class CakeManager : MonoBehaviour
     void Drop() {
         currentGCake.Drop();
         currentGCake = null;
+        levelUp = false;
     }
 
     public void InitGroupCake() {
@@ -349,6 +351,7 @@ public class CakeManager : MonoBehaviour
 
     public void ClearAllCake()
     {
+        levelUp = false;
         table.ClearAllCake();
         for (int i = 0; i < cakesWait.Count; i++)
         {
@@ -419,13 +422,17 @@ public class CakeManager : MonoBehaviour
     void LevelUp() {
         onMove = true;
         int newCakeID = ProfileManager.Instance.dataConfig.levelDataConfig.GetCakeID(ProfileManager.Instance.playerData.playerResourseSave.currentLevel - 1);
-        if (newCakeID != -1)
-        {
-            SetJustUnlockedCake(newCakeID);
-            UIManager.instance.ShowPanelCakeReward();
-        }
-        else
-            UIManager.instance.ShowPanelLevelComplete(true);
+        //if (newCakeID != -1)
+        //{
+        //    SetJustUnlockedCake(newCakeID);
+        //    UIManager.instance.ShowPanelCakeReward();
+        //    UIManager.instance.ShowPanelItemsReward();
+        //}
+        //else
+        //    UIManager.instance.ShowPanelItemsReward();
+        SetJustUnlockedCake(newCakeID);
+        levelUp = true;
+        UIManager.instance.ShowPanelItemsReward();
     }
 
     public void UsingReroll() {

@@ -9,6 +9,7 @@ using DG.Tweening;
 public class PanelDailyQuest : UIPanel
 {
     [SerializeField] UIPanelShowUp uiPanelShowUp;
+    public SheetAnimation sheetAnimation;
     [SerializeField] List<PointClaimReward> pointClaimRewards = new List<PointClaimReward>();
     [SerializeField] List<DailyReward> dailyReward = new List<DailyReward>();
     [SerializeField] Vector2 vectorScale;
@@ -33,6 +34,17 @@ public class PanelDailyQuest : UIPanel
         //StartCoroutine(WaitToEndOfFrame());
         questSheet.LoadData(ProfileManager.Instance.dataConfig.questDataConfig.questData);
         questSheet.SetActionCallBack(ActionCallBack);
+        SetUpSheetAnim();
+        sheetAnimation.PlayAnim();
+    }
+
+    void SetUpSheetAnim()
+    {
+        if (sheetAnimation.itemTrs.Count > 0) return;
+        for (int i = 0; i < questSheet.questSlots.Count; i++)
+        {
+            sheetAnimation.AddItemTrs(questSheet.questSlots[i].transform);
+        }
     }
 
     IEnumerator WaitToEndOfFrame() {

@@ -42,6 +42,9 @@ public class SheetAnimation : MonoBehaviour
         item.DOFade(1f, 0.25f).From(0f).SetDelay(delay);
         //item.DOScale(1f, 0.05f).SetDelay(delay + 0.25f);
     }
+	public void AddItemTrs(Transform item) {
+	    itemTrs.Add(item);
+    }
 }
 
 public enum ItemAnimType

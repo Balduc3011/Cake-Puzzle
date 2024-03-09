@@ -52,6 +52,7 @@ public class PanelSpin : UIPanel
         stopCounter = stopCooldow;
         dynamicSpinWheel.eulerAngles = Vector3.zero;
         sheetAnimation.PlayAnim();
+        StopRewardSlide();
     }
 
     void CheckFreeSpin()
@@ -90,8 +91,17 @@ public class PanelSpin : UIPanel
         UIManager.instance.ClosePanelSpin();
     }
 
+    void StopRewardSlide()
+    {
+        for (int i = 0; i < slides.Count; i++)
+        {
+            slides[i].OnReward(false);
+        }
+    }
+
     void OnSpin()
     {
+        slides[selectedSlide].OnReward(false);
         spinState = SpinState.Spin;
         spin = true;
         spinBtn.gameObject.SetActive(false);
@@ -154,6 +164,7 @@ public class PanelSpin : UIPanel
         CheckFreeSpin();
         //stopBtn.gameObject.SetActive(false);
         CheckResult();
+        slides[selectedSlide].OnReward(true);
     }
 
     void CheckResult()
