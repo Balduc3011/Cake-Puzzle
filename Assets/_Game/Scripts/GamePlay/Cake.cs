@@ -555,8 +555,8 @@ public class Cake : MonoBehaviour
         ProfileManager.Instance.playerData.playerResourseSave.AddTrophy((pieces[0].cakeID + 1) * ConstantValue.VAL_DEFAULT_TROPHY);
         DOVirtual.DelayedCall(CacheSourse.float035, () => {
             transform.DOScale(CacheSourse.vector08, CacheSourse.float03);
-            transform.DOScale(CacheSourse.vector1, CacheSourse.float03).SetDelay(CacheSourse.float04);
-            transform.DOScale(CacheSourse.vector09, CacheSourse.float03).SetDelay(CacheSourse.float06);
+            transform.DOScale(CacheSourse.vector11, CacheSourse.float03).SetDelay(CacheSourse.float04);
+            transform.DOScale(CacheSourse.vector1, CacheSourse.float03).SetDelay(CacheSourse.float06);
             transform.DORotate(CacheSourse.rotateY360, 1f, RotateMode.WorldAxisAdd).SetDelay(CacheSourse.float04).OnComplete(() => {
                 EffectDoneCake();
             });
