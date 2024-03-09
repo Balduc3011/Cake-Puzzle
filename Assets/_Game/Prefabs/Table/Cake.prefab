@@ -58,8 +58,8 @@ Transform:
   m_GameObject: {fileID: 3108695516489363358}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 4.5}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.9, y: 0.9, z: 0.9}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7619188762053902236}
   - {fileID: 220382814076438282}
@@ -86,7 +86,7 @@ MonoBehaviour:
   totalCakeID: 0
   indexOfNewPiece: 0
   radiusCheck: 0.2
-  scaleDefault: 1
+  scaleDefault: 0.9
   cakeDone: 0
   needRotateRightWay: 0
   currentPlate: {fileID: 0}
@@ -128,7 +128,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 92c896bffbd26f14d8fc825a9f4cf9a5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.068
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 92c896bffbd26f14d8fc825a9f4cf9a5, type: 3}
       propertyPath: m_LocalPosition.z
