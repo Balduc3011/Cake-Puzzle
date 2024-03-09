@@ -11,6 +11,10 @@ public class BoosterItemButton : MonoBehaviour
     [SerializeField] Image itemBarIconImg;
     [SerializeField] TextMeshProUGUI itemAmountTxt;
     [SerializeField] Button btnChoose;
+    private void Start()
+    {
+        UpdateStatus();
+    }
     public void SetActionCallBack(UnityAction actionCalback) {
         btnChoose.onClick.AddListener(actionCalback);
     }

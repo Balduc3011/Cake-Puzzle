@@ -592,7 +592,10 @@ public class Cake : MonoBehaviour
        
         transform.localScale = CacheSourse.vector0;
 
-        DOVirtual.DelayedCall(CacheSourse.float05, () => { Destroy(gameObject); });
+        DOVirtual.DelayedCall(CacheSourse.float05, () => {
+            Debug.Log("Destroy now");
+            Destroy(gameObject);
+        });
     }
 
     public void UpdatePlateDecor()
