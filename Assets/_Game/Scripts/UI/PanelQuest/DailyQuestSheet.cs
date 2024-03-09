@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DailyQuestSheet : SheetBase<QuestData>
 {
-    List<QuestSlot> questSlots = new List<QuestSlot>();
+    public List<QuestSlot> questSlots = new List<QuestSlot>();
     public override void LoadData(List<QuestData> datas)
     {
         base.LoadData(datas);
