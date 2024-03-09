@@ -244,13 +244,14 @@ public class PlayerResourseSave : SaveBase
     }
 
     public void LevelUp() {
-        int cakeID = ProfileManager.Instance.dataConfig.levelDataConfig.GetCakeID(currentLevel);
-        if (cakeID != -1)
-        {
-            ProfileManager.Instance.playerData.cakeSaveData.AddCake(cakeID);
-            ProfileManager.Instance.playerData.cakeSaveData.UseCake(cakeID);
-        }
+        //int cakeID = ProfileManager.Instance.dataConfig.levelDataConfig.GetCakeID(currentLevel);
+        //if (cakeID != -1)
+        //{
+        //    ProfileManager.Instance.playerData.cakeSaveData.AddCake(cakeID);
+        //    ProfileManager.Instance.playerData.cakeSaveData.UseCake(cakeID);
+        //}
         currentLevel++;
+        GameManager.Instance.GetLevelUpReward();
         EventManager.TriggerEvent(EventName.ChangeLevel.ToString());
         expMax = ProfileManager.Instance.dataConfig.levelDataConfig.GetExpToNextLevel(currentLevel);
     }

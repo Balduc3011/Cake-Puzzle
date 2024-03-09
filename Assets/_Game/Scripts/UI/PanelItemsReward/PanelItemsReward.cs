@@ -51,7 +51,7 @@ public class PanelItemsReward : UIPanel
 
     IEnumerator SpawnReward()
     {
-        yield return ConstantValue.WAIT_SEC025;
+        yield return ConstantValue.WAIT_SEC01;
         if (spawnedCount < rewards.Count)
         {
             RewardItemUI rewardItemUI = GetRewardItemUI();
@@ -96,5 +96,17 @@ public class PanelItemsReward : UIPanel
         }
         titleTrs.localScale = titleScale;
         UIManager.instance.ClosePanelItemsReward();
+        if (GameManager.Instance.cakeManager.justUnlockedCake != -1)
+        {
+            UIManager.instance.ShowPanelCakeReward();
+        }
+        else if(GameManager.Instance.cakeManager.levelUp)
+        {
+            GameManager.Instance.cakeManager.cakeShowComponent.ShowNormalCake();
+            GameManager.Instance.cakeManager.cakeShowComponent.ShowNextToUnlockCake();
+            GameManager.Instance.cakeManager.ClearAllCake();
+            GameManager.Instance.cakeManager.SetOnMove(false);
+            UIManager.instance.ShowPanelLoading();
+        }
     }
 }

@@ -6,6 +6,7 @@ using UnityEngine;
 public class ItemDataConfig : ScriptableObject
 {
     public List<ItemDataCF> itemDataCFs = new List<ItemDataCF>();
+    public List<ItemType> rewardOnLevelUp = new();
     public ItemDataCF GetItemData(ItemType itemType) {
         for (int i = 0; i < itemDataCFs.Count; i++)
         {
@@ -13,6 +14,11 @@ public class ItemDataConfig : ScriptableObject
             return itemDataCFs[i];
         }
         return null;
+    }
+
+    public ItemType GetRewardItemOnLevel()
+    {
+        return rewardOnLevelUp[Random.Range(0, rewardOnLevelUp.Count)];
     }
 }
 

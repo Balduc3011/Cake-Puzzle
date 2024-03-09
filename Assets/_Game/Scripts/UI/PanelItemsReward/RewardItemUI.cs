@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class RewardItemUI : MonoBehaviour
 {
     Transform Transform;
+    [SerializeField] Transform contentTransform;
     [SerializeField] Image iconImg;
     [SerializeField] TextMeshProUGUI titleTxt;
     [SerializeField] TextMeshProUGUI amountTxt;
@@ -17,11 +18,12 @@ public class RewardItemUI : MonoBehaviour
     {
         titleTxt.text = itemData.ItemType.ToString();
         amountTxt.text = itemData.amount.ToString();
-        iconImg.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetItemSprite(itemData.ItemType);
+        if(itemData.ItemType != ItemType.Cake)
+            iconImg.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetItemSprite(itemData.ItemType);
+        else 
+            iconImg.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetCakeSprite(itemData.subId);
         if (Transform == null) Transform = transform;
-        Transform.localScale = Vector3.one * 2;
-        canvasGroup.alpha = 0;
-        Transform.DOScale(1, 0.1f);
-        canvasGroup.DOFade(1, 0.15f);
+        contentTransform.DOScale(1, 0.2f).From(2);
+        canvasGroup.DOFade(1, 0.15f).From(0);
     }
 }
