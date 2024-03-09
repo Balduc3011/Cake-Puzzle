@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class PanelSpin : UIPanel
 {
+    [SerializeField] UIPanelShowUp uiPanelShowUp;
+    public SheetAnimation sheetAnimation;
     Transform Transform;
     [SerializeField] Button closeBtn;
     [SerializeField] Button spinBtn;
@@ -49,6 +51,7 @@ public class PanelSpin : UIPanel
         stopClicked = false;
         stopCounter = stopCooldow;
         dynamicSpinWheel.eulerAngles = Vector3.zero;
+        sheetAnimation.PlayAnim();
     }
 
     void CheckFreeSpin()
@@ -78,7 +81,8 @@ public class PanelSpin : UIPanel
 
     void OnClose()
     {
-        openAndCloseAnim.OnClose(CloseInstant);
+        //openAndCloseAnim.OnClose(CloseInstant);
+        uiPanelShowUp.OnClose(CloseInstant);
     }
 
     void CloseInstant()

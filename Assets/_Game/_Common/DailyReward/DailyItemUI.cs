@@ -47,6 +47,10 @@ public class DailyItemUI : MonoBehaviour
         itemBtn.interactable = GameManager.Instance.dailyRewardManager.IsAbleToGetDailyReward(dailyRewardConfig.dayIndex) &&
             !GameManager.Instance.dailyRewardManager.CheckDailyRewardCollectted(dailyRewardConfig.dayIndex);
         todayObj.SetActive(itemBtn.interactable);
+        if(itemBtn.interactable)
+        {
+            transform.SetAsLastSibling();
+        }
         rewardedObj.SetActive(GameManager.Instance.dailyRewardManager.CheckDailyRewardCollectted(dailyRewardConfig.dayIndex));
         if (toHide)
         {
