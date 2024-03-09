@@ -303,8 +303,8 @@ public class Cake : MonoBehaviour
         transform.DOScale(Vector3.one * .9f, .25f).OnComplete(()=> {
             if (lastDrop)
                 actionCallback();
-            transform.DOScale(Vector3.one * 1.3f, .2f);
-            transform.DOScale(Vector3.one * 1.2f, .2f).SetDelay(.2f);
+            transform.DOScale(Vector3.one * 1.1f, .2f);
+            transform.DOScale(Vector3.one, .2f).SetDelay(.2f);
         });
     }
 
@@ -554,9 +554,9 @@ public class Cake : MonoBehaviour
         ProfileManager.Instance.playerData.playerResourseSave.AddMoney((pieces[0].cakeID + 1) * GameManager.Instance.GetDefaultCakeProfit());
         ProfileManager.Instance.playerData.playerResourseSave.AddTrophy((pieces[0].cakeID + 1) * ConstantValue.VAL_DEFAULT_TROPHY);
         DOVirtual.DelayedCall(CacheSourse.float035, () => {
-            transform.DOScale(CacheSourse.vector07, CacheSourse.float03);
-            transform.DOScale(CacheSourse.vector1, CacheSourse.float03).SetDelay(CacheSourse.float04);
-            transform.DOScale(CacheSourse.vector12, CacheSourse.float03).SetDelay(CacheSourse.float06);
+            transform.DOScale(CacheSourse.vector09, CacheSourse.float03);
+            transform.DOScale(CacheSourse.vector12, CacheSourse.float03).SetDelay(CacheSourse.float04);
+            transform.DOScale(CacheSourse.vector1, CacheSourse.float03).SetDelay(CacheSourse.float06);
             transform.DORotate(CacheSourse.rotateY360, 1f, RotateMode.WorldAxisAdd).SetDelay(CacheSourse.float04).OnComplete(() => {
                 EffectDoneCake();
             });
@@ -626,9 +626,9 @@ public class Cake : MonoBehaviour
             return;
         tweens.ForEach(t => t?.Kill());
         tweens.Clear();
-        tweens.Add(transform.DOScale(CacheSourse.vector067, CacheSourse.float013).SetEase(Ease.InSine));
-        tweens.Add(transform.DOScale(CacheSourse.vector071, CacheSourse.float013).SetEase(Ease.InOutSine).SetDelay(CacheSourse.float013));
-        tweens.Add(transform.DOScale(CacheSourse.vector08, CacheSourse.float013).SetEase(Ease.OutSine).SetDelay(CacheSourse.float026));
+        tweens.Add(transform.DOScale(CacheSourse.vector09, CacheSourse.float013).SetEase(Ease.InSine));
+        tweens.Add(transform.DOScale(CacheSourse.vector12, CacheSourse.float013).SetEase(Ease.InOutSine).SetDelay(CacheSourse.float013));
+        tweens.Add(transform.DOScale(CacheSourse.vector1, CacheSourse.float013).SetEase(Ease.OutSine).SetDelay(CacheSourse.float026));
     }
 
     public int GetPieceFree()
