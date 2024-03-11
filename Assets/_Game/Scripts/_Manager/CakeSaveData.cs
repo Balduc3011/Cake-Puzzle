@@ -52,6 +52,7 @@ public class CakeSaveData : SaveBase
         {
             if (ownedCakes[i].cakeID == cakeId)
             {
+                ownedCakes[i].UpdateCardRequire();
                 return ownedCakes[i];
             }
         }
@@ -67,7 +68,7 @@ public class CakeSaveData : SaveBase
                 return ownedCakes[i].level;
             }
         }
-        return 0;
+        return 1;
     }
 
     void UpdateCardRequire()

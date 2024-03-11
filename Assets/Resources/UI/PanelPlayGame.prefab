@@ -528,7 +528,6 @@ GameObject:
   - component: {fileID: 3737384191758401992}
   - component: {fileID: 6797041981884238921}
   - component: {fileID: 8601882550101977512}
-  - component: {fileID: 8269831987142129091}
   m_Layer: 5
   m_Name: CoinBoosterBtn
   m_TagString: Untagged
@@ -641,22 +640,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &8269831987142129091
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5191579298536802069}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90acc7af81075c04391c50294c74b276, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  boosterType: 2
-  itemBarIconImg: {fileID: 9035024712760780528}
-  itemAmountTxt: {fileID: 0}
-  btnChoose: {fileID: 8601882550101977512}
 --- !u!1 &5201452066385354350
 GameObject:
   m_ObjectHideFlags: 0
@@ -1060,10 +1043,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e46c43f55f5ff054ab6850b52b3e5999, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  overflow: 0
   startOnAwake: 1
   floatDirection: 0
   canvasGroup: {fileID: 79541696839818453}
   panelTrs: {fileID: 7108913020017340550}
+  popUpTrs: []
 --- !u!225 &79541696839818453
 CanvasGroup:
   m_ObjectHideFlags: 0
