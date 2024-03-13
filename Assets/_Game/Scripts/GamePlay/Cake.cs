@@ -552,6 +552,8 @@ public class Cake : MonoBehaviour
             if (pieces[i].cakeID != cakeID)
                return false;
         }
+
+        cakeDone = true;
         return true;
     }
 
@@ -567,6 +569,7 @@ public class Cake : MonoBehaviour
    
     public void DoneCakeMode()
     {
+
         GameManager.Instance.questManager.AddProgress(QuestType.CompleteCake, 1);
         if (panelTotal == null)
             panelTotal = UIManager.instance.panelTotal;
@@ -576,13 +579,14 @@ public class Cake : MonoBehaviour
         ProfileManager.Instance.playerData.playerResourseSave.AddExp(cakeLevel * ConstantValue.VAL_DEFAULT_EXP);
         ProfileManager.Instance.playerData.playerResourseSave.AddMoney(cakeLevel * GameManager.Instance.GetDefaultCakeProfit());
         ProfileManager.Instance.playerData.playerResourseSave.AddTrophy(cakeLevel * ConstantValue.VAL_DEFAULT_TROPHY);
-        DOVirtual.DelayedCall(CacheSourse.float035, () => {
-            transform.DOScale(CacheSourse.vector08, CacheSourse.float03);
-            transform.DOScale(CacheSourse.vector11, CacheSourse.float03).SetDelay(CacheSourse.float04);
-            transform.DOScale(CacheSourse.vector1, CacheSourse.float03).SetDelay(CacheSourse.float06);
-            transform.DORotate(CacheSourse.rotateY360, 1f, RotateMode.WorldAxisAdd).SetDelay(CacheSourse.float04).OnComplete(() => {
+        DOVirtual.DelayedCall(0.18f, () => {
+
+            tweens.Add(transform.DOScale(Vector3.one * .8f, .13f));
+            tweens.Add(transform.DOScale(Vector3.one * 1.1f, .13f).SetDelay(.13f));
+            transform.DORotate(CacheSourse.rotateY360, .75f, RotateMode.WorldAxisAdd).SetEase(Ease.OutQuad).OnComplete(() => {
                 EffectDoneCake();
             });
+
         });
        
     }
@@ -613,8 +617,9 @@ public class Cake : MonoBehaviour
         expEffect.ChangeText((cakeLevel * ConstantValue.VAL_DEFAULT_EXP).ToString());
         expEffect.gameObject.SetActive(true);
 
-       
-        transform.localScale = CacheSourse.vector0;
+        transform.DOScale(0f, .3f).SetEase(Ease.InQuad);
+
+        //transform.localScale = CacheSourse.vector0;
 
         DOVirtual.DelayedCall(CacheSourse.float05, () => {
             Debug.Log("Destroy now");

@@ -184,6 +184,8 @@ public class Table : MonoBehaviour
             curveRotate = ProfileManager.Instance.dataConfig.cakeAnimationSetting.GetCurveRotate();
             curveMove = ProfileManager.Instance.dataConfig.cakeAnimationSetting.GetCurveMove();
         }
+        if (stepIndex >= ways.Count)
+            return;
         ways[stepIndex].Move(cakeID, curveRotate, curveMove, timeRotate, timeMove, stepIndex == ways.Count - 1, Move);
     }
 
@@ -569,12 +571,14 @@ public class Way {
             
             pieces.transform.parent = plateGo.currentCake.transform;
             pieces.transform.DOScale(Vector3.one, 0.25f);
-            pieces.transform.DOMove(plateGo.pointStay.position, timeMove).SetEase(curveMove).OnComplete(() => {
-                cake.DoAnimImpact();
+            pieces.transform.DOMove(plateGo.pointStay.position, timeMove).SetEase(Ease.InQuad).OnComplete(() => {
+                //cake.DoAnimImpact();
             });
+            plateGo.currentCake.CheckCakeIsDone(pieces.cakeID);
+            if (!plateGo.currentCake.cakeDone) DOVirtual.DelayedCall(timeMove - .15f, cake.DoAnimImpact);
             CallDoneThatMove();
             //Debug.Log(rotateIndexReturn);
-            pieces.transform.DORotate(new Vector3(0, plateGo.currentCake.rotates[rotateIndexReturn], 0), timeRotate).SetEase(curveRotate);
+            pieces.transform.DORotate(new Vector3(0, plateGo.currentCake.rotates[rotateIndexReturn], 0), timeRotate).SetEase(Ease.InQuad);
         });
         plateCurrent.CheckNullPieces();
     }
