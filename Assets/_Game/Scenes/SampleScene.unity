@@ -1394,6 +1394,7 @@ MonoBehaviour:
       IsChangeData: 0
     cakeSaveData:
       IsChangeData: 0
+      ownedCakes: []
       cakeIDs: 
       cakeIDUsing: 
       cakeOnPlates: []
@@ -1406,6 +1407,7 @@ MonoBehaviour:
       ownedItem: []
       trophy: 0
       trophyRecord: 0
+      piggySave: 0
       lastFreeSpin: 
       lastDay: 
       x2BoosterEnd: 
@@ -1433,6 +1435,7 @@ MonoBehaviour:
     itemDataConfig: {fileID: 11400000, guid: f6871f9343fa3794184fe7ae9e550223, type: 2}
     cakeAnimationSetting: {fileID: 11400000, guid: 67116138ce75aae4aa8b12f2170da56f, type: 2}
     questDataConfig: {fileID: 11400000, guid: c7500b1cd57dca640b3007bb202ea6e3, type: 2}
+    shopDataConfig: {fileID: 11400000, guid: 4457ea00eebfa554b8464ff7f82e7ffb, type: 2}
 --- !u!4 &604222128
 Transform:
   m_ObjectHideFlags: 0
@@ -3819,6 +3822,7 @@ MonoBehaviour:
   cakeShowComponent: {fileID: 2144925757}
   cakePref: {fileID: 3108695516489363356, guid: d4ffb10933757c2468e51ff9578a7e40, type: 3}
   justUnlockedCake: 0
+  levelUp: 0
   trashBin: {fileID: 1862073161}
   pointStart: {fileID: 1908913122}
   pointEnd: {fileID: 96028231}

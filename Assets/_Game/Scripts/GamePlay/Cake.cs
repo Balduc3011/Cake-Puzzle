@@ -551,6 +551,7 @@ public class Cake : MonoBehaviour
 
         GameManager.Instance.cakeManager.AddStreak(this);
         int cakeLevel = ProfileManager.Instance.playerData.cakeSaveData.GetOwnedCakeLevel(pieces[0].cakeID);
+        GameManager.Instance.AddPiggySave();
         ProfileManager.Instance.playerData.playerResourseSave.AddExp(cakeLevel * ConstantValue.VAL_DEFAULT_EXP);
         ProfileManager.Instance.playerData.playerResourseSave.AddMoney(cakeLevel  * GameManager.Instance.GetDefaultCakeProfit());
         ProfileManager.Instance.playerData.playerResourseSave.AddTrophy(cakeLevel * ConstantValue.VAL_DEFAULT_TROPHY);

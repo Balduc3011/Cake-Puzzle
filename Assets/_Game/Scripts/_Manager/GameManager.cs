@@ -153,5 +153,15 @@ public class GameManager : Singleton<GameManager>
     {
         return tempName[UnityEngine.Random.Range(0, tempName.Count)];
     }
+
+    public void AddPiggySave()
+    {
+        ProfileManager.Instance.playerData.playerResourseSave.AddPiggySave();
+    }
+
+    public bool IsHasNoAds()
+    {
+        return ProfileManager.Instance.playerData.playerResourseSave.IsHaveItem(ItemType.NoAds);
+    }
 }
 

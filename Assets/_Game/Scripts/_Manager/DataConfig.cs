@@ -15,4 +15,5 @@ public class DataConfig
     public ItemDataConfig itemDataConfig;
     public CakeAnimtionSetting cakeAnimationSetting;
     public QuestDataConfig questDataConfig;
+    public ShopDataConfig shopDataConfig;
 }

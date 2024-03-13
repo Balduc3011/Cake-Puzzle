@@ -6,13 +6,20 @@ using UnityEngine.UI;
 
 public class IAPPack : MonoBehaviour
 {
+    public PackageId packageId;
     [SerializeField] Button buyBtn;
     [SerializeField] TextMeshProUGUI priceTxt;
 
     public List<ItemData> rewardItems = new();
     public List<ShopItemReward> rewards = new();
+    ShopPack shopPack;
     public virtual void OnEnable()
     {
+        shopPack = ProfileManager.Instance.dataConfig.shopDataConfig.GetShopPack(packageId);
+        if(shopPack !=  null )
+        {
+            rewardItems = shopPack.rewards;
+        }
         for (int i = 0; i < rewards.Count; i++)
         {
             if (rewards[i].itemIcon != null)
@@ -30,7 +37,13 @@ public class IAPPack : MonoBehaviour
 
     void OnBuyPack()
     {
+        OnBuyPackSuccess();
+    }
 
+    void OnBuyPackSuccess()
+    {
+        GameManager.Instance.GetItemRewards(rewardItems);
+        UIManager.instance.ShowPanelItemsReward();
     }
 }
 
