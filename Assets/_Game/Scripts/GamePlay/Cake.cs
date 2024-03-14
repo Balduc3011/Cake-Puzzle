@@ -552,6 +552,7 @@ public class Cake : MonoBehaviour
             if (pieces[i].cakeID != cakeID)
                return false;
         }
+        cakeDone = true;
         return true;
     }
 

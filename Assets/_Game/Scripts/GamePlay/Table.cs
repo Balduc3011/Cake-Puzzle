@@ -12,7 +12,7 @@ public class Table : MonoBehaviour
     AnimationCurve curveMove;
     float timeRotate;
     float timeMove;
-    Plate[,] plateArray = new Plate[6, 4];
+    Plate[,] plateArray = new Plate[5, 4];
 
     private void Start()
     {
@@ -184,7 +184,8 @@ public class Table : MonoBehaviour
             curveRotate = ProfileManager.Instance.dataConfig.cakeAnimationSetting.GetCurveRotate();
             curveMove = ProfileManager.Instance.dataConfig.cakeAnimationSetting.GetCurveMove();
         }
-        ways[stepIndex].Move(cakeID, curveRotate, curveMove, timeRotate, timeMove, stepIndex == ways.Count - 1, Move);
+        if (stepIndex < ways.Count)
+            ways[stepIndex].Move(cakeID, curveRotate, curveMove, timeRotate, timeMove, stepIndex == ways.Count - 1, Move);
     }
 
     public void StartCreateWay()
