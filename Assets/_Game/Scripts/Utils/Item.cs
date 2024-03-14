@@ -12,6 +12,7 @@ public enum PackType
 
 public enum ItemType
 {
+    NoAds = -2,
     Cake = -1,
     None = 0,
     Trophy = 1,

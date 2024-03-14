@@ -96,7 +96,7 @@ public class PanelItemsReward : UIPanel
         }
         titleTrs.localScale = titleScale;
         UIManager.instance.ClosePanelItemsReward();
-        if (GameManager.Instance.cakeManager.justUnlockedCake != -1)
+        if (GameManager.Instance.cakeManager.justUnlockedCake != -1 && GameManager.Instance.cakeManager.justUnlockedCake != 0)
         {
             UIManager.instance.ShowPanelCakeReward();
         }

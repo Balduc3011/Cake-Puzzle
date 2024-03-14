@@ -11,6 +11,7 @@ public class PlayerResourseSave : SaveBase
     public List<ItemData> ownedItem;
     public int trophy;
     public int trophyRecord;
+    public float piggySave;
     public string lastFreeSpin;
     public string lastDay;
     public string x2BoosterEnd;
@@ -84,6 +85,7 @@ public class PlayerResourseSave : SaveBase
         coins.Add(amount);
         IsMarkChangeData();
         SaveData();
+        EventManager.TriggerEvent(EventName.ChangeCoin.ToString());
     }
 
     public void ConsumeMoney(float amount)
@@ -104,6 +106,13 @@ public class PlayerResourseSave : SaveBase
     public void SaveRecord()
     {
         trophyRecord = trophy;
+        IsMarkChangeData();
+        SaveData();
+    }
+
+    public void AddPiggySave()
+    {
+        piggySave += ConstantValue.VAL_PIGGY_SAVE;
         IsMarkChangeData();
         SaveData();
     }

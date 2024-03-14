@@ -1319,6 +1319,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   overflow: 1
   itemAnimType: 0
+  startDelay: 0.15
   itemTrs:
   - {fileID: 509479221951406410}
   - {fileID: 4564786622101374893}
@@ -1340,10 +1341,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e46c43f55f5ff054ab6850b52b3e5999, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  overflow: 0
   startOnAwake: 1
   floatDirection: 3
   canvasGroup: {fileID: 7752753137348672624}
   panelTrs: {fileID: 418060174571301569}
+  popUpTrs: []
 --- !u!1 &2576584814089057716
 GameObject:
   m_ObjectHideFlags: 0
@@ -2196,6 +2199,10 @@ PrefabInstance:
     - target: {fileID: 152194039140770709, guid: d7461861834a9d745bac42d2bdb408ec, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -0.0012207031
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083344623931178932, guid: d7461861834a9d745bac42d2bdb408ec, type: 3}
+      propertyPath: _width
+      value: 1455
       objectReference: {fileID: 0}
     - target: {fileID: 1371105660380585763, guid: d7461861834a9d745bac42d2bdb408ec, type: 3}
       propertyPath: _bursts.Array.data[0].used
