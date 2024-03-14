@@ -1,4 +1,6 @@
+using AssetKits.ParticleImage;
 using DG.Tweening;
+using SDK;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -16,6 +18,8 @@ public class InventoryCake : MonoBehaviour
     [SerializeField] Image offIconImg;
     [SerializeField] GameObject usingMarkObj;
     [SerializeField] GameObject lockingMarkObj;
+    [SerializeField] GameObject upgradeBtnObj;
+    [SerializeField] ParticleImage upgradeParticle;
     string PERCAKE = "/cake";
     PanelBakery panelBakery;
     bool isUsing;
@@ -33,24 +37,6 @@ public class InventoryCake : MonoBehaviour
     {
         if(cakeData != null)
             InitUsing();
-    }
-
-    void OnCakeClick()
-    {
-        if(onIconImg.gameObject.activeSelf) 
-            onIconImg.transform.DOScale(1.2f, 0.25f).OnComplete(() =>
-            {
-                onIconImg.transform.DOScale(1, 0.05f);
-            });
-        if (offIconImg.gameObject.activeSelf)
-            offIconImg.transform.DOScale(1.2f, 0.25f).OnComplete(() =>
-            {
-                offIconImg.transform.DOScale(1, 0.05f);
-            });
-        //ProfileManager.Instance.playerData.cakeSaveData.UseCake(cakeData.id);
-        //UIManager.instance.GetPanel(UIPanelType.PanelBakery).GetComponent<PanelBakery>().ReloadPanel();
-        if(!isUsing)
-            panelBakery.SetCakeToSwap(cakeData.id);
     }
 
     public void Init(CakeData cakeData)
@@ -80,6 +66,7 @@ public class InventoryCake : MonoBehaviour
                 cardAmountTxt.text = currentCake.cardAmount.ToString() + ConstantValue.STR_SLASH + currentCake.CardRequire.ToString();
                 levelTxt.text = currentCake.level.ToString();
                 cardAmountSlider.value = (float)currentCake.cardAmount / (float)currentCake.CardRequire;
+                upgradeBtnObj.SetActive(currentCake.IsAbleToUpgrade());
             }
         }
         else
@@ -91,6 +78,48 @@ public class InventoryCake : MonoBehaviour
             cardAmountTxt.text = ConstantValue.STR_BLANK;
             levelTxt.text = ConstantValue.STR_BLANK;
             cardAmountSlider.value = 0;
+        }
+    }
+
+    void OnCakeClick()
+    {
+        //if (onIconImg.gameObject.activeSelf)
+        //    onIconImg.transform.DOScale(1.2f, 0.25f).OnComplete(() =>
+        //    {
+        //        onIconImg.transform.DOScale(1, 0.05f);
+        //    });
+        //if (offIconImg.gameObject.activeSelf)
+        //    offIconImg.transform.DOScale(1.2f, 0.25f).OnComplete(() =>
+        //    {
+        //        offIconImg.transform.DOScale(1, 0.05f);
+        //    });
+        transform.DOScale(0.9f, 0.05f).SetEase(Ease.InOutQuad).OnComplete(() =>
+            {
+                transform.DOScale(1f, 0.05f).SetEase(Ease.InOutQuad);
+            });
+
+        if (currentCake != null)
+        {
+            if(currentCake.IsAbleToUpgrade())
+            {
+                if(GameManager.Instance.IsHasNoAds())
+                    OnUpgradeCake();
+                else
+                    AdsManager.Instance.ShowRewardVideo(WatchVideoRewardType.UpgradeCake.ToString(), OnUpgradeCake);
+                return;
+            }
+        }
+        if (!isUsing)
+            panelBakery.SetCakeToSwap(cakeData.id);
+    }
+
+    void OnUpgradeCake()
+    {
+        if(currentCake != null)
+        {
+            ProfileManager.Instance.playerData.cakeSaveData.OnUpgradeCard(currentCake);
+            upgradeParticle.Play();
+            InitUsing();
         }
     }
 }

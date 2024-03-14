@@ -27,7 +27,10 @@ namespace SDK {
         X2RewardAds,
         CollectCoinAds,
         BoosterPlayTime,
-        TimeBooster
+        TimeBooster,
+        UpgradeCake,
+        GameOverRevive,
+        FreeSpinAds
     }
     
     [ScriptOrder(-99)]

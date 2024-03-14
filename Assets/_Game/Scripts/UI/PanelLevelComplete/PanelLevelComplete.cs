@@ -1,5 +1,6 @@
 using AssetKits.ParticleImage.Enumerations;
 using DG.Tweening;
+using SDK;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -59,14 +60,19 @@ public class PanelLevelComplete : UIPanel
 
     void ReviveADS()
     {
-        ReviveADSSucces();
-        OnClose();
+        if (GameManager.Instance.IsHasNoAds())
+            ReviveADSSucces();
+        else
+            AdsManager.Instance.ShowRewardVideo(WatchVideoRewardType.GameOverRevive.ToString(), ReviveADSSucces);
+        //ReviveADSSucces();
+        //OnClose();
     }
 
     void ReviveADSSucces()
     {
         UIManager.instance.OpenBlockAll();
         GameManager.Instance.cakeManager.TrashIn(GameManager.Instance.cakeManager.ClearCake);
+        OnClose();
     }
 
     void ReviveCoin()

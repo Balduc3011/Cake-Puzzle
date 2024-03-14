@@ -63,12 +63,12 @@ public class GameManager : Singleton<GameManager>
         {
             ProfileManager.Instance.playerData.cakeSaveData.AddCake(newCakeID);
             ProfileManager.Instance.playerData.cakeSaveData.UseCake(newCakeID);
-            firstCake.amount = 1;
+            firstCake.amount = UnityEngine.Random.Range(10, 20);
         }
         else
         {
             newCakeID = ProfileManager.Instance.dataConfig.cakeDataConfig.GetRandomCake();
-            firstCake.amount = UnityEngine.Random.Range(1, 6);
+            firstCake.amount = UnityEngine.Random.Range(10, 20);
         }
         firstCake.subId = newCakeID;
         int extraCakeId = ProfileManager.Instance.playerData.cakeSaveData.GetRandomUnlockedCake();
@@ -154,14 +154,41 @@ public class GameManager : Singleton<GameManager>
         return tempName[UnityEngine.Random.Range(0, tempName.Count)];
     }
 
-    public void AddPiggySave()
+    public void AddPiggySave(float amount)
     {
-        ProfileManager.Instance.playerData.playerResourseSave.AddPiggySave();
+        ProfileManager.Instance.playerData.playerResourseSave.AddPiggySave(amount);
     }
 
     public bool IsHasNoAds()
     {
         return ProfileManager.Instance.playerData.playerResourseSave.IsHaveItem(ItemType.NoAds);
+    }
+
+    public void OnBuyPackSuccess(PackageId packageId)
+    {
+        switch (packageId)
+        {
+            case PackageId.None:
+                break;
+            case PackageId.Piggy:
+                rewardItems.Clear();
+                ProfileManager.Instance.playerData.playerResourseSave.ClearPiggySave();
+                ItemData itemData = new ItemData();
+                itemData.ItemType = ItemType.Coin;
+                itemData.amount = ProfileManager.Instance.playerData.playerResourseSave.piggySave;
+                rewardItems.Add(itemData);
+                CollectItemReward(rewardItems);
+                break;
+            case PackageId.Pack1:
+                ShopPack shopPack = ProfileManager.Instance.dataConfig.shopDataConfig.GetShopPack(PackageId.Pack1);
+                if(shopPack != null)
+                {
+                    GetItemRewards(shopPack.rewards);
+                }
+                break;
+            default:
+                break;
+        }
     }
 }
 

@@ -42,7 +42,8 @@ public class ConstantValue
     public static float VAL_DEFAULT_EXP = 10f;
     public static int VAL_DEFAULT_TROPHY = 10;
     public static float VAL_X2BOOSTER_TIME = 2.5f;
-    public static float VAL_MAX_PIGGY = 2500f;
+    public static float VAL_DRAW_PIGGY = 800f;
+    public static float VAL_MAX_PIGGY = 1600f;
     public static float VAL_PIGGY_SAVE = 10;
 
     // Animation

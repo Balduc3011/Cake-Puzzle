@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class IAPPack : MonoBehaviour
 {
     public PackageId packageId;
-    [SerializeField] Button buyBtn;
+    public Button buyBtn;
     [SerializeField] TextMeshProUGUI priceTxt;
 
     public List<ItemData> rewardItems = new();
@@ -42,7 +42,7 @@ public class IAPPack : MonoBehaviour
 
     void OnBuyPackSuccess()
     {
-        GameManager.Instance.GetItemRewards(rewardItems);
+        GameManager.Instance.OnBuyPackSuccess(packageId);
         UIManager.instance.ShowPanelItemsReward();
     }
 }

@@ -112,6 +112,13 @@ public class CakeSaveData : SaveBase
         SaveData();
     }
 
+    public void OnUpgradeCard(OwnedCake ownedCake)
+    {
+        ownedCake.OnUpgradeCard();
+        IsMarkChangeData();
+        SaveData();
+    }
+
     public bool IsHaveMoreThanThreeCake()
     {
         return cakeIDs.Count > 3;
@@ -337,10 +344,25 @@ public class OwnedCake
         }
     }
 
+    public void OnUpgradeCard()
+    {
+        if (cardAmount >= cardRequire)
+        {
+            level++;
+            cardAmount -= cardRequire;
+            UpdateCardRequire();
+        }
+    }
+
     public void UpdateCardRequire()
     {
         cardRequire = ProfileManager.Instance.dataConfig.cakeDataConfig.GetCardAmountToLevelUp(level + 1);
     }
 
     public int CardRequire { get => cardRequire; }
+
+    public bool IsAbleToUpgrade()
+    {
+        return cardAmount >= cardRequire;
+    }
 }

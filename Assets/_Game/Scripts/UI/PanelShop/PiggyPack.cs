@@ -11,6 +11,15 @@ public class PiggyPack : IAPPack
 
     [SerializeField] TextMeshProUGUI valueTxt;
     [SerializeField] TextMeshProUGUI maxValueTxt;
+    [SerializeField] TextMeshProUGUI conditionValueTxt;
+    [SerializeField] TextMeshProUGUI conditionTxt;
+
+    private void Start()
+    {
+        conditionTxt.text = "Save <color=#FFDC0B>" +
+                ConstantValue.VAL_DRAW_PIGGY.ToString() + " coin</color> to draw";
+        conditionValueTxt.text = ConstantValue.VAL_DRAW_PIGGY.ToString();
+    }
 
     public override void OnEnable()
     {
@@ -22,10 +31,12 @@ public class PiggyPack : IAPPack
             slider.value = coin.amount / ConstantValue.VAL_MAX_PIGGY;
             valueTxt.text = coin.amount.ToString() + ConstantValue.STR_SLASH + ConstantValue.VAL_MAX_PIGGY.ToString();
             maxValueTxt.text = ConstantValue.VAL_MAX_PIGGY.ToString();
+            buyBtn.interactable = coin.amount >= ConstantValue.VAL_DRAW_PIGGY;
         }
         else
         {
             slider.value = 0;
+            buyBtn.interactable = false;
         }
     }
 

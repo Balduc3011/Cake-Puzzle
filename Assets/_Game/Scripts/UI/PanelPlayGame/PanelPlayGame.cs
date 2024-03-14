@@ -1,3 +1,4 @@
+using SDK;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -86,7 +87,11 @@ public class PanelPlayGame : UIPanel
 
     void ShowX2BoosterAds()
     {
-        X2BoosterSuccess();
+        if (GameManager.Instance.IsHasNoAds())
+            X2BoosterSuccess();
+        else
+            AdsManager.Instance.ShowRewardVideo(WatchVideoRewardType.X2RewardAds.ToString(), X2BoosterSuccess);
+        //X2BoosterSuccess();
     }
 
     void X2BoosterSuccess()
@@ -102,7 +107,11 @@ public class PanelPlayGame : UIPanel
 
     void ShowCoinBoosterAds()
     {
-        CoinBoosterSuccess();
+        if (GameManager.Instance.IsHasNoAds())
+            CoinBoosterSuccess();
+        else
+            AdsManager.Instance.ShowRewardVideo(WatchVideoRewardType.FreeCoinAds.ToString(), CoinBoosterSuccess);
+        //CoinBoosterSuccess();
     }
 
     void CoinBoosterSuccess()
