@@ -80,6 +80,8 @@ public class Cake : MonoBehaviour
         EventManager.AddListener(EventName.ChangePlateDecor.ToString(), UpdatePlateDecor);
         EventManager.AddListener(EventName.UsingFillUp.ToString(), UsingFillUpMode);
         EventManager.AddListener(EventName.UsingFillUpDone.ToString(), UsingFillUpDone);
+        EventManager.AddListener(EventName.UsingHammer.ToString(), UsingHammerMode);
+        EventManager.AddListener(EventName.UsingHammerDone.ToString(), UsingHammerModeDone);
         curveRotate = ProfileManager.Instance.dataConfig.cakeAnimationSetting.GetCurveRightWay();
         timeRotate = ProfileManager.Instance.dataConfig.cakeAnimationSetting.GetTimeRightWay();
     }
@@ -92,6 +94,16 @@ public class Cake : MonoBehaviour
 
     void UsingFillUpDone() {
         onUsingFillUp = false;
+    }
+
+    bool onUsingHammger;
+    void UsingHammerMode()
+    {
+        onUsingHammger = true;
+    }
+
+    void UsingHammerModeDone() {
+        onUsingHammger = false;
     }
 
     #region INIT DATA
@@ -257,6 +269,13 @@ public class Cake : MonoBehaviour
             return;
         }
 
+        if (onUsingHammger)
+        {
+            Debug.Log("Choose on using hammer");
+            UsingHammer();
+            return;
+        }
+
         if (myGroupCake != null)
         {
             myGroupCake.OnFollowMouse();
@@ -285,6 +304,19 @@ public class Cake : MonoBehaviour
         EventManager.TriggerEvent(EventName.UsingFillUpDone.ToString());
     }
 
+    void UsingHammer() {
+        if (currentPlate != null)
+            currentPlate.currentCake = null;
+        ProfileManager.Instance.playerData.playerResourseSave.UsingItem(ItemType.Hammer);
+        ProfileManager.Instance.playerData.cakeSaveData.RemoveCake(currentPlate.plateIndex);
+        GameManager.Instance.itemManager.CallUsingHammerOnCake(this, CallBackOnAnimHammerDone);
+    }
+
+    void CallBackOnAnimHammerDone() {
+        EventManager.TriggerEvent(EventName.UsingHammerDone.ToString());
+        transform.DOScale(0f, 0.25f).OnComplete(() => { gameObject.SetActive(false); });
+    }
+
     public bool CheckDrop()
     {
         if (currentPlate != null && currentPlate.currentCake == null)
@@ -301,13 +333,21 @@ public class Cake : MonoBehaviour
         onDrop = true;
         transform.parent = currentPlate.pointStay;
         transform.DOLocalMove(Vector3.zero, .1f);
-        transform.DOScale(Vector3.one * .9f, .25f).OnComplete(()=> {
+        Debug.Log("last drop: "+ lastDrop);
+        DOVirtual.DelayedCall(.1f, () =>
+        {
             if (lastDrop)
                 actionCallback();
-            transform.DOScale(Vector3.one * 1.1f, .2f);
-            transform.DOScale(Vector3.one, .2f).SetDelay(.2f);
-
         });
+      
+        //transform.DOScale(Vector3.one * .9f, .25f).OnComplete(() =>
+        //{
+        //    if (lastDrop)
+        //        actionCallback();
+        //    transform.DOScale(Vector3.one * 1.1f, .2f);
+        //    transform.DOScale(Vector3.one, .2f).SetDelay(.2f);
+
+        //});
     }
 
     public void GroupDropFail() {
@@ -454,7 +494,7 @@ public class Cake : MonoBehaviour
             if (pieces[indexRotateRW].currentRotateIndex != currentRotateIndex)
                 pieces[indexRotateRW].currentRotateIndex = currentRotateIndex;
             vectorRotateTo = new Vector3(0, rotates[pieces[indexRotateRW].currentRotateIndex], 0);
-            pieces[indexRotateRW].transform.DORotate(vectorRotateTo, timeRotate, RotateMode.FastBeyond360).SetEase(curveRotate);
+            pieces[indexRotateRW].transform.DORotate(vectorRotateTo, timeRotate).SetEase(curveRotate);
             DOVirtual.DelayedCall(timeRotate - .15f, () =>
             {
                 if (indexRotateRW == pieces.Count)
@@ -574,13 +614,15 @@ public class Cake : MonoBehaviour
             panelTotal = UIManager.instance.panelTotal;
 
         GameManager.Instance.cakeManager.AddStreak(this);
-        int cakeLevel = ProfileManager.Instance.playerData.cakeSaveData.GetOwnedCakeLevel(pieces[0].cakeID);
+        int cakeLevel = 0;
+        if (pieces.Count > 0)
+            cakeLevel = ProfileManager.Instance.playerData.cakeSaveData.GetOwnedCakeLevel(pieces[0].cakeID);
+
         GameManager.Instance.AddPiggySave();
         ProfileManager.Instance.playerData.playerResourseSave.AddExp(cakeLevel * ConstantValue.VAL_DEFAULT_EXP);
         ProfileManager.Instance.playerData.playerResourseSave.AddMoney(cakeLevel  * GameManager.Instance.GetDefaultCakeProfit());
         ProfileManager.Instance.playerData.playerResourseSave.AddTrophy(cakeLevel * ConstantValue.VAL_DEFAULT_TROPHY);
         DOVirtual.DelayedCall(0.18f, () => {
-
             tweens.Add(transform.DOScale(Vector3.one * .8f, .13f));
             tweens.Add(transform.DOScale(Vector3.one * 1.1f, .13f).SetDelay(.13f));
             transform.DORotate(CacheSourse.rotateY360, .75f, RotateMode.WorldAxisAdd).SetEase(Ease.OutQuad).OnComplete(() => {
@@ -592,6 +634,8 @@ public class Cake : MonoBehaviour
     }
 
     void EffectDoneCake() {
+        if (pieces.Count == 0)
+            return;
         int cakeLevel = ProfileManager.Instance.playerData.cakeSaveData.GetOwnedCakeLevel(pieces[0].cakeID);
         CoinEffect coinEffect = GameManager.Instance.objectPooling.GetCoinEffect();
         coinEffect.transform.position = Camera.main.WorldToScreenPoint(transform.position);
@@ -618,8 +662,6 @@ public class Cake : MonoBehaviour
         expEffect.gameObject.SetActive(true);
 
         transform.DOScale(0f, .3f).SetEase(Ease.InQuad);
-
-        //transform.localScale = CacheSourse.vector0;
 
         DOVirtual.DelayedCall(CacheSourse.float05, () => {
             Debug.Log("Destroy now");
@@ -689,5 +731,8 @@ public class Cake : MonoBehaviour
         return currentIDInfor;
     }
 
-    public bool CakeIsNull() { return pieces.Count == 0; }
+    public bool CakeIsNull() {
+        Debug.Log(currentPlate+" have cake null: "+pieces.Count);
+        return pieces.Count == 0; 
+    }
 }
