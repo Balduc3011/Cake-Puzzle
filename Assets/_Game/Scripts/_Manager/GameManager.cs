@@ -59,16 +59,15 @@ public class GameManager : Singleton<GameManager>
         ItemData firstCake = new();
         firstCake.ItemType = ItemType.Cake;
         int newCakeID = ProfileManager.Instance.dataConfig.levelDataConfig.GetCakeID(ProfileManager.Instance.playerData.playerResourseSave.currentLevel - 1);
+        firstCake.amount = UnityEngine.Random.Range(5, 10);
         if (newCakeID != -1)
         {
             ProfileManager.Instance.playerData.cakeSaveData.AddCake(newCakeID);
             ProfileManager.Instance.playerData.cakeSaveData.UseCake(newCakeID);
-            firstCake.amount = UnityEngine.Random.Range(10, 20);
         }
         else
         {
             newCakeID = ProfileManager.Instance.dataConfig.cakeDataConfig.GetRandomCake();
-            firstCake.amount = UnityEngine.Random.Range(10, 20);
         }
         firstCake.subId = newCakeID;
         int extraCakeId = ProfileManager.Instance.playerData.cakeSaveData.GetRandomUnlockedCake();
@@ -79,7 +78,7 @@ public class GameManager : Singleton<GameManager>
         ItemData extraCake = new();
         extraCake.ItemType = ItemType.Cake;
         extraCake.subId = extraCakeId;
-        extraCake.amount = UnityEngine.Random.Range(1, 6);
+        extraCake.amount = UnityEngine.Random.Range(5, 10);
         rewardItems.Add(firstCake);
         rewardItems.Add(extraCake);
     }
@@ -161,6 +160,7 @@ public class GameManager : Singleton<GameManager>
 
     public bool IsHasNoAds()
     {
+        if(ProfileManager.Instance.versionStatus == VersionStatus.Cheat) return true;
         return ProfileManager.Instance.playerData.playerResourseSave.IsHaveItem(ItemType.NoAds);
     }
 

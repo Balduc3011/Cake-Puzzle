@@ -336,12 +336,12 @@ public class OwnedCake
     public void AddCard(int amount)
     {
         cardAmount += amount;
-        if(cardAmount >= cardRequire)
-        {
-            level++;
-            cardAmount -= cardRequire;
-            UpdateCardRequire();
-        }
+        //if(cardAmount >= cardRequire)
+        //{
+        //    level++;
+        //    cardAmount -= cardRequire;
+        //    UpdateCardRequire();
+        //}
     }
 
     public void OnUpgradeCard()

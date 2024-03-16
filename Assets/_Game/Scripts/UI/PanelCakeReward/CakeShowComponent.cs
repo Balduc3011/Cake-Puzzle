@@ -47,4 +47,9 @@ public class CakeShowComponent : MonoBehaviour
         cakeMesh.mesh = cakeSlideMesh;
     }
 
+    public void ShowSelectetCake(int cakeId)
+    {
+        Mesh cakeSlideMesh = ProfileManager.Instance.dataConfig.cakeDataConfig.GetCakeMesh(cakeId);
+        cakeMesh.mesh = cakeSlideMesh;
+    }
 }

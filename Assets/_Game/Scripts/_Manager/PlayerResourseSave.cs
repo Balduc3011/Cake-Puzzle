@@ -34,6 +34,7 @@ public class PlayerResourseSave : SaveBase
             coins = data.coins;
             trophy = data.trophy;
             trophyRecord = data.trophyRecord;
+            piggySave = data.piggySave;
             lastFreeSpin = data.lastFreeSpin;
             lastDay = data.lastDay;
             x2BoosterEnd = data.x2BoosterEnd;

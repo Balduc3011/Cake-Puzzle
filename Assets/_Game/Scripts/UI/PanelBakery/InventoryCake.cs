@@ -18,14 +18,10 @@ public class InventoryCake : MonoBehaviour
     [SerializeField] Image offIconImg;
     [SerializeField] GameObject usingMarkObj;
     [SerializeField] GameObject lockingMarkObj;
-    [SerializeField] GameObject upgradeBtnObj;
-    [SerializeField] ParticleImage upgradeParticle;
     string PERCAKE = "/cake";
     PanelBakery panelBakery;
     bool isUsing;
-
-    [SerializeField] Slider cardAmountSlider;
-    [SerializeField] TextMeshProUGUI cardAmountTxt;
+    [SerializeField] GameObject levelBar;
     [SerializeField] TextMeshProUGUI levelTxt;
     void Start()
     {
@@ -46,80 +42,42 @@ public class InventoryCake : MonoBehaviour
         offIconImg.sprite = cakeData.icon;
         cakeNameTxt.text = "Cake " + cakeData.id.ToString();
         cakePointTxt.text = ((cakeData.id + 1) * 5).ToString() + ConstantValue.STR_SPACE + ConstantValue.STR_EXP + PERCAKE;
-        currentCake = ProfileManager.Instance.playerData.cakeSaveData.GetOwnedCake(cakeData.id);
         InitUsing();
     }
 
     public void InitUsing()
     {
         isUsing = false;
-        if(ProfileManager.Instance.playerData.cakeSaveData.IsOwnedCake(cakeData.id))
+        currentCake = ProfileManager.Instance.playerData.cakeSaveData.GetOwnedCake(cakeData.id);
+        if (ProfileManager.Instance.playerData.cakeSaveData.IsOwnedCake(cakeData.id))
         {
+            levelBar.SetActive(true);
+            levelTxt.text = currentCake.level.ToString();
             lockingMarkObj.SetActive(false);
             offIconImg.gameObject.SetActive(false);
             onIconImg.gameObject.SetActive(true);
             usingMarkObj.SetActive(ProfileManager.Instance.playerData.cakeSaveData.IsUsingCake(cakeData.id));
             isUsing = ProfileManager.Instance.playerData.cakeSaveData.IsUsingCake(cakeData.id);
             if(currentCake == null) currentCake = ProfileManager.Instance.playerData.cakeSaveData.GetOwnedCake(cakeData.id);
-            if(currentCake != null)
-            {
-                cardAmountTxt.text = currentCake.cardAmount.ToString() + ConstantValue.STR_SLASH + currentCake.CardRequire.ToString();
-                levelTxt.text = currentCake.level.ToString();
-                cardAmountSlider.value = (float)currentCake.cardAmount / (float)currentCake.CardRequire;
-                upgradeBtnObj.SetActive(currentCake.IsAbleToUpgrade());
-            }
         }
         else
         {
+            levelBar.SetActive(false);
+            levelTxt.text = ConstantValue.STR_BLANK;
             lockingMarkObj.SetActive(true);
             offIconImg.gameObject.SetActive(true);
             onIconImg.gameObject.SetActive(false);
             usingMarkObj.SetActive(false);
-            cardAmountTxt.text = ConstantValue.STR_BLANK;
-            levelTxt.text = ConstantValue.STR_BLANK;
-            cardAmountSlider.value = 0;
         }
     }
 
     void OnCakeClick()
     {
-        //if (onIconImg.gameObject.activeSelf)
-        //    onIconImg.transform.DOScale(1.2f, 0.25f).OnComplete(() =>
-        //    {
-        //        onIconImg.transform.DOScale(1, 0.05f);
-        //    });
-        //if (offIconImg.gameObject.activeSelf)
-        //    offIconImg.transform.DOScale(1.2f, 0.25f).OnComplete(() =>
-        //    {
-        //        offIconImg.transform.DOScale(1, 0.05f);
-        //    });
         transform.DOScale(0.9f, 0.05f).SetEase(Ease.InOutQuad).OnComplete(() =>
             {
                 transform.DOScale(1f, 0.05f).SetEase(Ease.InOutQuad);
-            });
-
-        if (currentCake != null)
-        {
-            if(currentCake.IsAbleToUpgrade())
-            {
-                if(GameManager.Instance.IsHasNoAds())
-                    OnUpgradeCake();
-                else
-                    AdsManager.Instance.ShowRewardVideo(WatchVideoRewardType.UpgradeCake.ToString(), OnUpgradeCake);
-                return;
-            }
-        }
-        if (!isUsing)
-            panelBakery.SetCakeToSwap(cakeData.id);
+        });
+        panelBakery.ShowCakeInfo(cakeData);
     }
 
-    void OnUpgradeCake()
-    {
-        if(currentCake != null)
-        {
-            ProfileManager.Instance.playerData.cakeSaveData.OnUpgradeCard(currentCake);
-            upgradeParticle.Play();
-            InitUsing();
-        }
-    }
 }
