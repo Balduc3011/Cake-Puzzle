@@ -12,7 +12,7 @@ public class Table : MonoBehaviour
     AnimationCurve curveMove;
     float timeRotate;
     float timeMove;
-    Plate[,] plateArray = new Plate[6, 4];
+    Plate[,] plateArray = new Plate[5, 4];
 
     private void Start()
     {
@@ -184,7 +184,9 @@ public class Table : MonoBehaviour
             curveRotate = ProfileManager.Instance.dataConfig.cakeAnimationSetting.GetCurveRotate();
             curveMove = ProfileManager.Instance.dataConfig.cakeAnimationSetting.GetCurveMove();
         }
-        ways[stepIndex].Move(cakeID, curveRotate, curveMove, timeRotate, timeMove, stepIndex == ways.Count - 1, Move);
+
+        if (stepIndex < ways.Count)
+            ways[stepIndex].Move(cakeID, curveRotate, curveMove, timeRotate, timeMove, stepIndex == ways.Count - 1, Move);
     }
 
     public void StartCreateWay()
@@ -319,7 +321,6 @@ public class Table : MonoBehaviour
                 if (plates[i].currentCake.needRotateRightWay && !plates[i].currentCake.cakeDone)
                 {
                     totalNeedRotate++;
-                    Debug.Log("Rotate cake right way cake: " + plates[i]);
                     plates[i].currentCake.RotateOtherPieceRight(RotateDone);
                 }
             }
@@ -509,6 +510,7 @@ public class Way {
     float timeRotate;
     float timeMove;
     bool lastMove;
+    int rotateIndexReturn;
 
     public void Move(int cakeID, AnimationCurve curveRotate, AnimationCurve curveMove, float timeRotate, float timeMove, bool lastMove, UnityAction<int> actionDone = null)
     {
@@ -535,7 +537,7 @@ public class Way {
         }
         else
         {
-            plateGo.currentCake.MakeRotateIndexForNewPiece(cakeID);
+            rotateIndexReturn = plateGo.currentCake.MakeRotateIndexForNewPiece(cakeID);
             ActionCallBackOnMoveOtherPiece();
         }
 
@@ -556,29 +558,29 @@ public class Way {
     }
 
     void ActionCallBackOnMoveOtherPiece() {
-        int rotateIndex = plateGo.currentCake.GetRotateIndex();
-        if (rotateIndex < 0) rotateIndex = 5;
-        else if (rotateIndex >= 6) rotateIndex = 0;
+        if (rotateIndexReturn < 0) rotateIndexReturn = 5;
+        else if (rotateIndexReturn >= 6) rotateIndexReturn = 0;
 
         cake = plateGo.currentCake;
        
-        pieces.currentRotateIndex = rotateIndex;
+        pieces.currentRotateIndex = rotateIndexReturn;
         plateGo.AddPiece(pieces);
+
         plateGo.currentCake.StartRotateOtherPieceForNewPiece(() => {
+            Debug.Log("Rotate done start move");
+            
             pieces.transform.parent = plateGo.currentCake.transform;
             pieces.transform.DOScale(Vector3.one, 0.25f);
-            pieces.transform.DOMove(plateGo.pointStay.position, timeMove).SetEase(curveMove).OnComplete(() => {
-                cake.DoAnimImpact();
-                
+            pieces.transform.DOMove(plateGo.pointStay.position, timeMove).SetEase(Ease.InQuad).OnComplete(() => {
+                //cake.DoAnimImpact();
             });
+            plateGo.currentCake.CheckCakeIsDone(pieces.cakeID);
+            if (!plateGo.currentCake.cakeDone) DOVirtual.DelayedCall(timeMove - .15f, cake.DoAnimImpact);
             CallDoneThatMove();
-            pieces.transform.DORotate(new Vector3(0, plateGo.currentCake.rotates[rotateIndex], 0), timeRotate).SetEase(curveRotate);
-            
+            //Debug.Log(rotateIndexReturn);
+            pieces.transform.DORotate(new Vector3(0, plateGo.currentCake.rotates[rotateIndexReturn], 0), timeRotate).SetEase(Ease.InQuad);
         });
         plateCurrent.CheckNullPieces();
-       
-
-        
     }
 
     void DoActionDone() { actionCallBackMove(cakeIDCallBack); }

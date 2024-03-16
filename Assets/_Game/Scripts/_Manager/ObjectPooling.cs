@@ -172,4 +172,5 @@ public class ObjectPooling : MonoBehaviour
         streakEffects.Add(newEffect);
         return newEffect;
     }
+
 }
