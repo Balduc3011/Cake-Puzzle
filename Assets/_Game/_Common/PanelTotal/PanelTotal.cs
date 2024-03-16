@@ -38,11 +38,14 @@ public class PanelTotal : UIPanel
 
     [SerializeField] GameObject dailyNoti;
     [SerializeField] GameObject spinNoti;
+    [SerializeField] GameObject settingNoti;
+    [SerializeField] GameObject bakeryNoti;
     public override void Awake()
     {
         panelType = UIPanelType.PanelTotal;
         base.Awake();
         EventManager.AddListener(EventName.ChangeExp.ToString(), ChangeExp);
+        EventManager.AddListener(EventName.AddCakeCard.ToString(), CheckNoti);
         //backGround = UIManager.instance.backGround;
         CheckSubScreenObstacleBase();
     }
@@ -51,6 +54,9 @@ public class PanelTotal : UIPanel
     {
         dailyNoti.SetActive(ProfileManager.Instance.playerData.playerResourseSave.IsHasDailyReward());
         spinNoti.SetActive(ProfileManager.Instance.playerData.playerResourseSave.IsHasFreeSpin());
+        settingNoti.SetActive(ProfileManager.Instance.playerData.cakeSaveData.HasCakeUpgradeable() &&
+            GameManager.Instance.playing);
+        bakeryNoti.SetActive(ProfileManager.Instance.playerData.cakeSaveData.HasCakeUpgradeable());
     }
 
     void CheckSubScreenObstacleBase()
@@ -152,6 +158,7 @@ public class PanelTotal : UIPanel
         navBarContent.SetActive(false);
         mainMenuContent.SetActive(false);
         //backGround.SetActive(false);
+        CheckNoti();
     }
 
     public void BackToMenu()

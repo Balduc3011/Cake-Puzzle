@@ -1,3 +1,4 @@
+using DG.Tweening;
 using SDK;
 using System.Collections;
 using System.Collections.Generic;
@@ -139,6 +140,7 @@ public class PanelBakery : UIPanel
     [SerializeField] TextMeshProUGUI expTxt;
     [SerializeField] TextMeshProUGUI trophyTxt;
     [SerializeField] TextMeshProUGUI coinTxt;
+    [SerializeField] List<Transform> statsBar;
 
     [SerializeField] Button useCakeBtn;
     [SerializeField] GameObject usingCakeBtnObj;
@@ -146,8 +148,10 @@ public class PanelBakery : UIPanel
 
     CakeData popupCake;
     OwnedCake currentCake;
-    public void ShowCakeInfo(CakeData cakeData)
+    InventoryCake inventoryCake;
+    public void ShowCakeInfo(CakeData cakeData, InventoryCake inventoryCake)
     {
+        this.inventoryCake = inventoryCake;
         popupCake = cakeData;
         cakeInfoPopup.SetActive(true);
         LoadPopup();
@@ -155,6 +159,7 @@ public class PanelBakery : UIPanel
 
     void LoadPopup()
     {
+        PopupAnim();
         GameManager.Instance.cakeManager.cakeShowComponent.ShowSelectetCake(popupCake.id);
         currentCake = ProfileManager.Instance.playerData.cakeSaveData.GetOwnedCake(popupCake.id);
         if (ProfileManager.Instance.playerData.cakeSaveData.IsOwnedCake(popupCake.id))
@@ -164,9 +169,9 @@ public class PanelBakery : UIPanel
             cardAmountTxt.text = currentCake.cardAmount.ToString() + ConstantValue.STR_SLASH + currentCake.CardRequire.ToString();
             upgradeCakeBtn.interactable = currentCake.IsAbleToUpgrade();
             upradeAbleParticle.SetActive(upgradeCakeBtn.interactable);
-            expTxt.text = (currentCake.level * ConstantValue.VAL_DEFAULT_EXP).ToString();
-            trophyTxt.text = (currentCake.level * GameManager.Instance.GetDefaultCakeProfit()).ToString();
-            coinTxt.text = (currentCake.level * ConstantValue.VAL_DEFAULT_TROPHY).ToString();
+            expTxt.text = (currentCake.level * GameManager.Instance.GetDefaultCakeProfit(popupCake.id)).ToString() + " exp";
+            trophyTxt.text = (currentCake.level * GameManager.Instance.GetDefaultCakeProfit(popupCake.id)).ToString() + " trophy";
+            coinTxt.text = (currentCake.level * GameManager.Instance.GetDefaultCakeProfit(popupCake.id)).ToString() + " coin";
             useCakeBtn.interactable = (!ProfileManager.Instance.playerData.cakeSaveData.IsUsingCake(popupCake.id));
             usingCakeBtnObj.SetActive(ProfileManager.Instance.playerData.cakeSaveData.IsUsingCake(popupCake.id));
             noCakeBtnObj.SetActive(false);
@@ -184,6 +189,17 @@ public class PanelBakery : UIPanel
             useCakeBtn.interactable = false;
             noCakeBtnObj.SetActive(true);
         } 
+    }
+
+    void PopupAnim()
+    {
+        levelTxt.transform.DOScale(1, 0.15f).From(0f).SetEase(Ease.OutBack).SetDelay(0.25f + 0.1f);
+        cardAmountSlider.transform.DOScale(1, 0.15f).From(0f).SetEase(Ease.OutBack).SetDelay(0.25f + 0.2f);
+        upgradeCakeBtn.transform.DOScale(1, 0.15f).From(0f).SetEase(Ease.OutBack).SetDelay(0.25f + 0.3f);
+        statsBar[0].DOScale(1, 0.15f).From(0f).SetEase(Ease.OutBack).SetDelay(0.25f + 0.4f);
+        statsBar[1].DOScale(1, 0.15f).From(0f).SetEase(Ease.OutBack).SetDelay(0.25f + 0.45f);
+        statsBar[2].DOScale(1, 0.15f).From(0f).SetEase(Ease.OutBack).SetDelay(0.25f + 0.5f);
+        useCakeBtn.transform.DOScale(1, 0.15f).From(0f).SetEase(Ease.OutBack).SetDelay(0.25f + 0.55f);
     }
 
     void SetUpPopupBtn()
@@ -216,13 +232,21 @@ public class PanelBakery : UIPanel
             if (currentCake.IsAbleToUpgrade())
             {
                 if (GameManager.Instance.IsHasNoAds())
+                {
                     OnUpgradeCake();
+                    LoadPopup();
+                    inventoryCake?.InitUsing();
+                }
                 else
+                {
                     AdsManager.Instance.ShowRewardVideo(WatchVideoRewardType.UpgradeCake.ToString(), OnUpgradeCake);
+                    LoadPopup();
+                    inventoryCake?.InitUsing();
+                }
                 return;
             }
         }
-        LoadPopup();
+        
     }
 
     void OnUpgradeCake()
@@ -231,6 +255,7 @@ public class PanelBakery : UIPanel
         {
             ProfileManager.Instance.playerData.cakeSaveData.OnUpgradeCard(currentCake);
             //upgradeParticle.Play();
+            EventManager.TriggerEvent(EventName.AddCakeCard.ToString());
         }
     }
 }

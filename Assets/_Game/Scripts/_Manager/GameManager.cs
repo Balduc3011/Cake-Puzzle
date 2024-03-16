@@ -40,9 +40,9 @@ public class GameManager : Singleton<GameManager>
         playing = false;
     }
 
-    public float GetDefaultCakeProfit()
+    public float GetDefaultCakeProfit(int cakeID, bool booster = false)
     {
-        return ConstantValue.VAL_DEFAULT_EXP * (ProfileManager.Instance.playerData.playerResourseSave.HasX2Booster() ? 2 : 1);
+        return (ConstantValue.VAL_DEFAULT_EXP + 2 * cakeID) * (booster ? (ProfileManager.Instance.playerData.playerResourseSave.HasX2Booster() ? 2 : 1) : 1);
     }
 
     public void GetLevelUpReward()

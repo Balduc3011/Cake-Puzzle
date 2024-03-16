@@ -575,10 +575,10 @@ public class Cake : MonoBehaviour
 
         GameManager.Instance.cakeManager.AddStreak(this);
         int cakeLevel = ProfileManager.Instance.playerData.cakeSaveData.GetOwnedCakeLevel(pieces[0].cakeID);
-        GameManager.Instance.AddPiggySave(cakeLevel * GameManager.Instance.GetDefaultCakeProfit());
-        ProfileManager.Instance.playerData.playerResourseSave.AddExp(cakeLevel * ConstantValue.VAL_DEFAULT_EXP);
-        ProfileManager.Instance.playerData.playerResourseSave.AddMoney(cakeLevel  * GameManager.Instance.GetDefaultCakeProfit());
-        ProfileManager.Instance.playerData.playerResourseSave.AddTrophy(cakeLevel * ConstantValue.VAL_DEFAULT_TROPHY);
+        GameManager.Instance.AddPiggySave(cakeLevel * GameManager.Instance.GetDefaultCakeProfit(pieces[0].cakeID, true));
+        ProfileManager.Instance.playerData.playerResourseSave.AddExp(cakeLevel * GameManager.Instance.GetDefaultCakeProfit(pieces[0].cakeID));
+        ProfileManager.Instance.playerData.playerResourseSave.AddMoney(cakeLevel  * GameManager.Instance.GetDefaultCakeProfit(pieces[0].cakeID, true));
+        ProfileManager.Instance.playerData.playerResourseSave.AddTrophy(cakeLevel * (int)GameManager.Instance.GetDefaultCakeProfit(pieces[0].cakeID));
         DOVirtual.DelayedCall(0.18f, () => {
 
             tweens.Add(transform.DOScale(Vector3.one * .8f, .13f));
@@ -614,7 +614,7 @@ public class Cake : MonoBehaviour
 
         ExpEffect expEffect = GameManager.Instance.objectPooling.GetExpEffect();
         expEffect.transform.position = Camera.main.WorldToScreenPoint(transform.position) + vectorOffsetExp;
-        expEffect.ChangeText((cakeLevel * ConstantValue.VAL_DEFAULT_EXP).ToString());
+        expEffect.ChangeText((cakeLevel * GameManager.Instance.GetDefaultCakeProfit(pieces[0].cakeID)).ToString());
         expEffect.gameObject.SetActive(true);
 
         transform.DOScale(0f, .3f).SetEase(Ease.InQuad);

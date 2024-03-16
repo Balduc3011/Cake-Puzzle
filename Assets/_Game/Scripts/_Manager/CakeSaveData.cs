@@ -283,6 +283,16 @@ public class CakeSaveData : SaveBase
     {
         return cakeOnPlates.Count > 0;
     }
+
+    public bool HasCakeUpgradeable()
+    {
+        for (int i = 0; i < ownedCakes.Count; i++)
+        {
+            if (ownedCakes[i].IsAbleToUpgrade())
+                return true;
+        }
+        return false;
+    }
 }
 
 [System.Serializable]
@@ -342,6 +352,7 @@ public class OwnedCake
         //    cardAmount -= cardRequire;
         //    UpdateCardRequire();
         //}
+        EventManager.TriggerEvent(EventName.AddCakeCard.ToString());
     }
 
     public void OnUpgradeCard()

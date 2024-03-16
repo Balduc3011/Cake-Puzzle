@@ -23,6 +23,7 @@ public class InventoryCake : MonoBehaviour
     bool isUsing;
     [SerializeField] GameObject levelBar;
     [SerializeField] TextMeshProUGUI levelTxt;
+    [SerializeField] GameObject upgradeNotify;
     void Start()
     {
         button.onClick.AddListener(OnCakeClick);
@@ -59,6 +60,7 @@ public class InventoryCake : MonoBehaviour
             usingMarkObj.SetActive(ProfileManager.Instance.playerData.cakeSaveData.IsUsingCake(cakeData.id));
             isUsing = ProfileManager.Instance.playerData.cakeSaveData.IsUsingCake(cakeData.id);
             if(currentCake == null) currentCake = ProfileManager.Instance.playerData.cakeSaveData.GetOwnedCake(cakeData.id);
+            upgradeNotify.SetActive(currentCake.IsAbleToUpgrade());
         }
         else
         {
@@ -68,6 +70,7 @@ public class InventoryCake : MonoBehaviour
             offIconImg.gameObject.SetActive(true);
             onIconImg.gameObject.SetActive(false);
             usingMarkObj.SetActive(false);
+            upgradeNotify.SetActive(false);
         }
     }
 
@@ -77,7 +80,6 @@ public class InventoryCake : MonoBehaviour
             {
                 transform.DOScale(1f, 0.05f).SetEase(Ease.InOutQuad);
         });
-        panelBakery.ShowCakeInfo(cakeData);
+        panelBakery.ShowCakeInfo(cakeData, this);
     }
-
 }
