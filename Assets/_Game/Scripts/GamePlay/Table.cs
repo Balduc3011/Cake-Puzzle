@@ -556,6 +556,7 @@ public class Way {
             timeDelay = ProfileManager.Instance.dataConfig.cakeAnimationSetting.GetTimeEachCake();
         }
         else timeDelay = ProfileManager.Instance.dataConfig.cakeAnimationSetting.GetTimeEachPiece();
+        Debug.Log("Time Delay: " + timeDelay);
         DOVirtual.DelayedCall(timeDelay, () =>
         {
             DoActionDone();

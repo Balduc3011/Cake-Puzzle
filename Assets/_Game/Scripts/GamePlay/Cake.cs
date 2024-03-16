@@ -732,7 +732,7 @@ public class Cake : MonoBehaviour
     }
 
     public bool CakeIsNull() {
-        Debug.Log(currentPlate+" have cake null: "+pieces.Count);
+        //Debug.Log(currentPlate+" have cake null: "+pieces.Count);
         return pieces.Count == 0; 
     }
 }
