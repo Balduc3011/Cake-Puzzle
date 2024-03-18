@@ -103,11 +103,11 @@ public class Plate : MonoBehaviour
         if (currentCake == null)
             return;
         //currentCake.RotateOtherPieceRight(0);
-        if (currentCake.pieces.Count == 0)
-        {
-            currentCake.cakeDone = true;
-        }
-        else { currentCake.cakeDone = false; }
+        //if (currentCake.pieces.Count == 0)
+        //{
+        //    currentCake.cakeDone = true;
+        //}
+        //else { currentCake.cakeDone = false; }
     }
     public void MoveDoneOfCake()
     {

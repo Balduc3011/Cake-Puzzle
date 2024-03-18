@@ -323,6 +323,10 @@ public class Table : MonoBehaviour
                     totalNeedRotate++;
                     plates[i].currentCake.RotateOtherPieceRight(RotateDone);
                 }
+                if (plates[i].currentCake.cakeDone)
+                {
+                    plates[i].DoneCake();
+                }
             }
         }
         if (totalNeedRotate == 0)
@@ -552,7 +556,9 @@ public class Way {
             timeDelay = ProfileManager.Instance.dataConfig.cakeAnimationSetting.GetTimeEachCake();
         }
         else timeDelay = ProfileManager.Instance.dataConfig.cakeAnimationSetting.GetTimeEachPiece();
-        DOVirtual.DelayedCall(timeDelay, () => {
+        Debug.Log("Time Delay: " + timeDelay);
+        DOVirtual.DelayedCall(timeDelay, () =>
+        {
             DoActionDone();
         });
     }

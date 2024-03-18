@@ -14,6 +14,7 @@ public class CameraManager : MonoBehaviour
     [SerializeField] Vector3 rotateCameraDefault;
     [SerializeField] Transform showRoomParents;
     [SerializeField] float cameraSizeUsingItem;
+    [SerializeField] CameraShaker cameraShaker;
 
     Dictionary<int, ShowRoom> showRooms = new Dictionary<int, ShowRoom>();
 
@@ -129,6 +130,10 @@ public class CameraManager : MonoBehaviour
                 currentShowRoom.CloseCamera();
             }
         }
+    }
+
+    public void ShakeCamera(float duration) {
+        cameraShaker.ShakeCamera(duration);
     }
 }
 

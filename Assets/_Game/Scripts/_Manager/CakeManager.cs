@@ -444,11 +444,6 @@ public class CakeManager : MonoBehaviour
         InitGroupCake();
     }
 
-    public void UsingFilUp()
-    {
-        EventManager.TriggerEvent(EventName.UsingFillUp.ToString());
-    }
-
     public bool NeedResolve() { return cakeOnPlates.Count >= 10; }
 
   
@@ -506,7 +501,10 @@ public class CakeManager : MonoBehaviour
         if (currentStreak > 1)
         {
             streakEffect = GameManager.Instance.objectPooling.GetStreakEffect();
-            streakEffect.SettingMaterial(cakeStreak.pieces[0].cakeID);
+            if (cakeStreak != null)
+                streakEffect.SettingMaterial(cakeStreak.pieceCakeID[0]);
+            else streakEffect.SettingMaterial(0);
+
             streakEffect.ChangeText(currentStreak.ToString());
             streakEffect.transform.position = Camera.main.WorldToScreenPoint(cakeStreak.transform.position) + vectorOffsetStreak;
             streakEffect.gameObject.SetActive(true);

@@ -89,6 +89,7 @@ public class GroupCake : MonoBehaviour
 
         for (int i = 0; i < cake.Count; i++)
         {
+            Debug.Log("index drop:"+i +" cake count: "+ cake.Count);
             cake[i].DropDone(i == cake.Count - 1, CallBackStartCheckCake);
             GameManager.Instance.cakeManager.AddCakeNeedCheck(cake[i]);
         }

@@ -3,6 +3,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.Events;
 
 public class ItemManager : MonoBehaviour
 {
@@ -13,6 +15,10 @@ public class ItemManager : MonoBehaviour
     PanelUsingItem panelUsingItem;
     Transform itemTrsSpawned = null;
 
+    [SerializeField] Transform objHammer;
+    [SerializeField] Animator hammerAnim;
+    [SerializeField] Vector3 vectorHammerOffset;
+
     public bool isUsingItem = false;
 
     public Vector3 GetPointItemIn()
@@ -21,7 +27,7 @@ public class ItemManager : MonoBehaviour
     }
 
     public void UsingItem(ItemType itemType) {
-        if (ProfileManager.Instance.playerData.playerResourseSave.IsHaveItem(itemType)){
+        if (ProfileManager.Instance.playerData.playerResourseSave.IsHaveItem(itemType)) {
             isUsingItem = true;
             switch (itemType)
             {
@@ -33,22 +39,21 @@ public class ItemManager : MonoBehaviour
                     break;
                 case ItemType.Swap:
                     break;
-                case ItemType.Hammer:
+                case ItemType.Bomb:
                     break;
                 case ItemType.ReRoll:
                     GameManager.Instance.cakeManager.UsingReroll();
                     ProfileManager.Instance.playerData.playerResourseSave.UsingItem(itemType);
                     break;
-                case ItemType.Bomb:
+                case ItemType.Hammer:
                     UIManager.instance.ShowPanelUsingItem();
-                    itemTrsSpawned = Instantiate(bombPref, itemTrs).transform;
-                    itemTrsSpawned.DOMove(pointBombIn.position, 1f).SetEase(Ease.InCubic);
-                    UsingItemWithPanel(ItemType.Bomb);
+                    UsingItemWithPanel(ItemType.Hammer);
+                    EventManager.TriggerEvent(EventName.UsingHammer.ToString());
                     break;
                 case ItemType.FillUp:
                     UIManager.instance.ShowPanelUsingItem();
                     UsingItemWithPanel(ItemType.FillUp);
-                    GameManager.Instance.cakeManager.UsingFilUp();
+                    EventManager.TriggerEvent(EventName.UsingFillUp.ToString());
                     break;
                 default:
                     break;
@@ -73,5 +78,27 @@ public class ItemManager : MonoBehaviour
         }
         GameManager.Instance.cameraManager.OutItemMode();
         GameManager.Instance.lightManager.OutItemMode();
+    }
+
+    public void CallUsingHammerOnCake(Cake cake, UnityAction actionCallBack) {
+        objHammer.DOMove(cake.transform.position + vectorHammerOffset, .25f).SetEase(Ease.OutQuint).OnComplete(()=> {
+            hammerAnim.Play("HammerBam");
+            DOVirtual.DelayedCall(0.6f, ()=> {
+                Transform trsSmoke = GameManager.Instance.objectPooling.GetSmokeEffect();
+                trsSmoke.transform.position = cake.transform.position + vectorHammerOffset;
+                trsSmoke.gameObject.SetActive(true);
+                GameManager.Instance.cameraManager.ShakeCamera(.2f);
+                DOVirtual.DelayedCall(.3f, () =>
+                {
+                    //trsSmoke.gameObject.SetActive(false);
+                    GameManager.Instance.cameraManager.OutItemMode();
+                    GameManager.Instance.lightManager.OutItemMode();
+                    panelUsingItem.UsingItemDone();
+                    objHammer.DOMove(itemTrs.position, .25f);
+                    actionCallBack();
+                });
+                
+            });
+        });
     }
 }

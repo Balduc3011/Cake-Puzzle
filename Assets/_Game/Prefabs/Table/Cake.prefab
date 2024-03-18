@@ -85,7 +85,7 @@ MonoBehaviour:
   totalPieces: 0
   totalCakeID: 0
   indexOfNewPiece: 0
-  radiusCheck: 0.2
+  radiusCheck: 0.6
   scaleDefault: 0.9
   cakeDone: 0
   needRotateRightWay: 0
@@ -99,6 +99,7 @@ MonoBehaviour:
   vectorOffsetEffectDrop: {x: 0, y: 0.1, z: 0}
   vectorOffsetExp: {x: 0, y: 30, z: 0}
   vectorCheckOffset: {x: 0, y: 0, z: 0.03}
+  listPieceTemp: []
 --- !u!135 &6308411296484759747
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -110,7 +111,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.4
+  m_Radius: 0.6
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &7941661105643034743
 PrefabInstance:

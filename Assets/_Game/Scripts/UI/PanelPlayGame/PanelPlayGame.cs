@@ -17,7 +17,7 @@ public class PanelPlayGame : UIPanel
     [SerializeField] Button coinBoosterBtn;
     [SerializeField] TextMeshProUGUI coinBoosterEarnTxt;
 
-    [SerializeField] BoosterItemButton btnItemBomb;
+    [SerializeField] BoosterItemButton btnHammer;
     [SerializeField] BoosterItemButton btnFillUp;
     [SerializeField] BoosterItemButton btnReroll;
 
@@ -28,7 +28,7 @@ public class PanelPlayGame : UIPanel
         base.Awake();
         coinBoosterEarnTxt.text = ConstantValue.VAL_COIN_BOOSTER.ToString();
         x2BoosterTimeTxt.text = ConstantValue.VAL_X2BOOSTER_TIME.ToString() + ConstantValue.STR_MINUTE;
-        btnItemBomb.SetActionCallBack(UsingItemBomb);
+        btnHammer.SetActionCallBack(UsingHammer);
         btnFillUp.SetActionCallBack(UsingItemFillUp);
         btnReroll.SetActionCallBack(UsingReroll);
 
@@ -48,10 +48,10 @@ public class PanelPlayGame : UIPanel
         x2BoosterBtn.interactable = !(x2BoosterTimeRemain > 0);
     }
 
-    void UsingItemBomb()
+    void UsingHammer()
     {
-        GameManager.Instance.itemManager.UsingItem(ItemType.Bomb);
-        btnItemBomb.UpdateStatus();
+        GameManager.Instance.itemManager.UsingItem(ItemType.Hammer);
+        btnHammer.UpdateStatus();
     }
 
     void UsingItemFillUp() {
