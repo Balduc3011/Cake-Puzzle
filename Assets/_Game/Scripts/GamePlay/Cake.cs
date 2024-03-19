@@ -333,7 +333,7 @@ public class Cake : MonoBehaviour
         onDrop = true;
         transform.parent = currentPlate.pointStay;
         transform.DOLocalMove(Vector3.zero, .1f);
-        Debug.Log("last drop: "+ lastDrop);
+        //Debug.Log("last drop: "+ lastDrop);
         DOVirtual.DelayedCall(.1f, () =>
         {
             if (lastDrop)
@@ -361,8 +361,11 @@ public class Cake : MonoBehaviour
 
     public void CheckOnMouse() {
         if (onDrop) return;
-        if (Physics.SphereCast(transform.position, radiusCheck, -transform.up * .1f+ vectorCheckOffset, out hitInfor))
+        Debug.DrawLine(transform.position, transform.position - vectorCheckOffset);
+        if (Physics.Linecast(transform.position, transform.position - vectorCheckOffset, out hitInfor))
         {
+            //Debug.Log(hitInfor.collider.gameObject.name);
+            //Debug.DrawLine(transform.position, hitInfor.point);
             if (hitInfor.collider.gameObject.layer == 6)
             {
                 Plate plate = hitInfor.collider.gameObject.GetComponent<Plate>();
@@ -392,8 +395,8 @@ public class Cake : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, radiusCheck);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position - (transform.up * .1f + vectorCheckOffset), radiusCheck);
     }
 
     public void SetGroupCake(GroupCake groupCake)
@@ -427,7 +430,7 @@ public class Cake : MonoBehaviour
                     Debug.Log(listPieceTemp[i].currentRotateIndex);
                     indexReturn = listPieceTemp[i].currentRotateIndex;
                    //Debug.Log(pieces[i] + " " + i);
-                    Debug.Log("index return: " + indexReturn);
+                    //Debug.Log("index return: " + indexReturn);
                     break;
             }
 
@@ -436,13 +439,13 @@ public class Cake : MonoBehaviour
         {
             indexOfNewPiece = listPieceTemp.Count;
             indexReturn = listPieceTemp[listPieceTemp.Count - 1].currentRotateIndex + 1;
-            Debug.Log("index return: " + indexReturn);
+            //Debug.Log("index return: " + indexReturn);
         }
         return indexReturn;
     }
 
     public void StartRotateOtherPieceForNewPiece(UnityAction actionCallBack) {
-        Debug.Log("rotate other+ " + currentPlate);
+        //Debug.Log("rotate other+ " + currentPlate);
         actionCallBackRotateDone = actionCallBack;
         if (!cakeDone)
         {
@@ -472,7 +475,7 @@ public class Cake : MonoBehaviour
     }
   
     public void RotateOtherPieceRight(UnityAction actionCallRotateDone) {
-        Debug.Log("rotate right way+ "+currentPlate);
+        //Debug.Log("rotate right way+ "+currentPlate);
         rotateRWDone = actionCallRotateDone;
         indexRotateRW = 0;
         callBackRotateDone = false;
@@ -664,7 +667,7 @@ public class Cake : MonoBehaviour
         transform.DOScale(0f, .3f).SetEase(Ease.InQuad);
 
         DOVirtual.DelayedCall(CacheSourse.float05, () => {
-            Debug.Log("Destroy now");
+            //Debug.Log("Destroy now");
             Destroy(gameObject);
         });
     }
@@ -700,9 +703,9 @@ public class Cake : MonoBehaviour
             return;
         tweens.ForEach(t => t?.Kill());
         tweens.Clear();
-        tweens.Add(transform.DOScale(CacheSourse.vector08, CacheSourse.float013).SetEase(Ease.InSine));
-        tweens.Add(transform.DOScale(CacheSourse.vector1, CacheSourse.float013).SetEase(Ease.InOutSine).SetDelay(CacheSourse.float013));
-        tweens.Add(transform.DOScale(CacheSourse.vector09, CacheSourse.float013).SetEase(Ease.OutSine).SetDelay(CacheSourse.float026));
+        tweens.Add(transform.DOScale(scaleDefault-.1f, CacheSourse.float013).SetEase(Ease.InSine));
+        tweens.Add(transform.DOScale(scaleDefault+.1f, CacheSourse.float013).SetEase(Ease.InOutSine).SetDelay(CacheSourse.float013));
+        tweens.Add(transform.DOScale(scaleDefault, CacheSourse.float013).SetEase(Ease.OutSine).SetDelay(CacheSourse.float026));
     }
 
     public int GetPieceFree()

@@ -89,7 +89,7 @@ public class GroupCake : MonoBehaviour
 
         for (int i = 0; i < cake.Count; i++)
         {
-            Debug.Log("index drop:"+i +" cake count: "+ cake.Count);
+            //Debug.Log("index drop:"+i +" cake count: "+ cake.Count);
             cake[i].DropDone(i == cake.Count - 1, CallBackStartCheckCake);
             GameManager.Instance.cakeManager.AddCakeNeedCheck(cake[i]);
         }
@@ -168,13 +168,17 @@ public class GroupCake : MonoBehaviour
         if (objConnects[0].activeSelf)
         {
             pointDefault = pointDefaults[1];
-            pointMove = pointMoveOnSelects[0];
+            pointMove = pointMoveOnSelects[1];
+            cake[0].transform.position = pointDefaults[0].position;
         }
         if (objConnects[1].activeSelf)
         {
             pointDefault = pointDefaults[2];
-            pointMove = pointMoveOnSelects[1];
+            pointMove = pointMoveOnSelects[2];
+            cake[0].transform.position = pointMoveOnSelects[0].position;
         }
+
+
 
         ClearCakeNotUsing();
     }
