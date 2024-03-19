@@ -93,6 +93,7 @@ public class CakeSaveData : SaveBase
 
     public void AddCakeCard(int cakeId, int amount)
     {
+        if (cakeId == -1) return;
         for (int i = 0; i < ownedCakes.Count; i++)
         {
             if (ownedCakes[i].cakeID == cakeId)

@@ -80,6 +80,8 @@ public class InventoryCake : MonoBehaviour
             {
                 transform.DOScale(1f, 0.05f).SetEase(Ease.InOutQuad);
         });
-        panelBakery.ShowCakeInfo(cakeData, this);
+        if(ProfileManager.Instance.playerData.cakeSaveData.IsOwnedCake(cakeData.id)) {
+            panelBakery.ShowCakeInfo(cakeData, this);
+        }
     }
 }

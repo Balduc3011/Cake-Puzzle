@@ -2,6 +2,7 @@ using DG.Tweening.Core.Easing;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -48,9 +49,97 @@ public class GameManager : Singleton<GameManager>
     public void GetLevelUpReward()
     {
         rewardItems.Clear();
-        GetCakeOnLevelUp();
-        GetLevelUpItem();
+        int level = ProfileManager.Instance.playerData.playerResourseSave.currentLevel;
+        if(level == 1)
+        {
+            AddRewardByType(ItemType.Hammer);
+        }
+        else if (level == 2)
+        {
+            AddRewardByType(ItemType.FillUp);
+        }
+        else if (level == 3)
+        {
+            AddRewardByType(ItemType.Hammer);
+        }
+        else if (level == 4)
+        {
+            AddRewardByType(ItemType.Cake);
+        }
+        else
+        {
+            RandonReward();
+        }
+        //GetCakeOnLevelUp();
+        //GetLevelUpItem();
+        GetLevelCake();
         CollectItemReward(rewardItems);
+    }
+
+    void GetLevelCake()
+    {
+        int level = ProfileManager.Instance.playerData.playerResourseSave.currentLevel;
+        ItemData firstCake = new();
+        firstCake.ItemType = ItemType.Cake;
+        int newCakeID = ProfileManager.Instance.dataConfig.levelDataConfig.GetCakeID(level - 1);
+        firstCake.amount = 1;
+        if (newCakeID != -1)
+        {
+            ProfileManager.Instance.playerData.cakeSaveData.AddCake(newCakeID);
+            ProfileManager.Instance.playerData.cakeSaveData.UseCake(newCakeID);
+        }
+        firstCake.subId = newCakeID;
+        rewardItems.Add(firstCake);
+    }
+
+    void AddRewardByType(ItemType type)
+    {
+        ItemData newItem = new();
+        newItem.ItemType = type;
+        newItem.subId = -1;
+        switch (type)
+        {
+            case ItemType.Cake:
+                newItem.amount = 5;
+                ColectRewardCakeCard((int)newItem.amount);
+                break;
+            case ItemType.Swap:
+            case ItemType.Hammer:
+            case ItemType.ReRoll:
+            case ItemType.Bomb:
+            case ItemType.FillUp:
+                newItem.amount = 1;
+                break;
+            default:
+                break;
+        }
+        rewardItems.Add(newItem);
+    }
+
+    void ColectRewardCakeCard(int amount)
+    {
+        for (int i = 0; i < amount; i++)
+        {
+            int randonCake = ProfileManager.Instance.playerData.cakeSaveData.GetRandomUnlockedCake();
+            ProfileManager.Instance.playerData.cakeSaveData.AddCakeCard(randonCake, 1);
+        }
+    }
+
+    void RandonReward()
+    {
+        ItemData newItem = new();
+        newItem.subId = -1;
+        newItem.ItemType = ProfileManager.Instance.dataConfig.itemDataConfig.GetRewardItemOnLevel();
+        if(newItem.ItemType == ItemType.Cake)
+        {
+            newItem.amount = UnityEngine.Random.Range(5, 10);
+            ColectRewardCakeCard((int)newItem.amount);
+        }
+        else
+        {
+            newItem.amount = UnityEngine.Random.Range(1, 5);
+        }
+        rewardItems.Add(newItem);
     }
 
     void GetCakeOnLevelUp()

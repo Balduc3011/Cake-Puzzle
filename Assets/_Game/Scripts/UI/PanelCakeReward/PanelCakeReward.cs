@@ -41,10 +41,11 @@ public class PanelCakeReward : UIPanel
     void OnClose()
     {
         UIManager.instance.ClosePanelCakeReward();
-        GameManager.Instance.cakeManager.cakeShowComponent.ShowNormalCake();
-        GameManager.Instance.cakeManager.cakeShowComponent.ShowNextToUnlockCake();
-        GameManager.Instance.cakeManager.ClearAllCake();
-        GameManager.Instance.cakeManager.SetOnMove(false);
-        UIManager.instance.ShowPanelLoading();
+        //GameManager.Instance.cakeManager.cakeShowComponent.ShowNormalCake();
+        //GameManager.Instance.cakeManager.cakeShowComponent.ShowNextToUnlockCake();
+        //GameManager.Instance.cakeManager.ClearAllCake();
+        //GameManager.Instance.cakeManager.SetOnMove(false);
+        //UIManager.instance.ShowPanelLoading();
+        UIManager.instance.ShowPanelSelectReward();
     }
 }

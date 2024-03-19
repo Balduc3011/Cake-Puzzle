@@ -432,7 +432,16 @@ public class CakeManager : MonoBehaviour
         //    UIManager.instance.ShowPanelItemsReward();
         SetJustUnlockedCake(newCakeID);
         levelUp = true;
-        UIManager.instance.ShowPanelItemsReward();
+        //UIManager.instance.ShowPanelItemsReward();
+        
+        if (justUnlockedCake != -1 && justUnlockedCake != 0)
+        {
+            UIManager.instance.ShowPanelCakeReward();
+        }
+        else
+        {
+            UIManager.instance.ShowPanelSelectReward();
+        }
     }
 
     public void UsingReroll() {

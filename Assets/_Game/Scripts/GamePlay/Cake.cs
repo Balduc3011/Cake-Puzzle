@@ -623,12 +623,10 @@ public class Cake : MonoBehaviour
         ProfileManager.Instance.playerData.playerResourseSave.AddMoney(cakeLevel  * GameManager.Instance.GetDefaultCakeProfit(pieces[0].cakeID, true));
         ProfileManager.Instance.playerData.playerResourseSave.AddTrophy(cakeLevel * (int)GameManager.Instance.GetDefaultCakeProfit(pieces[0].cakeID));
         DOVirtual.DelayedCall(0.18f, () => {
+            EffectDoneCake();
             tweens.Add(transform.DOScale(Vector3.one * .8f, .13f));
             tweens.Add(transform.DOScale(Vector3.one * 1.1f, .13f).SetDelay(.13f));
-            transform.DORotate(CacheSourse.rotateY360, .75f, RotateMode.WorldAxisAdd).SetEase(Ease.OutQuad).OnComplete(() => {
-                EffectDoneCake();
-            });
-
+            transform.DORotate(CacheSourse.rotateY360, .75f, RotateMode.WorldAxisAdd).SetEase(Ease.OutQuad);
         });
        
     }
