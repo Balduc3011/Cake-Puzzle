@@ -114,10 +114,10 @@ public class Table : MonoBehaviour
         if (CheckWayDone(cakeID))
         {
 
-            if (bestPlate.CheckCakeIsDone(cakeID))
-            {
-                bestPlate.DoneCake();
-            }
+            //if (bestPlate.CheckCakeIsDone(cakeID))
+            //{
+            //    bestPlate.DoneCake();
+            //}
             ClearCakeDone();
             // check other cake
             return;
@@ -174,7 +174,7 @@ public class Table : MonoBehaviour
         stepIndex++;
         if (stepIndex == ways.Count)
         {
-            Debug.Log("call back start move");
+            //Debug.Log("call back start move");
             StartMove(cakeID);
             return;
         }
@@ -550,13 +550,24 @@ public class Way {
     }
 
     void CallDoneThatMove() {
+        DOVirtual.DelayedCall(timeMove - .1f, () =>
+        {
+            if (plateGo == GameManager.Instance.cakeManager.table.bestPlate)
+            {
+                if (plateGo.CheckCakeIsDone(pieces.cakeID))
+                {
+                    plateGo.DoneCake();
+                }
+            }
+        });
+        
+
         if (lastMove)
         {
             plateCurrent.MoveDoneOfCake();
             timeDelay = ProfileManager.Instance.dataConfig.cakeAnimationSetting.GetTimeEachCake();
         }
         else timeDelay = ProfileManager.Instance.dataConfig.cakeAnimationSetting.GetTimeEachPiece();
-        Debug.Log("Time Delay: " + timeDelay);
         DOVirtual.DelayedCall(timeDelay, () =>
         {
             DoActionDone();
@@ -573,7 +584,7 @@ public class Way {
         plateGo.AddPiece(pieces);
 
         plateGo.currentCake.StartRotateOtherPieceForNewPiece(() => {
-            Debug.Log("Rotate done start move");
+            //Debug.Log("Rotate done start move");
             
             pieces.transform.parent = plateGo.currentCake.transform;
             pieces.transform.DOScale(Vector3.one, 0.25f);
@@ -582,9 +593,9 @@ public class Way {
             });
             plateGo.currentCake.CheckCakeIsDone(pieces.cakeID);
             if (!plateGo.currentCake.cakeDone) DOVirtual.DelayedCall(timeMove - .15f, cake.DoAnimImpact);
+            pieces.transform.DORotate(new Vector3(0, plateGo.currentCake.rotates[rotateIndexReturn], 0), timeRotate).SetEase(Ease.InQuad);
             CallDoneThatMove();
             //Debug.Log(rotateIndexReturn);
-            pieces.transform.DORotate(new Vector3(0, plateGo.currentCake.rotates[rotateIndexReturn], 0), timeRotate).SetEase(Ease.InQuad);
         });
         plateCurrent.CheckNullPieces();
     }
