@@ -285,23 +285,27 @@ public class Cake : MonoBehaviour
     
     void FillUp() {
         Debug.Log("Fill up");
-        listCakeIDFillUp.Clear();
-        pieceCakeIDFill = pieces[0].cakeID;
-        for (int i = pieces.Count - 1; i >= 0; i--)
-        {
-            pieces[i].RemoveByFillUp();
-            pieces.Remove(pieces[i]);
-        }
-        for (int i = 0; i < 6; i++)
-        {
-            listCakeIDFillUp.Add(pieceCakeIDFill);
-        }
-        InitData(listCakeIDFillUp, currentPlate);
-        GameManager.Instance.itemManager.UsingItemDone();
-        ProfileManager.Instance.playerData.playerResourseSave.UsingItem(ItemType.FillUp);
-        DoneCakeMode();
-        ProfileManager.Instance.playerData.cakeSaveData.RemoveCake(currentPlate.plateIndex);
-        EventManager.TriggerEvent(EventName.UsingFillUpDone.ToString());
+        transform.DOMove(GameManager.Instance.itemManager.GetPointFillUp(), 1f).SetEase(Ease.OutElastic);
+        transform.DOScale(1.7f, 1f).SetEase(Ease.OutElastic);
+
+
+        //listCakeIDFillUp.Clear();
+        //pieceCakeIDFill = pieces[0].cakeID;
+        //for (int i = pieces.Count - 1; i >= 0; i--)
+        //{
+        //    pieces[i].RemoveByFillUp();
+        //    pieces.Remove(pieces[i]);
+        //}
+        //for (int i = 0; i < 6; i++)
+        //{
+        //    listCakeIDFillUp.Add(pieceCakeIDFill);
+        //}
+        //InitData(listCakeIDFillUp, currentPlate);
+        //GameManager.Instance.itemManager.UsingItemDone();
+        //ProfileManager.Instance.playerData.playerResourseSave.UsingItem(ItemType.FillUp);
+        //DoneCakeMode();
+        //ProfileManager.Instance.playerData.cakeSaveData.RemoveCake(currentPlate.plateIndex);
+        //EventManager.TriggerEvent(EventName.UsingFillUpDone.ToString());
     }
 
     void UsingHammer() {
@@ -332,7 +336,11 @@ public class Cake : MonoBehaviour
     public void DropDone(bool lastDrop, UnityAction actionCallback) {
         onDrop = true;
         transform.parent = currentPlate.pointStay;
-        transform.DOLocalMove(Vector3.zero, .1f);
+        transform.DOLocalMove(Vector3.zero, 0.2f).SetEase(Ease.InQuad).OnComplete(()=> {
+            Transform effectDrop = GameManager.Instance.objectPooling.GetSmokeEffectDrop();
+            effectDrop.transform.position = transform.position - vectorOffsetEffectDrop;
+            effectDrop.gameObject.SetActive(true);
+        });
         //Debug.Log("last drop: "+ lastDrop);
         DOVirtual.DelayedCall(.1f, () =>
         {
@@ -572,20 +580,6 @@ public class Cake : MonoBehaviour
             pieces[i] = pieces[i - 1];
         }
         pieces[indexOfNewPiece] = piece;
-
-        //pieces.Add(piece);
-        //pieceTemp = pieces[indexOfNewPiece];
-        //pieces[indexOfNewPiece] = piece;
-        //pieces[pieces.Count - 1] = pieceTemp;
-        //pieces.Sort((a, b) => { return Compare(a, b); });
-    }
-
-    int Compare(Piece a, Piece b) {
-        if (a.currentRotateIndex > b.currentRotateIndex)
-            return 1;
-        if (a.currentRotateIndex < b.currentRotateIndex)
-            return -1;
-        return 0;
     }
 
     public bool CheckCakeIsDone(int cakeID) {

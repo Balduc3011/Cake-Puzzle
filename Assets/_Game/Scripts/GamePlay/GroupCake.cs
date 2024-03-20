@@ -13,6 +13,10 @@ public class GroupCake : MonoBehaviour
     Transform pointDefault;
     Transform pointMove;
     public int groupCakeIndex;
+    public float scaleDropFirst;
+    public float scaleDropSeconds;
+    public float timeDropScale08;
+    public float timeDropScale1;
     //public Cake[,]cakes2 = new Cake[3, 3];
 
     Transform pointSpawn;
@@ -62,6 +66,11 @@ public class GroupCake : MonoBehaviour
             {
                 cake[i].transform.DOLocalMove(pointMove.localPosition, .25f).SetEase(Ease.InOutQuad);
             }
+
+            for (int i = 0; i < cake.Count; i++)
+            {
+                cake[i].transform.DOScale(1.2f, .25f).SetEase(Ease.InOutQuad);
+            }
             onFollow = true;
         }
     }
@@ -91,6 +100,9 @@ public class GroupCake : MonoBehaviour
         {
             //Debug.Log("index drop:"+i +" cake count: "+ cake.Count);
             cake[i].DropDone(i == cake.Count - 1, CallBackStartCheckCake);
+            cake[i].transform.DOScale(scaleDropFirst, timeDropScale08).SetEase(Ease.InQuad);
+            cake[i].transform.DOScale(scaleDropSeconds, timeDropScale1).SetEase(Ease.InOutQuad).SetDelay(timeDropScale08);
+
             GameManager.Instance.cakeManager.AddCakeNeedCheck(cake[i]);
         }
         //timeCheck = 0;
@@ -139,6 +151,7 @@ public class GroupCake : MonoBehaviour
                 cake[i].GroupDropFail();
                 if (i > 0)
                     cake[i].transform.DOLocalMove(pointDefault.localPosition, .2f).SetEase(Ease.InOutQuad);
+                cake[i].transform.DOScale(1f, .25f).SetEase(Ease.InOutQuad);
             }
         }
         transform.position = pointSpawn.position;

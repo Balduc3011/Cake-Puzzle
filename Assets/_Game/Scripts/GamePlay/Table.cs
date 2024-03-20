@@ -550,7 +550,7 @@ public class Way {
     }
 
     void CallDoneThatMove() {
-        DOVirtual.DelayedCall(timeMove - .1f, () =>
+        DOVirtual.DelayedCall(timeMove - .15f, () =>
         {
             if (plateGo == GameManager.Instance.cakeManager.table.bestPlate)
             {

@@ -191,4 +191,22 @@ public class ObjectPooling : MonoBehaviour
         return newSmokeEffect;
     }
 
+    public List<Transform> smokeEffectsDrops = new List<Transform>();
+    public Transform smokeEffectsDrop;
+    public Transform GetSmokeEffectDrop()
+    {
+        for (int i = smokeEffectsDrops.Count - 1; i >= 0; i--)
+        {
+            if (smokeEffectsDrops[i] == null)
+            {
+                smokeEffectsDrops.RemoveAt(i);
+                continue;
+            }
+            if (!smokeEffectsDrops[i].gameObject.activeSelf) return smokeEffectsDrops[i];
+        }
+        Transform newSmokeEffect = Instantiate(smokeEffectsDrop, transform);
+        smokeEffectsDrops.Add(newSmokeEffect);
+        return newSmokeEffect;
+    }
+
 }
