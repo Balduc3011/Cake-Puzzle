@@ -60,7 +60,7 @@ public class GameManager : Singleton<GameManager>
         }
         else if (level == 3)
         {
-            AddRewardByType(ItemType.Hammer);
+            AddRewardByType(ItemType.ReRoll);
         }
         else if (level == 4)
         {
@@ -197,6 +197,7 @@ public class GameManager : Singleton<GameManager>
         {
             AddItem(items[i]);
         }
+        EventManager.TriggerEvent(EventName.AddItem.ToString());
     }
 
     public void AddItem(ItemData item)

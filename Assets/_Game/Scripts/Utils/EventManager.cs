@@ -26,7 +26,8 @@ public enum EventName
     AddCakeCard = 12,
     UsingHammer = 13,
     UsingHammerDone = 14,
-    CheckClearCake = 15
+    CheckClearCake = 15,
+    AddItem = 16
 }
 
 public class EventManager : Singleton<EventManager>

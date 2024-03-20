@@ -188,7 +188,7 @@ public class PanelTotal : UIPanel
     void ShowPanelTest()
     {
         //UIAnimationController.BasicButton(decorBtn.transform, .1f, UIManager.instance.ShowPanelSpin);
-        UIAnimationController.BtnAnimZoomBasic(decorBtn.transform, .1f, UIManager.instance.ShowPanelLeaderBoard);
+        UIAnimationController.BtnAnimZoomBasic(decorBtn.transform, .1f, UIManager.instance.ShowPanelCakeReward);
         //UIManager.instance.ShowPanelSpin();
     }
 
