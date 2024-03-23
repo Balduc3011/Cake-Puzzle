@@ -10,8 +10,13 @@ public class GroupCake : MonoBehaviour
     [SerializeField] List<GameObject> objConnects = new List<GameObject>();
     [SerializeField] List<Transform> pointDefaults;
     [SerializeField] List<Transform> pointMoveOnSelects;
-    Transform pointDefault;
-    Transform pointMove;
+    Transform pointCake1Default;
+    Transform pointCake1Move;
+
+    Transform pointCake0Default;
+    Transform pointCake0Move;
+
+    public Transform pointCake0;
     public int groupCakeIndex;
     public float scaleDropFirst;
     public float scaleDropSeconds;
@@ -64,8 +69,9 @@ public class GroupCake : MonoBehaviour
             GameManager.Instance.cakeManager.SetCurrentGroupCake(this);
             for (int i = 1; i < cake.Count; i++)
             {
-                cake[i].transform.DOLocalMove(pointMove.localPosition, .25f).SetEase(Ease.InOutQuad);
+                cake[i].transform.DOLocalMove(pointCake1Move.localPosition, .25f).SetEase(Ease.InOutQuad);
             }
+            cake[0].transform.DOLocalMove(pointCake0Move.localPosition, .25f).SetEase(Ease.InOutQuad);
 
             for (int i = 0; i < cake.Count; i++)
             {
@@ -115,34 +121,6 @@ public class GroupCake : MonoBehaviour
     void CallBackStartCheckCake() {
         GameManager.Instance.cakeManager.SetupCheckCake();
     }
-    //int indexCake;
-    //int timeCheck;
-    //void CheckNextCake() {
-    //    indexCake++;
-    //    ClearCake();
-    //    GameManager.Instance.objectPooling.CheckGroupCake();
-    //    if (indexCake < cake.Count)
-    //    {
-    //        GameManager.Instance.cakeManager.SetOnMove(true);
-    //        GameManager.Instance.cakeManager.StartCheckCake(cake[indexCake], CheckNextCake);
-    //    }
-    //    else {
-
-    //        timeCheck++;
-    //        if (timeCheck == 3)
-    //        {
-    //            GameManager.Instance.cakeManager.table.SaveCake();
-    //            GameManager.Instance.cakeManager.SetOnMove(false);
-    //            GameManager.Instance.cakeManager.RemoveCakeWait(this);
-    //            GameManager.Instance.cakeManager.StartCheckLoseGame();
-    //            GameManager.Instance.cakeManager.CheckSpawnCakeGroup();
-    //        }
-    //        else {
-    //            indexCake = -1;
-    //            CheckNextCake();
-    //        }
-    //    }
-    //}
 
     public void DropFail() {
         for (int i = 0; i < cake.Count; i++)
@@ -151,7 +129,9 @@ public class GroupCake : MonoBehaviour
             {
                 cake[i].GroupDropFail();
                 if (i > 0)
-                    cake[i].transform.DOLocalMove(pointDefault.localPosition, .2f).SetEase(Ease.InOutQuad);
+                    cake[i].transform.DOLocalMove(pointCake1Default.localPosition, .2f).SetEase(Ease.InOutQuad);
+                else
+                    cake[i].transform.DOLocalMove(pointCake0Default.localPosition, .2f).SetEase(Ease.InOutQuad);
                 cake[i].transform.DOScale(1f, .25f).SetEase(Ease.InOutQuad);
             }
         }
@@ -179,22 +159,34 @@ public class GroupCake : MonoBehaviour
         objConnects[0].SetActive(cake[1].gameObject.activeSelf);
         objConnects[1].SetActive(cake[2].gameObject.activeSelf);
 
+        ClearCakeNotUsing();
         if (objConnects[0].activeSelf)
         {
-            pointDefault = pointDefaults[1];
-            pointMove = pointMoveOnSelects[1];
-            cake[0].transform.position = pointDefaults[0].position;
+            pointCake1Default = pointDefaults[2];
+            pointCake1Move = pointMoveOnSelects[2];
+
+            pointCake0Default = pointDefaults[0];
+            pointCake0Move = pointMoveOnSelects[0];
+
+            cake[1].transform.position = pointCake1Default.position;
         }
+        else
         if (objConnects[1].activeSelf)
         {
-            pointDefault = pointDefaults[2];
-            pointMove = pointMoveOnSelects[2];
-            cake[0].transform.position = pointMoveOnSelects[0].position;
+            pointCake1Default = pointDefaults[3];
+            pointCake1Move = pointMoveOnSelects[3];
+
+            pointCake0Default = pointDefaults[1];
+            pointCake0Move = pointMoveOnSelects[1];
+            cake[1].transform.position = pointCake1Default.position;
         }
-
-
-
-        ClearCakeNotUsing();
+        if (cake.Count == 1)
+        {
+            Debug.Log("one cake");
+            pointCake0Default = pointCake0;
+            pointCake0Move = pointCake0;
+        }
+        cake[0].transform.position = pointCake0Default.position;
     }
 
     public void InitData(List<IDInfor> idInfors, Transform pointSpawn, int cakeWaitIndex) {
@@ -205,6 +197,9 @@ public class GroupCake : MonoBehaviour
         cake[0].InitData(idInfors);
         objConnects[0].SetActive(false);
         objConnects[1].SetActive(false);
+        pointCake0Default = pointCake0;
+        pointCake0Move = pointCake0;
+        cake[0].transform.position = pointCake0.position;
     }
 
     void ClearCakeNotUsing() {
