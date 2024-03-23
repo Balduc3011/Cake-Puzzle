@@ -127,6 +127,9 @@ public class UIManager : MonoBehaviour {
                 case UIPanelType.PanelQuickIAP:
                     panel = Instantiate(Resources.Load("UI/PanelQuickIAP") as GameObject, mainCanvas);
                     break;
+                case UIPanelType.PanelSelectReward:
+                    panel = Instantiate(Resources.Load("UI/PanelSelectReward") as GameObject, mainCanvas);
+                    break;
             }
             if (panel) panel.SetActive(true);
             return panel;
@@ -441,4 +444,17 @@ public class UIManager : MonoBehaviour {
         GameObject go = GetPanel(UIPanelType.PanelQuickIAP);
         go.SetActive(false);
     }
+    public void ShowPanelSelectReward()
+    {
+        isHasPopupOnScene = true;
+        GameObject go = GetPanel(UIPanelType.PanelSelectReward);
+        go.SetActive(true);
+    }
+    public void ClosePanelSelectReward()
+    {
+        isHasPopupOnScene = false;
+        GameObject go = GetPanel(UIPanelType.PanelSelectReward);
+        go.SetActive(false);
+    }
+
 }

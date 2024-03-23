@@ -93,6 +93,7 @@ public class CakeSaveData : SaveBase
 
     public void AddCakeCard(int cakeId, int amount)
     {
+        if (cakeId == -1) return;
         for (int i = 0; i < ownedCakes.Count; i++)
         {
             if (ownedCakes[i].cakeID == cakeId)
@@ -108,6 +109,13 @@ public class CakeSaveData : SaveBase
         cake.level = 1;
         cake.cardAmount = amount;
         ownedCakes.Add(cake);
+        IsMarkChangeData();
+        SaveData();
+    }
+
+    public void OnUpgradeCard(OwnedCake ownedCake)
+    {
+        ownedCake.OnUpgradeCard();
         IsMarkChangeData();
         SaveData();
     }
@@ -276,6 +284,16 @@ public class CakeSaveData : SaveBase
     {
         return cakeOnPlates.Count > 0;
     }
+
+    public bool HasCakeUpgradeable()
+    {
+        for (int i = 0; i < ownedCakes.Count; i++)
+        {
+            if (ownedCakes[i].IsAbleToUpgrade())
+                return true;
+        }
+        return false;
+    }
 }
 
 [System.Serializable]
@@ -329,7 +347,18 @@ public class OwnedCake
     public void AddCard(int amount)
     {
         cardAmount += amount;
-        if(cardAmount >= cardRequire)
+        //if(cardAmount >= cardRequire)
+        //{
+        //    level++;
+        //    cardAmount -= cardRequire;
+        //    UpdateCardRequire();
+        //}
+        EventManager.TriggerEvent(EventName.AddCakeCard.ToString());
+    }
+
+    public void OnUpgradeCard()
+    {
+        if (cardAmount >= cardRequire)
         {
             level++;
             cardAmount -= cardRequire;
@@ -343,4 +372,9 @@ public class OwnedCake
     }
 
     public int CardRequire { get => cardRequire; }
+
+    public bool IsAbleToUpgrade()
+    {
+        return cardAmount >= cardRequire;
+    }
 }

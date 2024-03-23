@@ -34,6 +34,7 @@ public class PlayerResourseSave : SaveBase
             coins = data.coins;
             trophy = data.trophy;
             trophyRecord = data.trophyRecord;
+            piggySave = data.piggySave;
             lastFreeSpin = data.lastFreeSpin;
             lastDay = data.lastDay;
             x2BoosterEnd = data.x2BoosterEnd;
@@ -110,9 +111,18 @@ public class PlayerResourseSave : SaveBase
         SaveData();
     }
 
-    public void AddPiggySave()
+    public void AddPiggySave(float amount = 10)
     {
-        piggySave += ConstantValue.VAL_PIGGY_SAVE;
+        piggySave += amount;
+        if (piggySave >= ConstantValue.VAL_MAX_PIGGY)
+            piggySave = ConstantValue.VAL_MAX_PIGGY;
+        IsMarkChangeData();
+        SaveData();
+    }
+
+    public void ClearPiggySave()
+    {
+        piggySave = 0;
         IsMarkChangeData();
         SaveData();
     }

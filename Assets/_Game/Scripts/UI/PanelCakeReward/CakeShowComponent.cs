@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -47,4 +48,29 @@ public class CakeShowComponent : MonoBehaviour
         cakeMesh.mesh = cakeSlideMesh;
     }
 
+    public void ShowSelectetCake(int cakeId)
+    {
+        Mesh cakeSlideMesh = ProfileManager.Instance.dataConfig.cakeDataConfig.GetCakePieceMesh(cakeId);
+        cakeCamera.orthographicSize = unlockCamZoom;
+
+        //cakePlate.DOScale(1, 0.35f).From(0).SetEase(Ease.OutBack);
+        //cakePlate.DOMove(cakeShowPos.position, 0.35f).From(cakeStartPos.position).SetEase(Ease.OutBack);
+
+        for (int i = 0; i < cakeSlideMeshs.Count; i++)
+        {
+            cakeSlideMeshs[i].mesh = cakeSlideMesh;
+            cakeSlideMeshs[i].transform.DOScale(3.5f, 0.25f).SetDelay((i + 1) * 0.15f + 0.35f).From(0);
+        }
+    }
+
+    public int testCakeId;
+    [Button]
+    public void TestCake()
+    {
+        Mesh cakeSlideMesh = ProfileManager.Instance.dataConfig.cakeDataConfig.GetCakePieceMesh(testCakeId);
+        for (int i = 0; i < cakeSlideMeshs.Count; i++)
+        {
+            cakeSlideMeshs[i].mesh = cakeSlideMesh;
+        }
+    }
 }

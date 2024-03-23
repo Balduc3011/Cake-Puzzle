@@ -10,6 +10,7 @@ public class PanelSetting : UIPanel
     [SerializeField] Button toMenuBtn;
     [SerializeField] SwitchButton musicSwitch;
     [SerializeField] SwitchButton soundSwitch;
+    [SerializeField] GameObject settingNoti;
     public override void Awake()
     {
         panelType = UIPanelType.PanelSetting;
@@ -46,6 +47,7 @@ public class PanelSetting : UIPanel
         toMenuBtn.gameObject.SetActive(GameManager.Instance.playing);
         if(Transform == null) Transform = transform;
         Transform.SetAsLastSibling();
+        settingNoti.SetActive(ProfileManager.Instance.playerData.cakeSaveData.HasCakeUpgradeable());
     }
 
     void OnClose()

@@ -1,3 +1,4 @@
+using SDK;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -63,7 +64,7 @@ public class PanelSpin : UIPanel
     private void Start()
     {
         closeBtn.onClick.AddListener(OnClose);
-        spinBtn.onClick.AddListener(OnSpin);
+        spinBtn.onClick.AddListener(OnSpinClick);
         //stopBtn.onClick.AddListener(OnStopSpin);
         Init();
         acceleration = (maxSpinSpeed - defaultSpinSpeed) / accelerationTime;
@@ -97,6 +98,14 @@ public class PanelSpin : UIPanel
         {
             slides[i].OnReward(false);
         }
+    }
+
+    void OnSpinClick()
+    {
+        if (GameManager.Instance.IsHasNoAds() || GameManager.Instance.spinManager.IsHasFreeSpin())
+            OnSpin();
+        else
+            AdsManager.Instance.ShowRewardVideo(WatchVideoRewardType.FreeSpinAds.ToString(), OnSpin);
     }
 
     void OnSpin()
