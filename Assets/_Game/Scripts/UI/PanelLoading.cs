@@ -27,7 +27,7 @@ public class PanelLoading : UIPanel
         transform.SetAsLastSibling();
         loadingBar.value = 0;
         SetCardMoving();
-        DOVirtual.Float(0, 100, 5f, (value) =>
+        DOVirtual.Float(0, 100, 3.5f, (value) =>
         {
             loadingBar.value = value;
             txtCurrentLoad.text = (int)value + "%";

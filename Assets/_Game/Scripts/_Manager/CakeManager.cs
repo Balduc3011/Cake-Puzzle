@@ -434,6 +434,19 @@ public class CakeManager : MonoBehaviour
         levelUp = true;
         //UIManager.instance.ShowPanelItemsReward();
         
+        //if (justUnlockedCake != -1 && justUnlockedCake != 0)
+        //{
+        //    UIManager.instance.ShowPanelCakeReward();
+        //}
+        //else
+        //{
+        //    UIManager.instance.ShowPanelSelectReward();
+        //}
+        Invoke("ShowLevelUp", 3.5f);
+    }
+
+    void ShowLevelUp()
+    {
         if (justUnlockedCake != -1 && justUnlockedCake != 0)
         {
             UIManager.instance.ShowPanelCakeReward();

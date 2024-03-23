@@ -31,7 +31,7 @@ public class NavBarItem : MonoBehaviour
 
     public void OnSelect()
     {
-        iconTrs.DOScale(1.45f, 0.25f).SetEase(Ease.InBack);
+        iconTrs.DOScale(1.45f, 0.3f).SetEase(Ease.InOutBack);
     }
     public void OnDeselect()
     {

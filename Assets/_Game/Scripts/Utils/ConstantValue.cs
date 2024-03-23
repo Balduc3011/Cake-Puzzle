@@ -40,6 +40,8 @@ public class ConstantValue
     public static float VAL_MAX_EXCEED = 1000000000000;
     public static float VAL_REVICE_PRICE = 750f;
     public static float VAL_DEFAULT_EXP = 10f;
+    public static float VAL_DEFAULT_CAKE_LEVEL = 2f;
+    public static float VAL_DEFAULT_CAKE_ID = 2f;
     public static int VAL_DEFAULT_TROPHY = 10;
     public static float VAL_X2BOOSTER_TIME = 2.5f;
     public static float VAL_DRAW_PIGGY = 800f;

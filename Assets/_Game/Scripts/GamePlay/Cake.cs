@@ -621,10 +621,10 @@ public class Cake : MonoBehaviour
         if (pieces.Count > 0)
             cakeLevel = ProfileManager.Instance.playerData.cakeSaveData.GetOwnedCakeLevel(pieces[0].cakeID);
 
-        GameManager.Instance.AddPiggySave(cakeLevel * GameManager.Instance.GetDefaultCakeProfit(pieces[0].cakeID, true));
-        ProfileManager.Instance.playerData.playerResourseSave.AddExp(cakeLevel * GameManager.Instance.GetDefaultCakeProfit(pieces[0].cakeID));
-        ProfileManager.Instance.playerData.playerResourseSave.AddMoney(cakeLevel  * GameManager.Instance.GetDefaultCakeProfit(pieces[0].cakeID, true));
-        ProfileManager.Instance.playerData.playerResourseSave.AddTrophy(cakeLevel * (int)GameManager.Instance.GetDefaultCakeProfit(pieces[0].cakeID));
+        GameManager.Instance.AddPiggySave(GameManager.Instance.GetDefaultCakeProfit(pieces[0].cakeID, cakeLevel, true));
+        ProfileManager.Instance.playerData.playerResourseSave.AddExp(GameManager.Instance.GetDefaultCakeProfit(pieces[0].cakeID, cakeLevel));
+        ProfileManager.Instance.playerData.playerResourseSave.AddMoney(GameManager.Instance.GetDefaultCakeProfit(pieces[0].cakeID, cakeLevel, true));
+        ProfileManager.Instance.playerData.playerResourseSave.AddTrophy((int)GameManager.Instance.GetDefaultCakeProfit(pieces[0].cakeID, cakeLevel));
         DOVirtual.DelayedCall(0.18f, () => {
             EffectDoneCake();
             tweens.Add(transform.DOScale(Vector3.one * .8f, .13f));
@@ -659,7 +659,7 @@ public class Cake : MonoBehaviour
 
         ExpEffect expEffect = GameManager.Instance.objectPooling.GetExpEffect();
         expEffect.transform.position = Camera.main.WorldToScreenPoint(transform.position) + vectorOffsetExp;
-        expEffect.ChangeText((cakeLevel * GameManager.Instance.GetDefaultCakeProfit(pieces[0].cakeID)).ToString());
+        expEffect.ChangeText((GameManager.Instance.GetDefaultCakeProfit(pieces[0].cakeID, cakeLevel)).ToString());
         expEffect.gameObject.SetActive(true);
 
         transform.DOScale(0f, .3f).SetEase(Ease.InQuad);

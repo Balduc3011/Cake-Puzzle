@@ -169,9 +169,9 @@ public class PanelBakery : UIPanel
             cardAmountTxt.text = currentCake.cardAmount.ToString() + ConstantValue.STR_SLASH + currentCake.CardRequire.ToString();
             upgradeCakeBtn.interactable = currentCake.IsAbleToUpgrade();
             upradeAbleParticle.SetActive(upgradeCakeBtn.interactable);
-            expTxt.text = (currentCake.level * GameManager.Instance.GetDefaultCakeProfit(popupCake.id)).ToString() + " exp";
-            trophyTxt.text = (currentCake.level * GameManager.Instance.GetDefaultCakeProfit(popupCake.id)).ToString() + " trophy";
-            coinTxt.text = (currentCake.level * GameManager.Instance.GetDefaultCakeProfit(popupCake.id)).ToString() + " coin";
+            expTxt.text = (GameManager.Instance.GetDefaultCakeProfit(popupCake.id, currentCake.level)).ToString() + " exp";
+            trophyTxt.text = (GameManager.Instance.GetDefaultCakeProfit(popupCake.id, currentCake.level)).ToString() + " trophy";
+            coinTxt.text = (GameManager.Instance.GetDefaultCakeProfit(popupCake.id, currentCake.level)).ToString() + " coin";
             useCakeBtn.interactable = (!ProfileManager.Instance.playerData.cakeSaveData.IsUsingCake(popupCake.id));
             usingCakeBtnObj.SetActive(ProfileManager.Instance.playerData.cakeSaveData.IsUsingCake(popupCake.id));
             noCakeBtnObj.SetActive(false);

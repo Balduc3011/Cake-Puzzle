@@ -12,7 +12,8 @@ public class PanelSelectReward : UIPanel
     [SerializeField] Button panelCloseBtn;
     [SerializeField] Button closeBtn;
     [SerializeField] Button extraAdsBtn;
-    int selectedCardId;
+    [SerializeField] int selectedCardId;
+    List<ItemData> rewards = new();
     public override void Awake()
     {
         panelType = UIPanelType.PanelSelectReward;
@@ -24,10 +25,14 @@ public class PanelSelectReward : UIPanel
 
     private void OnEnable()
     {
-        if (ProfileManager.Instance.playerData.playerResourseSave.currentLevel <= 4)
+        transform.SetAsLastSibling();
+        selectedCardId = -1;
+        rewards = GameManager.Instance.rewardItems;
+        if (ProfileManager.Instance.playerData.playerResourseSave.currentLevel < 4)
         {
             rewardCards[0].ToOpenPoint();
             rewardCards[1].ToRootPoint();
+            GameManager.Instance.AddItem(rewards[0]);
             Invoke("ShowClose", 3f);
         }
         else
@@ -36,6 +41,8 @@ public class PanelSelectReward : UIPanel
             {
                 rewardCards[i].ToHoldPoint();
             }
+            closeBtn.transform.DOScale(1, 0.25f).From(0).SetEase(Ease.InBack).SetDelay(3f);
+            extraAdsBtn.transform.DOScale(1, 0.25f).From(0).SetEase(Ease.InBack).SetDelay(3f);
         }
         panelCloseBtn.gameObject.SetActive(false);
         closeBtn.transform.localScale = Vector3.zero;
@@ -53,6 +60,7 @@ public class PanelSelectReward : UIPanel
                 rewardCards[i].HideCard();
         }
         Invoke("ShowClose", 4f);
+        GameManager.Instance.AddItem(rewards[cardId]);
     }
     void ShowClose()
     {
@@ -94,7 +102,6 @@ public class PanelSelectReward : UIPanel
     void OnGetExtraReward()
     {
         Invoke("ShowClosePanel", 3f);
-        GameManager.Instance.GetLevelUpReward(false);
         for (int i = 0; i < rewardCards.Count; i++)
         {
             if (rewardCards[i].cardID == selectedCardId)
@@ -102,11 +109,13 @@ public class PanelSelectReward : UIPanel
             else
             {
                 rewardCards[i].ToHoldOpen();
-                rewardCards[i].Init();
+                GameManager.Instance.AddItem(rewards[i]);
+                //rewardCards[i].Init();
             }
                 
         }
         closeBtn.transform.DOScale(0, 0.25f).SetEase(Ease.InBack);
         extraAdsBtn.transform.DOScale(0, 0.25f).SetEase(Ease.InBack);
+        
     }
 }

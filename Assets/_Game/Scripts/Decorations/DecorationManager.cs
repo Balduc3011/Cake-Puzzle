@@ -20,7 +20,7 @@ public class DecorationManager : MonoBehaviour
     {
         decorationComponent.StartCamera(start);
         GameManager.Instance.cameraManager.mainCamera.gameObject.SetActive(!start);
-        GameManager.Instance.cameraManager.ShowRoomCamera(!start);
+        //GameManager.Instance.cameraManager.ShowRoomCamera(!start);
     }
 
     public bool IsOwned(DecorationType type, int id)
@@ -104,4 +104,5 @@ public class DecorationManager : MonoBehaviour
             floorObjectDecoration.Add(currentId, newDecor);
         }
     }
+
 }
