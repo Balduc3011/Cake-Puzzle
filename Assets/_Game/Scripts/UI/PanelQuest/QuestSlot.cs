@@ -14,6 +14,7 @@ public class QuestSlot : SlotBase<QuestData>
     [SerializeField] Slider sProgress;
     [SerializeField] GameObject objHighlight;
     [SerializeField] GameObject objHide;
+    [SerializeField] GameObject objSlider;
     float currentProgress;
     float questRequire;
     public override void InitData(QuestData data)
@@ -33,6 +34,8 @@ public class QuestSlot : SlotBase<QuestData>
         sProgress.value = currentProgress;
         bool isClaimed = ProfileManager.Instance.playerData.questDataSave.IsClaimQuest(data.questType, id);
         btnChoose.interactable = currentProgress == questRequire && !isClaimed;
+        btnChoose.gameObject.SetActive(btnChoose.interactable);
+        objSlider.SetActive(!btnChoose.interactable);
         objHighlight.SetActive(btnChoose.interactable);
         objHide.SetActive(currentProgress == questRequire && isClaimed);
         if(isClaimed)
