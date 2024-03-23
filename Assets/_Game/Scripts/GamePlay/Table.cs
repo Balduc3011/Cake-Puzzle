@@ -554,10 +554,11 @@ public class Way {
         {
             if (plateGo == GameManager.Instance.cakeManager.table.bestPlate)
             {
-                if (plateGo.CheckCakeIsDone(pieces.cakeID))
-                {
-                    plateGo.DoneCake();
-                }
+                //if (pieces != null)
+                    if (plateGo.CheckCakeIsDone(pieces.cakeID))
+                    {
+                        plateGo.DoneCake();
+                    }
             }
         });
         

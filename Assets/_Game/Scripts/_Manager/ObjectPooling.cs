@@ -209,4 +209,22 @@ public class ObjectPooling : MonoBehaviour
         return newSmokeEffect;
     }
 
+    public List<Transform> fillUpEffects = new List<Transform>();
+    public Transform fillUpEffect;
+    public Transform GetFillUpEffect()
+    {
+        for (int i = fillUpEffects.Count - 1; i >= 0; i--)
+        {
+            if (fillUpEffects[i] == null)
+            {
+                fillUpEffects.RemoveAt(i);
+                continue;
+            }
+            if (!fillUpEffects[i].gameObject.activeSelf) return fillUpEffects[i];
+        }
+        Transform newSmokeEffect = Instantiate(fillUpEffect, transform);
+        fillUpEffects.Add(newSmokeEffect);
+        return newSmokeEffect;
+    }
+
 }
