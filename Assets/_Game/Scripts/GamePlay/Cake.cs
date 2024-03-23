@@ -285,8 +285,8 @@ public class Cake : MonoBehaviour
     
     void FillUp() {
         Debug.Log("Fill up");
-        transform.DOMove(GameManager.Instance.itemManager.GetPointFillUp(), 1f).SetEase(Ease.OutElastic);
-        transform.DOScale(1.7f, 1f).SetEase(Ease.OutElastic);
+        transform.DOMove(GameManager.Instance.itemManager.GetPointFillUp(), .25f).SetEase(Ease.InQuint);
+        transform.DOScale(1.7f, .25f).SetEase(Ease.InQuint);
 
 
         //listCakeIDFillUp.Clear();
@@ -336,7 +336,7 @@ public class Cake : MonoBehaviour
     public void DropDone(bool lastDrop, UnityAction actionCallback) {
         onDrop = true;
         transform.parent = currentPlate.pointStay;
-        transform.DOLocalMove(Vector3.zero, 0.2f).SetEase(Ease.InQuad).OnComplete(()=> {
+        transform.DOLocalMove(Vector3.zero, .1f).SetEase(Ease.InQuad).OnComplete(()=> {
             Transform effectDrop = GameManager.Instance.objectPooling.GetSmokeEffectDrop();
             effectDrop.transform.position = transform.position - vectorOffsetEffectDrop;
             effectDrop.gameObject.SetActive(true);
@@ -619,11 +619,13 @@ public class Cake : MonoBehaviour
         ProfileManager.Instance.playerData.playerResourseSave.AddExp(cakeLevel * GameManager.Instance.GetDefaultCakeProfit(pieces[0].cakeID));
         ProfileManager.Instance.playerData.playerResourseSave.AddMoney(cakeLevel  * GameManager.Instance.GetDefaultCakeProfit(pieces[0].cakeID, true));
         ProfileManager.Instance.playerData.playerResourseSave.AddTrophy(cakeLevel * (int)GameManager.Instance.GetDefaultCakeProfit(pieces[0].cakeID));
+
         DOVirtual.DelayedCall(0.18f, () => {
-            EffectDoneCake();
             tweens.Add(transform.DOScale(Vector3.one * .8f, .13f));
             tweens.Add(transform.DOScale(Vector3.one * 1.1f, .13f).SetDelay(.13f));
-            transform.DORotate(CacheSourse.rotateY360, .75f, RotateMode.WorldAxisAdd).SetEase(Ease.OutQuad);
+            transform.DORotate(CacheSourse.rotateY360, .75f, RotateMode.WorldAxisAdd).SetEase(Ease.OutQuad).OnComplete(() => {
+                EffectDoneCake();
+            });
         });
        
     }

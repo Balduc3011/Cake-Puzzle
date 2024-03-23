@@ -146,7 +146,7 @@ public class Table : MonoBehaviour
             StartCreateWay();
             if (ways.Count > 0)
             {
-                Debug.Log("call start move from check id sot lai");
+                //Debug.Log("call start move from check id sot lai");
                 StartMove(currentCakeID);
             }
             else

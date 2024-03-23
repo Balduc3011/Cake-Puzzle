@@ -69,7 +69,8 @@ public class GroupCake : MonoBehaviour
 
             for (int i = 0; i < cake.Count; i++)
             {
-                cake[i].transform.DOScale(1.2f, .25f).SetEase(Ease.InOutQuad);
+                cake[i].transform.DOScale(1.3f, .25f).SetEase(Ease.InOutQuad);
+                cake[i].transform.DOScale(1.2f, .15f).SetEase(Ease.InOutQuad).SetDelay(.25f);
             }
             onFollow = true;
         }
