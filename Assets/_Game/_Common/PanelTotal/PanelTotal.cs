@@ -36,10 +36,14 @@ public class PanelTotal : UIPanel
     [SerializeField] CanvasGroup canvasGroup;
     [SerializeField] List<TransitionUI> transitionUIList;
 
+    [SerializeField] CanvasGroup backGroundCG;
+    [SerializeField] GameObject backGround;
     [SerializeField] GameObject dailyNoti;
     [SerializeField] GameObject spinNoti;
     [SerializeField] GameObject settingNoti;
     [SerializeField] GameObject bakeryNoti;
+
+    int showingCake = -1;
     public override void Awake()
     {
         panelType = UIPanelType.PanelTotal;
@@ -48,6 +52,7 @@ public class PanelTotal : UIPanel
         EventManager.AddListener(EventName.AddCakeCard.ToString(), CheckNoti);
         //backGround = UIManager.instance.backGround;
         CheckSubScreenObstacleBase();
+        Invoke("InitCakeDecor", 2f);
     }
 
     public void CheckNoti()
@@ -134,15 +139,35 @@ public class PanelTotal : UIPanel
         dailyBtn.onClick.AddListener(ShowPanelDailyReward);
         spinBtn.onClick.AddListener(ShowPanelSpin);
         decorBtn.onClick.AddListener(ShowPanelTest);
-        mainGameNavBtn.onClick.AddListener(() => { UIManager.instance.ShowPanelTotalContent(); });
-        bakeryNavBtn.onClick.AddListener(() => { UIManager.instance.ShowPanelBakery(); });
-        decorationNavBtn.onClick.AddListener(() => { UIManager.instance.ShowPanelDecorations(); });
-        shopNavBtn.onClick.AddListener(() => { UIManager.instance.ShowPanelShop(); });
-        questNavBtn.onClick.AddListener(() => { UIManager.instance.ShowPanelDailyQuest(); });
+        mainGameNavBtn.onClick.AddListener(() => { 
+            UIManager.instance.ShowPanelTotalContent();
+            ShowBGCanvasGroup(true);
+        });
+        bakeryNavBtn.onClick.AddListener(() => { 
+            UIManager.instance.ShowPanelBakery();
+            ShowBGCanvasGroup(false);
+        });
+        decorationNavBtn.onClick.AddListener(() => { 
+            UIManager.instance.ShowPanelDecorations();
+            ShowBGCanvasGroup(false);
+        });
+        shopNavBtn.onClick.AddListener(() => { 
+            UIManager.instance.ShowPanelShop();
+            ShowBGCanvasGroup(false);
+        });
+        questNavBtn.onClick.AddListener(() => { 
+            UIManager.instance.ShowPanelDailyQuest();
+            ShowBGCanvasGroup(false);
+        });
         currentLevel = ProfileManager.Instance.playerData.playerResourseSave.currentLevel;
         ChangeLevel();
         ChangeExp();
         CheckNoti();
+    }
+
+    void ShowBGCanvasGroup(bool show)
+    {
+        backGroundCG.DOFade(show ? 1 : 0, show ? 0.1f : 1f);
     }
 
     public void ShowMainSceneContent(bool show)
@@ -157,7 +182,7 @@ public class PanelTotal : UIPanel
         GameManager.Instance.PlayGame();
         navBarContent.SetActive(false);
         mainMenuContent.SetActive(false);
-        //backGround.SetActive(false);
+        backGround.SetActive(false);
         CheckNoti();
     }
 
@@ -165,31 +190,26 @@ public class PanelTotal : UIPanel
     {
         navBarContent.SetActive(true);
         mainMenuContent.SetActive(true);
-        //backGround.SetActive(true);
+        backGround.SetActive(true);
     }
 
     void ShowPanelSetting()
     {
         UIAnimationController.BtnAnimZoomBasic(settingBtn.transform, .1f, UIManager.instance.ShowPanelSetting);
-        //UIManager.instance.ShowPanelSpin();
     }
 
     void ShowPanelDailyReward()
     {
         UIAnimationController.BtnAnimZoomBasic(dailyBtn.transform, .1f, UIManager.instance.ShowPanelDailyReward);
-        //UIManager.instance.ShowPanelDailyReward();
     }
 
     void ShowPanelSpin()
     {
         UIAnimationController.BtnAnimZoomBasic(spinBtn.transform, .1f, UIManager.instance.ShowPanelSpin);
-        //UIManager.instance.ShowPanelSpin();
     }
     void ShowPanelTest()
     {
-        //UIAnimationController.BasicButton(decorBtn.transform, .1f, UIManager.instance.ShowPanelSpin);
         UIAnimationController.BtnAnimZoomBasic(decorBtn.transform, .1f, UIManager.instance.ShowPanelCakeReward);
-        //UIManager.instance.ShowPanelSpin();
     }
 
     public Transform GetPointSlider() {
@@ -229,5 +249,25 @@ public class PanelTotal : UIPanel
         {
             OutItemMode();
         }
+        showCakeCounter += Time.deltaTime;
+        if(showCakeCounter > showCakeCoolDown)
+        {
+            showCakeCounter = 0;
+            InitCakeDecor();
+        }
+    }
+
+    float showCakeCoolDown = 3 * 60;
+    [SerializeField] float showCakeCounter = 0;
+    void InitCakeDecor()
+    {
+        if (GameManager.Instance.playing) return;
+        int newShow = UnityEngine.Random.Range(0, 10);
+        while(newShow == showingCake)
+        {
+            newShow = UnityEngine.Random.Range(0, 10);
+        }
+        showingCake = newShow;
+        GameManager.Instance.cakeManager.cakeShowComponent.ShowSelectetCake(showingCake);
     }
 }

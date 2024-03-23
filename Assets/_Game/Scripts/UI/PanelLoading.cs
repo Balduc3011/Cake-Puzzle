@@ -12,7 +12,7 @@ public class PanelLoading : UIPanel
     [SerializeField] CanvasGroup panelCanvas;
 
     [SerializeField] GameObject firstLoadBG;
-    bool firstPlay = true;
+    //bool firstPlay = true;
     [SerializeField] List<CardMoving> cardMovings;
     public override void Awake()
     {
@@ -22,12 +22,12 @@ public class PanelLoading : UIPanel
 
     private void OnEnable()
     {
-        firstLoadBG.SetActive(firstPlay);
-        firstPlay = false;
+        //firstLoadBG.SetActive(firstPlay);
+        //firstPlay = false;
         transform.SetAsLastSibling();
         loadingBar.value = 0;
         SetCardMoving();
-        DOVirtual.Float(0, 100, 5f, (value) =>
+        DOVirtual.Float(0, 100, 3.5f, (value) =>
         {
             loadingBar.value = value;
             txtCurrentLoad.text = (int)value + "%";

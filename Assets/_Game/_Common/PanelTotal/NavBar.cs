@@ -52,17 +52,18 @@ public class NavBar : MonoBehaviour
         if (selectedItem == navBarItems[index]) return;
         if(selectedItem != null)
         {
-            selector.DOScaleX(1, 0.1f).OnComplete(
-                () => {
-                    selector.DOScaleX(1.2f, 0.15f);
-                    navBarItems[index].OnSelect();
-                }
-                );
+            navBarItems[index].OnSelect();
+            //selector.DOScaleX(1, 0.1f).OnComplete(
+            //    () => {
+            //        selector.DOScaleX(1.2f, 0.15f);
+            //    }
+            //    );
             selectedItem.OnDeselect();
+            selector.DOScaleX(1.2f, 0.5f).From(1).SetEase(Ease.OutBack);
             Sequence navSelectSequence = DOTween.Sequence();
             navSelectSequence.Append(selector.DOMove(selectedItem.lowPosition.position, 0.1f));
             navSelectSequence.Append(selector.DOMove(navBarItems[index].lowPosition.position, 0.01f));
-            navSelectSequence.Append(selector.DOMove(navBarItems[index].position.position, 0.15f));
+            navSelectSequence.Append(selector.DOMove(navBarItems[index].position.position, 0.3f).SetEase(Ease.OutBack));
         }
         else
         {

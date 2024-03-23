@@ -24,6 +24,8 @@ public class InventoryCake : MonoBehaviour
     [SerializeField] GameObject levelBar;
     [SerializeField] TextMeshProUGUI levelTxt;
     [SerializeField] GameObject upgradeNotify;
+    [SerializeField] Slider cardAmountSlider;
+    [SerializeField] TextMeshProUGUI cardAmountTxt;
     void Start()
     {
         button.onClick.AddListener(OnCakeClick);
@@ -61,6 +63,9 @@ public class InventoryCake : MonoBehaviour
             isUsing = ProfileManager.Instance.playerData.cakeSaveData.IsUsingCake(cakeData.id);
             if(currentCake == null) currentCake = ProfileManager.Instance.playerData.cakeSaveData.GetOwnedCake(cakeData.id);
             upgradeNotify.SetActive(currentCake.IsAbleToUpgrade());
+            cardAmountSlider.value = (float)currentCake.cardAmount / (float)currentCake.CardRequire;
+            cardAmountSlider.gameObject.SetActive(true);
+            cardAmountTxt.text = currentCake.cardAmount.ToString() + ConstantValue.STR_SLASH + currentCake.CardRequire.ToString();
         }
         else
         {
@@ -71,6 +76,7 @@ public class InventoryCake : MonoBehaviour
             onIconImg.gameObject.SetActive(false);
             usingMarkObj.SetActive(false);
             upgradeNotify.SetActive(false);
+            cardAmountSlider.gameObject.SetActive(false);
         }
     }
 

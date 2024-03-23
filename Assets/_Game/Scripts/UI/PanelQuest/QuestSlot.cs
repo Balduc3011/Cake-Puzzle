@@ -15,6 +15,7 @@ public class QuestSlot : SlotBase<QuestData>
     [SerializeField] GameObject objHighlight;
     [SerializeField] GameObject objHide;
     [SerializeField] GameObject objSlider;
+    [SerializeField] GameObject objUnable;
     float currentProgress;
     float questRequire;
     public override void InitData(QuestData data)
@@ -36,6 +37,7 @@ public class QuestSlot : SlotBase<QuestData>
         btnChoose.interactable = currentProgress == questRequire && !isClaimed;
         btnChoose.gameObject.SetActive(btnChoose.interactable);
         objSlider.SetActive(!btnChoose.interactable);
+        objUnable.SetActive(!btnChoose.interactable);
         objHighlight.SetActive(btnChoose.interactable);
         objHide.SetActive(currentProgress == questRequire && isClaimed);
         if(isClaimed)

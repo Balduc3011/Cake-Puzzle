@@ -11,6 +11,6 @@ public class CardMoving : MonoBehaviour
 
     public void Move(float delay = 0)
     {
-        card.DOMove(target.position, 0.5f).From(start.position).SetDelay(delay).SetEase(Ease.OutQuart);
+        card.DOMove(target.position, 1f).From(start.position).SetDelay(delay).SetEase(Ease.OutQuart);
     }
 }
