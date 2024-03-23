@@ -14,6 +14,7 @@ public class BoosterItemButton : MonoBehaviour
     private void Start()
     {
         UpdateStatus();
+        EventManager.AddListener(EventName.AddItem.ToString(), UpdateStatus);
     }
     public void SetActionCallBack(UnityAction actionCalback) {
         btnChoose.onClick.AddListener(actionCalback);
