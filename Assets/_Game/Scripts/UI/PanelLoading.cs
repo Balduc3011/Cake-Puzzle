@@ -40,7 +40,7 @@ public class PanelLoading : UIPanel
     {
         for (int i = 0; i < cardMovings.Count; i++)
         {
-            cardMovings[i].Move(Random.Range(0.5f, 1f));
+            cardMovings[i].Move(Random.Range(0.5f, 0.75f));
         }
     }
 }
