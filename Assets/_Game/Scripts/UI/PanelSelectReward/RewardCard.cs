@@ -71,6 +71,21 @@ public class RewardCard : MonoBehaviour
         //});
         //cardLight.DOFade(0, 1f).SetDelay(1.65f);
     }
+
+    public void SingleOpen()
+    {
+        Transform.localScale = Vector3.one;
+        Transform.DOMove(openPoint.position, 0.35f).SetEase(Ease.InBack);
+        Transform.DORotate(Vector3.up * 180, 1.4f).SetEase(Ease.InOutQuart).SetDelay(0.5f);
+        cardLight.DOFade(1, 0.15f).SetDelay(0.7f + 0.5f).OnComplete(() =>
+        {
+            cardBtn.interactable = true;
+            bg.SetActive(false);
+            main.SetActive(true);
+
+        });
+        cardLight.DOFade(0, 1f).SetDelay(0.7f + 0.5f + 0.25f);
+    }
     public void ToHoldEx()
     {
         Transform.DOMove(holdPoint.position, 0.25f).SetEase(Ease.InOutQuad);
