@@ -17,6 +17,8 @@ public class PanelLevelComplete : UIPanel
     [SerializeField] CanvasGroup bgCanvanGroup;
     [SerializeField] GameObject objWinGame;
     [SerializeField] GameObject objLooseGame;
+    [SerializeField] Button hintObj;
+    [SerializeField] SheetAnimation sheetAnimation;
     public override void Awake()
     {
         panelType = UIPanelType.PanelLevelComplete;
@@ -26,7 +28,8 @@ public class PanelLevelComplete : UIPanel
     {
         btnReviveCoin.onClick.AddListener(ReviveCoin);
         btnReviveAds.onClick.AddListener(ReviveADS);
-        btnExit.onClick.AddListener(ExitPanel);
+        btnExit.onClick.AddListener(ShowPanelHint);
+        hintObj.onClick.AddListener(ExitPanel);
         winGameCloseBtn.onClick.AddListener(ExitPanel);
     }
 
@@ -35,6 +38,7 @@ public class PanelLevelComplete : UIPanel
         panelWrapTrs.DOScale(1, 0.35f).From(0);
         bgCanvanGroup.DOFade(1, 0.35f).From(0);
         btnReviveCoin.interactable = ProfileManager.Instance.playerData.playerResourseSave.IsHasEnoughMoney(750);
+        hintObj.gameObject.SetActive(false);
     }
 
     void OnClose()
@@ -56,6 +60,12 @@ public class PanelLevelComplete : UIPanel
     {
         UIManager.instance.ClosePanelLevelComplete();
         UIManager.instance.ShowPanelLeaderBoard();
+    }
+
+    void ShowPanelHint()
+    {
+        hintObj.gameObject.SetActive(true);
+        sheetAnimation.PlayAnim();
     }
 
     void ReviveADS()
