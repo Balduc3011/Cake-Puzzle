@@ -34,7 +34,7 @@ public class RewardCard : MonoBehaviour
     }
     public void HideCard()
     {
-        Transform.DOScale(0, 0.5f).From(1).SetEase(Ease.InBack);
+        Transform.DOScale(0, 0.25f).From(1).SetEase(Ease.InBack);
         cardBtn.interactable = false;
     }
 
@@ -46,27 +46,51 @@ public class RewardCard : MonoBehaviour
     public void ToHoldPoint()
     {
         Transform.DOScale(1, 0.5f).From(0);
-        Transform.DOMove(openPoint.position, 0.75f).SetEase(Ease.OutBack);
-        Transform.DOMove(holdPoint.position, 0.75f).SetEase(Ease.InOutQuad).SetDelay(1);
+        Transform.DOMove(openPoint.position, 0.25f).SetEase(Ease.OutBack);
+        Transform.DOMove(holdPoint.position, 0.25f).SetEase(Ease.InOutQuad).SetDelay(1);
     }
 
     public void ToOpenPoint()
     {
         Transform.localScale = Vector3.one;
-        Transform.DOMove(openPoint.position, 0.75f).SetEase(Ease.InBack);
-        Transform.DORotate(Vector3.up * 180, 1.5f).SetDelay(1).SetEase(Ease.InOutQuart);
-        cardLight.DOFade(1, 0.15f).SetDelay(1.75f).OnComplete(() =>
+        Transform.DOMove(openPoint.position, 0.35f).SetEase(Ease.InBack);
+        Transform.DORotate(Vector3.up * 180, 1.25f).SetDelay(0.35f).SetEase(Ease.InOutQuart);
+        cardLight.DOFade(1, 0.15f).SetDelay(1f).OnComplete(() =>
         {
             bg.SetActive(false);
             main.SetActive(true);
         });
-        
-        cardLight.DOFade(0, 1f).SetDelay(3f);
+        cardLight.DOFade(0, 1f).SetDelay(1.65f);
+    }
+    public void ToHoldEx()
+    {
+        Transform.DOMove(holdPoint.position, 0.25f).SetEase(Ease.InOutQuad);
+    }
+    public void ToHoldOpen()
+    {
+        Transform.DOScale(1, 0.5f).From(0);
+        Transform.DORotate(Vector3.up * 180, 1.25f).SetDelay(0.5f).SetEase(Ease.InOutQuart);
+        cardLight.DOFade(1, 0.15f).SetDelay(1f).OnComplete(() =>
+        {
+            bg.SetActive(false);
+            main.SetActive(true);
+        });
+        cardLight.DOFade(0, 1f).SetDelay(1.65f);
     }
 
-    
 
     private void OnEnable()
+    {
+        Init();
+        cardLight.alpha = 0;
+        bg.SetActive(true);
+        main.SetActive(false);
+        cardBtn.interactable = true;
+        Transform.position = rootPoint.position;
+        Transform.eulerAngles = Vector3.zero;
+    }
+
+    public void Init()
     {
         rewards = GameManager.Instance.rewardItems;
         if (rewards == null) return;
@@ -74,11 +98,5 @@ public class RewardCard : MonoBehaviour
         toReward = rewards[0];
         rewardIcon.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetItemSprite(toReward.ItemType);
         rewardAmountTxt.text = toReward.amount.ToString();
-        cardLight.alpha = 0;
-        bg.SetActive(true);
-        main.SetActive(false);
-        cardBtn.interactable = true;
-        Transform.position = rootPoint.position;
-        Transform.eulerAngles = Vector3.zero;
     }
 }

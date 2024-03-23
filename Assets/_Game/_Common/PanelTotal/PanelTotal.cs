@@ -137,7 +137,7 @@ public class PanelTotal : UIPanel
         mainGameNavBtn.onClick.AddListener(() => { UIManager.instance.ShowPanelTotalContent(); });
         bakeryNavBtn.onClick.AddListener(() => { UIManager.instance.ShowPanelBakery(); });
         decorationNavBtn.onClick.AddListener(() => { UIManager.instance.ShowPanelDecorations(); });
-        shopNavBtn.onClick.AddListener(() => { UIManager.instance.ShowPanelShop(); });
+        //shopNavBtn.onClick.AddListener(() => { UIManager.instance.ShowPanelShop(); });
         questNavBtn.onClick.AddListener(() => { UIManager.instance.ShowPanelDailyQuest(); });
         currentLevel = ProfileManager.Instance.playerData.playerResourseSave.currentLevel;
         ChangeLevel();

@@ -46,7 +46,7 @@ public class GameManager : Singleton<GameManager>
         return (ConstantValue.VAL_DEFAULT_EXP + 2 * cakeID) * (booster ? (ProfileManager.Instance.playerData.playerResourseSave.HasX2Booster() ? 2 : 1) : 1);
     }
 
-    public void GetLevelUpReward()
+    public void GetLevelUpReward(bool getLevelCake = true)
     {
         rewardItems.Clear();
         int level = ProfileManager.Instance.playerData.playerResourseSave.currentLevel;
@@ -72,7 +72,8 @@ public class GameManager : Singleton<GameManager>
         }
         //GetCakeOnLevelUp();
         //GetLevelUpItem();
-        GetLevelCake();
+        if(getLevelCake) 
+            GetLevelCake();
         CollectItemReward(rewardItems);
     }
 
