@@ -167,7 +167,7 @@ public class PanelTotal : UIPanel
 
     void ShowBGCanvasGroup(bool show)
     {
-        backGroundCG.DOFade(show ? 1 : 0, show ? 0.1f : 1f);
+        backGroundCG.DOFade(show ? 1 : 0, show ? 0.1f : .5f);
     }
 
     public void ShowMainSceneContent(bool show)
