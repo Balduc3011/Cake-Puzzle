@@ -29,7 +29,7 @@ public class PanelSelectReward : UIPanel
         rewards = GameManager.Instance.rewardItems;
         if (ProfileManager.Instance.playerData.playerResourseSave.currentLevel < 4)
         {
-            rewardCards[0].ToOpenPoint();
+            rewardCards[0].SingleOpen();
             rewardCards[1].ToRootPoint();
             GameManager.Instance.AddItem(rewards[0]);
             Invoke("ShowClose", 3f);

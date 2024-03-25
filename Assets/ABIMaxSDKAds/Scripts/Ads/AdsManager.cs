@@ -30,7 +30,8 @@ namespace SDK {
         TimeBooster,
         UpgradeCake,
         GameOverRevive,
-        FreeSpinAds
+        FreeSpinAds,
+        GetExtraCard
     }
     
     [ScriptOrder(-99)]
