@@ -1,3 +1,4 @@
+using AssetKits.ParticleImage;
 using AssetKits.ParticleImage.Enumerations;
 using DG.Tweening;
 using SDK;
@@ -14,6 +15,8 @@ public class PanelSelectReward : UIPanel
     [SerializeField] Button extraAdsBtn;
     [SerializeField] int selectedCardId;
     List<ItemData> rewards = new();
+    [SerializeField] Transform itemsBag;
+    [SerializeField] List<ParticleImage> rewardEffect;
     public override void Awake()
     {
         panelType = UIPanelType.PanelSelectReward;
@@ -25,6 +28,7 @@ public class PanelSelectReward : UIPanel
 
     private void OnEnable()
     {
+        itemsBag.localScale = Vector3.zero;
         transform.SetAsLastSibling();
         selectedCardId = -1;
         rewards = GameManager.Instance.rewardItems;
@@ -41,8 +45,6 @@ public class PanelSelectReward : UIPanel
             {
                 rewardCards[i].ToHoldPoint();
             }
-            closeBtn.transform.DOScale(1, 0.25f).From(0).SetEase(Ease.InBack).SetDelay(3f);
-            extraAdsBtn.transform.DOScale(1, 0.25f).From(0).SetEase(Ease.InBack).SetDelay(3f);
         }
         panelCloseBtn.gameObject.SetActive(false);
         closeBtn.transform.localScale = Vector3.zero;
@@ -55,9 +57,9 @@ public class PanelSelectReward : UIPanel
         for (int i = 0; i < rewardCards.Count; i++)
         {
             if (rewardCards[i].cardID == cardId)
-                rewardCards[i].ToOpenPoint();
-            else
                 rewardCards[i].HideCard();
+            else
+                rewardCards[i].ToOpenPoint();
         }
         Invoke("ShowClose", 4f);
         GameManager.Instance.AddItem(rewards[cardId]);
@@ -105,17 +107,34 @@ public class PanelSelectReward : UIPanel
         for (int i = 0; i < rewardCards.Count; i++)
         {
             if (rewardCards[i].cardID == selectedCardId)
-                rewardCards[i].ToHoldEx();
+            {
+                //rewardCards[i].ToHoldEx();
+            }
             else
             {
-                rewardCards[i].ToHoldOpen();
+                rewardCards[i].ShowCardReward();
+                rewardCards[i].HideCard();
                 GameManager.Instance.AddItem(rewards[i]);
-                //rewardCards[i].Init();
             }
                 
         }
         closeBtn.transform.DOScale(0, 0.25f).SetEase(Ease.InBack);
         extraAdsBtn.transform.DOScale(0, 0.25f).SetEase(Ease.InBack);
-        
+    }
+
+    public void ItemToBag()
+    {
+        itemsBag.DOScale(0.9f, 0.05f);
+        itemsBag.DOScale(1f, 0.05f).SetEase(Ease.OutBack).SetDelay(0.05f);
+    }
+
+    public ParticleImage GetRewardEffect()
+    {
+        for (int i = 0; i < rewardEffect.Count; i++)
+        {
+            if (!rewardEffect[i].isPlaying)
+                return rewardEffect[i];
+        }
+        return null;
     }
 }
