@@ -49,6 +49,7 @@ MonoBehaviour:
   objPref: {fileID: 0}
   objectOffset: {x: 0, y: 0, z: 0}
   cakeID: 0
+  currentRotateIndex: 0
 --- !u!1001 &4522933712507206253
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -103,6 +104,10 @@ PrefabInstance:
     - target: {fileID: 6240165995769508155, guid: c769cb4b4988b5a4e831ab21c169cd66, type: 3}
       propertyPath: m_Name
       value: Piece_0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6611165780997353751, guid: c769cb4b4988b5a4e831ab21c169cd66, type: 3}
+      propertyPath: m_CastShadows
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c769cb4b4988b5a4e831ab21c169cd66, type: 3}

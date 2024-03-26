@@ -11,6 +11,7 @@ public class ItemManager : MonoBehaviour
     [SerializeField] Bomb bombPref;
     [SerializeField] Transform itemTrs;
     [SerializeField] Transform pointBombIn;
+    [SerializeField] Transform pointFillUpTarget;
 
     PanelUsingItem panelUsingItem;
     Transform itemTrsSpawned = null;
@@ -100,5 +101,10 @@ public class ItemManager : MonoBehaviour
                 
             });
         });
+    }
+
+    public Vector3 GetPointFillUp()
+    {
+        return pointFillUpTarget.position;
     }
 }

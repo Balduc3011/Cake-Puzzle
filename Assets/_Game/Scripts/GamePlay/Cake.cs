@@ -141,6 +141,35 @@ public class Cake : MonoBehaviour
         GameManager.Instance.cakeManager.AddCakeNeedCheck(this);
     }
 
+    float scaleFillUp;
+
+    public void InitPieces() {
+        currentRotateIndex++;
+        if (currentRotateIndex >= 6)
+            currentRotateIndex = 0;
+        Piece newPiece = Instantiate(piecePref, transform);
+        pieces.Add(newPiece);
+        //InitPiece(pieceIndex, pieceCakeIDFill);
+        newPiece.transform.DOScale(1, .25f).From(0).SetEase(Ease.OutBack);
+        newPiece.transform.eulerAngles = Vector3.zero;
+        GameObject objecPref = Resources.Load("Pieces/Piece_" + pieceCakeIDFill) as GameObject;
+        newPiece.InitData(objecPref, pieceCakeIDFill, currentRotateIndex);
+
+        newPiece.transform.eulerAngles = new Vector3(0, rotates[currentRotateIndex], 0);
+
+        newPiece.transform.DOLocalMove(Vector3.zero, .3f).SetEase(Ease.InOutCirc).From(newPiece.transform.forward * 5f).OnComplete(() => {
+            ImpactOnFillUP();
+        });
+    }
+
+    void ImpactOnFillUP() {
+        tweens.ForEach(t => t?.Kill());
+        tweens.Clear();
+        tweens.Add(transform.DOScale(scaleFillUp - .1f, CacheSourse.float013).SetEase(Ease.InSine));
+        tweens.Add(transform.DOScale(scaleFillUp + .1f, CacheSourse.float013).SetEase(Ease.InOutSine).SetDelay(CacheSourse.float013));
+        tweens.Add(transform.DOScale(scaleFillUp, CacheSourse.float013).SetEase(Ease.OutSine).SetDelay(CacheSourse.float026));
+    }
+
     public void InitData(List<int> cakeIDs) {
         SetFirstIndexOfPiece();
         transform.DOScale(scaleDefault, .5f).From(1.2f).SetEase(Ease.InOutBack);
@@ -282,26 +311,56 @@ public class Cake : MonoBehaviour
         }
         else Debug.Log("Group cake null!");
     }
-    
+    int indexRemove;
     void FillUp() {
-        Debug.Log("Fill up");
-        listCakeIDFillUp.Clear();
-        pieceCakeIDFill = pieces[0].cakeID;
-        for (int i = pieces.Count - 1; i >= 0; i--)
-        {
-            pieces[i].RemoveByFillUp();
-            pieces.Remove(pieces[i]);
-        }
-        for (int i = 0; i < 6; i++)
-        {
-            listCakeIDFillUp.Add(pieceCakeIDFill);
-        }
-        InitData(listCakeIDFillUp, currentPlate);
-        GameManager.Instance.itemManager.UsingItemDone();
-        ProfileManager.Instance.playerData.playerResourseSave.UsingItem(ItemType.FillUp);
-        DoneCakeMode();
-        ProfileManager.Instance.playerData.cakeSaveData.RemoveCake(currentPlate.plateIndex);
-        EventManager.TriggerEvent(EventName.UsingFillUpDone.ToString());
+        transform.DOMove(GameManager.Instance.itemManager.GetPointFillUp(), .25f).SetEase(Ease.OutBack);
+        scaleFillUp = 1.9f;
+        transform.DOScale(1.9f, .25f).SetEase(Ease.OutBack).OnComplete(()=> {
+            //transform.DORotate(new Vector3(0, 360f, 0), 1f, RotateMode.WorldAxisAdd);
+            listCakeIDFillUp.Clear();
+            indexRemove = 0;
+            pieceCakeIDFill = pieces[0].cakeID;
+            for (int i = pieces.Count - 1; i >= 0; i--)
+            {
+                Debug.Log("Remove");
+                if (pieces[i].cakeID != pieceCakeIDFill)
+                {
+                    pieces[i].RemoveByFillUp(indexRemove);
+                    pieces.Remove(pieces[i]);
+                    indexRemove++;
+                }
+              
+            }
+            currentRotateIndex = pieces[pieces.Count - 1].currentRotateIndex;
+            
+            DOVirtual.DelayedCall((indexRemove + 1) * .25f, () => {
+                indexRemove = 0;
+                for (int i = pieces.Count; i < 6; i++)
+                {
+                    DOVirtual.DelayedCall(indexRemove * 0.25f, InitPieces);
+                    indexRemove++;
+                }
+                DOVirtual.DelayedCall(indexRemove * 0.39f, () =>
+                {
+                    transform.DORotate(new Vector3(0, 360, 0), 1f, RotateMode.WorldAxisAdd).SetEase(Ease.InCirc).OnComplete(()=> {
+                        transform.DOLocalMove(Vector3.zero, .3f).SetEase(Ease.OutBack);
+                        GameManager.Instance.itemManager.UsingItemDone();
+                        ProfileManager.Instance.playerData.playerResourseSave.UsingItem(ItemType.FillUp);
+                        DoneCakeMode();
+                        ProfileManager.Instance.playerData.cakeSaveData.RemoveCake(currentPlate.plateIndex);
+                        EventManager.TriggerEvent(EventName.UsingFillUpDone.ToString());
+                    });
+                 
+                    transform.DOScale(scaleFillUp + .3f, .15f);
+                    transform.DOScale(scaleFillUp - .1f, .15f).SetDelay(.15f);
+                    transform.DOScale(scaleFillUp, .15f).SetDelay(.3f);
+                   
+                });
+            });
+
+          
+        });
+
     }
 
     void UsingHammer() {
@@ -332,7 +391,11 @@ public class Cake : MonoBehaviour
     public void DropDone(bool lastDrop, UnityAction actionCallback) {
         onDrop = true;
         transform.parent = currentPlate.pointStay;
-        transform.DOLocalMove(Vector3.zero, .1f);
+        transform.DOLocalMove(Vector3.zero, .1f).SetEase(Ease.InQuad).OnComplete(()=> {
+            Transform effectDrop = GameManager.Instance.objectPooling.GetSmokeEffectDrop();
+            effectDrop.transform.position = transform.position - vectorOffsetEffectDrop;
+            effectDrop.gameObject.SetActive(true);
+        });
         //Debug.Log("last drop: "+ lastDrop);
         DOVirtual.DelayedCall(.1f, () =>
         {
@@ -572,20 +635,6 @@ public class Cake : MonoBehaviour
             pieces[i] = pieces[i - 1];
         }
         pieces[indexOfNewPiece] = piece;
-
-        //pieces.Add(piece);
-        //pieceTemp = pieces[indexOfNewPiece];
-        //pieces[indexOfNewPiece] = piece;
-        //pieces[pieces.Count - 1] = pieceTemp;
-        //pieces.Sort((a, b) => { return Compare(a, b); });
-    }
-
-    int Compare(Piece a, Piece b) {
-        if (a.currentRotateIndex > b.currentRotateIndex)
-            return 1;
-        if (a.currentRotateIndex < b.currentRotateIndex)
-            return -1;
-        return 0;
     }
 
     public bool CheckCakeIsDone(int cakeID) {
@@ -626,10 +675,11 @@ public class Cake : MonoBehaviour
         ProfileManager.Instance.playerData.playerResourseSave.AddMoney(GameManager.Instance.GetDefaultCakeProfit(pieces[0].cakeID, cakeLevel, true));
         ProfileManager.Instance.playerData.playerResourseSave.AddTrophy((int)GameManager.Instance.GetDefaultCakeProfit(pieces[0].cakeID, cakeLevel));
         DOVirtual.DelayedCall(0.18f, () => {
-            EffectDoneCake();
             tweens.Add(transform.DOScale(Vector3.one * .8f, .13f));
             tweens.Add(transform.DOScale(Vector3.one * 1.1f, .13f).SetDelay(.13f));
-            transform.DORotate(CacheSourse.rotateY360, .75f, RotateMode.WorldAxisAdd).SetEase(Ease.OutQuad);
+            transform.DORotate(CacheSourse.rotateY360, .75f, RotateMode.WorldAxisAdd).SetEase(Ease.OutQuad).OnComplete(() => {
+                EffectDoneCake();
+            });
         });
        
     }

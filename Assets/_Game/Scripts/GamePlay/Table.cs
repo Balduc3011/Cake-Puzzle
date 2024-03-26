@@ -146,7 +146,7 @@ public class Table : MonoBehaviour
             StartCreateWay();
             if (ways.Count > 0)
             {
-                Debug.Log("call start move from check id sot lai");
+                //Debug.Log("call start move from check id sot lai");
                 StartMove(currentCakeID);
             }
             else
@@ -550,14 +550,15 @@ public class Way {
     }
 
     void CallDoneThatMove() {
-        DOVirtual.DelayedCall(timeMove - .1f, () =>
+        DOVirtual.DelayedCall(timeMove - .15f, () =>
         {
             if (plateGo == GameManager.Instance.cakeManager.table.bestPlate)
             {
-                if (plateGo.CheckCakeIsDone(pieces.cakeID))
-                {
-                    plateGo.DoneCake();
-                }
+                //if (pieces != null)
+                    if (plateGo.CheckCakeIsDone(pieces.cakeID))
+                    {
+                        plateGo.DoneCake();
+                    }
             }
         });
         

@@ -73,11 +73,14 @@ public class CakeManager : MonoBehaviour
         EventManager.AddListener(EventName.UpdateCakeOnPlate.ToString(), UpdateCake);
     }
 
+    bool isFirstTimeMove;
+
     private void Update()
     {
-        if (currentGCake != null) {
+        if (currentGCake != null && isFirstTimeMove) {
             if (Input.GetMouseButtonUp(0))
             {
+                isFirstTimeMove = false;
                 if (!onMove)
                 {
                     Drop();
@@ -97,7 +100,12 @@ public class CakeManager : MonoBehaviour
     }
 
     public void SetCurrentGroupCake(GroupCake gCake) { 
-        currentGCake = gCake; 
+        currentGCake = gCake;
+        mousePos = Input.mousePosition;
+        mousePos.z = Vector3.Distance(currentGCake.transform.position, Camera.main.transform.position);
+        currentPos = Camera.main.ScreenToWorldPoint(mousePos) + vectorOffset;
+        currentPos.y = posYDefault;
+        currentGCake.transform.DOMove(currentPos, .1f).SetEase(Ease.InCirc).OnComplete(()=> { isFirstTimeMove = true; });
     }
 
     void Drop() {
