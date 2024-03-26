@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class IAPButton : MonoBehaviour
 {
     [SerializeField] Button button;
-    [SerializeField] PackageId packageId;
+    [SerializeField] OfferID packageId;
 
     [SerializeField] TextMeshProUGUI valueTxt;
     void Start()
@@ -26,13 +26,13 @@ public class IAPButton : MonoBehaviour
     {
         switch (packageId)
         {
-            case PackageId.None:
+            case OfferID.None:
                 break;
-            case PackageId.Piggy:
+            case OfferID.Pack2:
                 if(valueTxt != null)
                     valueTxt.text = ProfileManager.Instance.playerData.playerResourseSave.piggySave.ToString();
                 break;
-            case PackageId.Pack1:
+            case OfferID.Pack1:
                 break;
             default:
                 break;

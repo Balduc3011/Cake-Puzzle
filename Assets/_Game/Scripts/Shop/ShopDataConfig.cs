@@ -7,11 +7,21 @@ public class ShopDataConfig : ScriptableObject
 {
     public List<ShopPack> shopPacks = new List<ShopPack>();
 
-    public ShopPack GetShopPack(PackageId packageId)
+    public ShopPack GetShopPack(OfferID packageId)
     {
         for (int i = 0; i < shopPacks.Count; i++)
         {
             if (shopPacks[i].packageId == packageId)
+                return shopPacks[i];
+        }
+        return null;
+    }
+
+    public ShopPack GetShopPack(string packageName)
+    {
+        for (int i = 0; i < shopPacks.Count; i++)
+        {
+            if (shopPacks[i].packageId.ToString() == packageName)
                 return shopPacks[i];
         }
         return null;
@@ -21,13 +31,13 @@ public class ShopDataConfig : ScriptableObject
 [System.Serializable]
 public class ShopPack
 {
-    public PackageId packageId;
+    public OfferID packageId;
     public List<ItemData> rewards = new();
 }
 
-public enum PackageId
+public enum OfferID
 {
     None = 0,
-    Piggy = 1,
+    Pack2 = 1,
     Pack1 = 2,
 }
