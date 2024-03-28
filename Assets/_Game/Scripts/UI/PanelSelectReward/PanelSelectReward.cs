@@ -60,13 +60,13 @@ public class PanelSelectReward : UIPanel
             else
                 rewardCards[i].ToOpenPoint();
         }
-        Invoke("ShowClose", 4f);
+        Invoke("ShowClose", 1.5f);
         GameManager.Instance.AddItem(rewards[cardId]);
     }
     void ShowClose()
     {
         
-        if (ProfileManager.Instance.playerData.playerResourseSave.currentLevel <= 4)
+        if (ProfileManager.Instance.playerData.playerResourseSave.currentLevel < 4)
         {
             panelCloseBtn.gameObject.SetActive(true);
         }
