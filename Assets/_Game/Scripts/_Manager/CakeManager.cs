@@ -255,6 +255,7 @@ public class CakeManager : MonoBehaviour
         { 
             if (CheckHaveCakeID(currentCakeCheck.pieceCakeID[cakeIDIndex]))
             {
+                Debug.Log("CHECK ID: "+ currentCakeCheck.pieceCakeID[cakeIDIndex] + " plate: "+ currentCakeCheck.currentPlate);
                 table.ClearMapPlate(currentCakeCheck.pieceCakeID[cakeIDIndex]);
                 table.AddFirstPlate(currentCakeCheck.currentPlate);
                 table.CreateMapPlate(currentCakeCheck.currentPlate.GetPlateIndex(), currentCakeCheck.pieceCakeID[cakeIDIndex]);

@@ -182,7 +182,6 @@ public class GroupCake : MonoBehaviour
         }
         if (cake.Count == 1)
         {
-            Debug.Log("one cake");
             pointCake0Default = pointCake0;
             pointCake0Move = pointCake0;
         }

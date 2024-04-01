@@ -108,6 +108,7 @@ public class Cake : MonoBehaviour
 
     #region INIT DATA
     public void InitData() {
+        Debug.Log("init by normal");
         SetFirstIndexOfPiece();
         transform.DOScale(scaleDefault, .5f).From(1.2f).SetEase(Ease.InOutBack);
         totalPieces = GameManager.Instance.cakeManager.GetPiecesTotal() + 1;
@@ -122,6 +123,7 @@ public class Cake : MonoBehaviour
     }
 
     public void InitData(CakeSave cakeSaveData) {
+        Debug.Log("init by data save");
         SetFirstIndexOfPiece();
         transform.DOScale(scaleDefault, .5f).From(1.2f).SetEase(Ease.InOutBack);
         pieceCakeIDCount = cakeSaveData.pieceCakeIDCount;
@@ -135,6 +137,7 @@ public class Cake : MonoBehaviour
     }
 
     public void InitData(List<int> cakeIDs, Plate plate) {
+        Debug.Log("init by data save on plate");
         SetFirstIndexOfPiece();
         currentPlate = plate;
         InitData(cakeIDs);
@@ -176,7 +179,14 @@ public class Cake : MonoBehaviour
 
         for (int i = 0; i < cakeIDs.Count; i++)
         {
-            if (!pieceCakeID.Contains(cakeIDs[i])) pieceCakeID.Add(cakeIDs[i]);
+            if (!pieceCakeID.Contains(cakeIDs[i]))
+            {
+                pieceCakeID.Add(cakeIDs[i]);
+                pieceCakeIDCount.Add(1);
+            }
+            else {
+                pieceCakeIDCount[pieceCakeID.IndexOf(cakeIDs[i])]++;
+            }
             Piece newPiece = Instantiate(piecePref, transform);
             pieces.Add(newPiece);
             InitPiece(i, cakeIDs[i]);
@@ -490,10 +500,9 @@ public class Cake : MonoBehaviour
             if (otherCake && sameCake)
             {
                     indexOfNewPiece = i;
-                    Debug.Log(listPieceTemp[i].currentRotateIndex);
                     indexReturn = listPieceTemp[i].currentRotateIndex;
-                   //Debug.Log(pieces[i] + " " + i);
-                    //Debug.Log("index return: " + indexReturn);
+                    Debug.Log(pieces[i] + " " + i);
+                    Debug.Log("id: " + cakeID + " index return: " + indexReturn);
                     break;
             }
 
@@ -502,7 +511,7 @@ public class Cake : MonoBehaviour
         {
             indexOfNewPiece = listPieceTemp.Count;
             indexReturn = listPieceTemp[listPieceTemp.Count - 1].currentRotateIndex + 1;
-            //Debug.Log("index return: " + indexReturn);
+            Debug.Log("id: "+ cakeID +" index return: " + indexReturn);
         }
         return indexReturn;
     }
@@ -585,6 +594,17 @@ public class Cake : MonoBehaviour
             if (pieces[i].cakeID == cakeID)
             {
                 piece = pieces[i];
+                int indexID = pieceCakeID.IndexOf(pieces[i].cakeID);
+                if (indexID != -1)
+                if (pieceCakeIDCount[indexID] > 0)
+                {
+                    pieceCakeIDCount[indexID]--;
+                        if (pieceCakeIDCount[indexID] <= 0)
+                        {
+                            pieceCakeIDCount.RemoveAt(indexID);
+                            pieceCakeID.RemoveAt(indexID);
+                        }
+                }
                 pieces.Remove(pieces[i]);
                 needRotateRightWay = true;
                 return piece;
@@ -635,6 +655,14 @@ public class Cake : MonoBehaviour
             pieces[i] = pieces[i - 1];
         }
         pieces[indexOfNewPiece] = piece;
+        if (!pieceCakeID.Contains(piece.cakeID))
+        {
+            pieceCakeID.Add(piece.cakeID);
+            pieceCakeIDCount.Add(1);
+        }
+        else {
+            pieceCakeIDCount[pieceCakeID.IndexOf(piece.cakeID)]++;
+        }
     }
 
     public bool CheckCakeIsDone(int cakeID) {

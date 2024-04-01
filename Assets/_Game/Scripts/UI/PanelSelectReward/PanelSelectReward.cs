@@ -85,7 +85,7 @@ public class PanelSelectReward : UIPanel
         UIManager.instance.ClosePanelSelectReward();
         GameManager.Instance.cakeManager.cakeShowComponent.ShowNormalCake();
         GameManager.Instance.cakeManager.cakeShowComponent.ShowNextToUnlockCake();
-        GameManager.Instance.cakeManager.ClearAllCake();
+       // GameManager.Instance.cakeManager.ClearAllCake();
         GameManager.Instance.cakeManager.SetOnMove(false);
         UIManager.instance.ShowPanelLoading();
     }
