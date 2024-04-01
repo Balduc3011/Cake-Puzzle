@@ -1,3 +1,4 @@
+using AssetKits.ParticleImage;
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
@@ -27,10 +28,21 @@ public class RewardCard : MonoBehaviour
         cardBtn.onClick.AddListener(SelectCard);
     }
 
+    public void ShowCardReward()
+    {
+        ParticleImage rewardEffect = panelSelectReward.GetRewardEffect();
+        if (rewardEffect == null) return;
+        rewardEffect.transform.position = Transform.position;
+        rewardEffect.texture = rewardIcon.sprite.texture;
+        rewardEffect.SetBurst(0, 0, (int)(toReward.amount));
+        rewardEffect.Play();
+    }
+
     void SelectCard()
     {
         panelSelectReward.OnSelectCard(cardID);
         cardBtn.interactable = false;
+        ShowCardReward();
     }
     public void HideCard()
     {
@@ -63,13 +75,6 @@ public class RewardCard : MonoBehaviour
     {
         Transform.localScale = Vector3.one;
         Transform.DOMove(openPoint.position, 0.35f).SetEase(Ease.InBack);
-        //Transform.DORotate(Vector3.up * 180, 1.25f).SetDelay(0.35f).SetEase(Ease.InOutQuart);
-        //cardLight.DOFade(1, 0.15f).SetDelay(1f).OnComplete(() =>
-        //{
-        //    bg.SetActive(false);
-        //    main.SetActive(true);
-        //});
-        //cardLight.DOFade(0, 1f).SetDelay(1.65f);
     }
 
     public void SingleOpen()
@@ -84,7 +89,7 @@ public class RewardCard : MonoBehaviour
             main.SetActive(true);
 
         });
-        cardLight.DOFade(0, 1f).SetDelay(0.7f + 0.5f + 0.25f);
+        cardLight.DOFade(0, 1f).SetDelay(0.7f + 0.5f + 0.25f).OnComplete(ShowCardReward);
     }
     public void ToHoldEx()
     {
@@ -93,13 +98,6 @@ public class RewardCard : MonoBehaviour
     public void ToHoldOpen()
     {
         Transform.DOScale(1, 0.5f).From(0);
-        //Transform.DORotate(Vector3.up * 180, 1.25f).SetDelay(0.5f).SetEase(Ease.InOutQuart);
-        //cardLight.DOFade(1, 0.15f).SetDelay(1f).OnComplete(() =>
-        //{
-        //    bg.SetActive(false);
-        //    main.SetActive(true);
-        //});
-        //cardLight.DOFade(0, 1f).SetDelay(1.65f);
     }
 
 
