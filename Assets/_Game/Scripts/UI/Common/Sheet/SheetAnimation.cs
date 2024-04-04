@@ -8,6 +8,7 @@ public class SheetAnimation : MonoBehaviour
     [SerializeField] bool overflow;
     public ItemAnimType itemAnimType;
     [SerializeField] float startDelay;
+    [SerializeField] float delta = 0.1f;
     public List<Transform> itemTrs;
     public List<CanvasGroup> itemCGs;
     public void PlayAnim()
@@ -17,13 +18,13 @@ public class SheetAnimation : MonoBehaviour
             case ItemAnimType.PopOut:
                 for (int i = 0; i < itemTrs.Count; i++)
                 {
-                    PlayPopOutAnim(itemTrs[i], (i + 1) * 0.1f + startDelay);
+                    PlayPopOutAnim(itemTrs[i], (i + 1) * delta + startDelay);
                 }
                 break;
             case ItemAnimType.Fade:
                 for (int i = 0; i < itemTrs.Count; i++)
                 {
-                    PlayFadeAnim(itemCGs[i], (i + 1) * 0.1f);
+                    PlayFadeAnim(itemCGs[i], (i + 1) * delta);
                 }
                 break;
             default:
