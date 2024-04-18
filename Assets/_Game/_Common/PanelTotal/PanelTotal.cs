@@ -52,7 +52,7 @@ public class PanelTotal : UIPanel
         EventManager.AddListener(EventName.AddCakeCard.ToString(), CheckNoti);
         //backGround = UIManager.instance.backGround;
         CheckSubScreenObstacleBase();
-        Invoke("InitCakeDecor", 2f);
+        Invoke("InitCakeDecor", 0.25f);
     }
 
     public void CheckNoti()
@@ -262,10 +262,10 @@ public class PanelTotal : UIPanel
     void InitCakeDecor()
     {
         if (GameManager.Instance.playing) return;
-        int newShow = UnityEngine.Random.Range(0, 10);
+        int newShow = ProfileManager.Instance.playerData.cakeSaveData.GetRandomOwnedCake();
         while(newShow == showingCake)
         {
-            newShow = UnityEngine.Random.Range(0, 10);
+            newShow = ProfileManager.Instance.playerData.cakeSaveData.GetRandomOwnedCake();
         }
         showingCake = newShow;
         GameManager.Instance.cakeManager.cakeShowComponent.ShowSelectetCake(showingCake);

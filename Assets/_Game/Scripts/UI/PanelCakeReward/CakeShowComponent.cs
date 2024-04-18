@@ -54,7 +54,6 @@ public class CakeShowComponent : MonoBehaviour
     {
         Mesh cakeSlideMesh = ProfileManager.Instance.dataConfig.cakeDataConfig.GetCakePieceMesh(cakeId);
         cakeCamera.orthographicSize = unlockCamZoom;
-
         //cakePlate.DOScale(1, 0.35f).From(0).SetEase(Ease.OutBack);
         //cakePlate.DOMove(cakeShowPos.position, 0.35f).From(cakeStartPos.position).SetEase(Ease.OutBack);
 

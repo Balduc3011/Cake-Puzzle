@@ -113,6 +113,11 @@ public class CakeSaveData : SaveBase
         SaveData();
     }
 
+    public int GetRandomOwnedCake()
+    {
+        return ownedCakes[UnityEngine.Random.Range(0, ownedCakes.Count)].cakeID;
+    }
+
     public void OnUpgradeCard(OwnedCake ownedCake)
     {
         ownedCake.OnUpgradeCard();
