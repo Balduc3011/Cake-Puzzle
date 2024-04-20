@@ -442,27 +442,11 @@ public class CakeManager : MonoBehaviour
     void LevelUp() {
         onMove = true;
         int newCakeID = ProfileManager.Instance.dataConfig.levelDataConfig.GetCakeID(ProfileManager.Instance.playerData.playerResourseSave.currentLevel - 1);
-        //if (newCakeID != -1)
-        //{
-        //    SetJustUnlockedCake(newCakeID);
-        //    UIManager.instance.ShowPanelCakeReward();
-        //    UIManager.instance.ShowPanelItemsReward();
-        //}
-        //else
-        //    UIManager.instance.ShowPanelItemsReward();
+      
         SetJustUnlockedCake(newCakeID);
         levelUp = true;
-        //UIManager.instance.ShowPanelItemsReward();
-        
-        //if (justUnlockedCake != -1 && justUnlockedCake != 0)
-        //{
-        //    UIManager.instance.ShowPanelCakeReward();
-        //}
-        //else
-        //{
-        //    UIManager.instance.ShowPanelSelectReward();
-        //}
-        Invoke("ShowLevelUp", 3.5f);
+        ShowLevelUp();
+        //Invoke("ShowLevelUp", 3.5f);
     }
 
     void ShowLevelUp()
