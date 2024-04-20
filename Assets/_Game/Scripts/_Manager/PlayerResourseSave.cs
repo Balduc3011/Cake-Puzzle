@@ -208,6 +208,7 @@ public class PlayerResourseSave : SaveBase
         {
             if (ownedItem[i].ItemType == item.ItemType) {
                 ownedItem[i].amount += item.amount;
+                EventManager.TriggerEvent(EventName.AddItem.ToString());
                 IsMarkChangeData();
                 SaveData();
                 return;
@@ -241,7 +242,8 @@ public class PlayerResourseSave : SaveBase
             {
                 Debug.Log("using item : "+itemType);
                 ownedItem[i].amount--;
-                return;
+                EventManager.TriggerEvent(EventName.AddItem.ToString());
+                break;
             }
         }
         IsMarkChangeData();

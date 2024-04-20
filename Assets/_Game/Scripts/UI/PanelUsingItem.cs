@@ -18,6 +18,10 @@ public class PanelUsingItem : UIPanel
         base.Awake();
         btnClose.onClick.AddListener(OnClosePanel);
     }
+    private void OnEnable()
+    {
+        btnClose.interactable = true;
+    }
     ItemDataCF currentItemData;
     public void OnUseItem(ItemType itemType) {
         currentItemData = ProfileManager.Instance.dataConfig.itemDataConfig.GetItemData(itemType);
