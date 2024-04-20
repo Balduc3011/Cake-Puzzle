@@ -23,9 +23,10 @@ public class Piece : MonoBehaviour
         trs.localScale = Vector3.one;
     }
 
-    public void RemoveByFillUp()
+    public void RemoveByFillUp(int index)
     {
-        transform.DOScale(Vector3.zero, .25f).OnComplete(() => { 
+        Debug.Log("Do Scale");
+        transform.DOScale(Vector3.zero, .25f).SetDelay(index * .25f).SetEase(Ease.InBack).OnComplete(() => { 
             Destroy(gameObject);
         });
     }

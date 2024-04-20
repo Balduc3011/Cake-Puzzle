@@ -2,7 +2,6 @@ using DG.Tweening.Core.Easing;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -258,13 +257,13 @@ public class GameManager : Singleton<GameManager>
         return ProfileManager.Instance.playerData.playerResourseSave.IsHaveItem(ItemType.NoAds);
     }
 
-    public void OnBuyPackSuccess(PackageId packageId)
+    public void OnBuyPackSuccess(OfferID packageId)
     {
         switch (packageId)
         {
-            case PackageId.None:
+            case OfferID.None:
                 break;
-            case PackageId.Piggy:
+            case OfferID.Pack2:
                 rewardItems.Clear();
                 ProfileManager.Instance.playerData.playerResourseSave.ClearPiggySave();
                 ItemData itemData = new ItemData();
@@ -273,8 +272,8 @@ public class GameManager : Singleton<GameManager>
                 rewardItems.Add(itemData);
                 CollectItemReward(rewardItems);
                 break;
-            case PackageId.Pack1:
-                ShopPack shopPack = ProfileManager.Instance.dataConfig.shopDataConfig.GetShopPack(PackageId.Pack1);
+            case OfferID.Pack1:
+                ShopPack shopPack = ProfileManager.Instance.dataConfig.shopDataConfig.GetShopPack(OfferID.Pack1);
                 if(shopPack != null)
                 {
                     GetItemRewards(shopPack.rewards);

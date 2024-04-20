@@ -432,7 +432,7 @@ public class UIManager : MonoBehaviour {
         go.SetActive(false);
     }
 
-    public void ShowPanelQuickIAP(PackageId packageId)
+    public void ShowPanelQuickIAP(OfferID packageId)
     {
         GameObject go = GetPanel(UIPanelType.PanelQuickIAP);
         go.SetActive(true);

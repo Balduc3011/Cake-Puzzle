@@ -18,7 +18,7 @@ public class PanelQuickIAP : UIPanel
         closeBtn.onClick.AddListener(OnClose);
     }
 
-    public void Init(PackageId packageId)
+    public void Init(OfferID packageId)
     {
         for (int i = 0; i < popups.Count; i++)
         {
@@ -42,6 +42,6 @@ public class PanelQuickIAP : UIPanel
 [System.Serializable]
 public class IAPPopup
 {
-    public PackageId packageId;
+    public OfferID packageId;
     public GameObject popUp;
 }

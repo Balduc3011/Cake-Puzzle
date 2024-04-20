@@ -19,6 +19,8 @@ public class PanelLevelComplete : UIPanel
     [SerializeField] GameObject objLooseGame;
     [SerializeField] Button hintObj;
     [SerializeField] SheetAnimation sheetAnimation;
+    [SerializeField] SheetAnimation loseSheetAnimation;
+    [SerializeField] SheetAnimation winSheetAnimation;
     public override void Awake()
     {
         panelType = UIPanelType.PanelLevelComplete;
@@ -102,5 +104,7 @@ public class PanelLevelComplete : UIPanel
     {
         objLooseGame.SetActive(!isWinGame);
         objWinGame.SetActive(isWinGame);
+        if (isWinGame) winSheetAnimation.PlayAnim();
+        else loseSheetAnimation.PlayAnim();
     }
 }

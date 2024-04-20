@@ -47,7 +47,7 @@ public class Plate : MonoBehaviour
     public void Deactive()
     {
         anim.SetBool("Active", false);
-        trsMove.DOMove(pointMoveDown, .15f);
+        trsMove.DOMove(pointMoveDown, 1f).SetEase(Ease.InOutCubic);
     }
 
     public void DeActiveByItem()
