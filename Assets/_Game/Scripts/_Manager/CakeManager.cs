@@ -400,6 +400,17 @@ public class CakeManager : MonoBehaviour
         }
         SetupCheckCake();
     }
+
+    public bool CakeOnWait(GroupCake myGroupCake)
+    {
+        for (int i = 0; i < cakesWait.Count; i++)
+        {
+            if (cakesWait[i] == myGroupCake)
+                return true;
+        }
+        return false;
+    }
+
     void LoadCakeWaitData() {
         cakeOnWaits = ProfileManager.Instance.playerData.cakeSaveData.cakeOnWaits;
         indexGroupCake = 0;

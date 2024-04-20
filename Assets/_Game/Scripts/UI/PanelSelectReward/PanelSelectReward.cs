@@ -89,7 +89,7 @@ public class PanelSelectReward : UIPanel
         GameManager.Instance.cakeManager.cakeShowComponent.ShowNextToUnlockCake();
        // GameManager.Instance.cakeManager.ClearAllCake();
         GameManager.Instance.cakeManager.SetOnMove(false);
-        UIManager.instance.ShowPanelLoading();
+        //UIManager.instance.ShowPanelLoading();
     }
 
     void GetExtraByAds()

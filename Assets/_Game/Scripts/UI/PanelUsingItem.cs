@@ -19,7 +19,7 @@ public class PanelUsingItem : UIPanel
         btnClose.onClick.AddListener(OnClosePanel);
     }
     ItemDataCF currentItemData;
-    public void OnUsingItem(ItemType itemType) {
+    public void OnUseItem(ItemType itemType) {
         currentItemData = ProfileManager.Instance.dataConfig.itemDataConfig.GetItemData(itemType);
         txtTitle.text = currentItemData.title;
         txtDescript.text = currentItemData.description;
@@ -40,5 +40,14 @@ public class PanelUsingItem : UIPanel
         UIManager.instance.ClosePanelUsingItem();
         GameManager.Instance.itemManager.UsingItemDone();
         EventManager.TriggerEvent(EventName.UsingFillUpDone.ToString());
+        EventManager.TriggerEvent(EventName.UsingHammerDone.ToString());
+    }
+
+    public void OnUsingItem() {
+        btnClose.interactable = false;
+    }
+
+    public void OnUsingItemDone() {
+        btnClose.interactable = true;
     }
 }

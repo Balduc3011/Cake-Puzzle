@@ -239,6 +239,7 @@ public class PlayerResourseSave : SaveBase
         {
             if (ownedItem[i].ItemType == itemType)
             {
+                Debug.Log("using item : "+itemType);
                 ownedItem[i].amount--;
                 return;
             }
