@@ -280,7 +280,8 @@ public class Cake : MonoBehaviour
 
     void InitPiece(int pieceInidex, int pieceCakeID) {
         pieces[pieceInidex].transform.eulerAngles = Vector3.zero;
-        GameObject objecPref = Resources.Load("Pieces/Piece_" + pieceCakeID) as GameObject;
+        //GameObject objecPref = Resources.Load("Pieces/Piece_" + pieceCakeID) as GameObject;
+        GameObject objecPref = ProfileManager.Instance.dataConfig.cakeDataConfig.GetCakePref(pieceCakeID);
         currentRotateIndex++;
         if (currentRotateIndex >= rotates.Count)
             currentRotateIndex = 0;

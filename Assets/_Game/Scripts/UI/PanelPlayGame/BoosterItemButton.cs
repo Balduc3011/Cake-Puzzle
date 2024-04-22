@@ -11,13 +11,16 @@ public class BoosterItemButton : MonoBehaviour
     [SerializeField] Image itemBarIconImg;
     [SerializeField] TextMeshProUGUI itemAmountTxt;
     [SerializeField] Button btnChoose;
+    [SerializeField] GameObject addMoreAlert;
+    UnityAction CallBack;
     private void Start()
     {
         UpdateStatus();
         EventManager.AddListener(EventName.AddItem.ToString(), UpdateStatus);
+        btnChoose.onClick.AddListener(ButtonOnClick);
     }
     public void SetActionCallBack(UnityAction actionCalback) {
-        btnChoose.onClick.AddListener(actionCalback);
+        CallBack = actionCalback;
     }
     public void UpdateStatus()
     {
@@ -27,12 +30,40 @@ public class BoosterItemButton : MonoBehaviour
             //itemBarIconImg.gameObject.SetActive(true);
             if (itemAmountTxt != null)
                 itemAmountTxt.text = itemAmount.ToString();
+            addMoreAlert.SetActive(false);
         }
         else
         {
             //itemBarIconImg.gameObject.SetActive(false);
             if (itemAmountTxt != null)
                 itemAmountTxt.text = ConstantValue.STR_BLANK;
+            addMoreAlert.SetActive(true);
+        }
+    }
+
+    void ButtonOnClick()
+    {
+        int itemAmount = (int)GameManager.Instance.GetItemAmount(boosterType);
+        if (itemAmount > 0)
+        {
+            CallBack();
+        }
+        else
+        {
+            switch (boosterType)
+            {
+                case ItemType.Hammer:
+                    UIManager.instance.ShowPanelQuickIAP(OfferID.PackHammer);
+                    break;
+                case ItemType.ReRoll:
+                    UIManager.instance.ShowPanelQuickIAP(OfferID.PackReRoll);
+                    break;
+                case ItemType.FillUp:
+                    UIManager.instance.ShowPanelQuickIAP(OfferID.PackFillUp);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

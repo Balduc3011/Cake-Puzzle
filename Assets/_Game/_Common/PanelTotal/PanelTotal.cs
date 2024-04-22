@@ -262,10 +262,10 @@ public class PanelTotal : UIPanel
     void InitCakeDecor()
     {
         if (GameManager.Instance.playing) return;
-        int newShow = UnityEngine.Random.Range(0, 10);
+        int newShow = UnityEngine.Random.Range(0, 6);
         while(newShow == showingCake)
         {
-            newShow = UnityEngine.Random.Range(0, 10);
+            newShow = UnityEngine.Random.Range(0, 6);
         }
         showingCake = newShow;
         GameManager.Instance.cakeManager.cakeShowComponent.ShowSelectetCake(showingCake);

@@ -46,13 +46,12 @@ public class CakeShowComponent : MonoBehaviour
 
     public void ShowNextToUnlockCake()
     {
-        Mesh cakeSlideMesh = GameManager.Instance.cakeManager.GetNextUnlockedCakeMesh();
-        cakeMesh.mesh = cakeSlideMesh;
+        
     }
 
     public void ShowSelectetCake(int cakeId)
     {
-        Mesh cakeSlideMesh = ProfileManager.Instance.dataConfig.cakeDataConfig.GetCakePieceMesh(cakeId);
+        Mesh cakeSlideMesh = ProfileManager.Instance.dataConfig.cakeDataConfig.GetCakePieceMesh2(cakeId);
         cakeCamera.orthographicSize = unlockCamZoom;
 
         //cakePlate.DOScale(1, 0.35f).From(0).SetEase(Ease.OutBack);
