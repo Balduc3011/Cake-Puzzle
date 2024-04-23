@@ -41,8 +41,10 @@ public class InventoryCake : MonoBehaviour
     public void Init(CakeData cakeData)
     {
         this.cakeData = cakeData;
-        onIconImg.sprite = cakeData.icon;
-        offIconImg.sprite = cakeData.icon;
+        int levelPref = ProfileManager.Instance.playerData.cakeSaveData.GetOwnedCakeLevel(cakeData.id);
+        if (levelPref > 2) levelPref = 2;
+        onIconImg.sprite = cakeData.icons[levelPref - 1];
+        offIconImg.sprite = cakeData.icons[levelPref - 1];
         cakeNameTxt.text = "Cake " + cakeData.id.ToString();
         cakePointTxt.text = ((cakeData.id + 1) * 5).ToString() + ConstantValue.STR_SPACE + ConstantValue.STR_EXP + PERCAKE;
         InitUsing();
@@ -52,6 +54,11 @@ public class InventoryCake : MonoBehaviour
     {
         isUsing = false;
         currentCake = ProfileManager.Instance.playerData.cakeSaveData.GetOwnedCake(cakeData.id);
+        int levelPref = ProfileManager.Instance.playerData.cakeSaveData.GetOwnedCakeLevel(cakeData.id);
+        if(levelPref > 2) levelPref = 2;
+        onIconImg.sprite = cakeData.icons[levelPref - 1];
+        offIconImg.sprite = cakeData.icons[levelPref - 1];
+
         if (ProfileManager.Instance.playerData.cakeSaveData.IsOwnedCake(cakeData.id))
         {
             levelBar.SetActive(true);

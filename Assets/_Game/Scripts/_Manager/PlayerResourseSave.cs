@@ -83,6 +83,7 @@ public class PlayerResourseSave : SaveBase
 
     public void AddMoney(float amount)
     {
+        Debug.Log(amount);
         coins.Add(amount);
         IsMarkChangeData();
         SaveData();
@@ -208,6 +209,7 @@ public class PlayerResourseSave : SaveBase
         {
             if (ownedItem[i].ItemType == item.ItemType) {
                 ownedItem[i].amount += item.amount;
+                EventManager.TriggerEvent(EventName.AddItem.ToString());
                 IsMarkChangeData();
                 SaveData();
                 return;
@@ -239,8 +241,10 @@ public class PlayerResourseSave : SaveBase
         {
             if (ownedItem[i].ItemType == itemType)
             {
+                Debug.Log("using item : "+itemType);
                 ownedItem[i].amount--;
-                return;
+                EventManager.TriggerEvent(EventName.AddItem.ToString());
+                break;
             }
         }
         IsMarkChangeData();

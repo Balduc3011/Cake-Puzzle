@@ -66,7 +66,7 @@ public class ItemManager : MonoBehaviour
         if (panelUsingItem == null) { panelUsingItem = UIManager.instance.GetPanel(UIPanelType.PanelUsingItem).GetComponent<PanelUsingItem>(); }
         GameManager.Instance.cameraManager.UsingItemMode();
         GameManager.Instance.lightManager.UsingItemMode();
-        panelUsingItem.OnUsingItem(itemType);
+        panelUsingItem.OnUseItem(itemType);
     }
 
     public void UsingItemDone() {
@@ -101,6 +101,10 @@ public class ItemManager : MonoBehaviour
                 
             });
         });
+    }
+
+    public void OnUsingItem() {
+        panelUsingItem.OnUsingItem();
     }
 
     public Vector3 GetPointFillUp()

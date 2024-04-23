@@ -40,4 +40,7 @@ public enum OfferID
     None = 0,
     Pack2 = 1,
     Pack1 = 2,
+    PackHammer = 10,
+    PackFillUp = 20,
+    PackReRoll = 30
 }

@@ -280,7 +280,8 @@ public class Cake : MonoBehaviour
 
     void InitPiece(int pieceInidex, int pieceCakeID) {
         pieces[pieceInidex].transform.eulerAngles = Vector3.zero;
-        GameObject objecPref = Resources.Load("Pieces/Piece_" + pieceCakeID) as GameObject;
+        //GameObject objecPref = Resources.Load("Pieces/Piece_" + pieceCakeID) as GameObject;
+        GameObject objecPref = ProfileManager.Instance.dataConfig.cakeDataConfig.GetCakePref(pieceCakeID);
         currentRotateIndex++;
         if (currentRotateIndex >= rotates.Count)
             currentRotateIndex = 0;
@@ -323,6 +324,13 @@ public class Cake : MonoBehaviour
     }
     int indexRemove;
     void FillUp() {
+        if (myGroupCake != null)
+        {
+            if (GameManager.Instance.cakeManager.CakeOnWait(myGroupCake))
+                return;
+        }
+        GameManager.Instance.itemManager.OnUsingItem();
+        EventManager.TriggerEvent(EventName.UsingFillUpDone.ToString());
         transform.DOMove(GameManager.Instance.itemManager.GetPointFillUp(), .25f).SetEase(Ease.OutBack);
         scaleFillUp = 1.9f;
         transform.DOScale(1.9f, .25f).SetEase(Ease.OutBack).OnComplete(()=> {
@@ -358,7 +366,7 @@ public class Cake : MonoBehaviour
                         ProfileManager.Instance.playerData.playerResourseSave.UsingItem(ItemType.FillUp);
                         DoneCakeMode();
                         ProfileManager.Instance.playerData.cakeSaveData.RemoveCake(currentPlate.plateIndex);
-                        EventManager.TriggerEvent(EventName.UsingFillUpDone.ToString());
+                        UsingFillUpDone();
                     });
                  
                     transform.DOScale(scaleFillUp + .3f, .15f);
@@ -376,13 +384,19 @@ public class Cake : MonoBehaviour
     void UsingHammer() {
         if (currentPlate != null)
             currentPlate.currentCake = null;
+        if (myGroupCake != null)
+        {
+            if (GameManager.Instance.cakeManager.CakeOnWait(myGroupCake))
+                return;
+        }
+        GameManager.Instance.itemManager.OnUsingItem();
         ProfileManager.Instance.playerData.playerResourseSave.UsingItem(ItemType.Hammer);
         ProfileManager.Instance.playerData.cakeSaveData.RemoveCake(currentPlate.plateIndex);
         GameManager.Instance.itemManager.CallUsingHammerOnCake(this, CallBackOnAnimHammerDone);
+        EventManager.TriggerEvent(EventName.UsingHammerDone.ToString());
     }
 
     void CallBackOnAnimHammerDone() {
-        EventManager.TriggerEvent(EventName.UsingHammerDone.ToString());
         transform.DOScale(0f, 0.25f).OnComplete(() => { gameObject.SetActive(false); });
     }
 

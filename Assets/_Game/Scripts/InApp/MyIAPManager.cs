@@ -18,6 +18,9 @@ public class MyIAPManager : MonoBehaviour, IStoreListener {
 
     public const string sale_pack1 = "Pack1";
     public const string sale_pack2 = "Pack2";
+    public const string PackHammer = "PackHammer";
+    public const string PackFillUp = "PackFillUp";
+    public const string PackReRoll = "PackReRoll";
 
     UnityAction buyFailed, buySuccess;
     void Awake() {
@@ -50,6 +53,9 @@ public class MyIAPManager : MonoBehaviour, IStoreListener {
         var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
         builder.AddProduct(sale_pack1, ProductType.Consumable);
         builder.AddProduct(sale_pack2, ProductType.Consumable);
+        builder.AddProduct(PackHammer, ProductType.Consumable);
+        builder.AddProduct(PackFillUp, ProductType.Consumable);
+        builder.AddProduct(PackReRoll, ProductType.Consumable);
         builder.AddProduct(product_noads, ProductType.Consumable);
         // and this class' instance. Expect a response either in OnInitialized or OnInitializeFailed.
         UnityPurchasing.Initialize(this, builder);
@@ -124,6 +130,9 @@ public class MyIAPManager : MonoBehaviour, IStoreListener {
         switch (productID) {
             case sale_pack1:
             case sale_pack2:
+            case PackHammer:
+            case PackFillUp:
+            case PackReRoll:
                 // TODO //
                 ShopPack pack = ProfileManager.Instance.dataConfig.shopDataConfig.GetShopPack(productID);
                 if (pack != null)

@@ -352,11 +352,6 @@ public class CakeManager : MonoBehaviour
             actioncallBack();
         });
     }
-    public Mesh GetNextUnlockedCakeMesh()
-    {
-        int nextUnlockCake = ProfileManager.Instance.dataConfig.levelDataConfig.GetLevel(ProfileManager.Instance.playerData.playerResourseSave.currentLevel).cakeUnlockID;
-        return ProfileManager.Instance.dataConfig.cakeDataConfig.GetCakeMesh(nextUnlockCake);
-    }
 
     public void ClearAllCake()
     {
@@ -400,6 +395,17 @@ public class CakeManager : MonoBehaviour
         }
         SetupCheckCake();
     }
+
+    public bool CakeOnWait(GroupCake myGroupCake)
+    {
+        for (int i = 0; i < cakesWait.Count; i++)
+        {
+            if (cakesWait[i] == myGroupCake)
+                return true;
+        }
+        return false;
+    }
+
     void LoadCakeWaitData() {
         cakeOnWaits = ProfileManager.Instance.playerData.cakeSaveData.cakeOnWaits;
         indexGroupCake = 0;
@@ -431,27 +437,11 @@ public class CakeManager : MonoBehaviour
     void LevelUp() {
         onMove = true;
         int newCakeID = ProfileManager.Instance.dataConfig.levelDataConfig.GetCakeID(ProfileManager.Instance.playerData.playerResourseSave.currentLevel - 1);
-        //if (newCakeID != -1)
-        //{
-        //    SetJustUnlockedCake(newCakeID);
-        //    UIManager.instance.ShowPanelCakeReward();
-        //    UIManager.instance.ShowPanelItemsReward();
-        //}
-        //else
-        //    UIManager.instance.ShowPanelItemsReward();
+      
         SetJustUnlockedCake(newCakeID);
         levelUp = true;
-        //UIManager.instance.ShowPanelItemsReward();
-        
-        //if (justUnlockedCake != -1 && justUnlockedCake != 0)
-        //{
-        //    UIManager.instance.ShowPanelCakeReward();
-        //}
-        //else
-        //{
-        //    UIManager.instance.ShowPanelSelectReward();
-        //}
-        Invoke("ShowLevelUp", 3.5f);
+        ShowLevelUp();
+        //Invoke("ShowLevelUp", 3.5f);
     }
 
     void ShowLevelUp()
