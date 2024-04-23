@@ -22,7 +22,7 @@ namespace SDK {
     }
     public enum WatchVideoRewardType {
         NONE,
-        BombBooster,
+        GetFreeBooster,
         FreeCoinAds,
         X2RewardAds,
         CollectCoinAds,
@@ -31,7 +31,7 @@ namespace SDK {
         UpgradeCake,
         GameOverRevive,
         FreeSpinAds,
-        GetExtraCard
+        GetExtraCard,
     }
     
     [ScriptOrder(-99)]

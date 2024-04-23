@@ -78,7 +78,7 @@ public class CakeDataConfig : ScriptableObject
         for (int i = 0; i < cakeDatas.Count; i++)
         {
             if (cakeDatas[i].id == cakeId)
-            { 
+            {
                 return cakeDatas[i].pieces[levelPref - 1];
             }
         }

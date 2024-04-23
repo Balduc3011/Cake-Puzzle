@@ -42,5 +42,6 @@ public enum OfferID
     Pack1 = 2,
     PackHammer = 10,
     PackFillUp = 20,
-    PackReRoll = 30
+    PackReRoll = 30,
+    PackMoney1 = 40,
 }

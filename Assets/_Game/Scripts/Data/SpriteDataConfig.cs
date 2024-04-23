@@ -20,6 +20,17 @@ public class SpriteDataConfig : ScriptableObject
         }
         return null;
     }
+    public Sprite GetItemSprite(string itemName)
+    {
+        for (int i = 0; i < itemSprites.Count; i++)
+        {
+            if (String.Compare(itemSprites[i].name, itemName) == 0)
+            {
+                return itemSprites[i];
+            }
+        }
+        return null;
+    }
 
     public Sprite GetCakeSprite(int cakeUnlockID)
     {

@@ -23,7 +23,13 @@ public class IAPPack : MonoBehaviour
         for (int i = 0; i < rewards.Count; i++)
         {
             if (rewards[i].itemIcon != null)
-                rewards[i].itemIcon.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetItemSprite(rewardItems[i].ItemType);
+            {
+                if(rewardItems[i].ItemType != ItemType.Coin) 
+                    rewards[i].itemIcon.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetItemSprite(rewardItems[i].ItemType);
+                else
+                    rewards[i].itemIcon.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetItemSprite("Coins");
+            }
+                
             if(rewards[i].amount != null)
                 rewards[i].amount.text = rewardItems[i].amount.ToString();
         }
