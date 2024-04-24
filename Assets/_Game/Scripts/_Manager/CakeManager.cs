@@ -509,7 +509,13 @@ public class CakeManager : MonoBehaviour
         table.ResetPharse();
     }
 
-
+    public void ReInitData(int cakeID) {
+        for (int i = 0; i < cakesWait.Count; i++)
+        {
+            cakesWait[i].ReInitData(cakeID);
+        }
+        table.ReInitCake(cakeID);
+    }
     #region STREAK
     void ResetStreak()
     {

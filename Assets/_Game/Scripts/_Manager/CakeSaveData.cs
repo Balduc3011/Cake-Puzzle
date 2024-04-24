@@ -368,7 +368,9 @@ public class OwnedCake
             level++;
             cardAmount -= cardRequire;
             UpdateCardRequire();
+            GameManager.Instance.cakeManager.ReInitData(cakeID);
         }
+
     }
 
     public void UpdateCardRequire()

@@ -255,4 +255,13 @@ public class GroupCake : MonoBehaviour
             GameManager.Instance.cakeManager.RemoveCakeWait(this);
         });
     }
+
+    public void ReInitData(int cakeID)
+    {
+        for (int i = 0; i < cake.Count; i++)
+        {
+            if (cake[i].IsHaveCakeID(cakeID))
+                cake[i].ReInitData();
+        }
+    }
 }

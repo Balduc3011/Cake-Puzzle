@@ -290,6 +290,14 @@ public class Cake : MonoBehaviour
         pieces[pieceInidex].transform.eulerAngles = new Vector3(0, GetRotate(), 0);
     }
 
+    public void ReInitData() {
+        for (int i = 0; i < pieces.Count; i++)
+        {
+            GameObject objecPref = ProfileManager.Instance.dataConfig.cakeDataConfig.GetCakePref(pieces[i].cakeID);
+            pieces[i].ReInitData(objecPref);
+        }
+    }
+
     
     float GetRotate() {
       
@@ -528,6 +536,18 @@ public class Cake : MonoBehaviour
             Debug.Log("id: "+ cakeID +" index return: " + indexReturn);
         }
         return indexReturn;
+    }
+
+    public bool IsHaveCakeID(int cakeID)
+    {
+        for (int i = 0; i < pieces.Count; i++)
+        {
+            if (pieces[i].cakeID == cakeID)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void StartRotateOtherPieceForNewPiece(UnityAction actionCallBack) {
