@@ -57,7 +57,6 @@ public class Cake : MonoBehaviour
 
     GroupCake myGroupCake;
     Piece piece;
-    Piece pieceTemp;
     PanelTotal panelTotal;
     IDInfor idInfor;
 
@@ -155,7 +154,7 @@ public class Cake : MonoBehaviour
         //InitPiece(pieceIndex, pieceCakeIDFill);
         newPiece.transform.DOScale(1, .25f).From(0).SetEase(Ease.OutBack);
         newPiece.transform.eulerAngles = Vector3.zero;
-        GameObject objecPref = Resources.Load("Pieces/Piece_" + pieceCakeIDFill) as GameObject;
+        GameObject objecPref = ProfileManager.Instance.dataConfig.cakeDataConfig.GetCakePref(pieceCakeIDFill);
         newPiece.InitData(objecPref, pieceCakeIDFill, currentRotateIndex);
 
         newPiece.transform.eulerAngles = new Vector3(0, rotates[currentRotateIndex], 0);
