@@ -61,7 +61,7 @@ public class PanelLevelComplete : UIPanel
     void ClosePanel()
     {
         UIManager.instance.ClosePanelLevelComplete();
-        UIManager.instance.ShowPanelLeaderBoard();
+        //UIManager.instance.ShowPanelLeaderBoard();
     }
 
     void ShowPanelHint()
