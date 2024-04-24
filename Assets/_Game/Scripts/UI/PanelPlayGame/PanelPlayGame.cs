@@ -27,7 +27,8 @@ public class PanelPlayGame : UIPanel
         panelType = UIPanelType.PanelPlayGame;
         base.Awake();
         coinBoosterEarnTxt.text = ConstantValue.VAL_COIN_BOOSTER.ToString();
-        x2BoosterTimeTxt.text = ConstantValue.VAL_X2BOOSTER_TIME.ToString() + ConstantValue.STR_MINUTE;
+        //x2BoosterTimeTxt.text = ConstantValue.VAL_X2BOOSTER_TIME.ToString() + ConstantValue.STR_MINUTE;
+        x2BoosterTimeTxt.text = "x2";
         btnHammer.SetActionCallBack(UsingHammer);
         btnFillUp.SetActionCallBack(UsingItemFillUp);
         btnReroll.SetActionCallBack(UsingReroll);

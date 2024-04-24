@@ -63,6 +63,7 @@ public class CakeDataConfig : ScriptableObject
     public GameObject GetCakePref(int cakeId)
     {
         int level = ProfileManager.Instance.playerData.cakeSaveData.GetOwnedCakeLevel(cakeId);
+        if(level > 2) level = 2;
         for (int i = 0; i < cakeObjectByLevels.Count; i++)
         {
             if (cakeObjectByLevels[i].id == cakeId) 
