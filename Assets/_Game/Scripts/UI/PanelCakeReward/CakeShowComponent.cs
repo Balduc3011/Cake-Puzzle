@@ -64,10 +64,11 @@ public class CakeShowComponent : MonoBehaviour
     }
 
     public int testCakeId;
+    public int level;
     [Button]
     public void TestCake()
     {
-        Mesh cakeSlideMesh = ProfileManager.Instance.dataConfig.cakeDataConfig.GetCakePieceMesh(testCakeId);
+        Mesh cakeSlideMesh = ProfileManager.Instance.dataConfig.cakeDataConfig.GetCakePieceMesh(testCakeId, level);
         for (int i = 0; i < cakeSlideMeshs.Count; i++)
         {
             cakeSlideMeshs[i].mesh = cakeSlideMesh;
