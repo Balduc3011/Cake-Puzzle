@@ -269,11 +269,11 @@ PrefabInstance:
     - target: {fileID: 1038953202972187661, guid: d9eb9ac78256c854195961cb32701ed7, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 4125836446022607934, guid: 99a81eb83f3f42443bd1f6c6a14fd5bd, type: 3}
+      objectReference: {fileID: 3565221927553571590, guid: 99a81eb83f3f42443bd1f6c6a14fd5bd, type: 3}
     - target: {fileID: 1115662873845565186, guid: d9eb9ac78256c854195961cb32701ed7, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 4125836446022607934, guid: 99a81eb83f3f42443bd1f6c6a14fd5bd, type: 3}
+      objectReference: {fileID: 3565221927553571590, guid: 99a81eb83f3f42443bd1f6c6a14fd5bd, type: 3}
     - target: {fileID: 1196414804858870851, guid: d9eb9ac78256c854195961cb32701ed7, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -285,7 +285,7 @@ PrefabInstance:
     - target: {fileID: 1196414804858870853, guid: d9eb9ac78256c854195961cb32701ed7, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 4125836446022607934, guid: 99a81eb83f3f42443bd1f6c6a14fd5bd, type: 3}
+      objectReference: {fileID: 3565221927553571590, guid: 99a81eb83f3f42443bd1f6c6a14fd5bd, type: 3}
     - target: {fileID: 1196414804858870854, guid: d9eb9ac78256c854195961cb32701ed7, type: 3}
       propertyPath: m_LocalScale.x
       value: 3.7499998
@@ -335,8 +335,12 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1804616549148003128, guid: d9eb9ac78256c854195961cb32701ed7, type: 3}
+      propertyPath: level
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1804616549148003128, guid: d9eb9ac78256c854195961cb32701ed7, type: 3}
       propertyPath: testCakeId
-      value: 9
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2087340544502336244, guid: d9eb9ac78256c854195961cb32701ed7, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -349,11 +353,11 @@ PrefabInstance:
     - target: {fileID: 3450796799785472426, guid: d9eb9ac78256c854195961cb32701ed7, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: d20006f7f545d0746af9dc675b1def37, type: 2}
+      objectReference: {fileID: 2100000, guid: ed7bb6f3c298187419d9ea9f72eb52f5, type: 2}
     - target: {fileID: 3463345455241698265, guid: d9eb9ac78256c854195961cb32701ed7, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 4125836446022607934, guid: 99a81eb83f3f42443bd1f6c6a14fd5bd, type: 3}
+      objectReference: {fileID: 3565221927553571590, guid: 99a81eb83f3f42443bd1f6c6a14fd5bd, type: 3}
     - target: {fileID: 3518727584467903611, guid: d9eb9ac78256c854195961cb32701ed7, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -361,7 +365,7 @@ PrefabInstance:
     - target: {fileID: 4314680105729247089, guid: d9eb9ac78256c854195961cb32701ed7, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 4125836446022607934, guid: 99a81eb83f3f42443bd1f6c6a14fd5bd, type: 3}
+      objectReference: {fileID: 3565221927553571590, guid: 99a81eb83f3f42443bd1f6c6a14fd5bd, type: 3}
     - target: {fileID: 4333714154772715722, guid: d9eb9ac78256c854195961cb32701ed7, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -489,7 +493,7 @@ PrefabInstance:
     - target: {fileID: 9010940006812985448, guid: d9eb9ac78256c854195961cb32701ed7, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 4125836446022607934, guid: 99a81eb83f3f42443bd1f6c6a14fd5bd, type: 3}
+      objectReference: {fileID: 3565221927553571590, guid: 99a81eb83f3f42443bd1f6c6a14fd5bd, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d9eb9ac78256c854195961cb32701ed7, type: 3}
 --- !u!4 &407948171 stripped
@@ -1174,7 +1178,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 0}
+  m_BackGroundColor: {r: 1, g: 0.7122642, b: 0.7122642, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
