@@ -120,10 +120,21 @@ public class PanelPlayGame : UIPanel
             AdsManager.Instance.ShowRewardVideo(WatchVideoRewardType.FreeCoinAds.ToString(), CoinBoosterSuccess);
         //CoinBoosterSuccess();
     }
-
+    ItemData coinBoosterReward;
+    List<ItemData> coinBoosterRewards;
     void CoinBoosterSuccess()
     {
-        ProfileManager.Instance.playerData.playerResourseSave.AddMoney(ConstantValue.VAL_COIN_BOOSTER);
+        if(coinBoosterRewards == null)
+        {
+            coinBoosterRewards = new List<ItemData>();
+            coinBoosterReward = new ItemData();
+            coinBoosterReward.ItemType = ItemType.Coin;
+            coinBoosterReward.amount = ConstantValue.VAL_COIN_BOOSTER;
+            coinBoosterRewards.Add(coinBoosterReward);
+        }
+        GameManager.Instance.GetItemRewards(coinBoosterRewards);
+        UIManager.instance.ShowPanelItemsReward();
+        //ProfileManager.Instance.playerData.playerResourseSave.AddMoney(ConstantValue.VAL_COIN_BOOSTER);
         EventManager.TriggerEvent(EventName.ChangeCoin.ToString());
     }
 
