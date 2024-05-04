@@ -306,7 +306,7 @@ public class Cake : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (EventSystem.current.IsPointerOverGameObject() || EventSystem.current.IsPointerOverGameObject(0))
+        if (EventSystem.current.IsPointerOverGameObject() || EventSystem.current.IsPointerOverGameObject(0) || UIManager.instance.isHasPopupOnScene)
             return;
 
         if (onUsingFillUp)
