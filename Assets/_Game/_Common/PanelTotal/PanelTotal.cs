@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using TMPro;
 using UIAnimation;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class PanelTotal : UIPanel
@@ -12,6 +13,7 @@ public class PanelTotal : UIPanel
     public RectTransform subTopRect;
     [SerializeField] UIPanelShowUp uiPanelShowUp;
     public Transform Transform;
+    [SerializeField] CanvasGroup functionCG;
     [SerializeField] Button playBtn;
     [SerializeField] Button settingBtn;
     [SerializeField] Button dailyBtn;
@@ -162,9 +164,13 @@ public class PanelTotal : UIPanel
         });
         questNavBtn.onClick.AddListener(() => {
             GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
-            UIManager.instance.ShowPanelDailyQuest();
+            UIManager.instance.ShowPanelTopUp();
             ShowBGCanvasGroup(false);
         });
+
+        confirmBuyBtn.onClick.AddListener(OnConfirmShowAds);
+        confirmCloseBtn.onClick.AddListener(CloseConfirmShowAds);
+
         currentLevel = ProfileManager.Instance.playerData.playerResourseSave.currentLevel;
         ChangeLevel();
         ChangeExp();
@@ -174,6 +180,7 @@ public class PanelTotal : UIPanel
     void ShowBGCanvasGroup(bool show)
     {
         backGroundCG.DOFade(show ? 1 : 0, show ? 0.1f : .5f);
+        functionCG.DOFade(show ? 1 : 0, 0.15f);
     }
 
     public void ShowMainSceneContent(bool show)
@@ -281,4 +288,41 @@ public class PanelTotal : UIPanel
         showingCake = newShow;
         GameManager.Instance.cakeManager.cakeShowComponent.ShowSelectetCake(showingCake);
     }
+
+    #region Ads
+    [SerializeField] GameObject confirmObj;
+    [SerializeField] CanvasGroup confirmCG;
+    [SerializeField] Button confirmBuyBtn;
+    [SerializeField] Button confirmCloseBtn;
+    [SerializeField] TextMeshProUGUI desText;
+    //[SerializeField] Image iconImg;
+    UnityAction adsConfirmCallBack;
+    public void ShowConfirm(UnityAction unityAction, string des)
+    {
+        adsConfirmCallBack = unityAction;
+        confirmObj.SetActive(true);
+        confirmCG.DOFade(1, 0.15f);
+        desText.text = des;
+    }
+
+    public void CloseConfirmShowAds()
+    {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
+        confirmCG.DOFade(0, 0.15f).OnComplete(CloseConfirmInstant);
+    }
+
+    void CloseConfirmInstant()
+    {
+        confirmObj.SetActive(false);
+    }
+
+    void OnConfirmShowAds()
+    {
+        if (adsConfirmCallBack != null)
+        {
+            adsConfirmCallBack();
+        }
+        CloseConfirmShowAds();
+    }
+    #endregion
 }

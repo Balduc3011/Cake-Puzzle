@@ -1655,7 +1655,6 @@ GameObject:
   m_Component:
   - component: {fileID: 963194228}
   - component: {fileID: 963194227}
-  - component: {fileID: 963194226}
   - component: {fileID: 963194229}
   - component: {fileID: 963194230}
   m_Layer: 0
@@ -1665,14 +1664,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &963194226
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 963194225}
-  m_Enabled: 1
 --- !u!20 &963194227
 Camera:
   m_ObjectHideFlags: 0
@@ -3310,6 +3301,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1808039146}
   - component: {fileID: 1808039147}
+  - component: {fileID: 1808039148}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -3362,6 +3354,14 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 99079dd61ce5ee747aa23bc6633ca0f6, type: 3}
   - {fileID: 8300000, guid: 7ea007c34c084c04ba13107127026c87, type: 3}
   - {fileID: 8300000, guid: 0d8b7ccf8322bc742baa19e6b281914d, type: 3}
+--- !u!81 &1808039148
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1808039145}
+  m_Enabled: 1
 --- !u!1 &1831739951
 GameObject:
   m_ObjectHideFlags: 0

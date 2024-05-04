@@ -6,7 +6,7 @@ using TMPro;
 using UIAnimation;
 using DG.Tweening;
 
-public class PanelDailyQuest : UIPanel
+public class PanelTopUp : UIPanel
 {
     [SerializeField] UIPanelShowUp uiPanelShowUp;
     public SheetAnimation sheetAnimation;
@@ -24,7 +24,7 @@ public class PanelDailyQuest : UIPanel
 
     public override void Awake()
     {
-        panelType = UIPanelType.PanelDailyQuest;
+        panelType = UIPanelType.PanelTopUp;
         base.Awake();
         EventManager.AddListener(EventName.ChangeStarDailyQuest.ToString(), ChangeProgressDailyReward);
     }
@@ -75,7 +75,7 @@ public class PanelDailyQuest : UIPanel
 
     void ClosePanel() {
         StopCoroutine(WaitToEndOfFrame());
-        openAndCloseAnim.OnClose(() => { UIManager.instance.ClosePanelDailyQuest(); });
+        openAndCloseAnim.OnClose(() => { UIManager.instance.ClosePanelTopUp(); });
     }
 
     public void ChangeProgressDailyReward() {
@@ -92,6 +92,6 @@ public class PanelDailyQuest : UIPanel
 
     public void OnClose()
     {
-        uiPanelShowUp.OnClose(UIManager.instance.ClosePanelDailyQuest);
+        uiPanelShowUp.OnClose(UIManager.instance.ClosePanelTopUp);
     }
 }

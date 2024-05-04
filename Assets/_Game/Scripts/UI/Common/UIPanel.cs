@@ -18,7 +18,7 @@ public enum UIPanelType {
     PanelShop,
     PanelUsingItem,
     PanelLeaderBoard,
-    PanelDailyQuest,
+    PanelTopUp,
     PanelQuickIAP,
     PanelSelectReward,
     PanelHint
