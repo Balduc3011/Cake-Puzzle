@@ -5,10 +5,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class QuestSlot : SlotBase<QuestData>
+public class QuestSlot : MonoBehaviour
 {
     public int slotIndex;
-    int id;
+    QuestType questType;
+    [SerializeField] Button collectBtn;
     [SerializeField] TextMeshProUGUI txtName;
     [SerializeField] TextMeshProUGUI txtProgress;
     [SerializeField] Image rewardIcon;
@@ -20,85 +21,52 @@ public class QuestSlot : SlotBase<QuestData>
     [SerializeField] GameObject objUnable;
     float currentProgress;
     float questRequire;
-    public override void InitData(QuestData data)
-    {
-        base.InitData(data);
-        id = data.id;
-        txtName.text = data.questName.ToString();
-        rewardIcon.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetItemSprite(data.rewardData.ItemType);
-        txtRewardAmount.text = data.rewardData.amount.ToString();
-        questRequire = data.questRequirebase;
 
-        currentProgress = ProfileManager.Instance.playerData.questDataSave.GetCurrentProgress(data.questType, id);
-        if (currentProgress > questRequire)
-            currentProgress = questRequire;
-        txtProgress.text = currentProgress.ToString() + ConstantValue.STR_SLASH + questRequire;
-        sProgress.maxValue = questRequire; 
-        sProgress.value = currentProgress;
-        bool isClaimed = ProfileManager.Instance.playerData.questDataSave.IsClaimQuest(data.questType, id);
-        btnChoose.interactable = currentProgress == questRequire && !isClaimed;
-        btnChoose.gameObject.SetActive(btnChoose.interactable);
-        objSlider.SetActive(!btnChoose.interactable);
-        objUnable.SetActive(!btnChoose.interactable);
-        objHighlight.SetActive(btnChoose.interactable);
-        objHide.SetActive(currentProgress == questRequire && isClaimed);
-        if(isClaimed)
-        {
-            transform.SetAsLastSibling();
-        }
+    private void Start()
+    {
+        collectBtn.onClick.AddListener(CollectQuest);
+    }
+    public void InitData(QuestType questType)
+    {
+        this.questType = questType;
     }
 
     private void OnEnable()
     {
-        if(data != null)
-        {
-            currentProgress = ProfileManager.Instance.playerData.questDataSave.GetCurrentProgress(data.questType, id);
-            if (currentProgress > questRequire)
-                currentProgress = questRequire;
-            txtProgress.text = currentProgress.ToString() + ConstantValue.STR_SLASH + questRequire;
-            sProgress.value = currentProgress;
-
-            //bool isClaimed = ProfileManager.Instance.playerData.questDataSave.IsClaimQuest(data.questType, id);
-            //btnChoose.interactable = currentProgress == questRequire && !isClaimed;
-            //objHighlight.SetActive(btnChoose.interactable);
-            //objHide.SetActive(currentProgress == questRequire && isClaimed);
-            //if (isClaimed)
-            //{
-            //    transform.SetAsLastSibling();
-            //}
-        }
         ReScale();
     }
 
-    public void CheckCollect()
+    void ReInit()
     {
-        bool isClaimed = ProfileManager.Instance.playerData.questDataSave.IsClaimQuest(data.questType, id);
-        btnChoose.interactable = currentProgress == questRequire && !isClaimed;
-        objHighlight.SetActive(btnChoose.interactable);
-        objHide.SetActive(currentProgress == questRequire && isClaimed);
-        if (isClaimed)
-        {
-            transform.SetAsLastSibling();
-        }
-    }
+        //txtName.text = data.questName.ToString();
+        //rewardIcon.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetItemSprite(data.rewardData.ItemType);
+        //txtRewardAmount.text = data.rewardData.amount.ToString();
+        //questRequire = data.questRequirebase;
 
-    public override void OnChoose()
-    {
-        base.OnChoose();
-        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
-        GameManager.Instance.questManager.ClaimSmallQuest(data.questType, id);
-        List<ItemData> rewards = new List<ItemData>();
-        rewards.Add(data.rewardData);
-        GameManager.Instance.GetItemRewards(rewards);
-        btnChoose.interactable = false;
-        objHighlight.SetActive(false);
-        objHide.SetActive(true);
-        transform.SetAsLastSibling();
-        UIManager.instance.ShowPanelItemsReward();
+        //currentProgress = ProfileManager.Instance.playerData.questDataSave.GetCurrentProgress(data.questType, id);
+        //if (currentProgress > questRequire)
+        //    currentProgress = questRequire;
+        //txtProgress.text = currentProgress.ToString() + ConstantValue.STR_SLASH + questRequire;
+        //sProgress.maxValue = questRequire;
+        //sProgress.value = currentProgress;
+        //bool isClaimed = ProfileManager.Instance.playerData.questDataSave.IsClaimQuest(data.questType, id);
+        //collectBtn.interactable = currentProgress == questRequire && !isClaimed;
+        //collectBtn.gameObject.SetActive(collectBtn.interactable);
+        //objSlider.SetActive(!collectBtn.interactable);
+        //objUnable.SetActive(!collectBtn.interactable);
+        //objHighlight.SetActive(collectBtn.interactable);
+        //objHide.SetActive(currentProgress == questRequire && isClaimed);
     }
 
     public void ReScale()
     {
         transform.DOScale(1, 0.15f).From(0).SetDelay(0.25f + 0.1f * slotIndex);
+    }
+
+    void CollectQuest()
+    {
+        GameManager.Instance.questManager.ClaimQuest(questType);
+        ReInit();
+        ReScale();
     }
 }

@@ -7,16 +7,6 @@ public class QuestDataConfig : ScriptableObject
 {
     public List<QuestData> questData = new List<QuestData>();
     public List<DailyReward> dailyRewards = new List<DailyReward>();
-#if UNITY_EDITOR
-    private void OnEnable()
-    {
-        for (int i = 0; i < questData.Count; i++)
-        {
-            questData[i].questName = GetNameQuest(questData[i]);
-            questData[i].id = i;
-        }
-    }
-#endif
     string GetNameQuest(QuestData quest) {
         switch (quest.questType)
         {
@@ -37,13 +27,19 @@ public class QuestDataConfig : ScriptableObject
 }
 
 [System.Serializable]
+public class QuestProcess
+{
+    public QuestType questType;
+    public float process;
+    public int marked;
+}
+
+[System.Serializable]
 public class QuestData {
-    public int id;
-    public string questName;
     public int questRequirebase;
     public QuestType questType;
     public ItemData rewardData;
-    public int questStarEarn;
+    public int step;
 }
 
 [System.Serializable]
@@ -56,5 +52,6 @@ public enum QuestType
 {
     None = 0,
     WatchADS = 1,
-    CompleteCake = 2
+    CompleteCake = 2,
+    UseBooster = 3
 }
