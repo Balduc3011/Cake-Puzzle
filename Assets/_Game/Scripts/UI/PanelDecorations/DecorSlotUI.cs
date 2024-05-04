@@ -42,11 +42,13 @@ public class DecorSlotUI : MonoBehaviour
 
     void OnBuy()
     {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         GameManager.Instance.decorationManager.BuyDecor(decorationType, decorationData.id);
     }
 
     void OnUse()
     {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         GameManager.Instance.decorationManager.UseDecor(decorationType, decorationData.id);
     }
 

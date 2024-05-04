@@ -382,6 +382,7 @@ public class OwnedCake
 
     public bool IsAbleToUpgrade()
     {
+        UpdateCardRequire();
         return cardAmount >= cardRequire;
     }
 }

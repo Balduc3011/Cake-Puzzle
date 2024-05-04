@@ -130,6 +130,9 @@ public class UIManager : MonoBehaviour {
                 case UIPanelType.PanelSelectReward:
                     panel = Instantiate(Resources.Load("UI/PanelSelectReward") as GameObject, mainCanvas);
                     break;
+                case UIPanelType.PanelHint:
+                    panel = Instantiate(Resources.Load("UI/PanelHint") as GameObject, mainCanvas);
+                    break;
             }
             if (panel) panel.SetActive(true);
             return panel;
@@ -154,6 +157,19 @@ public class UIManager : MonoBehaviour {
 
     public void ClosePanelBase() {
         GameObject go = GetPanel(UIPanelType.PanelBase);
+        go.SetActive(false);
+    }
+    
+    public void ShowPanelHint(ItemType itemType)
+    {
+        GameObject go = GetPanel(UIPanelType.PanelHint);
+        go.SetActive(true);
+        go.GetComponent<PanelHint>().ShowComponent(itemType);
+        go.transform.SetAsLastSibling();
+    }
+
+    public void ClosePanelHint() {
+        GameObject go = GetPanel(UIPanelType.PanelHint);
         go.SetActive(false);
     }
 

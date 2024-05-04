@@ -20,6 +20,7 @@ public class DecorNavButton : MonoBehaviour
 
     void NavBtnOnClick()
     {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         panelDecorations.InitDecorationData(decorationType);
         panelDecorations.SetSelectedNavBtn(this);
         SelectBtn(true);

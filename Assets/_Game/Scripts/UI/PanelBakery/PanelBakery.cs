@@ -212,6 +212,7 @@ public class PanelBakery : UIPanel
 
     void ClosePopup()
     {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         popUpAnim.OnClose(UnActivePopup);
     }
     void UnActivePopup()
@@ -221,12 +222,14 @@ public class PanelBakery : UIPanel
 
     void UseCake()
     {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         SetCakeToSwap(popupCake.id);
         ClosePopup();
     }
 
     void UpgradeCake()
     {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         if (currentCake != null)
         {
             if (currentCake.IsAbleToUpgrade())

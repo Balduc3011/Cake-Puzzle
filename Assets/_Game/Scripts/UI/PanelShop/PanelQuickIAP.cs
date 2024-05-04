@@ -35,6 +35,7 @@ public class PanelQuickIAP : UIPanel
 
     void OnClose()
     {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         openAndCloseAnim.OnClose(UIManager.instance.ClosePanelQuickIAP);
     }
 }

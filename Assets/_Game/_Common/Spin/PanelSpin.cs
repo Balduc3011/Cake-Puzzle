@@ -83,6 +83,7 @@ public class PanelSpin : UIPanel
 
     void OnClose()
     {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         //openAndCloseAnim.OnClose(CloseInstant);
         uiPanelShowUp.OnClose(CloseInstant);
     }
@@ -102,6 +103,7 @@ public class PanelSpin : UIPanel
 
     void OnSpinClick()
     {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         if (GameManager.Instance.IsHasNoAds() || GameManager.Instance.spinManager.IsHasFreeSpin())
             OnSpin();
         else
@@ -178,6 +180,7 @@ public class PanelSpin : UIPanel
 
     void CheckResult()
     {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_LevelUp);
         blocker.SetActive(false);
         float stopAngle = dynamicSpinWheel.eulerAngles.z;
         stopAngle = stopAngle % 360;

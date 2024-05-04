@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
+  m_IndirectSpecularColor: {r: 0.1273174, g: 0.13414761, b: 0.12107885, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -130,6 +130,34 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6685391519484111099, guid: 72fec712b86322e4a86060c37a805d29, type: 3}
+      propertyPath: m_BannerAdsConfig.adsMediationType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6685391519484111099, guid: 72fec712b86322e4a86060c37a805d29, type: 3}
+      propertyPath: m_RewardVideoAdsConfig.adsMediationType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6685391519484111099, guid: 72fec712b86322e4a86060c37a805d29, type: 3}
+      propertyPath: m_InterstitialAdsConfig.adsMediationType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6685391520706141682, guid: 72fec712b86322e4a86060c37a805d29, type: 3}
+      propertyPath: m_MaxAdConfig.sdkKey.AndroidID
+      value: uJa4sGbT3zSQ9zw2o_CzJrxzsUI682WXsNFOfDGoT0Z5SsqQSWN52AZi7P0UtoN13VRe_MgEZodmMuzDKQwf0d
+      objectReference: {fileID: 0}
+    - target: {fileID: 6685391520706141682, guid: 72fec712b86322e4a86060c37a805d29, type: 3}
+      propertyPath: m_MaxAdConfig.bannerAdUnitID.AndroidID
+      value: 664ee6ec5a369d07
+      objectReference: {fileID: 0}
+    - target: {fileID: 6685391520706141682, guid: 72fec712b86322e4a86060c37a805d29, type: 3}
+      propertyPath: m_MaxAdConfig.rewardedAdUnitID.AndroidID
+      value: bd5d796ffdb602d8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6685391520706141682, guid: 72fec712b86322e4a86060c37a805d29, type: 3}
+      propertyPath: m_MaxAdConfig.interstitialAdUnitID.AndroidID
+      value: d41e6626baf7a4c6
+      objectReference: {fileID: 0}
     - target: {fileID: 8929703242961252456, guid: 72fec712b86322e4a86060c37a805d29, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -180,7 +208,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8929703242961252457, guid: 72fec712b86322e4a86060c37a805d29, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 72fec712b86322e4a86060c37a805d29, type: 3}
