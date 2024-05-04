@@ -17,6 +17,7 @@ public class PanelTotal : UIPanel
     [SerializeField] Button playBtn;
     [SerializeField] Button settingBtn;
     [SerializeField] Button dailyBtn;
+    [SerializeField] Button dailyQuestBtn;
     [SerializeField] Button spinBtn;
     [SerializeField] Button decorBtn;
     [SerializeField] Button mainGameNavBtn;
@@ -40,6 +41,7 @@ public class PanelTotal : UIPanel
 
     [SerializeField] CanvasGroup backGroundCG;
     [SerializeField] GameObject backGround;
+    [SerializeField] GameObject functinBar;
     [SerializeField] GameObject dailyNoti;
     [SerializeField] GameObject spinNoti;
     [SerializeField] GameObject settingNoti;
@@ -140,6 +142,7 @@ public class PanelTotal : UIPanel
         playBtn.onClick.AddListener(PlayGame);
         settingBtn.onClick.AddListener(ShowPanelSetting);
         dailyBtn.onClick.AddListener(ShowPanelDailyReward);
+        dailyQuestBtn.onClick.AddListener(ShowPanelDailyQuest);
         spinBtn.onClick.AddListener(ShowPanelSpin);
         decorBtn.onClick.AddListener(ShowPanelTest);
         mainGameNavBtn.onClick.AddListener(() => {
@@ -197,6 +200,7 @@ public class PanelTotal : UIPanel
         navBarContent.SetActive(false);
         mainMenuContent.SetActive(false);
         backGround.SetActive(false);
+        functinBar.SetActive(false);
         CheckNoti();
     }
 
@@ -205,6 +209,7 @@ public class PanelTotal : UIPanel
         navBarContent.SetActive(true);
         mainMenuContent.SetActive(true);
         backGround.SetActive(true);
+        functinBar.SetActive(true);
     }
 
     void ShowPanelSetting()
@@ -217,6 +222,12 @@ public class PanelTotal : UIPanel
     {
         GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         UIAnimationController.BtnAnimZoomBasic(dailyBtn.transform, .1f, UIManager.instance.ShowPanelDailyReward);
+    }
+    
+    void ShowPanelDailyQuest()
+    {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
+        UIAnimationController.BtnAnimZoomBasic(dailyQuestBtn.transform, .1f, UIManager.instance.ShowPanelDailyQuest);
     }
 
     void ShowPanelSpin()

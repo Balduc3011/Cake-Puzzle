@@ -21,7 +21,8 @@ public enum UIPanelType {
     PanelTopUp,
     PanelQuickIAP,
     PanelSelectReward,
-    PanelHint
+    PanelHint,
+    PanelDailyQuest
 }
 public class UIPanel : MonoBehaviour {
     public bool isRegisterInUI = true;

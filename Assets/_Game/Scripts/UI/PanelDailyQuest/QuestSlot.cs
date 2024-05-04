@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -6,6 +7,7 @@ using UnityEngine.UI;
 
 public class QuestSlot : SlotBase<QuestData>
 {
+    public int slotIndex;
     int id;
     [SerializeField] TextMeshProUGUI txtName;
     [SerializeField] TextMeshProUGUI txtProgress;
@@ -65,6 +67,7 @@ public class QuestSlot : SlotBase<QuestData>
             //    transform.SetAsLastSibling();
             //}
         }
+        ReScale();
     }
 
     public void CheckCollect()
@@ -92,5 +95,10 @@ public class QuestSlot : SlotBase<QuestData>
         objHide.SetActive(true);
         transform.SetAsLastSibling();
         UIManager.instance.ShowPanelItemsReward();
+    }
+
+    public void ReScale()
+    {
+        transform.DOScale(1, 0.15f).From(0).SetDelay(0.25f + 0.1f * slotIndex);
     }
 }
