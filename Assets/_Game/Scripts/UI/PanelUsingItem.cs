@@ -41,6 +41,7 @@ public class PanelUsingItem : UIPanel
 
     void OnClosePanel()
     {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         UIManager.instance.ClosePanelUsingItem();
         GameManager.Instance.itemManager.UsingItemDone();
         EventManager.TriggerEvent(EventName.UsingFillUpDone.ToString());

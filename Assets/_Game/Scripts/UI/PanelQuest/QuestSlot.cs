@@ -82,6 +82,7 @@ public class QuestSlot : SlotBase<QuestData>
     public override void OnChoose()
     {
         base.OnChoose();
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         GameManager.Instance.questManager.ClaimSmallQuest(data.questType, id);
         List<ItemData> rewards = new List<ItemData>();
         rewards.Add(data.rewardData);

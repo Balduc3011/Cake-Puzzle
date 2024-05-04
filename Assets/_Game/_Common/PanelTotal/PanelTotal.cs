@@ -59,8 +59,9 @@ public class PanelTotal : UIPanel
     {
         dailyNoti.SetActive(ProfileManager.Instance.playerData.playerResourseSave.IsHasDailyReward());
         spinNoti.SetActive(ProfileManager.Instance.playerData.playerResourseSave.IsHasFreeSpin());
-        settingNoti.SetActive(ProfileManager.Instance.playerData.cakeSaveData.HasCakeUpgradeable() &&
-            GameManager.Instance.playing);
+        //settingNoti.SetActive(ProfileManager.Instance.playerData.cakeSaveData.HasCakeUpgradeable() &&
+        //    GameManager.Instance.playing);
+        settingNoti.SetActive(false);
         bakeryNoti.SetActive(ProfileManager.Instance.playerData.cakeSaveData.HasCakeUpgradeable());
     }
 
@@ -139,23 +140,28 @@ public class PanelTotal : UIPanel
         dailyBtn.onClick.AddListener(ShowPanelDailyReward);
         spinBtn.onClick.AddListener(ShowPanelSpin);
         decorBtn.onClick.AddListener(ShowPanelTest);
-        mainGameNavBtn.onClick.AddListener(() => { 
+        mainGameNavBtn.onClick.AddListener(() => {
+            GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
             UIManager.instance.ShowPanelTotalContent();
             ShowBGCanvasGroup(true);
         });
-        bakeryNavBtn.onClick.AddListener(() => { 
+        bakeryNavBtn.onClick.AddListener(() => {
+            GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
             UIManager.instance.ShowPanelBakery();
             ShowBGCanvasGroup(false);
         });
-        decorationNavBtn.onClick.AddListener(() => { 
+        decorationNavBtn.onClick.AddListener(() => {
+            GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
             UIManager.instance.ShowPanelDecorations();
             ShowBGCanvasGroup(false);
         });
-        shopNavBtn.onClick.AddListener(() => { 
+        shopNavBtn.onClick.AddListener(() => {
+            GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
             UIManager.instance.ShowPanelShop();
             ShowBGCanvasGroup(false);
         });
-        questNavBtn.onClick.AddListener(() => { 
+        questNavBtn.onClick.AddListener(() => {
+            GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
             UIManager.instance.ShowPanelDailyQuest();
             ShowBGCanvasGroup(false);
         });
@@ -177,6 +183,7 @@ public class PanelTotal : UIPanel
 
     void PlayGame()
     {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         GameManager.Instance.cameraManager.FirstCamera();
         GameManager.Instance.cameraManager.OpenMainCamera();
         GameManager.Instance.PlayGame();
@@ -195,20 +202,24 @@ public class PanelTotal : UIPanel
 
     void ShowPanelSetting()
     {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         UIAnimationController.BtnAnimZoomBasic(settingBtn.transform, .1f, UIManager.instance.ShowPanelSetting);
     }
 
     void ShowPanelDailyReward()
     {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         UIAnimationController.BtnAnimZoomBasic(dailyBtn.transform, .1f, UIManager.instance.ShowPanelDailyReward);
     }
 
     void ShowPanelSpin()
     {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         UIAnimationController.BtnAnimZoomBasic(spinBtn.transform, .1f, UIManager.instance.ShowPanelSpin);
     }
     void ShowPanelTest()
     {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         UIAnimationController.BtnAnimZoomBasic(decorBtn.transform, .1f, UIManager.instance.ShowPanelCakeReward);
     }
 

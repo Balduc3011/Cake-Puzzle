@@ -732,9 +732,9 @@ namespace SDK {
         private void OnAdRevenuePaidEvent(ImpressionData impressionData) {
             Debug.Log("Paid Ad Revenue - Ads Type = " + impressionData.ad_type);
             ABIAnalyticsManager.TrackAdImpression(impressionData);
-#if UNITY_APPSFLYER
-            ABIAppsflyerManager.TrackAppsflyerAdRevenue(impressionData);
-#endif
+//#if UNITY_APPSFLYER
+//            ABIAppsflyerManager.TrackAppsflyerAdRevenue(impressionData);
+//#endif
         }
         public AdsMediationController GetSelectedMediation(AdsType adsType)
         {

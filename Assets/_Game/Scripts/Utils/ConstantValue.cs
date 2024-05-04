@@ -73,5 +73,11 @@ public enum VersionStatus
 public enum SoundId
 {
     None,
-    SFX_Base
+    SFX_Base,
+    SFX_CoinCube,
+    SFX_LevelUp,
+    SFX_TapCube,
+    SFX_UIButton,
+    SFX_UIClick,
+    SFX_Warning
 }

@@ -51,16 +51,19 @@ public class PanelPlayGame : UIPanel
 
     void UsingHammer()
     {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         GameManager.Instance.itemManager.UsingItem(ItemType.Hammer);
         btnHammer.UpdateStatus();
     }
 
     void UsingItemFillUp() {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         GameManager.Instance.itemManager.UsingItem(ItemType.FillUp);
         btnFillUp.UpdateStatus();
     }
 
     void UsingReroll() {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         GameManager.Instance.itemManager.UsingItem(ItemType.ReRoll);
         btnReroll.UpdateStatus();
     }
@@ -83,6 +86,7 @@ public class PanelPlayGame : UIPanel
 
     void X2BoosterOnClick()
     {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         UIAnimationController.BtnAnimZoomBasic(x2BoosterBtn.transform, .1f, ShowX2BoosterAds);
     }
 
@@ -103,6 +107,7 @@ public class PanelPlayGame : UIPanel
 
     void CoinBoosterOnClick()
     {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         UIAnimationController.BtnAnimZoomBasic(coinBoosterBtn.transform, .1f, ShowCoinBoosterAds);
     }
 

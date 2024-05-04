@@ -69,6 +69,7 @@ public class PanelSelectReward : UIPanel
         if (ProfileManager.Instance.playerData.playerResourseSave.currentLevel < 4)
         {
             panelCloseBtn.gameObject.SetActive(true);
+            UIManager.instance.ShowPanelHint(rewards[0].ItemType);
         }
         else
         {
@@ -84,6 +85,7 @@ public class PanelSelectReward : UIPanel
 
     void ClosePanel()
     {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         UIManager.instance.ClosePanelSelectReward();
         GameManager.Instance.cakeManager.cakeShowComponent.ShowNormalCake();
         GameManager.Instance.cakeManager.cakeShowComponent.ShowNextToUnlockCake();
@@ -94,6 +96,7 @@ public class PanelSelectReward : UIPanel
 
     void GetExtraByAds()
     {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         if (GameManager.Instance.IsHasNoAds())
             OnGetExtraReward();
         else

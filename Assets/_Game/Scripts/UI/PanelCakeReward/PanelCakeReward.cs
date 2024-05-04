@@ -40,6 +40,7 @@ public class PanelCakeReward : UIPanel
     // Update is called once per frame
     void OnClose()
     {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         UIManager.instance.ClosePanelCakeReward();
         //GameManager.Instance.cakeManager.cakeShowComponent.ShowNormalCake();
         //GameManager.Instance.cakeManager.cakeShowComponent.ShowNextToUnlockCake();

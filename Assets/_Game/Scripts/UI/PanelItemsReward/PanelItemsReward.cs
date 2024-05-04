@@ -90,6 +90,7 @@ public class PanelItemsReward : UIPanel
 
     void ClosePanel()
     {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         for (int i = 0; i < rewardItemUIs.Count; i++)
         {
             rewardItemUIs[i].gameObject.SetActive(false);
