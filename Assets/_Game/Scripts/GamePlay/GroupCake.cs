@@ -142,7 +142,7 @@ public class GroupCake : MonoBehaviour
     {
         groupCakeIndex = cakeWaitIndex;
         this.pointSpawn = pointSpawn;
-        if (cakeWaitIndex == 2) countCake = 1;
+        //if (cakeWaitIndex == 2) countCake = 1;
         if (countCake == 2)
         {
             Init2Cakes(cakeSaveDatas);

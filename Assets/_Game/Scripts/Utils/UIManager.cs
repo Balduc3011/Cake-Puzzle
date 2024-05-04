@@ -132,6 +132,9 @@ public class UIManager : MonoBehaviour {
                     break;
                 case UIPanelType.PanelHint:
                     panel = Instantiate(Resources.Load("UI/PanelHint") as GameObject, mainCanvas);
+                    break;  
+                case UIPanelType.PanelQuickTimeEvent:
+                    panel = Instantiate(Resources.Load("UI/PanelQuickTimeEvent") as GameObject, mainCanvas);
                     break;
             }
             if (panel) panel.SetActive(true);
@@ -202,7 +205,6 @@ public class UIManager : MonoBehaviour {
 
     public void ShowPanelPlayGame()
     {
-        isHasPopupOnScene = true;
         GameObject go = GetPanel(UIPanelType.PanelPlayGame);
         go.SetActive(true);
         panelTotal.Transform.SetAsLastSibling();
@@ -211,7 +213,6 @@ public class UIManager : MonoBehaviour {
     }
     public void ClosePanelPlayGame()
     {
-        isHasPopupOnScene = false;
         GameObject go = GetPanel(UIPanelType.PanelPlayGame);
         go.SetActive(false);
     }
@@ -403,13 +404,13 @@ public class UIManager : MonoBehaviour {
 
     public void ShowPanelUsingItem()
     {
-        isHasPopupOnScene = true;
+        //isHasPopupOnScene = true;
         GameObject go = GetPanel(UIPanelType.PanelUsingItem);
         go.SetActive(true);
     }
     public void ClosePanelUsingItem()
     {
-        isHasPopupOnScene = false;
+        //isHasPopupOnScene = false;
         GameObject go = GetPanel(UIPanelType.PanelUsingItem);
         go.SetActive(false);
     }
@@ -473,4 +474,16 @@ public class UIManager : MonoBehaviour {
         go.SetActive(false);
     }
 
+    public void ShowPanelQuickTimeEvent() {
+        isHasPopupOnScene = true;
+        GameObject go = GetPanel(UIPanelType.PanelQuickTimeEvent);
+        go.SetActive(true);
+    }
+
+    public void ClosePanelQuickTimeEvent()
+    {
+        isHasPopupOnScene = false;
+        GameObject go = GetPanel(UIPanelType.PanelQuickTimeEvent);
+        go.SetActive(false);
+    }
 }

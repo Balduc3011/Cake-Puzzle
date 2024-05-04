@@ -176,9 +176,9 @@ public class CakeManager : MonoBehaviour
     void SetCountPieces() {
         countCake.Clear();
         haveMoreCake = ProfileManager.Instance.playerData.cakeSaveData.IsHaveMoreThanThreeCake();
-        countCake.Add(1);
         countCake.Add(ProfileManager.Instance.dataConfig.rateDataConfig.GetRandomSlot(haveMoreCake) + 1);
-        countCake.Add(1);
+        countCake.Add(ProfileManager.Instance.dataConfig.rateDataConfig.GetRandomSlot(haveMoreCake) + 1);
+        countCake.Add(ProfileManager.Instance.dataConfig.rateDataConfig.GetRandomSlot(haveMoreCake) + 1);
     }
 
     public int GetPiecesTotal() {
@@ -465,7 +465,7 @@ public class CakeManager : MonoBehaviour
         InitGroupCake();
     }
 
-    public bool NeedResolve() { return cakeOnPlates.Count >= 10; }
+    public bool NeedResolve() { return cakeOnPlates.Count >= 12; }
 
   
     public List<IDInfor> GetIDInfor() {
