@@ -54,8 +54,8 @@ public class Plate : MonoBehaviour
     { 
         anim.SetBool("Active", false);
     }
-
-        public int CalculatePoint(int cakeID)
+    
+    public int CalculatePoint(int cakeID)
     {
         if (currentCake == null) return 0;
         int point = 0;
@@ -102,28 +102,19 @@ public class Plate : MonoBehaviour
     public void CheckNullPieces() {
         if (currentCake == null)
             return;
-        //currentCake.RotateOtherPieceRight(0);
-        //if (currentCake.pieces.Count == 0)
-        //{
-        //    currentCake.cakeDone = true;
-        //}
-        //else { currentCake.cakeDone = false; }
     }
     public void MoveDoneOfCake()
     {
         if (currentCake == null)
             return;
-        //currentCake.RotateOtherPieceRight(0);
     }
 
     public void ClearCake() {
         if (currentCake == null)
             return;
-        //Debug.Log("bug scale");
         currentCake.transform.DOScale(Vector3.zero, .5f).OnComplete(() => {
             if (currentCake != null)
             {
-                //Destroy(currentCake.gameObject);
                 currentCake.gameObject.SetActive(false);
                 ProfileManager.Instance.playerData.cakeSaveData.RemoveCake(plateIndex);
             }
