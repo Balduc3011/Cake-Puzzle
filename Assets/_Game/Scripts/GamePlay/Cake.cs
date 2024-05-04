@@ -308,7 +308,11 @@ public class Cake : MonoBehaviour
     {
         if (EventSystem.current.IsPointerOverGameObject() || EventSystem.current.IsPointerOverGameObject(0) || UIManager.instance.isHasPopupOnScene)
             return;
-
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            if (EventSystem.current.IsPointerOverGameObject(0))
+                return;
+        }
         if (onUsingFillUp)
         {
             Debug.Log("Choose on Fill up");

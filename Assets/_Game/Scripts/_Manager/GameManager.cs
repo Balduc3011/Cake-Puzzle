@@ -139,7 +139,8 @@ public class GameManager : Singleton<GameManager>
             }
             else
             {
-                newItem.amount = UnityEngine.Random.Range(1, 5);
+                //newItem.amount = UnityEngine.Random.Range(1, 5);
+                newItem.amount = 1;
             }
             rewardItems.Add(newItem);
         }

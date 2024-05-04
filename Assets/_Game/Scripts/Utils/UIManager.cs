@@ -25,7 +25,7 @@ public class UIManager : MonoBehaviour {
     PanelBakery panelBakery;
     PanelDecorations panelDecorations;
     PanelShop panelShop;
-    PanelDailyQuest panelDailyQuest;
+    PanelTopUp panelTopUp;
 
     // Start is called before the first frame update
     void Awake() {
@@ -121,8 +121,8 @@ public class UIManager : MonoBehaviour {
                 case UIPanelType.PanelLeaderBoard:
                     panel = Instantiate(Resources.Load("UI/PanelLeaderBoard") as GameObject, mainCanvas);
                     break;
-                case UIPanelType.PanelDailyQuest:
-                    panel = Instantiate(Resources.Load("UI/PanelDailyQuest") as GameObject, mainCanvas);
+                case UIPanelType.PanelTopUp:
+                    panel = Instantiate(Resources.Load("UI/PanelTopUp") as GameObject, mainCanvas);
                     break;
                 case UIPanelType.PanelQuickIAP:
                     panel = Instantiate(Resources.Load("UI/PanelQuickIAP") as GameObject, mainCanvas);
@@ -299,11 +299,11 @@ public class UIManager : MonoBehaviour {
                 panelShop.OnClose();
             }
         }
-        if (panelDailyQuest != null && ignorePanel != UIPanelType.PanelDailyQuest)
+        if (panelTopUp != null && ignorePanel != UIPanelType.PanelTopUp)
         {
-            if (panelDailyQuest.gameObject.activeSelf)
+            if (panelTopUp.gameObject.activeSelf)
             {
-                panelDailyQuest.OnClose();
+                panelTopUp.OnClose();
             }
         }
     }
@@ -428,24 +428,24 @@ public class UIManager : MonoBehaviour {
         go.SetActive(false);
     }
 
-    public void ShowPanelDailyQuest()
+    public void ShowPanelTopUp()
     {
-        CloseOtherMenu(UIPanelType.PanelDailyQuest);
+        CloseOtherMenu(UIPanelType.PanelTopUp);
         isHasPopupOnScene = true;
-        GameObject go = GetPanel(UIPanelType.PanelDailyQuest);
+        GameObject go = GetPanel(UIPanelType.PanelTopUp);
         go.SetActive(true);
         panelTotal.ShowMainSceneContent(false);
         panelTotal.Transform.SetAsLastSibling();
-        if (panelDailyQuest == null)
+        if (panelTopUp == null)
         {
-            panelDailyQuest = go.GetComponent<PanelDailyQuest>();
+            panelTopUp = go.GetComponent<PanelTopUp>();
         }
     }
 
-    public void ClosePanelDailyQuest()
+    public void ClosePanelTopUp()
     {
         isHasPopupOnScene = false;
-        GameObject go = GetPanel(UIPanelType.PanelDailyQuest);
+        GameObject go = GetPanel(UIPanelType.PanelTopUp);
         go.SetActive(false);
     }
 
@@ -459,6 +459,7 @@ public class UIManager : MonoBehaviour {
     public void ClosePanelQuickIAP()
     {
         GameObject go = GetPanel(UIPanelType.PanelQuickIAP);
+        go.transform.SetAsLastSibling();
         go.SetActive(false);
     }
     public void ShowPanelSelectReward()
