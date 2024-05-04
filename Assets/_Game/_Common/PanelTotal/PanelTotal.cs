@@ -34,6 +34,7 @@ public class PanelTotal : UIPanel
     [SerializeField] TextMeshProUGUI txtCurrentExp;
     //[SerializeField] Image imgNextCake;
     [SerializeField] Slider sliderLevelExp;
+    [SerializeField] Slider sliderQuickTimeEvent;
     [SerializeField] Transform trsCoin;
     [SerializeField] CanvasGroup canvasGroup;
     [SerializeField] List<TransitionUI> transitionUIList;
@@ -44,6 +45,10 @@ public class PanelTotal : UIPanel
     [SerializeField] GameObject spinNoti;
     [SerializeField] GameObject settingNoti;
     [SerializeField] GameObject bakeryNoti;
+    [SerializeField] GameObject objQuickTimeEvents;
+
+    [SerializeField] TextMeshProUGUI txtCountCake;
+    [SerializeField] TextMeshProUGUI txtTime;
 
     int showingCake = -1;
     public override void Awake()
@@ -86,7 +91,7 @@ public class PanelTotal : UIPanel
         }
     }
 
-    float currentExp= 0;
+    float currentExp = 0;
     float currentValue = 0;
     int currentLevel;
     bool isChangeLevel;
@@ -105,7 +110,7 @@ public class PanelTotal : UIPanel
         }
 
         currentValue = sliderLevelExp.value;
-        DOVirtual.Float(currentValue, currentExp, 1f, (value) =>{
+        DOVirtual.Float(currentValue, currentExp, 1f, (value) => {
             sliderLevelExp.value = value;
             txtCurrentExp.text = (int)value + "/" + sliderLevelExp.maxValue;
         }).OnComplete(() => {
@@ -122,7 +127,7 @@ public class PanelTotal : UIPanel
     LevelData levelData;
     private void ChangeLevel()
     {
-        
+
         txtCurrentLevel.text = ProfileManager.Instance.playerData.playerResourseSave.currentLevel.ToString();
         //levelData = ProfileManager.Instance.dataConfig.levelDataConfig.GetLevel(ProfileManager.Instance.playerData.playerResourseSave.currentLevel);
         //if (levelData.cakeUnlockID != -1)
@@ -258,21 +263,14 @@ public class PanelTotal : UIPanel
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            UsingItemMode();
-        }
-
-        if (Input.GetKeyUp(KeyCode.Tab))
-        {
-            OutItemMode();
-        }
         showCakeCounter += Time.deltaTime;
-        if(showCakeCounter > showCakeCoolDown)
+        if (showCakeCounter > showCakeCoolDown)
         {
             showCakeCounter = 0;
             InitCakeDecor();
         }
+
+        if (onQuickTimeEvent) UpdateTime();
     }
 
     float showCakeCoolDown = 3 * 60;
@@ -281,7 +279,7 @@ public class PanelTotal : UIPanel
     {
         if (GameManager.Instance.playing) return;
         int newShow = ProfileManager.Instance.playerData.cakeSaveData.GetRandomOwnedCake();
-        while(newShow == showingCake)
+        while (newShow == showingCake)
         {
             newShow = ProfileManager.Instance.playerData.cakeSaveData.GetRandomOwnedCake();
         }
@@ -323,6 +321,33 @@ public class PanelTotal : UIPanel
             adsConfirmCallBack();
         }
         CloseConfirmShowAds();
+    }
+    #endregion
+
+    #region Quick Time Event
+    float currentCakeDone;
+    float currentTime;
+    bool onQuickTimeEvent;
+
+    public void ShowQuickTimeEvent(float cakeNeedDoneOnEvent, float timeMaxEvent) {
+        sliderQuickTimeEvent.maxValue = cakeNeedDoneOnEvent;
+        sliderQuickTimeEvent.value = 0;
+        currentCakeDone = 0;
+        onQuickTimeEvent = true;
+        currentTime = timeMaxEvent;
+        txtCountCake.text = "0/" + cakeNeedDoneOnEvent;
+        txtTime.text = TimeUtil.ConvertFloatToString(timeMaxEvent);
+    }
+
+    public void UpdateQuickTimeEvent() {
+        sliderQuickTimeEvent.value = currentCakeDone;
+    }
+
+    void UpdateTime() {
+        currentTime -= Time.deltaTime;
+        if (currentTime >= 0f) txtTime.text = TimeUtil.TimeToString(currentTime, TimeFommat.Keyword);
+        if (currentTime <= 0f)
+            onQuickTimeEvent = false;
     }
     #endregion
 }
