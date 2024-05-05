@@ -132,6 +132,9 @@ public class UIManager : MonoBehaviour {
                     break;
                 case UIPanelType.PanelHint:
                     panel = Instantiate(Resources.Load("UI/PanelHint") as GameObject, mainCanvas);
+                    break;  
+                case UIPanelType.PanelQuickTimeEvent:
+                    panel = Instantiate(Resources.Load("UI/PanelQuickTimeEvent") as GameObject, mainCanvas);
                     break;
                 case UIPanelType.PanelDailyQuest:
                     panel = Instantiate(Resources.Load("UI/PanelDailyQuest") as GameObject, mainCanvas);
@@ -417,13 +420,13 @@ public class UIManager : MonoBehaviour {
 
     public void ShowPanelUsingItem()
     {
-        isHasPopupOnScene = true;
+        //isHasPopupOnScene = true;
         GameObject go = GetPanel(UIPanelType.PanelUsingItem);
         go.SetActive(true);
     }
     public void ClosePanelUsingItem()
     {
-        isHasPopupOnScene = false;
+        //isHasPopupOnScene = false;
         GameObject go = GetPanel(UIPanelType.PanelUsingItem);
         go.SetActive(false);
     }
@@ -485,6 +488,19 @@ public class UIManager : MonoBehaviour {
     {
         isHasPopupOnScene = false;
         GameObject go = GetPanel(UIPanelType.PanelSelectReward);
+        go.SetActive(false);
+    }
+
+    public void ShowPanelQuickTimeEvent() {
+        isHasPopupOnScene = true;
+        GameObject go = GetPanel(UIPanelType.PanelQuickTimeEvent);
+        go.SetActive(true);
+    }
+
+    public void ClosePanelQuickTimeEvent()
+    {
+        isHasPopupOnScene = false;
+        GameObject go = GetPanel(UIPanelType.PanelQuickTimeEvent);
         go.SetActive(false);
     }
 }

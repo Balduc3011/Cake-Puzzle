@@ -18,6 +18,7 @@ public class GameManager : Singleton<GameManager>
     public ItemManager itemManager;
     public LightManager lightManager;
     public QuestManager questManager;
+    public QuickTimeEventManager quickTimeEventManager;
     public List<ItemData> rewardItems;
     private void Start()
     {

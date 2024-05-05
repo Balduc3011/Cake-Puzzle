@@ -306,8 +306,7 @@ public class Cake : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (EventSystem.current.IsPointerOverGameObject() || EventSystem.current.IsPointerOverGameObject(0) ||
-            UIManager.instance.isHasPopupOnScene)
+        if (EventSystem.current.IsPointerOverGameObject() || EventSystem.current.IsPointerOverGameObject(0) || UIManager.instance.isHasPopupOnScene)
             return;
         if (Application.platform == RuntimePlatform.Android)
         {
