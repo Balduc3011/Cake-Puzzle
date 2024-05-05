@@ -25,6 +25,7 @@ public class PanelTotal : UIPanel
     [SerializeField] Button decorationNavBtn;
     [SerializeField] Button shopNavBtn;
     [SerializeField] Button questNavBtn;
+    
     [SerializeField] GameObject mainSceneContent;
     [SerializeField] GameObject commonContent;
     [SerializeField] GameObject mainMenuContent;
@@ -161,7 +162,7 @@ public class PanelTotal : UIPanel
             GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
             UIManager.instance.ShowPanelBakery();
             ShowBGCanvasGroup(false);
-        });
+        }); 
         decorationNavBtn.onClick.AddListener(() => {
             GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
             UIManager.instance.ShowPanelDecorations();
@@ -177,7 +178,6 @@ public class PanelTotal : UIPanel
             UIManager.instance.ShowPanelTopUp();
             ShowBGCanvasGroup(false);
         });
-
         confirmBuyBtn.onClick.AddListener(OnConfirmShowAds);
         confirmCloseBtn.onClick.AddListener(CloseConfirmShowAds);
 

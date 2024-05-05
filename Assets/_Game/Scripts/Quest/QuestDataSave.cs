@@ -30,7 +30,6 @@ public class QuestDataSave : SaveBase
 
     void ResetTime() {
         timeOnQuest = DateTime.Now.ToString();
-        quessProcess.Clear();
         starsEarned = 0;
         rewardEarned = 0;
         InitQuest();
@@ -47,8 +46,9 @@ public class QuestDataSave : SaveBase
 
     void InitQuest()
     {
-        if (quessProcess == null)
+        if (quessProcess == null || quessProcess.Count == 0)
         {
+            quessProcess.Clear();
             quessProcess = new List<QuestProcess>();
             for (int i = 0; i < 3; i++)
             {
@@ -88,14 +88,25 @@ public class QuestDataSave : SaveBase
         return pointIndex > rewardEarned;
     }
 
-    public float GetCurrentProgress(QuestType questType, int id) {
-        //for (int i = 0; i < quessProcess.Count; i++)
-        //{
-        //    if (quessProcess[i].questType == questType && quessProcess[i].id == id)
-        //    {
-        //        return quessProcess[i].progress;
-        //    }
-        //}
+    public float GetCurrentProgress(QuestType questType) {
+        for (int i = 0; i < quessProcess.Count; i++)
+        {
+            if (quessProcess[i].questType == questType)
+            {
+                return quessProcess[i].process;
+            }
+        }
+        return 0;
+    }
+    
+    public float GetCurrentRequire(QuestType questType) {
+        for (int i = 0; i < quessProcess.Count; i++)
+        {
+            if (quessProcess[i].questType == questType)
+            {
+                return ProfileManager.Instance.dataConfig.questDataConfig.GetQuestRequire(questType, quessProcess[i].marked);
+            }
+        }
         return 0;
     }
 

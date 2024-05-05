@@ -12,6 +12,10 @@ public class PanelDailyQuest : UIPanel
         base.Awake();
         closeBtn.onClick.AddListener(ClosePanel);
     }
+    private void OnEnable()
+    {
+        transform.SetAsLastSibling();
+    }
     void ClosePanel()
     {
         ProfileManager.Instance.playerData.playerResourseSave.SaveRecord();

@@ -9,6 +9,9 @@ using UnityEngine.UI;
 public class PanelBakery : UIPanel
 {
     [SerializeField] UIPanelShowUp uiPanelShowUp;
+    [SerializeField] GameObject lobbyTitle;
+    [SerializeField] GameObject playingTitle;
+    [SerializeField] Button closeBtn;
     [SerializeField] InventoryCake inventoryCakePrefab;
     [SerializeField] List<InventoryCake> inventoryCakeList;
     [SerializeField] Transform inventoryCakeContainer;
@@ -29,6 +32,7 @@ public class PanelBakery : UIPanel
     {
         InitCakes();
         SetUpPopupBtn();
+        closeBtn.onClick.AddListener(ClosePanel);
     }
 
     private void OnEnable()
@@ -37,6 +41,9 @@ public class PanelBakery : UIPanel
             ReloadPanel(true);
         OnCakeSwaped();
         cakeInfoPopup.SetActive(false);
+        lobbyTitle.SetActive(!GameManager.Instance.playing);
+        playingTitle.SetActive(GameManager.Instance.playing);
+
     }
 
     void InitCakes()
@@ -125,6 +132,11 @@ public class PanelBakery : UIPanel
         {
             usingCakeList[i].SetSwapable(false);
         }
+    }
+
+    void ClosePanel()
+    {
+        UIManager.instance.ClosePanelBakery();
     }
 
     [SerializeField] GameObject cakeInfoPopup;

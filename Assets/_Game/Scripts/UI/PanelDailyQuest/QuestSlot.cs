@@ -8,17 +8,14 @@ using UnityEngine.UI;
 public class QuestSlot : MonoBehaviour
 {
     public int slotIndex;
-    QuestType questType;
+    [SerializeField] QuestType questType;
     [SerializeField] Button collectBtn;
     [SerializeField] TextMeshProUGUI txtName;
     [SerializeField] TextMeshProUGUI txtProgress;
     [SerializeField] Image rewardIcon;
     [SerializeField] TextMeshProUGUI txtRewardAmount;
     [SerializeField] Slider sProgress;
-    [SerializeField] GameObject objHighlight;
-    [SerializeField] GameObject objHide;
     [SerializeField] GameObject objSlider;
-    [SerializeField] GameObject objUnable;
     float currentProgress;
     float questRequire;
 
@@ -29,33 +26,51 @@ public class QuestSlot : MonoBehaviour
     public void InitData(QuestType questType)
     {
         this.questType = questType;
+        ReInit();
     }
 
     private void OnEnable()
     {
         ReScale();
+        ReInit();
     }
 
     void ReInit()
     {
-        //txtName.text = data.questName.ToString();
         //rewardIcon.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetItemSprite(data.rewardData.ItemType);
         //txtRewardAmount.text = data.rewardData.amount.ToString();
-        //questRequire = data.questRequirebase;
+        SetName();
+        currentProgress = ProfileManager.Instance.playerData.questDataSave.GetCurrentProgress(questType);
+        questRequire = ProfileManager.Instance.playerData.questDataSave.GetCurrentRequire(questType);
+        collectBtn.gameObject.SetActive(currentProgress >= questRequire);
+        objSlider.SetActive(!collectBtn.gameObject.activeSelf);
 
-        //currentProgress = ProfileManager.Instance.playerData.questDataSave.GetCurrentProgress(data.questType, id);
-        //if (currentProgress > questRequire)
-        //    currentProgress = questRequire;
-        //txtProgress.text = currentProgress.ToString() + ConstantValue.STR_SLASH + questRequire;
-        //sProgress.maxValue = questRequire;
-        //sProgress.value = currentProgress;
-        //bool isClaimed = ProfileManager.Instance.playerData.questDataSave.IsClaimQuest(data.questType, id);
-        //collectBtn.interactable = currentProgress == questRequire && !isClaimed;
-        //collectBtn.gameObject.SetActive(collectBtn.interactable);
-        //objSlider.SetActive(!collectBtn.interactable);
-        //objUnable.SetActive(!collectBtn.interactable);
-        //objHighlight.SetActive(collectBtn.interactable);
-        //objHide.SetActive(currentProgress == questRequire && isClaimed);
+        txtProgress.text = currentProgress.ToString() + ConstantValue.STR_SLASH + questRequire;
+        if (currentProgress > questRequire)
+            currentProgress = questRequire;
+        sProgress.maxValue = questRequire;
+        sProgress.value = currentProgress;
+        
+    }
+
+    void SetName()
+    {
+        switch (questType)
+        {
+            case QuestType.None:
+                break;
+            case QuestType.WatchADS:
+                txtName.text = "Watch " + 5.ToString() + " ads";
+                break;
+            case QuestType.CompleteCake:
+                txtName.text = "Complete " + 5.ToString() + " cakes";
+                break;
+            case QuestType.UseBooster:
+                txtName.text = "Use " + 5.ToString() + " items";
+                break;
+            default:
+                break;
+        }
     }
 
     public void ReScale()

@@ -431,6 +431,7 @@ namespace SDK {
             GetSelectedMediation(AdsType.REWARDED).RequestRewardVideoAd();
         }
         public void ShowRewardVideo(string rewardedPlacement, UnityAction successCallback, UnityAction failedCallback = null) {
+            GameManager.Instance.questManager.AddProgress(QuestType.WatchADS, 1);
             if (IsCheatAds) {
                 successCallback?.Invoke();
                 return;

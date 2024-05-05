@@ -16,6 +16,7 @@ public class PanelPlayGame : UIPanel
     float x2BoosterTimeRemain;
     [SerializeField] Button coinBoosterBtn;
     [SerializeField] TextMeshProUGUI coinBoosterEarnTxt;
+    [SerializeField] Button bakeryBtn;
 
     [SerializeField] BoosterItemButton btnHammer;
     [SerializeField] BoosterItemButton btnFillUp;
@@ -35,6 +36,11 @@ public class PanelPlayGame : UIPanel
 
         coinBoosterBtn.onClick.AddListener(CoinBoosterOnClick);
         x2BoosterBtn.onClick.AddListener(X2BoosterOnClick);
+
+        bakeryBtn.onClick.AddListener(() => {
+            GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
+            UIManager.instance.ShowPanelBakery();
+        });
     }
 
     private void OnEnable()
