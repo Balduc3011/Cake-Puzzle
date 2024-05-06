@@ -18,6 +18,7 @@ public class GameManager : Singleton<GameManager>
     public ItemManager itemManager;
     public LightManager lightManager;
     public QuestManager questManager;
+    public QuickTimeEventManager quickTimeEventManager;
     public List<ItemData> rewardItems;
     private void Start()
     {
@@ -123,13 +124,18 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    void RandonReward()
+    public void RandonReward()
     {
         for (int i = 0; i < 2; i++)
         {
             ItemData newItem = new();
             newItem.subId = -1;
             newItem.ItemType = ProfileManager.Instance.dataConfig.itemDataConfig.GetRewardItemOnLevel();
+            while (CheckHasReward(newItem.ItemType))
+            {
+                newItem.ItemType = ProfileManager.Instance.dataConfig.itemDataConfig.GetRewardItemOnLevel();
+            }
+
             if (newItem.ItemType == ItemType.Cake)
             {
                 newItem.amount = UnityEngine.Random.Range(5, 10);
@@ -139,10 +145,23 @@ public class GameManager : Singleton<GameManager>
             }
             else
             {
-                newItem.amount = UnityEngine.Random.Range(1, 5);
+                //newItem.amount = UnityEngine.Random.Range(1, 5);
+                newItem.amount = 1;
             }
             rewardItems.Add(newItem);
         }
+    }
+
+    bool CheckHasReward(ItemType itemType)
+    {
+        if(rewardItems == null || rewardItems.Count == 0)
+            return false;
+        for (int i = 0; i < rewardItems.Count; i++)
+        {
+            if (rewardItems[i].ItemType == itemType)
+                return true;
+        }
+        return false;
     }
 
     void GetCakeOnLevelUp()

@@ -306,9 +306,13 @@ public class Cake : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (EventSystem.current.IsPointerOverGameObject() || EventSystem.current.IsPointerOverGameObject(0))
+        if (EventSystem.current.IsPointerOverGameObject() || EventSystem.current.IsPointerOverGameObject(0) || UIManager.instance.isHasPopupOnScene)
             return;
-
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            if (EventSystem.current.IsPointerOverGameObject(0))
+                return;
+        }
         if (onUsingFillUp)
         {
             Debug.Log("Choose on Fill up");
@@ -331,6 +335,8 @@ public class Cake : MonoBehaviour
     }
     int indexRemove;
     void FillUp() {
+        if (cakeDone)
+            return;
         if (myGroupCake != null)
         {
             if (GameManager.Instance.cakeManager.CakeOnWait(myGroupCake))
@@ -389,6 +395,8 @@ public class Cake : MonoBehaviour
     }
 
     void UsingHammer() {
+          if (cakeDone)
+            return;
         if (currentPlate != null)
             currentPlate.currentCake = null;
         if (myGroupCake != null)
@@ -580,7 +588,7 @@ public class Cake : MonoBehaviour
     }
   
     public void RotateOtherPieceRight(UnityAction actionCallRotateDone) {
-        //Debug.Log("rotate right way+ "+currentPlate);
+        Debug.Log("rotate right way+ "+currentPlate);
         rotateRWDone = actionCallRotateDone;
         indexRotateRW = 0;
         callBackRotateDone = false;
@@ -628,6 +636,7 @@ public class Cake : MonoBehaviour
             {
                 piece = pieces[i];
                 int indexID = pieceCakeID.IndexOf(pieces[i].cakeID);
+                pieces.Remove(pieces[i]);
                 if (indexID != -1)
                 if (pieceCakeIDCount[indexID] > 0)
                 {
@@ -638,7 +647,7 @@ public class Cake : MonoBehaviour
                             pieceCakeID.RemoveAt(indexID);
                         }
                 }
-                pieces.Remove(pieces[i]);
+               
                 needRotateRightWay = true;
                 return piece;
             }
@@ -721,8 +730,9 @@ public class Cake : MonoBehaviour
    
     public void DoneCakeMode()
     {
-
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_TapCube);
         GameManager.Instance.questManager.AddProgress(QuestType.CompleteCake, 1);
+        GameManager.Instance.quickTimeEventManager.AddProgess();
         if (panelTotal == null)
             panelTotal = UIManager.instance.panelTotal;
 

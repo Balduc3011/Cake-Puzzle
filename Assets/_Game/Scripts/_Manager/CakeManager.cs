@@ -176,9 +176,9 @@ public class CakeManager : MonoBehaviour
     void SetCountPieces() {
         countCake.Clear();
         haveMoreCake = ProfileManager.Instance.playerData.cakeSaveData.IsHaveMoreThanThreeCake();
-        countCake.Add(1);
         countCake.Add(ProfileManager.Instance.dataConfig.rateDataConfig.GetRandomSlot(haveMoreCake) + 1);
-        countCake.Add(1);
+        countCake.Add(ProfileManager.Instance.dataConfig.rateDataConfig.GetRandomSlot(haveMoreCake) + 1);
+        countCake.Add(ProfileManager.Instance.dataConfig.rateDataConfig.GetRandomSlot(haveMoreCake) + 1);
     }
 
     public int GetPiecesTotal() {
@@ -204,6 +204,7 @@ public class CakeManager : MonoBehaviour
     }
 
     void CheckNextCake() {
+        Debug.Log("Check next Cake");
         indexCakeCheck++;
         GameManager.Instance.objectPooling.CheckGroupCake();
         if (indexCakeCheck < cakeNeedCheck.Count && cakeNeedCheck.Count > 0)
@@ -311,6 +312,7 @@ public class CakeManager : MonoBehaviour
         if (countFaild == countCheckFaild && countFaild > 0)
         {
             UIManager.instance.ShowPanelLevelComplete(false);
+            UIManager.instance.panelTotal.OutTimeEvent();
         }
         onCheckLooseGame = false;
     }
@@ -465,7 +467,7 @@ public class CakeManager : MonoBehaviour
         InitGroupCake();
     }
 
-    public bool NeedResolve() { return cakeOnPlates.Count >= 10; }
+    public bool NeedResolve() { return cakeOnPlates.Count >= 12; }
 
   
     public List<IDInfor> GetIDInfor() {

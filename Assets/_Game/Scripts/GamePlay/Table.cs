@@ -189,7 +189,12 @@ public class Table : MonoBehaviour
         }
 
         if (stepIndex < ways.Count)
-            ways[stepIndex].Move(cakeID, timeRotate, timeMove, stepIndex == ways.Count - 1, Move);
+            ways[stepIndex].Move(cakeID, timeRotate, timeMove, stepIndex == ways.Count - 1, Move, RemoveWay);
+    }
+
+    void RemoveWay(Way way, int cakeID) {
+        ways.Remove(way);
+        Move(cakeID);
     }
 
     public void StartCreateWay()
@@ -543,7 +548,7 @@ public class Way
     bool lastMove;
     int rotateIndexReturn;
 
-    public void Move(int cakeID, float timeRotate, float timeMove, bool lastMove, UnityAction<int> actionDone = null)
+    public void Move(int cakeID, float timeRotate, float timeMove, bool lastMove, UnityAction<int> actionDone = null, UnityAction<Way, int> actionRemove = null)
     {
         this.timeRotate = timeRotate;
         this.timeMove = timeMove;
@@ -557,7 +562,9 @@ public class Way
             DoActionDone();
             return;
         }
+        
         pieces = plateCurrent.GetPieceMove(cakeID);
+        Debug.Log(pieces);
         if (pieces == null)
         {
             Debug.Log("Done Move");
@@ -613,6 +620,7 @@ public class Way
         else if (rotateIndexReturn >= 6) rotateIndexReturn = 0;
 
         cake = plateGo.currentCake;
+        if (pieces.cakeID != cakeIDCallBack) pieces = plateCurrent.GetPieceMove(cakeIDCallBack);
 
         pieces.currentRotateIndex = rotateIndexReturn;
         plateGo.AddPiece(pieces);

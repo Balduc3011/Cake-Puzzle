@@ -431,6 +431,7 @@ namespace SDK {
             GetSelectedMediation(AdsType.REWARDED).RequestRewardVideoAd();
         }
         public void ShowRewardVideo(string rewardedPlacement, UnityAction successCallback, UnityAction failedCallback = null) {
+            GameManager.Instance.questManager.AddProgress(QuestType.WatchADS, 1);
             if (IsCheatAds) {
                 successCallback?.Invoke();
                 return;
@@ -732,9 +733,9 @@ namespace SDK {
         private void OnAdRevenuePaidEvent(ImpressionData impressionData) {
             Debug.Log("Paid Ad Revenue - Ads Type = " + impressionData.ad_type);
             ABIAnalyticsManager.TrackAdImpression(impressionData);
-#if UNITY_APPSFLYER
-            ABIAppsflyerManager.TrackAppsflyerAdRevenue(impressionData);
-#endif
+//#if UNITY_APPSFLYER
+//            ABIAppsflyerManager.TrackAppsflyerAdRevenue(impressionData);
+//#endif
         }
         public AdsMediationController GetSelectedMediation(AdsType adsType)
         {

@@ -16,6 +16,7 @@ public class PanelPlayGame : UIPanel
     float x2BoosterTimeRemain;
     [SerializeField] Button coinBoosterBtn;
     [SerializeField] TextMeshProUGUI coinBoosterEarnTxt;
+    [SerializeField] Button bakeryBtn;
 
     [SerializeField] BoosterItemButton btnHammer;
     [SerializeField] BoosterItemButton btnFillUp;
@@ -35,6 +36,11 @@ public class PanelPlayGame : UIPanel
 
         coinBoosterBtn.onClick.AddListener(CoinBoosterOnClick);
         x2BoosterBtn.onClick.AddListener(X2BoosterOnClick);
+
+        bakeryBtn.onClick.AddListener(() => {
+            GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
+            UIManager.instance.ShowPanelBakery();
+        });
     }
 
     private void OnEnable()
@@ -51,16 +57,19 @@ public class PanelPlayGame : UIPanel
 
     void UsingHammer()
     {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         GameManager.Instance.itemManager.UsingItem(ItemType.Hammer);
         btnHammer.UpdateStatus();
     }
 
     void UsingItemFillUp() {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         GameManager.Instance.itemManager.UsingItem(ItemType.FillUp);
         btnFillUp.UpdateStatus();
     }
 
     void UsingReroll() {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         GameManager.Instance.itemManager.UsingItem(ItemType.ReRoll);
         btnReroll.UpdateStatus();
     }
@@ -83,7 +92,9 @@ public class PanelPlayGame : UIPanel
 
     void X2BoosterOnClick()
     {
-        UIAnimationController.BtnAnimZoomBasic(x2BoosterBtn.transform, .1f, ShowX2BoosterAds);
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
+        UIAnimationController.BtnAnimZoomBasic(x2BoosterBtn.transform, .1f);
+        UIManager.instance.panelTotal.ShowConfirm(ShowX2BoosterAds, ConstantValue.STR_ShowX2BoosterAds);
     }
 
     void ShowX2BoosterAds()
@@ -103,9 +114,10 @@ public class PanelPlayGame : UIPanel
 
     void CoinBoosterOnClick()
     {
-        UIAnimationController.BtnAnimZoomBasic(coinBoosterBtn.transform, .1f, ShowCoinBoosterAds);
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
+        UIAnimationController.BtnAnimZoomBasic(coinBoosterBtn.transform, .1f);
+        UIManager.instance.panelTotal.ShowConfirm(ShowCoinBoosterAds, ConstantValue.STR_ShowCoinBoosterAds);
     }
-
     void ShowCoinBoosterAds()
     {
         if (GameManager.Instance.IsHasNoAds())
@@ -114,10 +126,21 @@ public class PanelPlayGame : UIPanel
             AdsManager.Instance.ShowRewardVideo(WatchVideoRewardType.FreeCoinAds.ToString(), CoinBoosterSuccess);
         //CoinBoosterSuccess();
     }
-
+    ItemData coinBoosterReward;
+    List<ItemData> coinBoosterRewards;
     void CoinBoosterSuccess()
     {
-        ProfileManager.Instance.playerData.playerResourseSave.AddMoney(ConstantValue.VAL_COIN_BOOSTER);
+        if(coinBoosterRewards == null)
+        {
+            coinBoosterRewards = new List<ItemData>();
+            coinBoosterReward = new ItemData();
+            coinBoosterReward.ItemType = ItemType.Coin;
+            coinBoosterReward.amount = ConstantValue.VAL_COIN_BOOSTER;
+            coinBoosterRewards.Add(coinBoosterReward);
+        }
+        GameManager.Instance.GetItemRewards(coinBoosterRewards);
+        UIManager.instance.ShowPanelItemsReward();
+        //ProfileManager.Instance.playerData.playerResourseSave.AddMoney(ConstantValue.VAL_COIN_BOOSTER);
         EventManager.TriggerEvent(EventName.ChangeCoin.ToString());
     }
 

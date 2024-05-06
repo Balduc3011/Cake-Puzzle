@@ -18,9 +18,12 @@ public enum UIPanelType {
     PanelShop,
     PanelUsingItem,
     PanelLeaderBoard,
-    PanelDailyQuest,
+    PanelTopUp,
     PanelQuickIAP,
-    PanelSelectReward
+    PanelSelectReward,
+    PanelHint,
+    PanelDailyQuest,
+    PanelQuickTimeEvent
 }
 public class UIPanel : MonoBehaviour {
     public bool isRegisterInUI = true;

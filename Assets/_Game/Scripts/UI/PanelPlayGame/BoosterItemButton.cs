@@ -47,6 +47,7 @@ public class BoosterItemButton : MonoBehaviour
         if (itemAmount > 0)
         {
             CallBack();
+            GameManager.Instance.questManager.AddProgress(QuestType.UseBooster, 1);
         }
         else
         {

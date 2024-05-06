@@ -23,12 +23,12 @@ public class CakeDataConfig : ScriptableObject
         return null;
     }
 
-    public Mesh GetCakePieceMesh(int id)
+    public Mesh GetCakePieceMesh(int id, int level = 1)
     {
         for (int i = 0; i < cakeDatas.Count; i++)
         {
             if (cakeDatas[i].id == id)
-            { return cakeDatas[i].pieceMesh; }
+            { return cakeDatas[i].pieces[level - 1]; }
         }
         return null;
     }
@@ -91,8 +91,6 @@ public class CakeDataConfig : ScriptableObject
 public class CakeData
 {
     public int id;
-    public Sprite icon;
-    public Mesh pieceMesh;
     public List<Sprite> icons;
     public List<Mesh> pieces;
 }

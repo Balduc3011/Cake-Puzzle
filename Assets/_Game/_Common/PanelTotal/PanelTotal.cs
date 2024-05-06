@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using TMPro;
 using UIAnimation;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class PanelTotal : UIPanel
@@ -12,9 +13,11 @@ public class PanelTotal : UIPanel
     public RectTransform subTopRect;
     [SerializeField] UIPanelShowUp uiPanelShowUp;
     public Transform Transform;
+    [SerializeField] CanvasGroup functionCG;
     [SerializeField] Button playBtn;
     [SerializeField] Button settingBtn;
     [SerializeField] Button dailyBtn;
+    [SerializeField] Button dailyQuestBtn;
     [SerializeField] Button spinBtn;
     [SerializeField] Button decorBtn;
     [SerializeField] Button mainGameNavBtn;
@@ -22,6 +25,7 @@ public class PanelTotal : UIPanel
     [SerializeField] Button decorationNavBtn;
     [SerializeField] Button shopNavBtn;
     [SerializeField] Button questNavBtn;
+    
     [SerializeField] GameObject mainSceneContent;
     [SerializeField] GameObject commonContent;
     [SerializeField] GameObject mainMenuContent;
@@ -32,16 +36,24 @@ public class PanelTotal : UIPanel
     [SerializeField] TextMeshProUGUI txtCurrentExp;
     //[SerializeField] Image imgNextCake;
     [SerializeField] Slider sliderLevelExp;
+    [SerializeField] Slider sliderQuickTimeEvent;
     [SerializeField] Transform trsCoin;
     [SerializeField] CanvasGroup canvasGroup;
+    [SerializeField] CanvasGroup quickEventCanvasGroup;
     [SerializeField] List<TransitionUI> transitionUIList;
 
     [SerializeField] CanvasGroup backGroundCG;
     [SerializeField] GameObject backGround;
+    [SerializeField] GameObject functinBar;
     [SerializeField] GameObject dailyNoti;
     [SerializeField] GameObject spinNoti;
     [SerializeField] GameObject settingNoti;
     [SerializeField] GameObject bakeryNoti;
+    [SerializeField] GameObject questNoti;
+    [SerializeField] GameObject objQuickTimeEvents;
+
+    [SerializeField] TextMeshProUGUI txtCountCake;
+    [SerializeField] TextMeshProUGUI txtTime;
 
     int showingCake = -1;
     public override void Awake()
@@ -59,8 +71,10 @@ public class PanelTotal : UIPanel
     {
         dailyNoti.SetActive(ProfileManager.Instance.playerData.playerResourseSave.IsHasDailyReward());
         spinNoti.SetActive(ProfileManager.Instance.playerData.playerResourseSave.IsHasFreeSpin());
-        settingNoti.SetActive(ProfileManager.Instance.playerData.cakeSaveData.HasCakeUpgradeable() &&
-            GameManager.Instance.playing);
+        //questNoti.SetActive(ProfileManager.Instance.playerData.questDataSave.CheckShowNoticeQuest());
+        //settingNoti.SetActive(ProfileManager.Instance.playerData.cakeSaveData.HasCakeUpgradeable() &&
+        //    GameManager.Instance.playing);
+        settingNoti.SetActive(false);
         bakeryNoti.SetActive(ProfileManager.Instance.playerData.cakeSaveData.HasCakeUpgradeable());
     }
 
@@ -83,7 +97,7 @@ public class PanelTotal : UIPanel
         }
     }
 
-    float currentExp= 0;
+    float currentExp = 0;
     float currentValue = 0;
     int currentLevel;
     bool isChangeLevel;
@@ -102,7 +116,7 @@ public class PanelTotal : UIPanel
         }
 
         currentValue = sliderLevelExp.value;
-        DOVirtual.Float(currentValue, currentExp, 1f, (value) =>{
+        DOVirtual.Float(currentValue, currentExp, 1f, (value) => {
             sliderLevelExp.value = value;
             txtCurrentExp.text = (int)value + "/" + sliderLevelExp.maxValue;
         }).OnComplete(() => {
@@ -119,7 +133,7 @@ public class PanelTotal : UIPanel
     LevelData levelData;
     private void ChangeLevel()
     {
-        
+
         txtCurrentLevel.text = ProfileManager.Instance.playerData.playerResourseSave.currentLevel.ToString();
         //levelData = ProfileManager.Instance.dataConfig.levelDataConfig.GetLevel(ProfileManager.Instance.playerData.playerResourseSave.currentLevel);
         //if (levelData.cakeUnlockID != -1)
@@ -137,28 +151,37 @@ public class PanelTotal : UIPanel
         playBtn.onClick.AddListener(PlayGame);
         settingBtn.onClick.AddListener(ShowPanelSetting);
         dailyBtn.onClick.AddListener(ShowPanelDailyReward);
+        dailyQuestBtn.onClick.AddListener(ShowPanelDailyQuest);
         spinBtn.onClick.AddListener(ShowPanelSpin);
         decorBtn.onClick.AddListener(ShowPanelTest);
-        mainGameNavBtn.onClick.AddListener(() => { 
+        mainGameNavBtn.onClick.AddListener(() => {
+            GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
             UIManager.instance.ShowPanelTotalContent();
             ShowBGCanvasGroup(true);
         });
-        bakeryNavBtn.onClick.AddListener(() => { 
+        bakeryNavBtn.onClick.AddListener(() => {
+            GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
             UIManager.instance.ShowPanelBakery();
             ShowBGCanvasGroup(false);
-        });
-        decorationNavBtn.onClick.AddListener(() => { 
+        }); 
+        decorationNavBtn.onClick.AddListener(() => {
+            GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
             UIManager.instance.ShowPanelDecorations();
             ShowBGCanvasGroup(false);
         });
-        shopNavBtn.onClick.AddListener(() => { 
+        shopNavBtn.onClick.AddListener(() => {
+            GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
             UIManager.instance.ShowPanelShop();
             ShowBGCanvasGroup(false);
         });
-        questNavBtn.onClick.AddListener(() => { 
-            UIManager.instance.ShowPanelDailyQuest();
+        questNavBtn.onClick.AddListener(() => {
+            GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
+            UIManager.instance.ShowPanelTopUp();
             ShowBGCanvasGroup(false);
         });
+        confirmBuyBtn.onClick.AddListener(OnConfirmShowAds);
+        confirmCloseBtn.onClick.AddListener(CloseConfirmShowAds);
+
         currentLevel = ProfileManager.Instance.playerData.playerResourseSave.currentLevel;
         ChangeLevel();
         ChangeExp();
@@ -168,6 +191,7 @@ public class PanelTotal : UIPanel
     void ShowBGCanvasGroup(bool show)
     {
         backGroundCG.DOFade(show ? 1 : 0, show ? 0.1f : .5f);
+        functionCG.DOFade(show ? 1 : 0, 0.15f);
     }
 
     public void ShowMainSceneContent(bool show)
@@ -177,12 +201,14 @@ public class PanelTotal : UIPanel
 
     void PlayGame()
     {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         GameManager.Instance.cameraManager.FirstCamera();
         GameManager.Instance.cameraManager.OpenMainCamera();
         GameManager.Instance.PlayGame();
         navBarContent.SetActive(false);
         mainMenuContent.SetActive(false);
         backGround.SetActive(false);
+        functinBar.SetActive(false);
         CheckNoti();
     }
 
@@ -191,24 +217,35 @@ public class PanelTotal : UIPanel
         navBarContent.SetActive(true);
         mainMenuContent.SetActive(true);
         backGround.SetActive(true);
+        functinBar.SetActive(true);
     }
 
     void ShowPanelSetting()
     {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         UIAnimationController.BtnAnimZoomBasic(settingBtn.transform, .1f, UIManager.instance.ShowPanelSetting);
     }
 
     void ShowPanelDailyReward()
     {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         UIAnimationController.BtnAnimZoomBasic(dailyBtn.transform, .1f, UIManager.instance.ShowPanelDailyReward);
+    }
+    
+    void ShowPanelDailyQuest()
+    {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
+        UIAnimationController.BtnAnimZoomBasic(dailyQuestBtn.transform, .1f, UIManager.instance.ShowPanelDailyQuest);
     }
 
     void ShowPanelSpin()
     {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         UIAnimationController.BtnAnimZoomBasic(spinBtn.transform, .1f, UIManager.instance.ShowPanelSpin);
     }
     void ShowPanelTest()
     {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         UIAnimationController.BtnAnimZoomBasic(decorBtn.transform, .1f, UIManager.instance.ShowPanelCakeReward);
     }
 
@@ -240,21 +277,14 @@ public class PanelTotal : UIPanel
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            UsingItemMode();
-        }
-
-        if (Input.GetKeyUp(KeyCode.Tab))
-        {
-            OutItemMode();
-        }
         showCakeCounter += Time.deltaTime;
-        if(showCakeCounter > showCakeCoolDown)
+        if (showCakeCounter > showCakeCoolDown)
         {
             showCakeCounter = 0;
             InitCakeDecor();
         }
+
+        if (onQuickTimeEvent) UpdateTime();
     }
 
     float showCakeCoolDown = 3 * 60;
@@ -263,11 +293,97 @@ public class PanelTotal : UIPanel
     {
         if (GameManager.Instance.playing) return;
         int newShow = ProfileManager.Instance.playerData.cakeSaveData.GetRandomOwnedCake();
-        while(newShow == showingCake)
+        while (newShow == showingCake)
         {
             newShow = ProfileManager.Instance.playerData.cakeSaveData.GetRandomOwnedCake();
         }
         showingCake = newShow;
         GameManager.Instance.cakeManager.cakeShowComponent.ShowSelectetCake(showingCake);
     }
+
+    #region Ads
+    [SerializeField] GameObject confirmObj;
+    [SerializeField] CanvasGroup confirmCG;
+    [SerializeField] Button confirmBuyBtn;
+    [SerializeField] Button confirmCloseBtn;
+    [SerializeField] TextMeshProUGUI desText;
+    //[SerializeField] Image iconImg;
+    UnityAction adsConfirmCallBack;
+    public void ShowConfirm(UnityAction unityAction, string des)
+    {
+        adsConfirmCallBack = unityAction;
+        confirmObj.SetActive(true);
+        confirmCG.DOFade(1, 0.15f);
+        desText.text = des;
+    }
+
+    public void CloseConfirmShowAds()
+    {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
+        confirmCG.DOFade(0, 0.15f).OnComplete(CloseConfirmInstant);
+    }
+
+    void CloseConfirmInstant()
+    {
+        confirmObj.SetActive(false);
+    }
+
+    void OnConfirmShowAds()
+    {
+        if (adsConfirmCallBack != null)
+        {
+            adsConfirmCallBack();
+        }
+        CloseConfirmShowAds();
+    }
+    #endregion
+
+    #region Quick Time Event
+    public float currentCakeDone;
+    float currentTime;
+    bool onQuickTimeEvent;
+
+    public void ShowQuickTimeEvent(float cakeNeedDoneOnEvent, float timeMaxEvent) {
+        objQuickTimeEvents.SetActive(true);
+        quickEventCanvasGroup.DOFade(1, .25f).From(0).SetEase(Ease.InOutSine);
+        objQuickTimeEvents.transform.DOScale(1, .25f).From(0).SetEase(Ease.OutBack);
+        sliderQuickTimeEvent.maxValue = cakeNeedDoneOnEvent;
+        sliderQuickTimeEvent.value = 0;
+        currentCakeDone = 0;
+        onQuickTimeEvent = true;
+        currentTime = timeMaxEvent;
+        txtCountCake.text = "0/" + cakeNeedDoneOnEvent;
+        txtTime.text = TimeUtil.ConvertFloatToString(timeMaxEvent);
+    }
+
+    public void OutTimeEvent() {
+        objQuickTimeEvents.SetActive(false);
+        currentCakeDone = 0;
+        currentTime = 0;
+        onQuickTimeEvent = false;
+        GameManager.Instance.quickTimeEventManager.EndQuickTimeEvent();
+    }
+
+    public void UpdateQuickTimeEvent()
+    {
+        if (sliderQuickTimeEvent.maxValue == 0)
+            return;
+        currentCakeDone++;
+        txtCountCake.text = currentCakeDone + "/" + sliderQuickTimeEvent.maxValue;
+        sliderQuickTimeEvent.value = currentCakeDone;
+        if (currentCakeDone >= sliderQuickTimeEvent.maxValue)
+        { 
+            UIManager.instance.panelTotal.OutTimeEvent();
+            GameManager.Instance.RandonReward();
+            UIManager.instance.ShowPanelSelectReward();
+        }
+    }
+
+    void UpdateTime() {
+        currentTime -= Time.deltaTime;
+        if (currentTime >= 0f) txtTime.text = TimeUtil.TimeToString(currentTime, TimeFommat.Keyword);
+        if (currentTime <= 0f)
+            OutTimeEvent();
+    }
+    #endregion
 }

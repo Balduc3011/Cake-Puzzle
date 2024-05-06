@@ -221,6 +221,7 @@ public class PlayerResourseSave : SaveBase
         ownedItem.Add(data);
         IsMarkChangeData();
         SaveData();
+        EventManager.TriggerEvent(EventName.AddItem.ToString());
     }
 
     public float GetItemAmount(ItemType itemType)
@@ -249,6 +250,7 @@ public class PlayerResourseSave : SaveBase
         }
         IsMarkChangeData();
         SaveData();
+        EventManager.TriggerEvent(EventName.AddItem.ToString());
     }
 
     public void AddExp(float expAdd) {
@@ -273,6 +275,7 @@ public class PlayerResourseSave : SaveBase
         //    ProfileManager.Instance.playerData.cakeSaveData.AddCake(cakeID);
         //    ProfileManager.Instance.playerData.cakeSaveData.UseCake(cakeID);
         //}
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_LevelUp);
         currentLevel++;
         GameManager.Instance.GetLevelUpReward();
         EventManager.TriggerEvent(EventName.ChangeLevel.ToString());

@@ -40,6 +40,7 @@ public class PanelDailyReward : UIPanel
 
     void ClosePanel()
     {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         //openAndCloseAnim.OnClose(CloseInstant);
         uiPanelShowUp.OnClose(CloseInstant);
     }

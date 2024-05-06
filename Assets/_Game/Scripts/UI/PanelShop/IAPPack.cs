@@ -43,6 +43,7 @@ public class IAPPack : MonoBehaviour
 
     void OnBuyPack()
     {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         MyIAPManager.instance.Buy(packageId.ToString(), OnBuyPackSuccess);
         OnBuyPackSuccess();
     }

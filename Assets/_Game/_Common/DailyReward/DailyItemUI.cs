@@ -26,6 +26,7 @@ public class DailyItemUI : MonoBehaviour
 
     void CollectItem()
     {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         GameManager.Instance.dailyRewardManager.OnGetDailyReward(dayIndex);
         SetInteract();
     }

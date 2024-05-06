@@ -14,10 +14,11 @@ public class CakeSaveData : SaveBase
     public List<CakeOnWait> cakeOnWaits = new List<CakeOnWait>();
     public override void LoadData()
     {
-        SetStringSave("CakeSaveData");
-        string jsonData = GetJsonData();
+        //SetStringSave("CakeSaveData");
+        string jsonData = stringSave;
         if (!string.IsNullOrEmpty(jsonData))
         {
+            Debug.Log(jsonData);
             CakeSaveData data = JsonUtility.FromJson<CakeSaveData>(jsonData);
             ownedCakes = data.ownedCakes;
             cakeIDs = data.cakeIDs;
@@ -382,6 +383,7 @@ public class OwnedCake
 
     public bool IsAbleToUpgrade()
     {
+        UpdateCardRequire();
         return cardAmount >= cardRequire;
     }
 }

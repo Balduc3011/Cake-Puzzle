@@ -31,6 +31,8 @@ public class ConstantValue
     public static string STR_FURNITURE = "Furniture";
     public static string STR_EXP = "exp";
     public static string STR_POINT = "p";
+    public static string STR_ShowX2BoosterAds = "Get x2 coin from any cake completed";
+    public static string STR_ShowCoinBoosterAds = "Instantly get extra 100 coins";
 
     // VECTOR3
     public static Vector3 VEC3_VECTOR3_1 = new Vector3(1, 1, 1);
@@ -73,5 +75,11 @@ public enum VersionStatus
 public enum SoundId
 {
     None,
-    SFX_Base
+    SFX_Base,
+    SFX_CoinCube,
+    SFX_LevelUp,
+    SFX_TapCube,
+    SFX_UIButton,
+    SFX_UIClick,
+    SFX_Warning
 }

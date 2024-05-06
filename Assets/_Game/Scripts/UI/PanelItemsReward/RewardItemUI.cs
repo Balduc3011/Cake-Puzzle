@@ -1,3 +1,4 @@
+using AssetKits.ParticleImage;
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,9 +14,12 @@ public class RewardItemUI : MonoBehaviour
     [SerializeField] TextMeshProUGUI titleTxt;
     [SerializeField] TextMeshProUGUI amountTxt;
     [SerializeField] CanvasGroup canvasGroup;
-    
-    public void Init(ItemData itemData)
+    [SerializeField] ParticleImage rewardEffect;
+    PanelItemsReward panelItemsReward;
+
+    public void Init(ItemData itemData, PanelItemsReward panelItemsReward)
     {
+        this.panelItemsReward = panelItemsReward;
         titleTxt.text = itemData.ItemType.ToString();
         amountTxt.text = itemData.amount.ToString();
         if(itemData.ItemType != ItemType.Cake)
@@ -25,5 +29,20 @@ public class RewardItemUI : MonoBehaviour
         if (Transform == null) Transform = transform;
         contentTransform.DOScale(1, 0.25f).From(2);
         canvasGroup.DOFade(1, 0.15f).From(0);
+        if (itemData.ItemType != ItemType.NoAds) {
+            if (itemData.ItemType == ItemType.Coin)
+            {
+                rewardEffect.attractorTarget = panelItemsReward.coinBar;
+                rewardEffect.SetBurst(0, 0, 10);
+            }
+            else
+            {
+                rewardEffect.attractorTarget = panelItemsReward.bagBar;
+                rewardEffect.SetBurst(0, 0, itemData.amount < 5 ? (int)(itemData.amount) : 5);
+            }
+            rewardEffect.texture = iconImg.sprite.texture;
+            rewardEffect.Play();
+        }
+        
     }
 }
