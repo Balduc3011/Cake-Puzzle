@@ -330,6 +330,7 @@ public class PanelTotal : UIPanel
     bool onQuickTimeEvent;
 
     public void ShowQuickTimeEvent(float cakeNeedDoneOnEvent, float timeMaxEvent) {
+        objQuickTimeEvents.SetActive(true);
         sliderQuickTimeEvent.maxValue = cakeNeedDoneOnEvent;
         sliderQuickTimeEvent.value = 0;
         currentCakeDone = 0;
@@ -339,7 +340,16 @@ public class PanelTotal : UIPanel
         txtTime.text = TimeUtil.ConvertFloatToString(timeMaxEvent);
     }
 
+    void OutTimeEvent() {
+        objQuickTimeEvents.SetActive(false);
+        currentCakeDone = 0;
+        currentTime = 0;
+        onQuickTimeEvent = false;
+        GameManager.Instance.quickTimeEventManager.EndQuickTimeEvent();
+    }
+
     public void UpdateQuickTimeEvent() {
+        currentCakeDone++;
         sliderQuickTimeEvent.value = currentCakeDone;
     }
 
@@ -347,7 +357,7 @@ public class PanelTotal : UIPanel
         currentTime -= Time.deltaTime;
         if (currentTime >= 0f) txtTime.text = TimeUtil.TimeToString(currentTime, TimeFommat.Keyword);
         if (currentTime <= 0f)
-            onQuickTimeEvent = false;
+            OutTimeEvent();
     }
     #endregion
 }

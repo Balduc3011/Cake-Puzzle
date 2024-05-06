@@ -35,4 +35,5 @@ public class QuickTimeEventManager : MonoBehaviour
 
     public float GetTimeQuickTimeEvent() { return timeQuickEvent = cakeNeedDone * 5f; }
     public int GetTotalCakeNeedDone() { return cakeNeedDone = Random.Range(minCakeNeedDone, maxCakeNeedDone); }
+    public void EndQuickTimeEvent() { onQuickTimeEvent = false; }
 }
