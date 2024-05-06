@@ -395,7 +395,7 @@ public class Cake : MonoBehaviour
     }
 
     void UsingHammer() {
-        if (cakeDone)
+          if (cakeDone)
             return;
         if (currentPlate != null)
             currentPlate.currentCake = null;
@@ -636,6 +636,7 @@ public class Cake : MonoBehaviour
             {
                 piece = pieces[i];
                 int indexID = pieceCakeID.IndexOf(pieces[i].cakeID);
+                pieces.Remove(pieces[i]);
                 if (indexID != -1)
                 if (pieceCakeIDCount[indexID] > 0)
                 {
@@ -646,7 +647,7 @@ public class Cake : MonoBehaviour
                             pieceCakeID.RemoveAt(indexID);
                         }
                 }
-                pieces.Remove(pieces[i]);
+               
                 needRotateRightWay = true;
                 return piece;
             }

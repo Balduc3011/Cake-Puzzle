@@ -204,6 +204,7 @@ public class CakeManager : MonoBehaviour
     }
 
     void CheckNextCake() {
+        Debug.Log("Check next Cake");
         indexCakeCheck++;
         GameManager.Instance.objectPooling.CheckGroupCake();
         if (indexCakeCheck < cakeNeedCheck.Count && cakeNeedCheck.Count > 0)
