@@ -77,6 +77,7 @@ public class CakeManager : MonoBehaviour
 
     private void Update()
     {
+       
         if (currentGCake != null && isFirstTimeMove) {
             if (Input.GetMouseButtonUp(0))
             {
@@ -91,6 +92,7 @@ public class CakeManager : MonoBehaviour
                 }
                 return;
             }
+
             mousePos = Input.mousePosition;
             mousePos.z = Vector3.Distance(currentGCake.transform.position, Camera.main.transform.position);
             currentPos = Camera.main.ScreenToWorldPoint(mousePos) + vectorOffset;
@@ -98,18 +100,32 @@ public class CakeManager : MonoBehaviour
             currentGCake.transform.position = currentPos;
         }
     }
-
-    public void SetCurrentGroupCake(GroupCake gCake) { 
-        currentGCake = gCake;
+    bool maskDeactiveCurrentCake;
+    public void SetCurrentGroupCake(GroupCake gCake) {
+        if (currentGCake != null) return;
+        maskDeactiveCurrentCake = false;
         mousePos = Input.mousePosition;
-        mousePos.z = Vector3.Distance(currentGCake.transform.position, Camera.main.transform.position);
+        mousePos.z = Vector3.Distance(gCake.transform.position, Camera.main.transform.position);
         currentPos = Camera.main.ScreenToWorldPoint(mousePos) + vectorOffset;
         currentPos.y = posYDefault;
-        currentGCake.transform.DOMove(currentPos, .1f).SetEase(Ease.InCirc).OnComplete(()=> { isFirstTimeMove = true; });
+        gCake.transform.DOMove(currentPos, .1f).SetEase(Ease.InCirc).OnComplete(()=> {
+            if (maskDeactiveCurrentCake)
+            {
+                Debug.Log("Drop fail");
+                currentGCake.DropFail();
+                currentGCake = null;
+                return;
+            }
+            currentGCake = gCake;
+            isFirstTimeMove = true;
+        }).OnUpdate(() => {
+            if (Input.GetMouseButtonUp(0))
+                maskDeactiveCurrentCake = true;
+        });
     }
 
     void Drop() {
-        currentGCake.Drop();
+        currentGCake?.Drop();
         currentGCake = null;
         levelUp = false;
     }
@@ -219,11 +235,13 @@ public class CakeManager : MonoBehaviour
         else
         {
             timeCheckCake++;
+            Debug.Log("Time check cake: "+timeCheckCake);
             if (timeCheckCake >= 2)
             {
                 table.SaveCake();
                 StartCheckLoseGame();
                 CheckSpawnCakeGroup();
+                Debug.Log("Check Cake Done!");
                 onCheckCake = false;
                 ClearCakeNeedCheck();
             }

@@ -635,6 +635,7 @@ public class Cake : MonoBehaviour
             if (pieces[i].cakeID == cakeID)
             {
                 piece = pieces[i];
+                Debug.Log("Piece before: "+ piece.cakeID);
                 int indexID = pieceCakeID.IndexOf(pieces[i].cakeID);
                 pieces.Remove(pieces[i]);
                 if (indexID != -1)

@@ -66,6 +66,7 @@ public class GroupCake : MonoBehaviour
     public void OnFollowMouse() {
         if (canTouch)
         {
+            canTouch = false;
             GameManager.Instance.cakeManager.SetCurrentGroupCake(this);
             for (int i = 1; i < cake.Count; i++)
             {
@@ -136,6 +137,7 @@ public class GroupCake : MonoBehaviour
             }
         }
         transform.position = pointSpawn.position;
+        canTouch = true;
     }
 
     public void InitData(int countCake, Transform pointSpawn, int cakeWaitIndex, List<CakeSave> cakeSaveDatas = null)
