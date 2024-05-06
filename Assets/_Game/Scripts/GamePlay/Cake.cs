@@ -335,6 +335,8 @@ public class Cake : MonoBehaviour
     }
     int indexRemove;
     void FillUp() {
+        if (cakeDone)
+            return;
         if (myGroupCake != null)
         {
             if (GameManager.Instance.cakeManager.CakeOnWait(myGroupCake))
@@ -393,6 +395,8 @@ public class Cake : MonoBehaviour
     }
 
     void UsingHammer() {
+        if (cakeDone)
+            return;
         if (currentPlate != null)
             currentPlate.currentCake = null;
         if (myGroupCake != null)
@@ -584,7 +588,7 @@ public class Cake : MonoBehaviour
     }
   
     public void RotateOtherPieceRight(UnityAction actionCallRotateDone) {
-        //Debug.Log("rotate right way+ "+currentPlate);
+        Debug.Log("rotate right way+ "+currentPlate);
         rotateRWDone = actionCallRotateDone;
         indexRotateRW = 0;
         callBackRotateDone = false;
