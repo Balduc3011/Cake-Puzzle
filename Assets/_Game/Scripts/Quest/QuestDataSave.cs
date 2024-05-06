@@ -10,6 +10,7 @@ public class QuestDataSave : SaveBase
     public List<int> rewardEarned;
     public List<QuestProcess> quessProcess = new List<QuestProcess>();
     DateTime dateTimeOnQuest;
+    List<QuestTargetData> questTargetDatas;
     public override void LoadData()
     {
         SetStringSave("QuestDataSave");
@@ -80,6 +81,7 @@ public class QuestDataSave : SaveBase
         rewardEarned.Add(id);
         IsMarkChangeData();
         SaveData();
+        UIManager.instance.panelTotal.CheckNoti();
     }
 
     public bool CheckCanEarnQuest(int id, float star) {
@@ -133,6 +135,7 @@ public class QuestDataSave : SaveBase
         IsMarkChangeData();
         SaveData();
         EventManager.TriggerEvent(EventName.ChangeStarDailyQuest.ToString());
+        UIManager.instance.panelTotal.CheckNoti();
     }
 
     public void AddProgress(float amount, QuestType questType) {
@@ -149,9 +152,22 @@ public class QuestDataSave : SaveBase
         quessProcess.Add(quest);
         IsMarkChangeData();
         SaveData();
+        UIManager.instance.panelTotal.CheckNoti();
     }
 
     public bool CheckShowNoticeQuest() {
+        for (int i = 0; i < quessProcess.Count; i++)
+        {
+            if(GetCurrentProgress(quessProcess[i].questType) > GetCurrentRequire(quessProcess[i].questType))
+            {
+                return true;
+            }
+        }
+        if(questTargetDatas == null) questTargetDatas = ProfileManager.Instance.dataConfig.questDataConfig.questTargetDatas;
+        for (int i = 0; i < questTargetDatas.Count; i++)
+        {
+            if (CheckCanEarnQuest(i, questTargetDatas[i].require)) return true;
+        }
         return false;
     }
 }

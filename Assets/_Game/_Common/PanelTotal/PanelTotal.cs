@@ -71,7 +71,7 @@ public class PanelTotal : UIPanel
     {
         dailyNoti.SetActive(ProfileManager.Instance.playerData.playerResourseSave.IsHasDailyReward());
         spinNoti.SetActive(ProfileManager.Instance.playerData.playerResourseSave.IsHasFreeSpin());
-        //questNoti.SetActive(ProfileManager.Instance.playerData.questDataSave.CheckShowNoticeQuest());
+        questNoti.SetActive(ProfileManager.Instance.playerData.questDataSave.CheckShowNoticeQuest());
         //settingNoti.SetActive(ProfileManager.Instance.playerData.cakeSaveData.HasCakeUpgradeable() &&
         //    GameManager.Instance.playing);
         settingNoti.SetActive(false);

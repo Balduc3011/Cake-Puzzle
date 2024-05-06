@@ -7,6 +7,7 @@ public class QuestDataConfig : ScriptableObject
 {
     public List<QuestData> questData = new List<QuestData>();
     public List<DailyReward> dailyRewards = new List<DailyReward>();
+    public List<QuestTargetData> questTargetDatas = new List<QuestTargetData>();
 
     public float GetQuestRequire(QuestType type, int mark)
     {
@@ -41,6 +42,13 @@ public class QuestData {
 public class DailyReward {
     public ItemData rewardData;
     public int pointGet;
+}
+
+[System.Serializable]
+public class QuestTargetData
+{
+    public int id;
+    public float require;
 }
 
 public enum QuestType
