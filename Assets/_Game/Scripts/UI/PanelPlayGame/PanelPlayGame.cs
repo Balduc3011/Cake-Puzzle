@@ -17,6 +17,9 @@ public class PanelPlayGame : UIPanel
     [SerializeField] Button coinBoosterBtn;
     [SerializeField] TextMeshProUGUI coinBoosterEarnTxt;
     [SerializeField] Button bakeryBtn;
+    [SerializeField] Button questBtn;
+    [SerializeField] GameObject questNoti;
+    [SerializeField] GameObject bakeryNoti;
 
     [SerializeField] BoosterItemButton btnHammer;
     [SerializeField] BoosterItemButton btnFillUp;
@@ -41,11 +44,23 @@ public class PanelPlayGame : UIPanel
             GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
             UIManager.instance.ShowPanelBakery();
         });
+
+        questBtn.onClick.AddListener(() => {
+            GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
+            UIManager.instance.ShowPanelDailyQuest();
+        });
+    }
+
+    public void CheckNoti()
+    {
+        questNoti.SetActive(ProfileManager.Instance.playerData.questDataSave.CheckShowNoticeQuest());
+        bakeryNoti.SetActive(ProfileManager.Instance.playerData.cakeSaveData.HasCakeUpgradeable());
     }
 
     private void OnEnable()
     {
         CheckX2Booster();
+        CheckNoti();
     }
 
     void CheckX2Booster()

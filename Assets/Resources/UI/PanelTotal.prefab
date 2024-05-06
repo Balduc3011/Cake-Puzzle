@@ -3855,6 +3855,7 @@ MonoBehaviour:
   uiPanelShowUp: {fileID: 7551594902262105515}
   Transform: {fileID: 2094646185829888038}
   functionCG: {fileID: 9111758947179283167}
+  functionCG2: {fileID: 3804702756404563783}
   playBtn: {fileID: 8535476229340952647}
   settingBtn: {fileID: 5293484808207285080}
   dailyBtn: {fileID: 1894092942243007314}
@@ -12148,6 +12149,7 @@ GameObject:
   - component: {fileID: 2062491262094886515}
   - component: {fileID: 8519336546473898253}
   - component: {fileID: 6055637148490258302}
+  - component: {fileID: 3804702756404563783}
   m_Layer: 5
   m_Name: FunctionBar
   m_TagString: Untagged
@@ -12217,12 +12219,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5266ea7b683cf044be3e7543c0cf5e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objTrs: {fileID: 6511658045265430061}
+  objTrs: {fileID: 2062491262094886515}
   pinPos: {x: 0, y: 0, z: 0}
   movePos: {x: 0, y: 0, z: 0}
   moveDistance: 250
   moveTime: 0.5
   floatDirection: 4
+--- !u!225 &3804702756404563783
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7116255422885385702}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &7121226521229171834
 GameObject:
   m_ObjectHideFlags: 0
