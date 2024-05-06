@@ -311,6 +311,7 @@ public class CakeManager : MonoBehaviour
         if (countFaild == countCheckFaild && countFaild > 0)
         {
             UIManager.instance.ShowPanelLevelComplete(false);
+            UIManager.instance.panelTotal.OutTimeEvent();
         }
         onCheckLooseGame = false;
     }
