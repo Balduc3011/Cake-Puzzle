@@ -31,7 +31,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2094646185829888038}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -1735,7 +1735,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 38, y: -47}
+  m_AnchoredPosition: {x: 11, y: -47}
   m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &6821210139117189151
@@ -1990,6 +1990,7 @@ RectTransform:
   - {fileID: 1566028933570981915}
   - {fileID: 9204286680051202846}
   - {fileID: 2433554179929774866}
+  - {fileID: 2062491262094886515}
   - {fileID: 1085087181}
   - {fileID: 6295888617872087656}
   m_Father: {fileID: 0}
@@ -2030,6 +2031,7 @@ MonoBehaviour:
   playBtn: {fileID: 8535476229340952647}
   settingBtn: {fileID: 5293484808207285080}
   dailyBtn: {fileID: 1894092942243007314}
+  dailyQuestBtn: {fileID: 3367362842967458726}
   spinBtn: {fileID: 636773068051163400}
   decorBtn: {fileID: 5657399274705737943}
   mainGameNavBtn: {fileID: 8238539712827020142}
@@ -2045,6 +2047,7 @@ MonoBehaviour:
   txtCurrentLevel: {fileID: 6146157908449335212}
   txtCurrentExp: {fileID: 6146157908711204822}
   sliderLevelExp: {fileID: 6146157908204453883}
+  sliderQuickTimeEvent: {fileID: 0}
   trsCoin: {fileID: 275754080319260256}
   canvasGroup: {fileID: 2745521122149894770}
   transitionUIList:
@@ -2055,10 +2058,15 @@ MonoBehaviour:
   - {fileID: 6055637148490258302}
   backGroundCG: {fileID: 496158141707615249}
   backGround: {fileID: 5218044898599548879}
+  functinBar: {fileID: 7116255422885385702}
   dailyNoti: {fileID: 1757470369076374251}
   spinNoti: {fileID: 6074851269711275432}
   settingNoti: {fileID: 6824293376413338968}
   bakeryNoti: {fileID: 3598109987436098778}
+  questNoti: {fileID: 0}
+  objQuickTimeEvents: {fileID: 0}
+  txtCountCake: {fileID: 0}
+  txtTime: {fileID: 0}
   showCakeCounter: 0
   confirmObj: {fileID: 5011037776435963136}
   confirmCG: {fileID: 6191320815325557413}
@@ -3334,7 +3342,7 @@ RectTransform:
   - {fileID: 5325433778766903073}
   - {fileID: 8901736515602317034}
   m_Father: {fileID: 2094646185829888038}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -4939,7 +4947,6 @@ RectTransform:
   m_Children:
   - {fileID: 4451383622373447820}
   - {fileID: 5321596322007538788}
-  - {fileID: 2062491262094886515}
   m_Father: {fileID: 2094646185829888038}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5144,7 +5151,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 70}
+  m_SizeDelta: {x: 184.6766, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3208366068132592585
 CanvasRenderer:
@@ -8337,7 +8344,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7116255422885385702}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -8346,12 +8353,12 @@ RectTransform:
   - {fileID: 7920752631907753673}
   - {fileID: 3935319407615685189}
   - {fileID: 4688907918327200901}
-  m_Father: {fileID: 8486164471726120679}
-  m_RootOrder: 2
+  m_Father: {fileID: 2094646185829888038}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -66, y: 314}
+  m_AnchoredPosition: {x: -66, y: 0}
   m_SizeDelta: {x: 200, y: 450}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &8519336546473898253

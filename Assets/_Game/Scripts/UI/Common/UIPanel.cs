@@ -22,6 +22,7 @@ public enum UIPanelType {
     PanelQuickIAP,
     PanelSelectReward,
     PanelHint,
+    PanelDailyQuest,
     PanelQuickTimeEvent
 }
 public class UIPanel : MonoBehaviour {

@@ -13,6 +13,8 @@ public class PanelItemsReward : UIPanel
     List<RewardItemUI> rewardItemUIs;
     List<ItemData> rewards;
     int spawnedCount;
+    public Transform coinBar;
+    public Transform bagBar;
 
     Vector3 titleScale = new Vector3 (0f, 1f, 1f);
     public override void Awake()
@@ -34,6 +36,8 @@ public class PanelItemsReward : UIPanel
         DisableOldItem();
         InitReward();
         transform.SetAsLastSibling();
+        coinBar.DOScale(1, 0.25f).From(0).SetDelay(2);
+        bagBar.DOScale(1, 0.25f).From(0).SetDelay(2);
     }
 
     void InitReward()
@@ -55,7 +59,7 @@ public class PanelItemsReward : UIPanel
         if (spawnedCount < rewards.Count)
         {
             RewardItemUI rewardItemUI = GetRewardItemUI();
-            rewardItemUI.Init(rewards[spawnedCount]);
+            rewardItemUI.Init(rewards[spawnedCount], this);
             spawnedCount++;
             StartCoroutine(SpawnReward());
         }
