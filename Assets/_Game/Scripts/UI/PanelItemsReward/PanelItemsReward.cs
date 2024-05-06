@@ -65,6 +65,7 @@ public class PanelItemsReward : UIPanel
         }
         else
         {
+            yield return ConstantValue.WAIT_SEC1;
             closeBtn.interactable = true;
         }
     }

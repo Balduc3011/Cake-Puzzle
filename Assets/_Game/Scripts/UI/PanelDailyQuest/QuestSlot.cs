@@ -37,9 +37,7 @@ public class QuestSlot : MonoBehaviour
 
     void ReInit()
     {
-        //rewardIcon.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetItemSprite(data.rewardData.ItemType);
-        //txtRewardAmount.text = data.rewardData.amount.ToString();
-        SetName();
+        txtRewardAmount.text = ConstantValue.VAL_QUEST_STAR.ToString();
         currentProgress = ProfileManager.Instance.playerData.questDataSave.GetCurrentProgress(questType);
         questRequire = ProfileManager.Instance.playerData.questDataSave.GetCurrentRequire(questType);
         collectBtn.gameObject.SetActive(currentProgress >= questRequire);
@@ -50,7 +48,8 @@ public class QuestSlot : MonoBehaviour
             currentProgress = questRequire;
         sProgress.maxValue = questRequire;
         sProgress.value = currentProgress;
-        
+        SetName();
+
     }
 
     void SetName()
@@ -60,13 +59,13 @@ public class QuestSlot : MonoBehaviour
             case QuestType.None:
                 break;
             case QuestType.WatchADS:
-                txtName.text = "Watch " + 5.ToString() + " ads";
+                txtName.text = "Watch " + questRequire.ToString() + " ads";
                 break;
             case QuestType.CompleteCake:
-                txtName.text = "Complete " + 5.ToString() + " cakes";
+                txtName.text = "Complete " + questRequire.ToString() + " cakes";
                 break;
             case QuestType.UseBooster:
-                txtName.text = "Use " + 5.ToString() + " items";
+                txtName.text = "Use " + questRequire.ToString() + " items";
                 break;
             default:
                 break;
@@ -75,7 +74,7 @@ public class QuestSlot : MonoBehaviour
 
     public void ReScale()
     {
-        transform.DOScale(1, 0.15f).From(0).SetDelay(0.25f + 0.1f * slotIndex);
+        transform.DOScale(1, 0.25f).From(0).SetDelay(0.25f + 0.1f * slotIndex);
     }
 
     void CollectQuest()
