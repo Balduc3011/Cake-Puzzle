@@ -17,6 +17,11 @@ public class QuickTimeEventManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!GameManager.Instance.playing)
+        {
+            timeGamePlay = 0;
+            return;
+        }
         if (!onQuickTimeEvent)
         {
             if (timeGamePlay < timeGamePlaySetting)
@@ -25,15 +30,23 @@ public class QuickTimeEventManager : MonoBehaviour
             }
             else
             {
-                UIManager.instance.ShowPanelQuickTimeEvent();
-                onQuickTimeEvent = true;
-                timeGamePlay = 0;
+                if (UIManager.instance.isHasPopupOnScene)
+                    timeGamePlay -= 10f;
+                else
+                {
+                    UIManager.instance.ShowPanelQuickTimeEvent();
+                    onQuickTimeEvent = true;
+                    timeGamePlay = 0;
+                }
             }
         }
        
     }
 
-    public float GetTimeQuickTimeEvent() { return timeQuickEvent = cakeNeedDone * 5f; }
+    public float GetTimeQuickTimeEvent() { return timeQuickEvent = cakeNeedDone * 15f; }
     public int GetTotalCakeNeedDone() { return cakeNeedDone = Random.Range(minCakeNeedDone, maxCakeNeedDone); }
     public void EndQuickTimeEvent() { onQuickTimeEvent = false; }
+    public void AddProgess() {
+        if (onQuickTimeEvent) UIManager.instance.panelTotal.UpdateQuickTimeEvent();
+    }
 }

@@ -124,7 +124,7 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    void RandonReward()
+    public void RandonReward()
     {
         for (int i = 0; i < 2; i++)
         {

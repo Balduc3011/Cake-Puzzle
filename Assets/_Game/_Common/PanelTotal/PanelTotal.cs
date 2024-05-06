@@ -39,6 +39,7 @@ public class PanelTotal : UIPanel
     [SerializeField] Slider sliderQuickTimeEvent;
     [SerializeField] Transform trsCoin;
     [SerializeField] CanvasGroup canvasGroup;
+    [SerializeField] CanvasGroup quickEventCanvasGroup;
     [SerializeField] List<TransitionUI> transitionUIList;
 
     [SerializeField] CanvasGroup backGroundCG;
@@ -338,12 +339,14 @@ public class PanelTotal : UIPanel
     #endregion
 
     #region Quick Time Event
-    float currentCakeDone;
+    public float currentCakeDone;
     float currentTime;
     bool onQuickTimeEvent;
 
     public void ShowQuickTimeEvent(float cakeNeedDoneOnEvent, float timeMaxEvent) {
         objQuickTimeEvents.SetActive(true);
+        quickEventCanvasGroup.DOFade(1, .25f).From(0).SetEase(Ease.InOutSine);
+        objQuickTimeEvents.transform.DOScale(1, .25f).From(0).SetEase(Ease.OutBack);
         sliderQuickTimeEvent.maxValue = cakeNeedDoneOnEvent;
         sliderQuickTimeEvent.value = 0;
         currentCakeDone = 0;
@@ -353,7 +356,7 @@ public class PanelTotal : UIPanel
         txtTime.text = TimeUtil.ConvertFloatToString(timeMaxEvent);
     }
 
-    void OutTimeEvent() {
+    public void OutTimeEvent() {
         objQuickTimeEvents.SetActive(false);
         currentCakeDone = 0;
         currentTime = 0;
@@ -361,9 +364,19 @@ public class PanelTotal : UIPanel
         GameManager.Instance.quickTimeEventManager.EndQuickTimeEvent();
     }
 
-    public void UpdateQuickTimeEvent() {
+    public void UpdateQuickTimeEvent()
+    {
+        if (sliderQuickTimeEvent.maxValue == 0)
+            return;
         currentCakeDone++;
+        txtCountCake.text = currentCakeDone + "/" + sliderQuickTimeEvent.maxValue;
         sliderQuickTimeEvent.value = currentCakeDone;
+        if (currentCakeDone >= sliderQuickTimeEvent.maxValue)
+        { 
+            UIManager.instance.panelTotal.OutTimeEvent();
+            GameManager.Instance.RandonReward();
+            UIManager.instance.ShowPanelSelectReward();
+        }
     }
 
     void UpdateTime() {
