@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using DG.Tweening;
 using UnityEngine.Purchasing;
+using UnityEngine.UIElements;
 public class Table : MonoBehaviour
 {
     public List<Plate> plates = new List<Plate>();
@@ -343,7 +344,7 @@ public class Table : MonoBehaviour
         for (int i = 0; i < plates.Count; i++)
         {
            
-            Debug.Log("Check cake index : " + i);
+            //Debug.Log("Check cake index : " + i);
             if (plates[i].currentCake != null /*&& plates[i] != bestPlate*/)
             {
                 if (plates[i].currentCake.CakeIsNull())
@@ -355,7 +356,7 @@ public class Table : MonoBehaviour
                 if (plates[i].currentCake.needRotateRightWay && !plates[i].currentCake.cakeDone)
                 {
                     totalNeedRotate++;
-                    plates[i].currentCake.RotateOtherPieceRight(RotateDone);
+                    plates[i].currentCake.RotateOtherPieceRight(() => { RotateDone(); });
                 }
                 //if (plates[i].currentCake.cakeDone)
                 //{
@@ -369,10 +370,15 @@ public class Table : MonoBehaviour
             CallBackCheckOtherCakeOnMap();
     }
 
-    void RotateDone() {
-        currentRotateDone++;
-        if (currentRotateDone >= totalNeedRotate && clearCakeLoadDone)
-            CallBackCheckOtherCakeOnMap();
+    void RotateDone(bool addCurrentRotateDone = true) {
+        if (addCurrentRotateDone) currentRotateDone++;
+        if (currentRotateDone >= totalNeedRotate && clearCakeLoadDone) {
+            if (clearCakeLoadDone)
+                CallBackCheckOtherCakeOnMap();
+            else
+                DOVirtual.DelayedCall(.15f, () => { RotateDone(false); });
+        }
+           
     }
 
     public bool CheckGroupOneAble() {
