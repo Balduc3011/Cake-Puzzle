@@ -231,7 +231,7 @@ public class CakeManager : MonoBehaviour
         {
             timeCheckCake++;
             Debug.Log("Time check cake: "+timeCheckCake);
-            if (timeCheckCake >= 1)
+            if (timeCheckCake >= 2)
             {
                 table.SaveCake();
                 StartCheckLoseGame();
