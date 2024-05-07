@@ -77,7 +77,6 @@ public class CakeManager : MonoBehaviour
 
     private void Update()
     {
-       
         if (currentGCake != null && isFirstTimeMove) {
             if (Input.GetMouseButtonUp(0))
             {
@@ -92,36 +91,32 @@ public class CakeManager : MonoBehaviour
                 }
                 return;
             }
-
-            mousePos = Input.mousePosition;
-            mousePos.z = Vector3.Distance(currentGCake.transform.position, Camera.main.transform.position);
-            currentPos = Camera.main.ScreenToWorldPoint(mousePos) + vectorOffset;
-            currentPos.y = posYDefault;
-            currentGCake.transform.position = currentPos;
+            if (Input.GetMouseButton(0))
+            {
+                mousePos = Input.mousePosition;
+                mousePos.z = Vector3.Distance(currentGCake.transform.position, Camera.main.transform.position);
+                currentPos = Camera.main.ScreenToWorldPoint(mousePos) + vectorOffset;
+                currentPos.y = posYDefault;
+                currentGCake.transform.position = currentPos;
+            }
+            else
+            {
+                currentGCake.DropFail();
+                currentGCake = null;
+            }
         }
     }
-    bool maskDeactiveCurrentCake;
-    public void SetCurrentGroupCake(GroupCake gCake) {
-        if (currentGCake != null) return;
-        maskDeactiveCurrentCake = false;
+    public bool SetCurrentGroupCake(GroupCake gCake) {
+        if (currentGCake != null) return false;
         mousePos = Input.mousePosition;
         mousePos.z = Vector3.Distance(gCake.transform.position, Camera.main.transform.position);
         currentPos = Camera.main.ScreenToWorldPoint(mousePos) + vectorOffset;
         currentPos.y = posYDefault;
         gCake.transform.DOMove(currentPos, .1f).SetEase(Ease.InCirc).OnComplete(()=> {
-            if (maskDeactiveCurrentCake)
-            {
-                Debug.Log("Drop fail");
-                currentGCake.DropFail();
-                currentGCake = null;
-                return;
-            }
             currentGCake = gCake;
             isFirstTimeMove = true;
-        }).OnUpdate(() => {
-            if (Input.GetMouseButtonUp(0))
-                maskDeactiveCurrentCake = true;
         });
+        return true;
     }
 
     void Drop() {
@@ -236,7 +231,7 @@ public class CakeManager : MonoBehaviour
         {
             timeCheckCake++;
             Debug.Log("Time check cake: "+timeCheckCake);
-            if (timeCheckCake >= 2)
+            if (timeCheckCake >= 1)
             {
                 table.SaveCake();
                 StartCheckLoseGame();
@@ -265,15 +260,22 @@ public class CakeManager : MonoBehaviour
         this.actionCallBack = actionCallBack;
         currentCakeCheck = cake;
         cakeIDIndex = -1;
+        totalIDNeedCheck = cake.pieceCakeID.Count;
         CheckIDOfCake();
     }
-
+    int totalIDNeedCheck = 0;
     public void CheckIDOfCake() {
         cakeIDIndex++;
-        if (cakeIDIndex < currentCakeCheck.pieceCakeID.Count) 
-        { 
+        if (cakeIDIndex < totalIDNeedCheck) 
+        {
+            if (cakeIDIndex >= currentCakeCheck.pieceCakeID.Count)
+            {
+                cakeIDIndex = currentCakeCheck.pieceCakeID.Count - 1;
+                totalIDNeedCheck = cakeIDIndex;
+            }
             if (CheckHaveCakeID(currentCakeCheck.pieceCakeID[cakeIDIndex]))
             {
+                Debug.Log("==================================================================================================");
                 Debug.Log("CHECK ID: "+ currentCakeCheck.pieceCakeID[cakeIDIndex] + " plate: "+ currentCakeCheck.currentPlate);
                 table.ClearMapPlate(currentCakeCheck.pieceCakeID[cakeIDIndex]);
                 table.AddFirstPlate(currentCakeCheck.currentPlate);

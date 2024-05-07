@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.1273174, g: 0.13414761, b: 0.12107885, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -414,8 +414,10 @@ MonoBehaviour:
   playerData:
     saveBase:
       IsChangeData: 0
+      stringSave: 
     cakeSaveData:
       IsChangeData: 0
+      stringSave: 
       ownedCakes: []
       cakeIDs: 
       cakeIDUsing: 
@@ -423,6 +425,7 @@ MonoBehaviour:
       cakeOnWaits: []
     playerResourseSave:
       IsChangeData: 0
+      stringSave: 
       coins:
         value: 0
         exp: 0
@@ -439,13 +442,15 @@ MonoBehaviour:
       settingValues: []
     decorationSave:
       IsChangeData: 0
+      stringSave: 
       ownedDecorationDatas: []
     questDataSave:
       IsChangeData: 0
+      stringSave: 
       timeOnQuest: 
       starsEarned: 0
       rewardEarned: 0
-      questSaves: []
+      quessProcess: []
   dataConfig:
     rateDataConfig: {fileID: 11400000, guid: 30dcfba3ba80b9845b3f3aec7591cbce, type: 2}
     levelDataConfig: {fileID: 11400000, guid: 434da5e0ab6acd94798cf5db96e2c9ca, type: 2}

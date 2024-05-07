@@ -14,8 +14,8 @@ public class CakeSaveData : SaveBase
     public List<CakeOnWait> cakeOnWaits = new List<CakeOnWait>();
     public override void LoadData()
     {
-        //SetStringSave("CakeSaveData");
-        string jsonData = stringSave;
+        SetStringSave("CakeSaveData");
+        string jsonData = GetJsonData();
         if (!string.IsNullOrEmpty(jsonData))
         {
             Debug.Log(jsonData);

@@ -83,7 +83,6 @@ public class PlayerResourseSave : SaveBase
 
     public void AddMoney(float amount)
     {
-        Debug.Log(amount);
         coins.Add(amount);
         IsMarkChangeData();
         SaveData();

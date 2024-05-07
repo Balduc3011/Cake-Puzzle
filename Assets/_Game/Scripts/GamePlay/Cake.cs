@@ -530,8 +530,8 @@ public class Cake : MonoBehaviour
             {
                     indexOfNewPiece = i;
                     indexReturn = listPieceTemp[i].currentRotateIndex;
-                    Debug.Log(pieces[i] + " " + i);
-                    Debug.Log("id: " + cakeID + " index return: " + indexReturn);
+                    //Debug.Log(pieces[i] + " " + i);
+                    //Debug.Log("id: " + cakeID + " index return: " + indexReturn);
                     break;
             }
 
@@ -540,7 +540,7 @@ public class Cake : MonoBehaviour
         {
             indexOfNewPiece = listPieceTemp.Count;
             indexReturn = listPieceTemp[listPieceTemp.Count - 1].currentRotateIndex + 1;
-            Debug.Log("id: "+ cakeID +" index return: " + indexReturn);
+            //Debug.Log("id: "+ cakeID +" index return: " + indexReturn);
         }
         return indexReturn;
     }
@@ -635,7 +635,7 @@ public class Cake : MonoBehaviour
             if (pieces[i].cakeID == cakeID)
             {
                 piece = pieces[i];
-                Debug.Log("Piece before: "+ piece.cakeID);
+                //Debug.Log("Piece before: "+ piece.cakeID);
                 int indexID = pieceCakeID.IndexOf(pieces[i].cakeID);
                 pieces.Remove(pieces[i]);
                 if (indexID != -1)
@@ -669,12 +669,14 @@ public class Cake : MonoBehaviour
 
     public bool CheckBestCakeDone(int cakeID, int totalPieces)
     {
+        Debug.Log("Best plate: "+currentPlate);
         int pieceCount = 0;
         for (int i = 0; i < pieces.Count; i++)
         {
             if (pieces[i].cakeID == cakeID)
                 pieceCount++;
         }
+        Debug.Log("IS DONE: " + (pieceCount >= totalPieces));
         return pieceCount >= totalPieces;
     }
 
