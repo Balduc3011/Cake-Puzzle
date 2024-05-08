@@ -50,6 +50,7 @@ public class ConstantValue
     public static float VAL_MAX_PIGGY = 1600f;
     public static float VAL_PIGGY_SAVE = 10;
     public static float VAL_QUEST_STAR = 5;
+    public static float VAL_QUEST_COIN= 25;
 
     // Animation
 

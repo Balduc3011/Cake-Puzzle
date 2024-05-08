@@ -1,9 +1,11 @@
 using AssetKits.ParticleImage;
 using DG.Tweening;
 using SDK;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class PanelSelectReward : UIPanel
@@ -14,8 +16,16 @@ public class PanelSelectReward : UIPanel
     [SerializeField] Button extraAdsBtn;
     [SerializeField] int selectedCardId;
     List<ItemData> rewards = new();
-    [SerializeField] Transform itemsBag;
     [SerializeField] List<ParticleImage> rewardEffect;
+    [SerializeField] GameObject titleObj;
+
+    public Transform itemsBag;
+    public Transform bakery;
+    public Transform coin;
+    public Transform hammer;
+    public Transform fillUp;
+    public Transform reRoll;
+    UnityAction effectDoneMoveAct;
     public override void Awake()
     {
         panelType = UIPanelType.PanelSelectReward;
@@ -27,7 +37,13 @@ public class PanelSelectReward : UIPanel
 
     private void OnEnable()
     {
+        titleObj.SetActive(ProfileManager.Instance.playerData.playerResourseSave.currentLevel >= 4);
         itemsBag.localScale = Vector3.zero;
+        bakery.localScale = Vector3.zero;
+        coin.localScale = Vector3.zero;
+        hammer.localScale = Vector3.zero;
+        fillUp.localScale = Vector3.zero;
+        reRoll.localScale = Vector3.zero;
         transform.SetAsLastSibling();
         selectedCardId = -1;
         rewards = GameManager.Instance.rewardItems;
@@ -126,8 +142,9 @@ public class PanelSelectReward : UIPanel
 
     public void ItemToBag()
     {
-        itemsBag.DOScale(0.9f, 0.05f);
-        itemsBag.DOScale(1f, 0.05f).SetEase(Ease.OutBack).SetDelay(0.05f);
+        //itemsBag.DOScale(0.9f, 0.05f);
+        //itemsBag.DOScale(1f, 0.05f).SetEase(Ease.OutBack).SetDelay(0.05f);
+        effectDoneMoveAct();
     }
 
     public ParticleImage GetRewardEffect()
@@ -138,5 +155,29 @@ public class PanelSelectReward : UIPanel
                 return rewardEffect[i];
         }
         return null;
+    }
+
+    internal Transform GetBoosterPos(ItemType itemType)
+    {
+        switch (itemType)
+        {
+            case ItemType.Cake:
+                return bakery;
+            case ItemType.Coin:
+                return coin;
+            case ItemType.Hammer:
+                return hammer;
+            case ItemType.ReRoll:
+                return reRoll;
+            case ItemType.FillUp:
+                return fillUp;
+            default:
+                return itemsBag;
+        }
+    }
+
+    public void SetEffectDoneMoveAct(UnityAction unityAction = null)
+    {
+        effectDoneMoveAct = unityAction;
     }
 }

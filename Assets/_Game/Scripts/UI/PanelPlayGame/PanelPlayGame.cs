@@ -20,6 +20,7 @@ public class PanelPlayGame : UIPanel
     [SerializeField] Button questBtn;
     [SerializeField] GameObject questNoti;
     [SerializeField] GameObject bakeryNoti;
+    [SerializeField] Transform coinPos;
 
     [SerializeField] BoosterItemButton btnHammer;
     [SerializeField] BoosterItemButton btnFillUp;
@@ -181,5 +182,33 @@ public class PanelPlayGame : UIPanel
             }
             x2BoosterTimeRemainTxt.text = TimeUtil.TimeToString(x2BoosterTimeRemain, TimeFommat.Symbol);
         }
+    }
+
+    public Transform GetBoosterPos(ItemType itemType)
+    {
+        switch (itemType)
+        {
+            case ItemType.NoAds:
+                break;
+            case ItemType.Cake:
+                return bakeryBtn.transform;
+            case ItemType.None:
+                break;
+            case ItemType.Trophy:
+                break;
+            case ItemType.Coin:
+                return coinPos;
+            case ItemType.Swap:
+                break;
+            case ItemType.Hammer:
+                return btnHammer.transform;
+            case ItemType.ReRoll:
+                return  btnReroll.transform;
+            case ItemType.FillUp:
+                return btnFillUp.transform;
+            default:
+                break;
+        }
+        return null;
     }
 }

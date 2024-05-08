@@ -12,7 +12,6 @@ public class QuestSlot : MonoBehaviour
     [SerializeField] Button collectBtn;
     [SerializeField] TextMeshProUGUI txtName;
     [SerializeField] TextMeshProUGUI txtProgress;
-    [SerializeField] Image rewardIcon;
     [SerializeField] TextMeshProUGUI txtRewardAmount;
     [SerializeField] Slider sProgress;
     [SerializeField] GameObject objSlider;
@@ -37,7 +36,7 @@ public class QuestSlot : MonoBehaviour
 
     void ReInit()
     {
-        txtRewardAmount.text = ConstantValue.VAL_QUEST_STAR.ToString();
+        txtRewardAmount.text = ConstantValue.VAL_QUEST_COIN.ToString();
         currentProgress = ProfileManager.Instance.playerData.questDataSave.GetCurrentProgress(questType);
         questRequire = ProfileManager.Instance.playerData.questDataSave.GetCurrentRequire(questType);
         collectBtn.gameObject.SetActive(currentProgress >= questRequire);
@@ -49,7 +48,6 @@ public class QuestSlot : MonoBehaviour
         sProgress.maxValue = questRequire;
         sProgress.value = currentProgress;
         SetName();
-
     }
 
     void SetName()
@@ -82,5 +80,6 @@ public class QuestSlot : MonoBehaviour
         GameManager.Instance.questManager.ClaimQuest(questType);
         ReInit();
         ReScale();
+
     }
 }
