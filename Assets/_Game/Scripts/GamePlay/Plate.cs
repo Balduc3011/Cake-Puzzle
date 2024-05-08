@@ -113,7 +113,7 @@ public class Plate : MonoBehaviour
         if (currentCake == null)
             return;
         currentCake.transform.DOScale(Vector3.zero, .5f).OnComplete(() => {
-            currentCake.gameObject.SetActive(false);
+            currentCake?.gameObject.SetActive(false);
             ProfileManager.Instance.playerData.cakeSaveData.RemoveCake(plateIndex);
             currentCake = null;
         });
