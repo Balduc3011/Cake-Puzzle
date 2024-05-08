@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.1273174, g: 0.13414761, b: 0.12107885, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -414,8 +414,10 @@ MonoBehaviour:
   playerData:
     saveBase:
       IsChangeData: 0
+      stringSave: 
     cakeSaveData:
       IsChangeData: 0
+      stringSave: 
       ownedCakes: []
       cakeIDs: 
       cakeIDUsing: 
@@ -423,6 +425,7 @@ MonoBehaviour:
       cakeOnWaits: []
     playerResourseSave:
       IsChangeData: 0
+      stringSave: 
       coins:
         value: 0
         exp: 0
@@ -439,12 +442,14 @@ MonoBehaviour:
       settingValues: []
     decorationSave:
       IsChangeData: 0
+      stringSave: 
       ownedDecorationDatas: []
     questDataSave:
       IsChangeData: 0
+      stringSave: 
       timeOnQuest: 
       starsEarned: 0
-      rewardEarned: 
+      rewardEarned: 0
       quessProcess: []
   dataConfig:
     rateDataConfig: {fileID: 11400000, guid: 30dcfba3ba80b9845b3f3aec7591cbce, type: 2}
@@ -990,15 +995,3 @@ MonoBehaviour:
   - {fileID: 1526411586}
   - {fileID: 1526411585}
   - {fileID: 1526411584}
---- !u!114 &1526411601
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1526411599}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47bd604214c2f434ab58966899c5e2ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

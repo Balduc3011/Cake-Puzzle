@@ -66,19 +66,22 @@ public class GroupCake : MonoBehaviour
     public void OnFollowMouse() {
         if (canTouch)
         {
-            GameManager.Instance.cakeManager.SetCurrentGroupCake(this);
-            for (int i = 1; i < cake.Count; i++)
+            if (GameManager.Instance.cakeManager.SetCurrentGroupCake(this))
             {
-                cake[i].transform.DOLocalMove(pointCake1Move.localPosition, .25f).SetEase(Ease.InOutQuad);
-            }
-            cake[0].transform.DOLocalMove(pointCake0Move.localPosition, .25f).SetEase(Ease.InOutQuad);
+                canTouch = false;
+                for (int i = 1; i < cake.Count; i++)
+                {
+                    cake[i].transform.DOLocalMove(pointCake1Move.localPosition, .25f).SetEase(Ease.InOutQuad);
+                }
+                cake[0].transform.DOLocalMove(pointCake0Move.localPosition, .25f).SetEase(Ease.InOutQuad);
 
-            for (int i = 0; i < cake.Count; i++)
-            {
-                cake[i].transform.DOScale(1.3f, .25f).SetEase(Ease.InOutQuad);
-                cake[i].transform.DOScale(1.2f, .15f).SetEase(Ease.InOutQuad).SetDelay(.25f);
+                for (int i = 0; i < cake.Count; i++)
+                {
+                    cake[i].transform.DOScale(1.3f, .25f).SetEase(Ease.InOutQuad);
+                    cake[i].transform.DOScale(1.2f, .15f).SetEase(Ease.InOutQuad).SetDelay(.25f);
+                }
+                onFollow = true;
             }
-            onFollow = true;
         }
     }
 
@@ -136,6 +139,7 @@ public class GroupCake : MonoBehaviour
             }
         }
         transform.position = pointSpawn.position;
+        canTouch = true;
     }
 
     public void InitData(int countCake, Transform pointSpawn, int cakeWaitIndex, List<CakeSave> cakeSaveDatas = null)

@@ -18,6 +18,7 @@ public class CakeSaveData : SaveBase
         string jsonData = GetJsonData();
         if (!string.IsNullOrEmpty(jsonData))
         {
+            Debug.Log(jsonData);
             CakeSaveData data = JsonUtility.FromJson<CakeSaveData>(jsonData);
             ownedCakes = data.ownedCakes;
             cakeIDs = data.cakeIDs;

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using DG.Tweening;
+using UnityEngine.Purchasing;
+using UnityEngine.UIElements;
 public class Table : MonoBehaviour
 {
     public List<Plate> plates = new List<Plate>();
@@ -118,7 +120,7 @@ public class Table : MonoBehaviour
     public void StartMove(int cakeID) {
         if (CheckWayDone(cakeID))
         {
-
+            Debug.Log("Start clear cake done!");
             //if (bestPlate.CheckCakeIsDone(cakeID))
             //{
             //    bestPlate.DoneCake();
@@ -133,6 +135,7 @@ public class Table : MonoBehaviour
 
     void CallBackCheckOtherCakeOnMap() {
         ClearDoneSetWayPoint();
+        Debug.Log("Way Clear");
         ways.Clear();
         for (int i = mapPlate.Count - 1; i >= 0; i--) {
             if (mapPlate[i].currentCake == null || !mapPlate[i].currentCake.CheckHaveCakeID(currentCakeID))
@@ -140,7 +143,7 @@ public class Table : MonoBehaviour
                 mapPlate.RemoveAt(i);
             }
         }
-        if (mapPlate.Count > 1)
+        if (mapPlate.Count > 1 /*&& IsLastMove(currentCakeID)*/)
         {
             Plate plateCheck = mapPlate[0];
             ClearMapPlate(currentCakeID);
@@ -151,7 +154,7 @@ public class Table : MonoBehaviour
             StartCreateWay();
             if (ways.Count > 0)
             {
-                //Debug.Log("call start move from check id sot lai");
+                Debug.Log("call start move from check id sot lai");
                 StartMove(currentCakeID);
             }
             else
@@ -167,19 +170,23 @@ public class Table : MonoBehaviour
     }
     bool CheckWayDone(int cakeID) {
         int totalDone = 0;
+        Debug.Log("Ways count: "+ways.Count);
         for (int i = 0; i < ways.Count; i++)
         {
             if (ways[i].plateCurrent.CheckModeDone(cakeID))
                 totalDone++;
         }
+
+        Debug.Log("Total Done: " + totalDone);
         return totalDone == ways.Count || bestPlate.BestPlateDone(cakeID, totalPieceMoveDone);
     }
     int stepIndex = -1;
     void Move(int cakeID) {
         stepIndex++;
-        if (stepIndex == ways.Count)
+        Debug.Log(ways.Count);
+        if (stepIndex >= ways.Count)
         {
-            //Debug.Log("call back start move");
+            Debug.Log("call back start move");
             StartMove(cakeID);
             return;
         }
@@ -189,7 +196,17 @@ public class Table : MonoBehaviour
         }
 
         if (stepIndex < ways.Count)
-            ways[stepIndex].Move(cakeID, timeRotate, timeMove, stepIndex == ways.Count - 1, Move);
+            ways[stepIndex].Move(cakeID, timeRotate, timeMove, stepIndex == ways.Count - 1, Move, RemoveWay);
+    }
+
+    void RemoveWay(Way way) {
+        Debug.Log("Remove Way");
+        ways.Remove(way); 
+    }
+
+    public bool CheckIsSameIDWithWay(int cakeID) {
+        Debug.Log("IDcheck: " + cakeID + " currentID: " + currentCakeID);
+        return currentCakeID == cakeID;
     }
 
     public void StartCreateWay()
@@ -236,8 +253,10 @@ public class Table : MonoBehaviour
                 int wayCountLoop = 0;
                 int pieceFree = mapWay[currentPlateIndex].wayPoint.nextPlate.currentSpace;
                 int pieceSame = mapWay[currentPlateIndex].currentPieceSame;
+               
                 if (pieceFree >= pieceSame) wayCountLoop = pieceSame;
                 else wayCountLoop = pieceFree;
+                Debug.Log("Current ID: " + currentCakeID + " loop: " + wayCountLoop);
                 for (int i = 0; i < wayCountLoop; i++)
                 {
                     CreateWay(mapWay[currentPlateIndex]);
@@ -276,6 +295,7 @@ public class Table : MonoBehaviour
     void CreateWay(Plate plateStart) {
         if (plateStart.wayPoint.nextPlate == null)
             return;
+        Debug.Log("Create New Way");
         Way newWay = new Way();
         newWay.plateCurrent = plateStart;
         newWay.plateGo = plateStart.wayPoint.nextPlate;
@@ -315,13 +335,17 @@ public class Table : MonoBehaviour
     }
     int totalNeedRotate = 0;
     int currentRotateDone = 0;
+    bool clearCakeLoadDone = false;
     public void ClearCakeDone()
     {
         totalNeedRotate = 0;
         currentRotateDone = 0;
+        clearCakeLoadDone = false;
         for (int i = 0; i < plates.Count; i++)
         {
-            if (plates[i].currentCake != null && plates[i] != bestPlate)
+           
+            //Debug.Log("Check cake index : " + i);
+            if (plates[i].currentCake != null /*&& plates[i] != bestPlate*/)
             {
                 if (plates[i].currentCake.CakeIsNull())
                 {
@@ -332,7 +356,7 @@ public class Table : MonoBehaviour
                 if (plates[i].currentCake.needRotateRightWay && !plates[i].currentCake.cakeDone)
                 {
                     totalNeedRotate++;
-                    plates[i].currentCake.RotateOtherPieceRight(RotateDone);
+                    plates[i].currentCake.RotateOtherPieceRight(() => { RotateDone(); });
                 }
                 //if (plates[i].currentCake.cakeDone)
                 //{
@@ -340,14 +364,21 @@ public class Table : MonoBehaviour
                 //}
             }
         }
+        clearCakeLoadDone = true;
+        Debug.Log("Total need rotate: "+totalNeedRotate);
         if (totalNeedRotate == 0)
             CallBackCheckOtherCakeOnMap();
     }
 
-    void RotateDone() {
-        currentRotateDone++;
-        if (currentRotateDone == totalNeedRotate)
-            CallBackCheckOtherCakeOnMap();
+    void RotateDone(bool addCurrentRotateDone = true) {
+        if (addCurrentRotateDone) currentRotateDone++;
+        if (currentRotateDone >= totalNeedRotate && clearCakeLoadDone) {
+            if (clearCakeLoadDone)
+                CallBackCheckOtherCakeOnMap();
+            else
+                DOVirtual.DelayedCall(.15f, () => { RotateDone(false); });
+        }
+           
     }
 
     public bool CheckGroupOneAble() {
@@ -512,6 +543,7 @@ public class Table : MonoBehaviour
     }
 
     public bool IsLastMove(int cakeID) {
+        Debug.Log("Check Last Move!");
         return bestPlate.BestPlateDone(cakeID, totalPieceMoveDone);
     }
 
@@ -543,13 +575,20 @@ public class Way
     bool lastMove;
     int rotateIndexReturn;
 
-    public void Move(int cakeID, float timeRotate, float timeMove, bool lastMove, UnityAction<int> actionDone = null)
+    public void Move(int cakeID, float timeRotate, float timeMove, bool lastMove, UnityAction<int> actionDone = null, UnityAction<Way> removeWay= null)
     {
+        
+
         this.timeRotate = timeRotate;
         this.timeMove = timeMove;
         cakeIDCallBack = cakeID;
         actionCallBackMove = actionDone;
-
+        if (!GameManager.Instance.cakeManager.table.CheckIsSameIDWithWay(cakeID))
+        {
+            removeWay(this);
+            CallDoneThatMove();
+            return;
+        }
         int totalFreeSpace = plateGo.GetFreeSpace();
         if (totalFreeSpace == 0)
         {
@@ -557,7 +596,9 @@ public class Way
             DoActionDone();
             return;
         }
+
         pieces = plateCurrent.GetPieceMove(cakeID);
+       
         if (pieces == null)
         {
             Debug.Log("Done Move");
@@ -568,9 +609,6 @@ public class Way
             rotateIndexReturn = plateGo.currentCake.MakeRotateIndexForNewPiece(cakeID);
             ActionCallBackOnMoveOtherPiece();
         }
-
-
-
     }
 
     void CallDoneThatMove()
@@ -603,6 +641,7 @@ public class Way
         DOVirtual.DelayedCall(timeDelay, () =>
         {
             Debug.Log("Clear cake");
+            Debug.Log("Current cake id: " + cakeIDCallBack);
             DoActionDone();
         });
     }
@@ -612,15 +651,16 @@ public class Way
         if (rotateIndexReturn < 0) rotateIndexReturn = 5;
         else if (rotateIndexReturn >= 6) rotateIndexReturn = 0;
 
-        cake = plateGo.currentCake;
-
         pieces.currentRotateIndex = rotateIndexReturn;
         plateGo.AddPiece(pieces);
+
+        cake = plateGo.currentCake;
 
         plateGo.currentCake.StartRotateOtherPieceForNewPiece(() =>
         {
             //Debug.Log("Rotate done start move");
-
+            Debug.Log("Pieces move: "+pieces.cakeID);
+            Debug.Log("Move from plate: " + plateCurrent + " to plate: " + plateGo);
             pieces.transform.parent = plateGo.currentCake.transform;
             pieces.transform.DOScale(Vector3.one, 0.25f);
             pieces.transform.DOMove(plateGo.pointStay.position, timeMove)/*.SetEase(Ease.InQuad)*/.OnComplete(() =>
@@ -637,6 +677,11 @@ public class Way
     }
 
     void DoActionDone() { actionCallBackMove(cakeIDCallBack); }
+
+    public int GetIDCallBack()
+    {
+        return cakeIDCallBack;
+    }
 }
 
 
