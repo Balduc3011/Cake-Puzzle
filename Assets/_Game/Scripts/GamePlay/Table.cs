@@ -143,7 +143,7 @@ public class Table : MonoBehaviour
                 mapPlate.RemoveAt(i);
             }
         }
-        if (mapPlate.Count > 1 && IsLastMove(currentCakeID))
+        if (mapPlate.Count > 1 /*&& IsLastMove(currentCakeID)*/)
         {
             Plate plateCheck = mapPlate[0];
             ClearMapPlate(currentCakeID);
