@@ -215,7 +215,7 @@ public class CakeManager : MonoBehaviour
     }
 
     void CheckNextCake() {
-        Debug.Log("Check next Cake");
+        //Debug.Log("Check next Cake");
         indexCakeCheck++;
         GameManager.Instance.objectPooling.CheckGroupCake();
         if (indexCakeCheck < cakeNeedCheck.Count && cakeNeedCheck.Count > 0)
@@ -230,13 +230,13 @@ public class CakeManager : MonoBehaviour
         else
         {
             timeCheckCake++;
-            Debug.Log("Time check cake: "+timeCheckCake);
+            //Debug.Log("Time check cake: "+timeCheckCake);
             if (timeCheckCake >= 2)
             {
                 table.SaveCake();
                 if(timeCheckCake == 2) StartCheckLoseGame();
                 CheckSpawnCakeGroup();
-                Debug.Log("Check Cake Done!");
+                //Debug.Log("Check Cake Done!");
                 onCheckCake = false;
                 ClearCakeNeedCheck();
             }
@@ -275,8 +275,8 @@ public class CakeManager : MonoBehaviour
             }
             if (CheckHaveCakeID(currentCakeCheck.pieceCakeID[cakeIDIndex]))
             {
-                Debug.Log("==================================================================================================");
-                Debug.Log("CHECK ID: "+ currentCakeCheck.pieceCakeID[cakeIDIndex] + " plate: "+ currentCakeCheck.currentPlate);
+                //Debug.Log("==================================================================================================");
+                //Debug.Log("CHECK ID: "+ currentCakeCheck.pieceCakeID[cakeIDIndex] + " plate: "+ currentCakeCheck.currentPlate);
                 table.ClearMapPlate(currentCakeCheck.pieceCakeID[cakeIDIndex]);
                 table.AddFirstPlate(currentCakeCheck.currentPlate);
                 table.CreateMapPlate(currentCakeCheck.currentPlate.GetPlateIndex(), currentCakeCheck.pieceCakeID[cakeIDIndex]);
@@ -329,7 +329,7 @@ public class CakeManager : MonoBehaviour
                     countFaild++;
             }
         }
-        Debug.Log(countFaild + " count check fail: " + countCheckFaild);
+        //Debug.Log(countFaild + " count check fail: " + countCheckFaild);
         if (countFaild == countCheckFaild && countFaild > 0)
         {
             UIManager.instance.ShowPanelLevelComplete(false);

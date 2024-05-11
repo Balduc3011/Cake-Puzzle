@@ -189,6 +189,7 @@ public class PlateIndex {
     public int indexX;
     public int indexY;
     public PlateIndex(int x, int y) {  indexX = x; indexY = y;}
+    public PlateIndex(PlateIndex plateIndex) { indexX = plateIndex.indexX; indexY = plateIndex.indexY; }
 }
 [System.Serializable]
 public class WayPointTemp {

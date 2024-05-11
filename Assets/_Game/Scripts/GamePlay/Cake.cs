@@ -46,6 +46,8 @@ public class Cake : MonoBehaviour
     bool otherCake = false;
     bool sameCake = false;
     bool flagDoActionCallBack = false;
+    bool onChooseRevive = false;
+    bool centerRevive = false;
 
     [Header("OTHER COMPONENT")]
     public Plate currentPlate;
@@ -81,6 +83,8 @@ public class Cake : MonoBehaviour
         EventManager.AddListener(EventName.UsingFillUpDone.ToString(), UsingFillUpDone);
         EventManager.AddListener(EventName.UsingHammer.ToString(), UsingHammerMode);
         EventManager.AddListener(EventName.UsingHammerDone.ToString(), UsingHammerModeDone);
+        EventManager.AddListener(EventName.OnUsingRevive.ToString(), OnUsingRevive);
+        EventManager.AddListener(EventName.OnUsingReviveDone.ToString(), OnUsingReviveDone);
         curveRotate = ProfileManager.Instance.dataConfig.cakeAnimationSetting.GetCurveRightWay();
         timeRotate = ProfileManager.Instance.dataConfig.cakeAnimationSetting.GetTimeRightWay();
     }
@@ -105,9 +109,17 @@ public class Cake : MonoBehaviour
         onUsingHammger = false;
     }
 
+    void OnUsingRevive() {
+        onChooseRevive = true;
+    }
+
+    void OnUsingReviveDone() { 
+        onChooseRevive = true;
+    }
+
     #region INIT DATA
     public void InitData() {
-        Debug.Log("init by normal");
+        //Debug.Log("init by normal");
         SetFirstIndexOfPiece();
         tweenAnimations.Add(transform.DOScale(scaleDefault, .5f).From(1.2f).SetEase(Ease.InOutBack));
         totalPieces = GameManager.Instance.cakeManager.GetPiecesTotal() + 1;
@@ -122,7 +134,7 @@ public class Cake : MonoBehaviour
     }
 
     public void InitData(CakeSave cakeSaveData) {
-        Debug.Log("init by data save");
+        //Debug.Log("init by data save");
         SetFirstIndexOfPiece();
         tweenAnimations.Add(transform.DOScale(scaleDefault, .5f).From(1.2f).SetEase(Ease.InOutBack));
         pieceCakeIDCount = cakeSaveData.pieceCakeIDCount;
@@ -136,7 +148,7 @@ public class Cake : MonoBehaviour
     }
 
     public void InitData(List<int> cakeIDs, Plate plate) {
-        Debug.Log("init by data save on plate");
+        //Debug.Log("init by data save on plate");
         SetFirstIndexOfPiece();
         currentPlate = plate;
         InitData(cakeIDs);
@@ -313,16 +325,23 @@ public class Cake : MonoBehaviour
             if (EventSystem.current.IsPointerOverGameObject(0))
                 return;
         }
+
+        if (onChooseRevive) {
+            centerRevive = true;
+            UsingRevive();
+            return;
+        }
+
         if (onUsingFillUp)
         {
-            Debug.Log("Choose on Fill up");
+            //Debug.Log("Choose on Fill up");
             FillUp();
             return;
         }
 
         if (onUsingHammger)
         {
-            Debug.Log("Choose on using hammer");
+            //Debug.Log("Choose on using hammer");
             UsingHammer();
             return;
         }
@@ -331,7 +350,7 @@ public class Cake : MonoBehaviour
         {
             myGroupCake.OnFollowMouse();
         }
-        else Debug.Log("Group cake null!");
+        //else Debug.Log("Group cake null!");
     }
     int indexRemove;
     void FillUp() {
@@ -411,9 +430,39 @@ public class Cake : MonoBehaviour
         EventManager.TriggerEvent(EventName.UsingHammerDone.ToString());
     }
 
-    void CallBackOnAnimHammerDone() {
+    public void UsingRevive() {
+        if (cakeDone)
+            return;
+        if (currentPlate != null)
+            currentPlate.currentCake = null;
+        if (myGroupCake != null)
+        {
+            if (GameManager.Instance.cakeManager.CakeOnWait(myGroupCake))
+                return;
+        }
+        GameManager.Instance.itemManager.Revie(this, CallBackOnReviveDone);
+        
+    }
+
+    public void CallBackOnAnimHammerDone() {
         tweenAnimations.Add(transform.DOScale(0f, 0.25f).OnComplete(() => { gameObject.SetActive(false); }));
     }
+    PlateIndex plateIndex;
+    void CallBackOnReviveDone() {
+        CallBackOnAnimHammerDone();
+        if (!centerRevive)
+        {
+            GameManager.Instance.itemManager.RemoveCake();
+            return;
+        }
+        UIManager.instance.ShowPanelUsingItem();
+        GameManager.Instance.itemManager.AssignCakeCallBack(this);
+        plateIndex = new(currentPlate.plateIndex);
+        ProfileManager.Instance.playerData.cakeSaveData.RemoveCake(plateIndex);
+        GameManager.Instance.itemManager.RemoveCake();
+    }
+
+    
 
     public bool CheckDrop()
     {
@@ -588,7 +637,7 @@ public class Cake : MonoBehaviour
     }
   
     public void RotateOtherPieceRight(UnityAction actionCallRotateDone) {
-        Debug.Log("rotate right way+ "+currentPlate);
+        //Debug.Log("rotate right way+ "+currentPlate);
         rotateRWDone = actionCallRotateDone;
         indexRotateRW = 0;
         callBackRotateDone = false;
@@ -669,14 +718,14 @@ public class Cake : MonoBehaviour
 
     public bool CheckBestCakeDone(int cakeID, int totalPieces)
     {
-        Debug.Log("Best plate: "+currentPlate);
+        //Debug.Log("Best plate: "+currentPlate);
         int pieceCount = 0;
         for (int i = 0; i < pieces.Count; i++)
         {
             if (pieces[i].cakeID == cakeID)
                 pieceCount++;
         }
-        Debug.Log("IS DONE: " + (pieceCount >= totalPieces));
+        //Debug.Log("IS DONE: " + (pieceCount >= totalPieces));
         return pieceCount >= totalPieces;
     }
 

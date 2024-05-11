@@ -83,7 +83,8 @@ public class PanelLevelComplete : UIPanel
     void ReviveADSSucces()
     {
         UIManager.instance.OpenBlockAll();
-        GameManager.Instance.cakeManager.TrashIn(GameManager.Instance.cakeManager.ClearCake);
+        EventManager.TriggerEvent(EventName.OnUsingRevive.ToString());
+        //GameManager.Instance.cakeManager.TrashIn(GameManager.Instance.cakeManager.ClearCake);
         OnClose();
     }
 
@@ -91,7 +92,8 @@ public class PanelLevelComplete : UIPanel
     {
         ProfileManager.Instance.playerData.playerResourseSave.ConsumeMoney(ConstantValue.VAL_REVICE_PRICE);
         UIManager.instance.OpenBlockAll();
-        GameManager.Instance.cakeManager.TrashIn(GameManager.Instance.cakeManager.ClearCake);
+        EventManager.TriggerEvent(EventName.OnUsingRevive.ToString());
+        //GameManager.Instance.cakeManager.TrashIn(GameManager.Instance.cakeManager.ClearCake);
         OnClose();
     }
 

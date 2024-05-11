@@ -27,7 +27,9 @@ public enum EventName
     UsingHammer = 13,
     UsingHammerDone = 14,
     CheckClearCake = 15,
-    AddItem = 16
+    AddItem = 16,
+    OnUsingRevive = 17,
+    OnUsingReviveDone = 18
 }
 
 public class EventManager : Singleton<EventManager>
