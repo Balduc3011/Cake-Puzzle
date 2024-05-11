@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class BoosterItemButton : MonoBehaviour
 {
-    [SerializeField] ItemType boosterType;
+    public ItemType boosterType;
     [SerializeField] Image itemBarIconImg;
     [SerializeField] TextMeshProUGUI itemAmountTxt;
     [SerializeField] Button btnChoose;

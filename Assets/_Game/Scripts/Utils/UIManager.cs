@@ -208,11 +208,13 @@ public class UIManager : MonoBehaviour {
 
     public void ShowPanelPlayGame()
     {
-        GameObject go = GetPanel(UIPanelType.PanelPlayGame);
-        go.SetActive(true);
-        panelTotal.Transform.SetAsLastSibling();
         if (panelGamePlay == null)
+        {
+            GameObject go = GetPanel(UIPanelType.PanelPlayGame);
             panelGamePlay = go.GetComponent<PanelPlayGame>();
+        }
+        panelGamePlay.gameObject.SetActive(true);
+        panelTotal.Transform.SetAsLastSibling();
     }
     public void ClosePanelPlayGame()
     {

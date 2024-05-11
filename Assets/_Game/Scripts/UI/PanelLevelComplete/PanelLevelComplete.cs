@@ -4,6 +4,7 @@ using SDK;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,10 +18,12 @@ public class PanelLevelComplete : UIPanel
     [SerializeField] CanvasGroup bgCanvanGroup;
     [SerializeField] GameObject objWinGame;
     [SerializeField] GameObject objLooseGame;
+    [SerializeField] TextMeshProUGUI revivePrivceTxt;
     [SerializeField] Button hintObj;
     [SerializeField] SheetAnimation sheetAnimation;
     [SerializeField] SheetAnimation loseSheetAnimation;
     [SerializeField] SheetAnimation winSheetAnimation;
+
     public override void Awake()
     {
         panelType = UIPanelType.PanelLevelComplete;
@@ -33,13 +36,14 @@ public class PanelLevelComplete : UIPanel
         btnExit.onClick.AddListener(ShowPanelHint);
         hintObj.onClick.AddListener(ExitPanel);
         winGameCloseBtn.onClick.AddListener(ExitPanel);
+        revivePrivceTxt.text = ConstantValue.VAL_REVIVE_COIN.ToString();
     }
 
     private void OnEnable()
     {
         panelWrapTrs.DOScale(1, 0.35f).From(0);
         bgCanvanGroup.DOFade(1, 0.35f).From(0);
-        btnReviveCoin.interactable = ProfileManager.Instance.playerData.playerResourseSave.IsHasEnoughMoney(750);
+        btnReviveCoin.interactable = ProfileManager.Instance.playerData.playerResourseSave.IsHasEnoughMoney(ConstantValue.VAL_REVIVE_COIN);
         hintObj.gameObject.SetActive(false);
     }
 
@@ -107,6 +111,6 @@ public class PanelLevelComplete : UIPanel
         objLooseGame.SetActive(!isWinGame);
         objWinGame.SetActive(isWinGame);
         if (isWinGame) winSheetAnimation.PlayAnim();
-        else loseSheetAnimation.PlayAnim();
+        //else loseSheetAnimation.PlayAnim();
     }
 }

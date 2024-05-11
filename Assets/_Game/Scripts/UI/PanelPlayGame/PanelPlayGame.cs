@@ -17,6 +17,10 @@ public class PanelPlayGame : UIPanel
     [SerializeField] Button coinBoosterBtn;
     [SerializeField] TextMeshProUGUI coinBoosterEarnTxt;
     [SerializeField] Button bakeryBtn;
+    [SerializeField] Button questBtn;
+    [SerializeField] GameObject questNoti;
+    [SerializeField] GameObject bakeryNoti;
+    [SerializeField] Transform coinPos;
 
     [SerializeField] BoosterItemButton btnHammer;
     [SerializeField] BoosterItemButton btnFillUp;
@@ -40,12 +44,25 @@ public class PanelPlayGame : UIPanel
         bakeryBtn.onClick.AddListener(() => {
             GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
             UIManager.instance.ShowPanelBakery();
+            UIManager.instance.ClosePanelPlayGame();
         });
+
+        questBtn.onClick.AddListener(() => {
+            GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
+            UIManager.instance.ShowPanelDailyQuest();
+        });
+    }
+
+    public void CheckNoti()
+    {
+        questNoti.SetActive(ProfileManager.Instance.playerData.questDataSave.CheckShowNoticeQuest());
+        bakeryNoti.SetActive(ProfileManager.Instance.playerData.cakeSaveData.HasCakeUpgradeable());
     }
 
     private void OnEnable()
     {
         CheckX2Booster();
+        CheckNoti();
     }
 
     void CheckX2Booster()
@@ -165,5 +182,33 @@ public class PanelPlayGame : UIPanel
             }
             x2BoosterTimeRemainTxt.text = TimeUtil.TimeToString(x2BoosterTimeRemain, TimeFommat.Symbol);
         }
+    }
+
+    public Transform GetBoosterPos(ItemType itemType)
+    {
+        switch (itemType)
+        {
+            case ItemType.NoAds:
+                break;
+            case ItemType.Cake:
+                return bakeryBtn.transform;
+            case ItemType.None:
+                break;
+            case ItemType.Trophy:
+                break;
+            case ItemType.Coin:
+                return coinPos;
+            case ItemType.Swap:
+                break;
+            case ItemType.Hammer:
+                return btnHammer.transform;
+            case ItemType.ReRoll:
+                return  btnReroll.transform;
+            case ItemType.FillUp:
+                return btnFillUp.transform;
+            default:
+                break;
+        }
+        return null;
     }
 }

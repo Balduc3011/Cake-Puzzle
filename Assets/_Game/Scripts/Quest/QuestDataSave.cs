@@ -6,10 +6,11 @@ using System;
 public class QuestDataSave : SaveBase
 {
     public string timeOnQuest;
-    public int starsEarned;
-    public int rewardEarned;
+    public float starsEarned;
+    public List<int> rewardEarned;
     public List<QuestProcess> quessProcess = new List<QuestProcess>();
     DateTime dateTimeOnQuest;
+    List<QuestTargetData> questTargetDatas;
     public override void LoadData()
     {
         SetStringSave("QuestDataSave");
@@ -31,7 +32,7 @@ public class QuestDataSave : SaveBase
     void ResetTime() {
         timeOnQuest = DateTime.Now.ToString();
         starsEarned = 0;
-        rewardEarned = 0;
+        rewardEarned = new List<int>();
         InitQuest();
         IsMarkChangeData();
         SaveData();
@@ -76,16 +77,16 @@ public class QuestDataSave : SaveBase
             return 0;
     }
 
-    public int GetStarEarned() { return starsEarned; }
-
-    public void GetReward() {
-        rewardEarned++;
+    public void GetReward(int id) {
+        rewardEarned.Add(id);
         IsMarkChangeData();
         SaveData();
+        UIManager.instance.panelTotal.CheckNoti();
     }
 
-    public bool CheckCanEarnQuest(int pointIndex) {
-        return pointIndex > rewardEarned;
+    public bool CheckCanEarnQuest(int id, float star) {
+        return starsEarned >= star &&
+            !rewardEarned.Contains(id);
     }
 
     public float GetCurrentProgress(QuestType questType) {
@@ -96,6 +97,9 @@ public class QuestDataSave : SaveBase
                 return quessProcess[i].process;
             }
         }
+        QuestProcess quest = new QuestProcess();
+        quest.questType = questType;
+        quessProcess.Add(quest);
         return 0;
     }
     
@@ -107,14 +111,31 @@ public class QuestDataSave : SaveBase
                 return ProfileManager.Instance.dataConfig.questDataConfig.GetQuestRequire(questType, quessProcess[i].marked);
             }
         }
-        return 0;
+        QuestProcess quest = new QuestProcess();
+        quest.questType = questType;
+        quessProcess.Add(quest);
+        return ProfileManager.Instance.dataConfig.questDataConfig.GetQuestRequire(questType, 0);
     }
 
     public void ClaimQuest(QuestType questType) {
         // TODO
+        for (int i = 0; i < quessProcess.Count; i++)
+        {
+            if (quessProcess[i].questType == questType)
+            {
+                quessProcess[i].marked++;
+            }
+        }
+        QuestProcess quest = new QuestProcess();
+        quest.questType = questType;
+        quest.marked = 1;
+        quessProcess.Add(quest);
+
+        starsEarned += ConstantValue.VAL_QUEST_STAR;
         IsMarkChangeData();
         SaveData();
         EventManager.TriggerEvent(EventName.ChangeStarDailyQuest.ToString());
+        UIManager.instance.panelTotal.CheckNoti();
     }
 
     public void AddProgress(float amount, QuestType questType) {
@@ -125,11 +146,28 @@ public class QuestDataSave : SaveBase
                 quessProcess[i].process += amount;
             }
         }
+        QuestProcess quest = new QuestProcess();
+        quest.questType = questType;
+        quest.process = amount;
+        quessProcess.Add(quest);
         IsMarkChangeData();
         SaveData();
+        UIManager.instance.panelTotal.CheckNoti();
     }
 
     public bool CheckShowNoticeQuest() {
+        for (int i = 0; i < quessProcess.Count; i++)
+        {
+            if(GetCurrentProgress(quessProcess[i].questType) > GetCurrentRequire(quessProcess[i].questType))
+            {
+                return true;
+            }
+        }
+        if(questTargetDatas == null) questTargetDatas = ProfileManager.Instance.dataConfig.questDataConfig.questTargetDatas;
+        for (int i = 0; i < questTargetDatas.Count; i++)
+        {
+            if (CheckCanEarnQuest(i, questTargetDatas[i].require)) return true;
+        }
         return false;
     }
 }

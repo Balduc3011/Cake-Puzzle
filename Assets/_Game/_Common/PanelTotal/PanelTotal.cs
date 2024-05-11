@@ -14,6 +14,7 @@ public class PanelTotal : UIPanel
     [SerializeField] UIPanelShowUp uiPanelShowUp;
     public Transform Transform;
     [SerializeField] CanvasGroup functionCG;
+    [SerializeField] CanvasGroup functionCG2;
     [SerializeField] Button playBtn;
     [SerializeField] Button settingBtn;
     [SerializeField] Button dailyBtn;
@@ -71,11 +72,15 @@ public class PanelTotal : UIPanel
     {
         dailyNoti.SetActive(ProfileManager.Instance.playerData.playerResourseSave.IsHasDailyReward());
         spinNoti.SetActive(ProfileManager.Instance.playerData.playerResourseSave.IsHasFreeSpin());
-        //questNoti.SetActive(ProfileManager.Instance.playerData.questDataSave.CheckShowNoticeQuest());
+        questNoti.SetActive(ProfileManager.Instance.playerData.questDataSave.CheckShowNoticeQuest());
         //settingNoti.SetActive(ProfileManager.Instance.playerData.cakeSaveData.HasCakeUpgradeable() &&
         //    GameManager.Instance.playing);
         settingNoti.SetActive(false);
         bakeryNoti.SetActive(ProfileManager.Instance.playerData.cakeSaveData.HasCakeUpgradeable());
+        if(UIManager.instance.panelGamePlay != null)
+        {
+            UIManager.instance.panelGamePlay.CheckNoti();
+        }
     }
 
     void CheckSubScreenObstacleBase()
@@ -192,6 +197,7 @@ public class PanelTotal : UIPanel
     {
         backGroundCG.DOFade(show ? 1 : 0, show ? 0.1f : .5f);
         functionCG.DOFade(show ? 1 : 0, 0.15f);
+        functionCG2.DOFade(show ? 1 : 0, 0.15f);
     }
 
     public void ShowMainSceneContent(bool show)

@@ -770,6 +770,7 @@ GameObject:
   - component: {fileID: 4593485478154972910}
   - component: {fileID: 5815662506996890779}
   - component: {fileID: 203955261255673424}
+  - component: {fileID: 287246981668073506}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -825,7 +826,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 20521c1e8ee534009bf12cc111b939c5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7031fe0db3f61354eb21f26eb9a1b4e8, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -835,6 +836,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &287246981668073506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 825485942089698716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
+  m_EffectDistance: {x: 3, y: 3}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1147461145451831463
 GameObject:
   m_ObjectHideFlags: 0
@@ -2511,7 +2527,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3342682520911214825
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3839,6 +3855,7 @@ MonoBehaviour:
   uiPanelShowUp: {fileID: 7551594902262105515}
   Transform: {fileID: 2094646185829888038}
   functionCG: {fileID: 9111758947179283167}
+  functionCG2: {fileID: 3804702756404563783}
   playBtn: {fileID: 8535476229340952647}
   settingBtn: {fileID: 5293484808207285080}
   dailyBtn: {fileID: 1894092942243007314}
@@ -4470,6 +4487,7 @@ GameObject:
   - component: {fileID: 1231632965873997891}
   - component: {fileID: 6342764319967740822}
   - component: {fileID: 366462737596230026}
+  - component: {fileID: 8159194737067743462}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -4535,6 +4553,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8159194737067743462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3560977555392979527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
+  m_EffectDistance: {x: 3, y: 3}
+  m_UseGraphicAlpha: 1
 --- !u!1 &3976038800340482494
 GameObject:
   m_ObjectHideFlags: 0
@@ -8325,7 +8358,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8486164471726120679
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8722,6 +8755,7 @@ GameObject:
   - component: {fileID: 3865258049121231702}
   - component: {fileID: 3156939162244642335}
   - component: {fileID: 833574763721059427}
+  - component: {fileID: 753161327237583484}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -8787,6 +8821,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &753161327237583484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5445664350102529840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
+  m_EffectDistance: {x: 3, y: 3}
+  m_UseGraphicAlpha: 1
 --- !u!1 &5485234356510830081
 GameObject:
   m_ObjectHideFlags: 0
@@ -12100,6 +12149,7 @@ GameObject:
   - component: {fileID: 2062491262094886515}
   - component: {fileID: 8519336546473898253}
   - component: {fileID: 6055637148490258302}
+  - component: {fileID: 3804702756404563783}
   m_Layer: 5
   m_Name: FunctionBar
   m_TagString: Untagged
@@ -12169,12 +12219,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5266ea7b683cf044be3e7543c0cf5e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objTrs: {fileID: 6511658045265430061}
+  objTrs: {fileID: 2062491262094886515}
   pinPos: {x: 0, y: 0, z: 0}
   movePos: {x: 0, y: 0, z: 0}
   moveDistance: 250
   moveTime: 0.5
   floatDirection: 4
+--- !u!225 &3804702756404563783
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7116255422885385702}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &7121226521229171834
 GameObject:
   m_ObjectHideFlags: 0
@@ -14206,7 +14268,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1228593541914081904, guid: ca808eb2f6ae1984391b4cfd0434974a, type: 3}
       propertyPath: m_Name
-      value: SpinNoti
+      value: QuestNoti
       objectReference: {fileID: 0}
     - target: {fileID: 6392103275540219025, guid: ca808eb2f6ae1984391b4cfd0434974a, type: 3}
       propertyPath: m_Pivot.x
