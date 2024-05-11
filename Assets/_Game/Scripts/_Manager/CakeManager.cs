@@ -234,7 +234,7 @@ public class CakeManager : MonoBehaviour
             if (timeCheckCake >= 2)
             {
                 table.SaveCake();
-                if(timeCheckCake == 2) StartCheckLoseGame();
+                StartCheckLoseGame();
                 CheckSpawnCakeGroup();
                 //Debug.Log("Check Cake Done!");
                 onCheckCake = false;

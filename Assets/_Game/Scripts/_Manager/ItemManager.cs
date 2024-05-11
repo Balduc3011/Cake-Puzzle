@@ -168,7 +168,6 @@ public class ItemManager : MonoBehaviour
     public void RemoveCake()
     {
         currentIndex++;
-        Debug.Log(currentIndex);
         switch (currentIndex)
         {
             case 1:
@@ -183,14 +182,12 @@ public class ItemManager : MonoBehaviour
                         GameManager.Instance.cakeManager.table.plateArray[plateUpIndex.indexX, plateUpIndex.indexY].currentCake.UsingRevive();
                     else
                     {
-                        Debug.Log("Null 1");
                         RemoveCake(); 
                     }
                     //});
                 }
                 else
                 {
-                    Debug.Log("Null 3");
                     RemoveCake();
                 }
                 break;
@@ -206,14 +203,12 @@ public class ItemManager : MonoBehaviour
                         GameManager.Instance.cakeManager.table.plateArray[plateDownIndex.indexX, plateDownIndex.indexY].currentCake?.UsingRevive();
                     else
                     {
-                        Debug.Log("Null 2");
                         RemoveCake();
                     }
                     //});
                 }
                 else
                 {
-                    Debug.Log("Null 3");
                     RemoveCake();
                 }
                 break;
@@ -228,14 +223,12 @@ public class ItemManager : MonoBehaviour
                     if (GameManager.Instance.cakeManager.table.plateArray[plateLeftIndex.indexX, plateLeftIndex.indexY].currentCake != null)
                         GameManager.Instance.cakeManager.table.plateArray[plateLeftIndex.indexX, plateLeftIndex.indexY].currentCake?.UsingRevive();
                     else {
-                        Debug.Log("Null 3");
                         RemoveCake();
                     }
                     //});
                 }
                 else
                 {
-                    Debug.Log("Null 3");
                     RemoveCake();
                 }
                 break;
@@ -250,14 +243,12 @@ public class ItemManager : MonoBehaviour
                     if (GameManager.Instance.cakeManager.table.plateArray[plateRightIndex.indexX, plateRightIndex.indexY].currentCake != null)
                         GameManager.Instance.cakeManager.table.plateArray[plateRightIndex.indexX, plateRightIndex.indexY].currentCake?.UsingRevive(true);
                     else {
-                        Debug.Log("Null 4 "+actionCallBack);
                         DoLastMove(actionCallBack); 
                     }
                     //});
                 }
                 else
                 {
-                    Debug.Log("Null 4 " + actionCallBack);
                     DoLastMove(actionCallBack);
                 }
                 break;
