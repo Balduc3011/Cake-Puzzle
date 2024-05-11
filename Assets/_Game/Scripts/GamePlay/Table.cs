@@ -8,6 +8,7 @@ using UnityEngine.Purchasing;
 using UnityEngine.UIElements;
 public class Table : MonoBehaviour
 {
+    public List<Way> ways = new List<Way>();
     public List<Plate> plates = new List<Plate>();
     [SerializeField] List<Material> plateMaterial;
     float timeRotate;
@@ -290,7 +291,7 @@ public class Table : MonoBehaviour
         mapWay.Add(plateArray[plateIndex.indexX, plateIndex.indexY]);
 
     }
-    public List<Way> ways = new List<Way>();
+    
 
     void CreateWay(Plate plateStart) {
         if (plateStart.wayPoint.nextPlate == null)
@@ -372,11 +373,11 @@ public class Table : MonoBehaviour
 
     void RotateDone(bool addCurrentRotateDone = true) {
         if (addCurrentRotateDone) currentRotateDone++;
-        if (currentRotateDone >= totalNeedRotate && clearCakeLoadDone) {
+        if (currentRotateDone >= totalNeedRotate) {
             if (clearCakeLoadDone)
                 CallBackCheckOtherCakeOnMap();
-            else
-                DOVirtual.DelayedCall(.15f, () => { RotateDone(false); });
+            //else
+            //    DOVirtual.DelayedCall(.15f, () => { RotateDone(false); });
         }
            
     }

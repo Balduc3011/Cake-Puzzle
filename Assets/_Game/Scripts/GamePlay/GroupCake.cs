@@ -247,6 +247,7 @@ public class GroupCake : MonoBehaviour
             }
         }
         if (countCakeDone == cake.Count) {
+            Debug.Log("Destroy by game group done");
             Destroy(gameObject);
         }
     }
