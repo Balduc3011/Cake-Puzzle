@@ -446,7 +446,6 @@ public class Cake : MonoBehaviour
             GameManager.Instance.itemManager.Revie(this, CallBackOnReviveDone, lastCake);
         else
         {
-            Debug.Log("call back anim");
             GameManager.Instance.itemManager.Revie(this, CallBackOnAnimHammerDone, lastCake);
 
         }
@@ -459,7 +458,6 @@ public class Cake : MonoBehaviour
     PlateIndex plateIndex;
     bool lastCake;
     void CallBackOnReviveDone() {
-        Debug.Log("call back revive");
         CallBackOnAnimHammerDone();
         if (!centerRevive)
         {
