@@ -234,6 +234,7 @@ public class CakeManager : MonoBehaviour
             if (timeCheckCake >= 2)
             {
                 table.SaveCake();
+                Debug.Log("startCheck loose game");
                 StartCheckLoseGame();
                 CheckSpawnCakeGroup();
                 //Debug.Log("Check Cake Done!");
@@ -304,8 +305,9 @@ public class CakeManager : MonoBehaviour
     public void StartCheckLoseGame()
     {
         if (cakesWait.Count > 0) {
-            DOVirtual.DelayedCall(.5f, () => {
-                CheckLooseGame(false);
+            DOVirtual.DelayedCall(.2f, () => {
+                if (!onCheckLooseGame)
+                    CheckLooseGame(false);
             });
         
         }
