@@ -234,7 +234,7 @@ public class CakeManager : MonoBehaviour
             if (timeCheckCake >= 2)
             {
                 table.SaveCake();
-                StartCheckLoseGame();
+                if(timeCheckCake == 2) StartCheckLoseGame();
                 CheckSpawnCakeGroup();
                 Debug.Log("Check Cake Done!");
                 onCheckCake = false;
@@ -329,6 +329,7 @@ public class CakeManager : MonoBehaviour
                     countFaild++;
             }
         }
+        Debug.Log(countFaild + " count check fail: " + countCheckFaild);
         if (countFaild == countCheckFaild && countFaild > 0)
         {
             UIManager.instance.ShowPanelLevelComplete(false);

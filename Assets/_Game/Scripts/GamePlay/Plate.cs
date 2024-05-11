@@ -31,7 +31,10 @@ public class Plate : MonoBehaviour
     }
     public PlateIndex GetPlateIndex() { return plateIndex; }
 
-    public void SetCurrentCake(Cake cake) { currentCake = cake; }
+    public void SetCurrentCake(Cake cake) {
+        currentCake = cake;
+        cakeTemp = cake;
+    }
 
     public void CakeDone() { currentCake = null; }
 
@@ -122,10 +125,15 @@ public class Plate : MonoBehaviour
     public void ClearCakeByBomb() {
         if (currentCake != null)
         {
-            Destroy(currentCake.gameObject);
+            DestroyCake();
             ProfileManager.Instance.playerData.cakeSaveData.RemoveCake(plateIndex);
             currentCake = null;
         }
+    }
+    Cake cakeTemp = null;
+    void DestroyCake() {
+        cakeTemp?.ClearAnimation();
+        Destroy(cakeTemp?.gameObject);
     }
 
     Transform pointTrashBin;
@@ -136,7 +144,7 @@ public class Plate : MonoBehaviour
         currentCake.transform.DOJump(pointTrashBin.position, 3, 1, .25f).SetEase(Ease.OutCubic).OnComplete(() => {
             if (currentCake != null)
             {
-                Destroy(currentCake.gameObject);
+                ClearCakeByBomb();
                 currentCake = null;
             }
         });

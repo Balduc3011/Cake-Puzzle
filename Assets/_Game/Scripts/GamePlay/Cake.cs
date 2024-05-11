@@ -17,7 +17,7 @@ public class Cake : MonoBehaviour
     List<int> listCakeIDFillUp = new List<int>();
     List<Tween> tweens = new();
     List<IDInfor> currentIDInfor = new();
-
+    List<Tween> tweenAnimations = new();
     [Header("INT")]
     public int totalPieces;
     public int totalCakeID;
@@ -109,7 +109,7 @@ public class Cake : MonoBehaviour
     public void InitData() {
         Debug.Log("init by normal");
         SetFirstIndexOfPiece();
-        transform.DOScale(scaleDefault, .5f).From(1.2f).SetEase(Ease.InOutBack);
+        tweenAnimations.Add(transform.DOScale(scaleDefault, .5f).From(1.2f).SetEase(Ease.InOutBack));
         totalPieces = GameManager.Instance.cakeManager.GetPiecesTotal() + 1;
         SetupPiecesCakeID();
         pieceIndex = 0;
@@ -124,7 +124,7 @@ public class Cake : MonoBehaviour
     public void InitData(CakeSave cakeSaveData) {
         Debug.Log("init by data save");
         SetFirstIndexOfPiece();
-        transform.DOScale(scaleDefault, .5f).From(1.2f).SetEase(Ease.InOutBack);
+        tweenAnimations.Add(transform.DOScale(scaleDefault, .5f).From(1.2f).SetEase(Ease.InOutBack));
         pieceCakeIDCount = cakeSaveData.pieceCakeIDCount;
         pieceCakeID = cakeSaveData.pieceCakeID;
         pieceIndex = 0;
@@ -152,16 +152,16 @@ public class Cake : MonoBehaviour
         Piece newPiece = Instantiate(piecePref, transform);
         pieces.Add(newPiece);
         //InitPiece(pieceIndex, pieceCakeIDFill);
-        newPiece.transform.DOScale(1, .25f).From(0).SetEase(Ease.OutBack);
+        tweenAnimations.Add(newPiece.transform.DOScale(1, .25f).From(0).SetEase(Ease.OutBack));
         newPiece.transform.eulerAngles = Vector3.zero;
         GameObject objecPref = ProfileManager.Instance.dataConfig.cakeDataConfig.GetCakePref(pieceCakeIDFill);
         newPiece.InitData(objecPref, pieceCakeIDFill, currentRotateIndex);
 
         newPiece.transform.eulerAngles = new Vector3(0, rotates[currentRotateIndex], 0);
 
-        newPiece.transform.DOLocalMove(Vector3.zero, .3f).SetEase(Ease.InOutCirc).From(newPiece.transform.forward * 5f).OnComplete(() => {
+        tweenAnimations.Add(newPiece.transform.DOLocalMove(Vector3.zero, .3f).SetEase(Ease.InOutCirc).From(newPiece.transform.forward * 5f).OnComplete(() => {
             ImpactOnFillUP();
-        });
+        }));
     }
 
     void ImpactOnFillUP() {
@@ -174,7 +174,7 @@ public class Cake : MonoBehaviour
 
     public void InitData(List<int> cakeIDs) {
         SetFirstIndexOfPiece();
-        transform.DOScale(scaleDefault, .5f).From(1.2f).SetEase(Ease.InOutBack);
+        tweenAnimations.Add(transform.DOScale(scaleDefault, .5f).From(1.2f).SetEase(Ease.InOutBack));
 
         for (int i = 0; i < cakeIDs.Count; i++)
         {
@@ -344,9 +344,9 @@ public class Cake : MonoBehaviour
         }
         GameManager.Instance.itemManager.OnUsingItem();
         EventManager.TriggerEvent(EventName.UsingFillUpDone.ToString());
-        transform.DOMove(GameManager.Instance.itemManager.GetPointFillUp(), .25f).SetEase(Ease.OutBack);
+        tweenAnimations.Add(transform.DOMove(GameManager.Instance.itemManager.GetPointFillUp(), .25f).SetEase(Ease.OutBack));
         scaleFillUp = 1.9f;
-        transform.DOScale(1.9f, .25f).SetEase(Ease.OutBack).OnComplete(()=> {
+        tweenAnimations.Add(transform.DOScale(1.9f, .25f).SetEase(Ease.OutBack).OnComplete(()=> {
             //transform.DORotate(new Vector3(0, 360f, 0), 1f, RotateMode.WorldAxisAdd);
             listCakeIDFillUp.Clear();
             indexRemove = 0;
@@ -373,24 +373,24 @@ public class Cake : MonoBehaviour
                 }
                 DOVirtual.DelayedCall(indexRemove * 0.39f, () =>
                 {
-                    transform.DORotate(new Vector3(0, 360, 0), 1f, RotateMode.WorldAxisAdd).SetEase(Ease.InCirc).OnComplete(()=> {
+                    tweenAnimations.Add(transform.DORotate(new Vector3(0, 360, 0), 1f, RotateMode.WorldAxisAdd).SetEase(Ease.InCirc).OnComplete(()=> {
                         transform.DOLocalMove(Vector3.zero, .3f).SetEase(Ease.OutBack);
                         GameManager.Instance.itemManager.UsingItemDone();
                         ProfileManager.Instance.playerData.playerResourseSave.UsingItem(ItemType.FillUp);
                         DoneCakeMode();
                         ProfileManager.Instance.playerData.cakeSaveData.RemoveCake(currentPlate.plateIndex);
                         UsingFillUpDone();
-                    });
-                 
-                    transform.DOScale(scaleFillUp + .3f, .15f);
-                    transform.DOScale(scaleFillUp - .1f, .15f).SetDelay(.15f);
-                    transform.DOScale(scaleFillUp, .15f).SetDelay(.3f);
+                    }));
+
+                    tweenAnimations.Add(transform.DOScale(scaleFillUp + .3f, .15f));
+                    tweenAnimations.Add(transform.DOScale(scaleFillUp - .1f, .15f).SetDelay(.15f));
+                    tweenAnimations.Add(transform.DOScale(scaleFillUp, .15f).SetDelay(.3f));
                    
                 });
             });
 
           
-        });
+        }));
 
     }
 
@@ -412,7 +412,7 @@ public class Cake : MonoBehaviour
     }
 
     void CallBackOnAnimHammerDone() {
-        transform.DOScale(0f, 0.25f).OnComplete(() => { gameObject.SetActive(false); });
+        tweenAnimations.Add(transform.DOScale(0f, 0.25f).OnComplete(() => { gameObject.SetActive(false); }));
     }
 
     public bool CheckDrop()
@@ -430,11 +430,11 @@ public class Cake : MonoBehaviour
     public void DropDone(bool lastDrop, UnityAction actionCallback) {
         onDrop = true;
         transform.parent = currentPlate.pointStay;
-        transform.DOLocalMove(Vector3.zero, .1f).SetEase(Ease.InQuad).OnComplete(()=> {
+        tweenAnimations.Add(transform.DOLocalMove(Vector3.zero, .1f).SetEase(Ease.InQuad).OnComplete(()=> {
             Transform effectDrop = GameManager.Instance.objectPooling.GetSmokeEffectDrop();
             effectDrop.transform.position = transform.position - vectorOffsetEffectDrop;
             effectDrop.gameObject.SetActive(true);
-        });
+        }));
         //Debug.Log("last drop: "+ lastDrop);
         DOVirtual.DelayedCall(.1f, () =>
         {
@@ -574,13 +574,13 @@ public class Cake : MonoBehaviour
             pieces[indexRotate].currentRotateIndex++;
             if (pieces[indexRotate].currentRotateIndex >= rotates.Count) pieces[indexRotate].currentRotateIndex = 0;
             vectorRotateTo = new Vector3(0, rotates[pieces[indexRotate].currentRotateIndex], 0);
-            pieces[indexRotate].transform.DORotate(vectorRotateTo, timeRotate).SetEase(curveRotate).OnComplete(() => {
+            tweenAnimations.Add(pieces[indexRotate].transform.DORotate(vectorRotateTo, timeRotate).SetEase(curveRotate).OnComplete(() => {
                 if (indexRotate == pieces.Count - 1)
                 {
                     flagDoActionCallBack = true;
                     actionCallBackRotateDone();
                 }
-            });
+            }));
             indexRotate++;
         }
         if (!flagDoActionCallBack) actionCallBackRotateDone();
@@ -610,7 +610,7 @@ public class Cake : MonoBehaviour
             if (pieces[indexRotateRW].currentRotateIndex != currentRotateIndex)
                 pieces[indexRotateRW].currentRotateIndex = currentRotateIndex;
             vectorRotateTo = new Vector3(0, rotates[pieces[indexRotateRW].currentRotateIndex], 0);
-            pieces[indexRotateRW].transform.DORotate(vectorRotateTo, timeRotate).SetEase(curveRotate);
+            tweenAnimations.Add(pieces[indexRotateRW].transform.DORotate(vectorRotateTo, timeRotate).SetEase(curveRotate));
             DOVirtual.DelayedCall(timeRotate - .15f, () =>
             {
                 if (indexRotateRW == pieces.Count)
@@ -751,9 +751,9 @@ public class Cake : MonoBehaviour
         DOVirtual.DelayedCall(0.18f, () => {
             tweens.Add(transform.DOScale(Vector3.one * .8f, .13f));
             tweens.Add(transform.DOScale(Vector3.one * 1.1f, .13f).SetDelay(.13f));
-            transform.DORotate(CacheSourse.rotateY360, .75f, RotateMode.WorldAxisAdd).SetEase(Ease.OutQuad).OnComplete(() => {
+            tweenAnimations.Add(transform.DORotate(CacheSourse.rotateY360, .75f, RotateMode.WorldAxisAdd).SetEase(Ease.OutQuad).OnComplete(() => {
                 EffectDoneCake();
-            });
+            }));
         });
        
     }
@@ -786,7 +786,7 @@ public class Cake : MonoBehaviour
         expEffect.ChangeText((GameManager.Instance.GetDefaultCakeProfit(pieces[0].cakeID, cakeLevel)).ToString());
         expEffect.gameObject.SetActive(true);
 
-        transform.DOScale(0f, .3f).SetEase(Ease.InQuad);
+        tweenAnimations.Add(transform.DOScale(0f, .3f).SetEase(Ease.InQuad));
 
         DOVirtual.DelayedCall(CacheSourse.float05, () => {
             //Debug.Log("Destroy now");
@@ -859,5 +859,15 @@ public class Cake : MonoBehaviour
     public bool CakeIsNull() {
         //Debug.Log(currentPlate+" have cake null: "+pieces.Count);
         return pieces.Count == 0; 
+    }
+    
+    public void ClearAnimation() {
+        if (tweenAnimations.Count > 0)
+        {
+            for (int i = 0; i < tweenAnimations.Count; i++)
+            {
+                if (tweenAnimations[i] != null) { tweenAnimations[i].Kill(); }
+            }
+        }
     }
 }
