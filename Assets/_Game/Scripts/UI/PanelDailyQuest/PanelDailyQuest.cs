@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +10,8 @@ public class PanelDailyQuest : UIPanel
     [SerializeField] Button closeBtn;
     [SerializeField] List<QuestTarget> targets = new List<QuestTarget>();
     [SerializeField] Slider processSlider;
+    [SerializeField] TextMeshProUGUI remainTimeTxt;
+    float remainTime;
     float process;
     float currentProcess;
     [SerializeField] float currentRiseSpeed;
@@ -24,7 +28,14 @@ public class PanelDailyQuest : UIPanel
         process = -1;
         Init();
         currentRiseSpeed = ProfileManager.Instance.playerData.questDataSave.starsEarned > 0 ? ProfileManager.Instance.playerData.questDataSave.starsEarned : 1;
+        GetTime();
     }
+    void GetTime()
+    {
+        TimeSpan timeSpan = DateTime.Today.AddDays(1) - DateTime.Now;
+        remainTime = (float)timeSpan.TotalSeconds;
+    }
+
     void ClosePanel()
     {
         ProfileManager.Instance.playerData.playerResourseSave.SaveRecord();
@@ -53,6 +64,8 @@ public class PanelDailyQuest : UIPanel
                 currentRiseSpeed = 10f;
             }
         }
+        remainTimeTxt.text = TimeUtil.TimeToString(remainTime);
+        remainTime -= Time.deltaTime;
     }
 
     void UpdateTarget()

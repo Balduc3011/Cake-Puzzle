@@ -109,6 +109,6 @@ public class PanelLevelComplete : UIPanel
         objLooseGame.SetActive(!isWinGame);
         objWinGame.SetActive(isWinGame);
         if (isWinGame) winSheetAnimation.PlayAnim();
-        else loseSheetAnimation.PlayAnim();
+        //else loseSheetAnimation.PlayAnim();
     }
 }
