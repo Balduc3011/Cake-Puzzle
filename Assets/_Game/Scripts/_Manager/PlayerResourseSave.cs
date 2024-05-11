@@ -292,6 +292,7 @@ public class PlayerResourseSave : SaveBase
 
     public bool IsHaveItem(ItemType itemType)
     {
+        if (itemType == ItemType.Revive) return true;
         for (int i = 0; i < ownedItem.Count; i++)
         {
             if (ownedItem[i].ItemType == itemType && ownedItem[i].amount > 0)

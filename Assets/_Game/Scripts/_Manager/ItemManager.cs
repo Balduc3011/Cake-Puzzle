@@ -96,8 +96,7 @@ public class ItemManager : MonoBehaviour
                 DOVirtual.DelayedCall(.3f, () =>
                 {
                     //trsSmoke.gameObject.SetActive(false);
-                    GameManager.Instance.cameraManager.OutItemMode();
-                    GameManager.Instance.lightManager.OutItemMode();
+                    UsingItemDone();
                     panelUsingItem.UsingItemDone();
                     objHammer.DOMove(itemTrs.position, .25f);
                     actionCallBack();
@@ -115,8 +114,9 @@ public class ItemManager : MonoBehaviour
     {
         return pointFillUpTarget.position;
     }
-
-    public void Revie(Cake cake, UnityAction actionCallBack) {
+    UnityAction actionCallBack;
+    public void Revie(Cake cake, UnityAction actionCallBack, bool lastItem = false) {
+        this.actionCallBack = actionCallBack;
         objHammer.DOMove(cake.transform.position + vectorHammerOffset, .25f).SetEase(Ease.OutQuint).OnComplete(() => {
             hammerAnim.Play("HammerBam");
             DOVirtual.DelayedCall(0.6f, () => {
@@ -124,18 +124,30 @@ public class ItemManager : MonoBehaviour
                 trsSmoke.transform.position = cake.transform.position + vectorHammerOffset;
                 trsSmoke.gameObject.SetActive(true);
                 GameManager.Instance.cameraManager.ShakeCamera(.2f);
-                DOVirtual.DelayedCall(.3f, () =>
+                DOVirtual.DelayedCall(.15f, () =>
                 {
-                    //trsSmoke.gameObject.SetActive(false);
-                    //GameManager.Instance.cameraManager.OutItemMode();
-                    //GameManager.Instance.lightManager.OutItemMode();
-                    //panelUsingItem.UsingItemDone();
-                    objHammer.DOMove(itemTrs.position, .25f).OnComplete(()=> {
-                        actionCallBack();
-                    });
+                    trsSmoke.gameObject.SetActive(false);
                 });
+                
+                if (lastItem)
+                {
+                    DoLastMove(actionCallBack);
+                }
+                else
+                {
+                    actionCallBack();
+                }
 
             });
+        });
+    }
+    public void DoLastMove(UnityAction actionCallBack)
+    {
+        UsingItemDone();
+        panelUsingItem.UsingItemDone();
+        EventManager.TriggerEvent(EventName.OnUsingReviveDone.ToString());
+        objHammer.DOMove(itemTrs.position, .25f).OnComplete(() => {
+            actionCallBack();
         });
     }
     PlateIndex plateIndex;
@@ -156,55 +168,97 @@ public class ItemManager : MonoBehaviour
     public void RemoveCake()
     {
         currentIndex++;
+        Debug.Log(currentIndex);
         switch (currentIndex)
         {
             case 1:
                 if (plateUpIndex.indexX - 1 >= 0)
                 {
-                    DOVirtual.DelayedCall(.8f, () =>
-                    {
+                    //DOVirtual.DelayedCall(.8f, () =>
+                    //{
                         plateUpIndex.indexX--;
-                        Debug.Log("Plate Up: " + plateUpIndex.indexX + " " + plateUpIndex.indexY);
+                        //Debug.Log("Plate Up: " + plateUpIndex.indexX + " " + plateUpIndex.indexY);
                         ProfileManager.Instance.playerData.cakeSaveData.RemoveCake(plateUpIndex);
-                        GameManager.Instance.cakeManager.table.plateArray[plateUpIndex.indexX, plateUpIndex.indexY].currentCake?.UsingRevive();
-                    });
+                    if (GameManager.Instance.cakeManager.table.plateArray[plateUpIndex.indexX, plateUpIndex.indexY].currentCake != null)
+                        GameManager.Instance.cakeManager.table.plateArray[plateUpIndex.indexX, plateUpIndex.indexY].currentCake.UsingRevive();
+                    else
+                    {
+                        Debug.Log("Null 1");
+                        RemoveCake(); 
+                    }
+                    //});
+                }
+                else
+                {
+                    Debug.Log("Null 3");
+                    RemoveCake();
                 }
                 break;
             case 2:
                 if (plateDownIndex.indexX + 1 < 5)
                 {
-                    DOVirtual.DelayedCall(.8f, () =>
-                    {
+                    //DOVirtual.DelayedCall(.8f, () =>
+                    //{
                         plateDownIndex.indexX++;
-                        Debug.Log("Plate Down: " + plateDownIndex.indexX + " " + plateDownIndex.indexY);
+                        //Debug.Log("Plate Down: " + plateDownIndex.indexX + " " + plateDownIndex.indexY);
                         ProfileManager.Instance.playerData.cakeSaveData.RemoveCake(plateDownIndex);
+                    if (GameManager.Instance.cakeManager.table.plateArray[plateDownIndex.indexX, plateDownIndex.indexY].currentCake != null)
                         GameManager.Instance.cakeManager.table.plateArray[plateDownIndex.indexX, plateDownIndex.indexY].currentCake?.UsingRevive();
-
-                    });
+                    else
+                    {
+                        Debug.Log("Null 2");
+                        RemoveCake();
+                    }
+                    //});
+                }
+                else
+                {
+                    Debug.Log("Null 3");
+                    RemoveCake();
                 }
                 break;
             case 3:
                 if (plateLeftIndex.indexY - 1 >= 0)
                 {
-                    DOVirtual.DelayedCall(.8f, () =>
-                    {
-                        plateLeftIndex.indexY--;
-                        Debug.Log("Plate Left: " + plateLeftIndex.indexX + " " + plateLeftIndex.indexY);
-                        ProfileManager.Instance.playerData.cakeSaveData.RemoveCake(plateLeftIndex);
+                    //DOVirtual.DelayedCall(.8f, () =>
+                    //{
+                    plateLeftIndex.indexY--;
+                    //Debug.Log("Plate Left: " + plateLeftIndex.indexX + " " + plateLeftIndex.indexY);
+                    ProfileManager.Instance.playerData.cakeSaveData.RemoveCake(plateLeftIndex);
+                    if (GameManager.Instance.cakeManager.table.plateArray[plateLeftIndex.indexX, plateLeftIndex.indexY].currentCake != null)
                         GameManager.Instance.cakeManager.table.plateArray[plateLeftIndex.indexX, plateLeftIndex.indexY].currentCake?.UsingRevive();
-                    });
+                    else {
+                        Debug.Log("Null 3");
+                        RemoveCake();
+                    }
+                    //});
+                }
+                else
+                {
+                    Debug.Log("Null 3");
+                    RemoveCake();
                 }
                 break;
             case 4:
                 if (plateRightIndex.indexY + 1 < 4)
                 {
-                    DOVirtual.DelayedCall(.8f, () =>
-                    {
+                    //DOVirtual.DelayedCall(.8f, () =>
+                    //{
                         plateRightIndex.indexY++;
-                        Debug.Log("Plate Right: " + plateRightIndex.indexX + " " + plateRightIndex.indexY);
+                        //Debug.Log("Plate Right: " + plateRightIndex.indexX + " " + plateRightIndex.indexY);
                         ProfileManager.Instance.playerData.cakeSaveData.RemoveCake(plateRightIndex);
-                        GameManager.Instance.cakeManager.table.plateArray[plateRightIndex.indexX, plateRightIndex.indexY].currentCake?.UsingRevive();
-                    });
+                    if (GameManager.Instance.cakeManager.table.plateArray[plateRightIndex.indexX, plateRightIndex.indexY].currentCake != null)
+                        GameManager.Instance.cakeManager.table.plateArray[plateRightIndex.indexX, plateRightIndex.indexY].currentCake?.UsingRevive(true);
+                    else {
+                        Debug.Log("Null 4 "+actionCallBack);
+                        DoLastMove(actionCallBack); 
+                    }
+                    //});
+                }
+                else
+                {
+                    Debug.Log("Null 4 " + actionCallBack);
+                    DoLastMove(actionCallBack);
                 }
                 break;
             default:

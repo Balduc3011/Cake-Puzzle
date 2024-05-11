@@ -132,6 +132,8 @@ public class Plate : MonoBehaviour
     }
     Cake cakeTemp = null;
     void DestroyCake() {
+        if (cakeTemp != currentCake && currentCake != null)
+            return;
         cakeTemp?.ClearAnimation();
         Destroy(cakeTemp?.gameObject);
     }

@@ -114,7 +114,7 @@ public class Cake : MonoBehaviour
     }
 
     void OnUsingReviveDone() { 
-        onChooseRevive = true;
+        onChooseRevive = false;
     }
 
     #region INIT DATA
@@ -325,9 +325,10 @@ public class Cake : MonoBehaviour
             if (EventSystem.current.IsPointerOverGameObject(0))
                 return;
         }
-
+        //Debug.Log("On click");
         if (onChooseRevive) {
             centerRevive = true;
+            GameManager.Instance.itemManager.OnUsingItem();
             UsingRevive();
             return;
         }
@@ -430,7 +431,7 @@ public class Cake : MonoBehaviour
         EventManager.TriggerEvent(EventName.UsingHammerDone.ToString());
     }
 
-    public void UsingRevive() {
+    public void UsingRevive(bool lastCake = false) {
         if (cakeDone)
             return;
         if (currentPlate != null)
@@ -440,22 +441,32 @@ public class Cake : MonoBehaviour
             if (GameManager.Instance.cakeManager.CakeOnWait(myGroupCake))
                 return;
         }
-        GameManager.Instance.itemManager.Revie(this, CallBackOnReviveDone);
-        
+        this.lastCake = lastCake;
+        if (!lastCake)
+            GameManager.Instance.itemManager.Revie(this, CallBackOnReviveDone, lastCake);
+        else
+        {
+            Debug.Log("call back anim");
+            GameManager.Instance.itemManager.Revie(this, CallBackOnAnimHammerDone, lastCake);
+
+        }
+
     }
 
     public void CallBackOnAnimHammerDone() {
         tweenAnimations.Add(transform.DOScale(0f, 0.25f).OnComplete(() => { gameObject.SetActive(false); }));
     }
     PlateIndex plateIndex;
+    bool lastCake;
     void CallBackOnReviveDone() {
+        Debug.Log("call back revive");
         CallBackOnAnimHammerDone();
         if (!centerRevive)
         {
             GameManager.Instance.itemManager.RemoveCake();
             return;
         }
-        UIManager.instance.ShowPanelUsingItem();
+       
         GameManager.Instance.itemManager.AssignCakeCallBack(this);
         plateIndex = new(currentPlate.plateIndex);
         ProfileManager.Instance.playerData.cakeSaveData.RemoveCake(plateIndex);
