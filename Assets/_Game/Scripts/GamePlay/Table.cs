@@ -385,7 +385,7 @@ public class Table : MonoBehaviour
     public bool CheckGroupOneAble() {
         for (int i = 0; i < plates.Count; i++)
         {
-            if (plates[i].currentCake == null)
+            if (plates[i].currentCake == null || plates[i].currentCake.cakeDone)
                 return true;
         }
         return false;
@@ -405,7 +405,7 @@ public class Table : MonoBehaviour
             {
                 if (positionSecondCake == -1)
                 {
-                    if (plateArray[i, j].currentCake == null && plateArray[i - 1, j].currentCake == null)
+                    if ((plateArray[i, j].currentCake == null || plateArray[i, j].currentCake.cakeDone) && (plateArray[i - 1, j].currentCake == null || plateArray[i  - 1, j].currentCake.cakeDone))
                     {
                         return true;
                     }
