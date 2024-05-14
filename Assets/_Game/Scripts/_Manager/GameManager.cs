@@ -26,6 +26,7 @@ public class GameManager : Singleton<GameManager>
     {
         cameraManager.ShowARoom(0);
         AddTempName();
+        ShowCollapsibleBanner();
     }
     public void PlayGame()
     {
@@ -318,6 +319,11 @@ public class GameManager : Singleton<GameManager>
             questManager.AddProgress(QuestType.CompleteCake, 1);
             AdsManager.Instance.ShowRewardVideo(watchVideoRewardType.ToString(), callBack);
         }  
+    }
+
+    public void ShowCollapsibleBanner()
+    {
+        AdsManager.Instance.ShowCollapsibleBannerAds(false, null);
     }
 }
 
