@@ -1,8 +1,10 @@
 using DG.Tweening.Core.Easing;
+using SDK;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 public class GameManager : Singleton<GameManager>
@@ -301,6 +303,21 @@ public class GameManager : Singleton<GameManager>
             default:
                 break;
         }
+    }
+
+    public void ShowRewardVideo(WatchVideoRewardType watchVideoRewardType, UnityAction callBack)
+    {
+        if (IsHasNoAds())
+        {
+            questManager.AddProgress(QuestType.CompleteCake, 1);
+            if (callBack != null)
+                callBack();
+        } 
+        else
+        {
+            questManager.AddProgress(QuestType.CompleteCake, 1);
+            AdsManager.Instance.ShowRewardVideo(watchVideoRewardType.ToString(), callBack);
+        }  
     }
 }
 

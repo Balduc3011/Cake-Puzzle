@@ -104,10 +104,18 @@ public class PanelSpin : UIPanel
     void OnSpinClick()
     {
         GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
-        if (GameManager.Instance.IsHasNoAds() || GameManager.Instance.spinManager.IsHasFreeSpin())
+        if(GameManager.Instance.spinManager.IsHasFreeSpin())
             OnSpin();
         else
-            AdsManager.Instance.ShowRewardVideo(WatchVideoRewardType.FreeSpinAds.ToString(), OnSpin);
+        {
+            //if (GameManager.Instance.IsHasNoAds())
+            //    OnSpin();
+            //else
+            //    AdsManager.Instance.ShowRewardVideo(WatchVideoRewardType.FreeSpinAds.ToString(), OnSpin);
+
+            GameManager.Instance.ShowRewardVideo(WatchVideoRewardType.FreeSpinAds, OnSpin);
+        }
+        
     }
 
     void OnSpin()

@@ -52,14 +52,15 @@ public class QuickBuy : MonoBehaviour
     }
     void OnWatchAds()
     {
-        if(GameManager.Instance.IsHasNoAds())
-        {
-            OnBuyPackSuccess();
-        }
-        else
-        {
-            AdsManager.Instance.ShowRewardVideo(WatchVideoRewardType.GetFreeBooster.ToString(), OnBuyPackSuccess);
-        }
+        //if(GameManager.Instance.IsHasNoAds())
+        //{
+        //    OnBuyPackSuccess();
+        //}
+        //else
+        //{
+        //    AdsManager.Instance.ShowRewardVideo(WatchVideoRewardType.GetFreeBooster.ToString(), OnBuyPackSuccess);
+        //}
+        GameManager.Instance.ShowRewardVideo(WatchVideoRewardType.GetFreeBooster, OnBuyPackSuccess);
     }
 
     void OnBuyPackSuccess()
