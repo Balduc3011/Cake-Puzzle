@@ -116,11 +116,11 @@ public class PanelPlayGame : UIPanel
 
     void ShowX2BoosterAds()
     {
-        if (GameManager.Instance.IsHasNoAds())
-            X2BoosterSuccess();
-        else
-            AdsManager.Instance.ShowRewardVideo(WatchVideoRewardType.X2RewardAds.ToString(), X2BoosterSuccess);
-        //X2BoosterSuccess();
+        //if (GameManager.Instance.IsHasNoAds())
+        //    X2BoosterSuccess();
+        //else
+        //    AdsManager.Instance.ShowRewardVideo(WatchVideoRewardType.X2RewardAds.ToString(), X2BoosterSuccess);
+        GameManager.Instance.ShowRewardVideo(WatchVideoRewardType.X2RewardAds, X2BoosterSuccess);
     }
 
     void X2BoosterSuccess()
@@ -137,11 +137,11 @@ public class PanelPlayGame : UIPanel
     }
     void ShowCoinBoosterAds()
     {
-        if (GameManager.Instance.IsHasNoAds())
-            CoinBoosterSuccess();
-        else
-            AdsManager.Instance.ShowRewardVideo(WatchVideoRewardType.FreeCoinAds.ToString(), CoinBoosterSuccess);
-        //CoinBoosterSuccess();
+        //if (GameManager.Instance.IsHasNoAds())
+        //    CoinBoosterSuccess();
+        //else
+        //    AdsManager.Instance.ShowRewardVideo(WatchVideoRewardType.FreeCoinAds.ToString(), CoinBoosterSuccess);
+        GameManager.Instance.ShowRewardVideo(WatchVideoRewardType.FreeCoinAds, CoinBoosterSuccess);
     }
     ItemData coinBoosterReward;
     List<ItemData> coinBoosterRewards;

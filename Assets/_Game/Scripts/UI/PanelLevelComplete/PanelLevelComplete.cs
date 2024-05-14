@@ -76,20 +76,18 @@ public class PanelLevelComplete : UIPanel
 
     void ReviveADS()
     {
-        if (GameManager.Instance.IsHasNoAds())
-            ReviveADSSucces();
-        else
-            AdsManager.Instance.ShowRewardVideo(WatchVideoRewardType.GameOverRevive.ToString(), ReviveADSSucces);
-        //ReviveADSSucces();
-        //OnClose();
+        //if (GameManager.Instance.IsHasNoAds())
+        //    ReviveADSSucces();
+        //else
+        //    AdsManager.Instance.ShowRewardVideo(WatchVideoRewardType.GameOverRevive.ToString(), ReviveADSSucces);
+
+        GameManager.Instance.ShowRewardVideo(WatchVideoRewardType.GameOverRevive, ReviveADSSucces);
     }
 
     void ReviveADSSucces()
     {
-        //UIManager.instance.OpenBlockAll();
         GameManager.Instance.itemManager.UsingItem(ItemType.Revive);
         EventManager.TriggerEvent(EventName.OnUsingRevive.ToString());
-        //GameManager.Instance.cakeManager.TrashIn(GameManager.Instance.cakeManager.ClearCake);
         OnClose();
     }
 
