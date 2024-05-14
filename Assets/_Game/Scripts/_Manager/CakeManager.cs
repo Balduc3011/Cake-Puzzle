@@ -203,9 +203,10 @@ public class CakeManager : MonoBehaviour
     }
 
     public void SetupCheckCake() {
+        table.SaveCake();
+        if (onCheckCake) return;
         ClearCakeCheckDone();
         indexCakeCheck = -1;
-        table.SaveCake();
         timeCheckCake = 0;
         if (!onCheckCake)
         {
@@ -231,14 +232,10 @@ public class CakeManager : MonoBehaviour
         else
         {
             timeCheckCake++;
-            //Debug.Log("Time check cake: "+timeCheckCake);
             if (timeCheckCake >= 2)
             {
                 table.SaveCake();
-                //StartCheckLoseGame();
-               
                 CheckSpawnCakeGroup();
-                //Debug.Log("Check Cake Done!");
                 onCheckCake = false;
                 ClearCakeNeedCheck();
                 AddCakeCheckDone(cake);
@@ -262,15 +259,22 @@ public class CakeManager : MonoBehaviour
             {
                 Debug.Log("================");
                 Debug.Log("Check loose game");
-                DOVirtual.DelayedCall(.5f, StartCheckLoseGame);
+                Invoke("StartCheckLoseGame", 0f);
             }
         }
     }
 
     void ClearCakeCheckDone() { cakeCheckDone.Clear(); }
 
-    public void AddCakeNeedCheck(Cake cake) { 
-        cakeNeedCheck.Add(cake); 
+    public void AddCakeNeedCheck(Cake cake) {
+        cakeNeedCheck.Add(cake);
+        if (onCheckCake) CancelCheckCake();
+    }
+
+    void CancelCheckCake() {
+        Debug.Log("Cancel invoke");
+        CancelInvoke("CheckLooseGame"); 
+
     }
 
     public void ClearCakeNeedCheck() { cakeNeedCheck.Clear(); }
@@ -324,11 +328,8 @@ public class CakeManager : MonoBehaviour
     public void StartCheckLoseGame()
     {
         if (cakesWait.Count > 0) {
-            DOVirtual.DelayedCall(.2f, () => {
-                if (!onCheckLooseGame)
-                    CheckLooseGame(false);
-            });
-        
+            if (!onCheckLooseGame)
+                CheckLooseGame(false);
         }
     }
     
