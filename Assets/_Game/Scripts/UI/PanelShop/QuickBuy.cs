@@ -13,13 +13,17 @@ public class QuickBuy : MonoBehaviour
     public Button buyBtn;
     public Button adsBtn;
     ShopPack shopPack;
+    [SerializeField] bool dontNeedData;
     [SerializeField] TextMeshProUGUI priceTxt;
     public virtual void OnEnable()
     {
-        shopPack = ProfileManager.Instance.dataConfig.shopDataConfig.GetShopPack(packageId);
-        if (shopPack != null)
+        if(!dontNeedData)
         {
-            rewardItems = shopPack.rewards;
+            shopPack = ProfileManager.Instance.dataConfig.shopDataConfig.GetShopPack(packageId);
+            if (shopPack != null)
+            {
+                rewardItems = shopPack.rewards;
+            }
         }
         for (int i = 0; i < rewards.Count; i++)
         {
