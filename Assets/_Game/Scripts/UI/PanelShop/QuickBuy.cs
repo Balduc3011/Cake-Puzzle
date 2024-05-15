@@ -69,7 +69,7 @@ public class QuickBuy : MonoBehaviour
 
     void OnBuyPackSuccess()
     {
-        GameManager.Instance.GetItemRewards(shopPack.rewards);
+        GameManager.Instance.GetItemRewards(rewardItems);
         UIManager.instance.ClosePanelQuickIAP();
         UIManager.instance.ShowPanelItemsReward();
     }
