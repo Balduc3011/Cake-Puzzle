@@ -194,18 +194,18 @@ public class Plate : MonoBehaviour
     public bool CheckIsNull()
     {
         if (currentCake == null) {
-            Debug.LogWarning("plate " + plateIndex.indexX + " " + plateIndex.indexY + " cake null!");
+            //Debug.LogWarning("plate " + plateIndex.indexX + " " + plateIndex.indexY + " cake null!");
             return true;
         }
         if (currentCake.cakeDone) {
-            Debug.LogWarning("plate " + plateIndex.indexX + " " + plateIndex.indexY + " cake done!");
+            //Debug.LogWarning("plate " + plateIndex.indexX + " " + plateIndex.indexY + " cake done!");
             return true;
         }
         if (currentCake.pieces.Count == 0) {
-            Debug.LogWarning("plate " + plateIndex.indexX + " " + plateIndex.indexY + " cake pieces count = 0!");
+            //Debug.LogWarning("plate " + plateIndex.indexX + " " + plateIndex.indexY + " cake pieces count = 0!");
             return true;
         }
-        Debug.LogWarning("plate " + plateIndex.indexX + " " + plateIndex.indexY + " not null!");
+       // Debug.LogWarning("plate " + plateIndex.indexX + " " + plateIndex.indexY + " not null!");
         return false;
 
     }

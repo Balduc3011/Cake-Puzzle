@@ -266,7 +266,14 @@ public class CakeManager : MonoBehaviour
 
     void ClearCakeCheckDone() { cakeCheckDone.Clear(); }
 
-    public void AddCakeNeedCheck(Cake cake) {
+    public void AddCakeNeedCheck(Cake cake, UnityAction actionCallBackSameCake = null) {
+        if (cakeNeedCheck.Contains(cake))
+        {
+            Debug.Log("add same cake: "+cake.currentPlate);
+            //Debug.Break();
+            actionCallBackSameCake();
+            return;
+        }
         cakeNeedCheck.Add(cake);
         if (onCheckCake) CancelCheckCake();
     }

@@ -99,6 +99,14 @@ public class GroupCake : MonoBehaviour
             }
         }
 
+        if (cake.Count == 2) {
+            if (cake[0].CheckPlateOtherCake(cake[1].currentPlate.plateIndex, cakePosition))
+            {
+                DropFail();
+                return;
+            }
+        }
+
         for (int i = 0; i < objConnects.Count; i++)
         {
             objConnects[i].SetActive(false);

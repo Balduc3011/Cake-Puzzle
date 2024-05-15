@@ -14,6 +14,7 @@ public class Table : MonoBehaviour
     float timeRotate;
     float timeMove;
     public Plate[,] plateArray = new Plate[5, 4];
+    //public bool onMove;
 
     private void Start()
     {
@@ -125,6 +126,7 @@ public class Table : MonoBehaviour
             return;
         }
         stepIndex = -1;
+        //onMove = true;
         Move(cakeID);
     }
     void CallBackCheckOtherCakeOnMap() {
@@ -141,7 +143,7 @@ public class Table : MonoBehaviour
         {
             if (mapPlate[0].currentCake != null)
             {
-                GameManager.Instance.cakeManager.AddCakeNeedCheck(mapPlate[0].currentCake);
+                GameManager.Instance.cakeManager.AddCakeNeedCheck(mapPlate[0].currentCake, ActionCallBackSameCake);
                 GameManager.Instance.cakeManager.CheckIDOfCake();
             }
           
@@ -165,9 +167,15 @@ public class Table : MonoBehaviour
         }
         else
         {
+            //onMove = false;
             GameManager.Instance.cakeManager.CheckIDOfCake();
         }
     }
+
+    void ActionCallBackSameCake() {
+        mapPlate.Clear();
+    }
+
     bool CheckWayDone(int cakeID) {
         int totalDone = 0;
         for (int i = 0; i < ways.Count; i++)
@@ -294,7 +302,7 @@ public class Table : MonoBehaviour
         Way newWay = new Way();
         newWay.plateCurrent = plateStart;
         newWay.plateGo = plateStart.wayPoint.nextPlate;
-        Debug.Log("New way: "+ newWay.plateCurrent+ " go to: "+ newWay.plateGo);
+        //Debug.Log("New way: "+ newWay.plateCurrent+ " go to: "+ newWay.plateGo);
         ways.Add(newWay);
     }
 
@@ -395,24 +403,24 @@ public class Table : MonoBehaviour
         if (positionSecondCake == -1)
             pointXstart = 1;
         else pointYend--;
-        Debug.LogWarning("============================");
-        Debug.LogWarning("point x start: "+ pointXstart);
-        Debug.LogWarning("point x end: " + plateArray.GetLength(0));
-        Debug.LogWarning("point end: "+ pointYend);
+        //Debug.LogWarning("============================");
+        //Debug.LogWarning("point x start: "+ pointXstart);
+        //Debug.LogWarning("point x end: " + plateArray.GetLength(0));
+        //Debug.LogWarning("point end: "+ pointYend);
         for (int i = pointXstart; i < plateArray.GetLength(0); i++)
         {
             for (int j = 0; j < pointYend; j++)
             {
                 if (positionSecondCake == -1)
                 {
-                    Debug.LogWarning("Check cake doc");
-                    Debug.LogWarning(i + " " + j);
+                    //Debug.LogWarning("Check cake doc");
+                    //Debug.LogWarning(i + " " + j);
                     if (plateArray[i, j].CheckIsNull() && plateArray[i - 1, j].CheckIsNull())
                         return true;
                 }
                 else {
-                    Debug.LogWarning("Check cake ngang");
-                    Debug.LogWarning(i + " " + j);
+                    //Debug.LogWarning("Check cake ngang");
+                    //Debug.LogWarning(i + " " + j);
                     if (plateArray[i, j].CheckIsNull() && plateArray[i, j + 1].CheckIsNull())
                         return true;
                 }
