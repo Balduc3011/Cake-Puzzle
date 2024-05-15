@@ -325,5 +325,10 @@ public class GameManager : Singleton<GameManager>
     {
         AdsManager.Instance.ShowCollapsibleBannerAds(false, null);
     }
+
+    public void ShowInter()
+    {
+        UIManager.instance.ShowPanelPreAds();
+    }
 }
 

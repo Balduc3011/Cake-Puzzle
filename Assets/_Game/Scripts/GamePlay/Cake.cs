@@ -791,6 +791,7 @@ public class Cake : MonoBehaviour
    
     public void DoneCakeMode()
     {
+        GameManager.Instance.cakeManager.AddCakeCount();
         GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_TapCube);
         GameManager.Instance.questManager.AddProgress(QuestType.CompleteCake, 1);
         GameManager.Instance.quickTimeEventManager.AddProgess();
