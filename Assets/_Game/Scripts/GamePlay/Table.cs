@@ -144,7 +144,12 @@ public class Table : MonoBehaviour
             if (mapPlate[0].currentCake != null)
             {
                 GameManager.Instance.cakeManager.AddCakeNeedCheck(mapPlate[0].currentCake, ActionCallBackSameCake);
-                GameManager.Instance.cakeManager.CheckIDOfCake();
+                if (GameManager.Instance.cakeManager.cakeNeedCheck.Count == 1 && !GameManager.Instance.cakeManager.onMove)
+                {
+                    GameManager.Instance.cakeManager.CheckIDOfCake();
+                    Debug.Log("on check cake set false");
+                    GameManager.Instance.cakeManager.onCheckCake = false;
+                }
             }
           
             //Plate plateCheck = mapPlate[0];

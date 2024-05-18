@@ -947,4 +947,11 @@ public class Cake : MonoBehaviour
             }
         }
     }
+
+    private void OnDestroy()
+    {
+        if (tweens.Count > 0)
+            for (int i = 0; i < tweens.Count; i++)
+                tweens[i].Kill();
+    }
 }

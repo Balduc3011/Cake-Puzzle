@@ -35,7 +35,7 @@ public class CakeManager : MonoBehaviour
     bool haveMoreThan3Cake;
     bool onInitGroup;
     bool haveMoreCake;
-    bool onCheckCake = false;
+    public bool onCheckCake = false;
     bool loaded = false;
 
     public Table table;
@@ -210,6 +210,7 @@ public class CakeManager : MonoBehaviour
         timeCheckCake = 0;
         if (!onCheckCake)
         {
+            Debug.Log("on check cake set true");
             onCheckCake = true;
             CheckNextCake();
         }
@@ -232,16 +233,21 @@ public class CakeManager : MonoBehaviour
         else
         {
             timeCheckCake++;
+            Debug.Log("on check cake set false");
+            onCheckCake = false;
             if (timeCheckCake >= 2)
             {
                 table.SaveCake();
                 CheckSpawnCakeGroup();
+                Debug.Log("on check cake set false");
                 onCheckCake = false;
                 ClearCakeNeedCheck();
                 AddCakeCheckDone(cake);
             }
             else
             {
+                Debug.Log("on check cake set false");
+                onCheckCake = true;
                 indexCakeCheck = -1;
                 CheckNextCake();
             }
@@ -257,8 +263,6 @@ public class CakeManager : MonoBehaviour
             cakeCheckDone.Add(cake);
             if (cakeNeedCheck.Count == 0)
             {
-                Debug.Log("================");
-                Debug.Log("Check loose game");
                 Invoke("StartCheckLoseGame", 0f);
             }
         }
@@ -275,10 +279,11 @@ public class CakeManager : MonoBehaviour
             return;
         }
         cakeNeedCheck.Add(cake);
-        if (onCheckCake) CancelCheckCake();
+        if (onCheckLooseGame) CancelCheckLooseCake();
+      
     }
 
-    void CancelCheckCake() {
+    void CancelCheckLooseCake() {
         Debug.Log("Cancel invoke");
         CancelInvoke("CheckLooseGame"); 
 
