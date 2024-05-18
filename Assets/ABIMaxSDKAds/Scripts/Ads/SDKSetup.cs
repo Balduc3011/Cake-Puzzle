@@ -1,12 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using GoogleMobileAds.Api;
 using SDK;
 using Sirenix.OdinInspector;
-//using UnityEditor.SceneManagement;
+
 using UnityEngine;
 #if UNITY_EDITOR
+using GoogleMobileAds.Editor;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 #endif
 
 [CreateAssetMenu(fileName = "SDKAdsSetup", menuName = "Tools/SDK Ads Setup", order = 1)]
@@ -17,6 +20,7 @@ public partial class SDKSetup : ScriptableObject
     private const string IRONSOURCE_MEDIATION_SYMBOL = "UNITY_AD_IRONSOURCE";
 
     public bool IsActiveAppsflyer = true;
+    public float interstitialCappingTime = 30;
     [HideInInspector]public MaxAdSetup maxAdsSetup;
     [HideInInspector]public AdmobAdSetup admobAdsSetup;
     
@@ -25,6 +29,7 @@ public partial class SDKSetup : ScriptableObject
         return adsType switch
         {
             AdsType.BANNER => bannerAdsMediationType,
+            AdsType.COLLAPSIBLE_BANNER => collapsibleBannerAdsMediationType,
             AdsType.INTERSTITIAL => interstitialAdsMediationType,
             AdsType.REWARDED => rewardedAdsMediationType,
             AdsType.MREC => mrecAdsMediationType,
@@ -42,13 +47,12 @@ public partial class SDKSetup : ScriptableObject
     [Button(ButtonSizes.Medium)]
     public void Setup()
     {
-        
         AdsManager adsManager = FindObjectOfType<AdsManager>();
         if (adsManager != null)
         {
             adsManager.UpdateAdsMediationConfig();
             EditorUtility.SetDirty(adsManager);
-            //EditorSceneManager.MarkSceneDirty(adsManager.gameObject.scene);
+            EditorSceneManager.MarkSceneDirty(adsManager.gameObject.scene);
         }
         else
         {
@@ -63,7 +67,17 @@ public partial class SDKSetup : ScriptableObject
         else
         {
             RemoveDefineSymbol(appsflyerDefineSymbol);
-        }  
+        }
+
+        if (adsMediationType == AdsMediationType.MAX)
+        {
+            string assetPath = "Assets/MaxSdk/Resources/AppLovinSettings.asset";
+            AppLovinSettings applovinSettings = AssetDatabase.LoadAssetAtPath<AppLovinSettings>(assetPath);
+            applovinSettings.SdkKey = sdkKey_MAX;
+            EditorUtility.SetDirty(applovinSettings);
+            AssetDatabase.SaveAssets();
+        }
+        
     }
     private void AddDefineSymbol(string defineSymbol)
     {
@@ -167,7 +181,6 @@ public partial class SDKSetup
         set => admobAdsSetup.InterstitialAdUnitIDList = value;
     }
 }
-
 public partial class SDKSetup
 {
     [BoxGroup("REWARDED")]public AdsMediationType rewardedAdsMediationType;
@@ -187,6 +200,16 @@ public partial class SDKSetup
 public partial class SDKSetup
 {
     [BoxGroup("BANNER")] public AdsMediationType bannerAdsMediationType;
+    #if UNITY_AD_MAX
+    [BoxGroup("BANNER")][ShowInInspector, ShowIf("@bannerAdsMediationType == AdsMediationType.MAX")] public MaxSdkBase.BannerPosition maxBannerAdsPosition;
+    #endif
+    
+    #if UNITY_AD_ADMOB
+    [BoxGroup("BANNER")][ShowInInspector, ShowIf("@bannerAdsMediationType == AdsMediationType.ADMOB")] public AdPosition admobBannerAdsPosition;
+    #endif
+    
+    [BoxGroup("BANNER")][ShowInInspector, ShowIf("@bannerAdsMediationType != AdsMediationType.NONE")] public bool isBannerShowingOnStart = false;
+
     [BoxGroup("BANNER")][ShowInInspector, ShowIf("@bannerAdsMediationType == AdsMediationType.MAX")]
     public string bannerAdUnitID_MAX
     {
@@ -198,6 +221,27 @@ public partial class SDKSetup
     {
         get => admobAdsSetup.BannerAdUnitIDList;
         set => admobAdsSetup.BannerAdUnitIDList = value;
+    }
+}
+public partial class SDKSetup
+{
+    [BoxGroup("COLLAPSIBLE BANNER")] public AdsMediationType collapsibleBannerAdsMediationType;
+    
+    [BoxGroup("COLLAPSIBLE BANNER")][ShowInInspector, ShowIf("@collapsibleBannerAdsMediationType != AdsMediationType.NONE")] public AdPosition collapsibleBannerAdsPosition;
+    
+    [BoxGroup("COLLAPSIBLE BANNER")][ShowInInspector, ShowIf("@collapsibleBannerAdsMediationType != AdsMediationType.NONE")] public bool isCollapsibleBannerShowingOnStart = false;
+
+    [BoxGroup("COLLAPSIBLE BANNER")][ShowInInspector, ShowIf("@collapsibleBannerAdsMediationType == AdsMediationType.MAX")]
+    public string collapsibleBannerAdUnitID_MAX
+    {
+        get => maxAdsSetup.CollapsibleBannerAdUnitID;
+        set => maxAdsSetup.CollapsibleBannerAdUnitID = value;
+    }
+    [BoxGroup("COLLAPSIBLE BANNER")][ShowInInspector, ShowIf("@collapsibleBannerAdsMediationType == AdsMediationType.ADMOB")]
+    public List<string> collapsibleBannerAdUnitID_ADMOB
+    {
+        get => admobAdsSetup.CollapsibleBannerAdUnitIDList;
+        set => admobAdsSetup.CollapsibleBannerAdUnitIDList = value;
     }
 }
 public partial class SDKSetup
@@ -219,7 +263,6 @@ public partial class SDKSetup
 
 public partial class SDKSetup
 {
-    
     [BoxGroup("APP OPEN")]public AdsMediationType appOpenAdsMediationType;
     [BoxGroup("APP OPEN")][ShowInInspector, ShowIf("@appOpenAdsMediationType == AdsMediationType.MAX")]
     public string appOpenAdUnitID_MAX

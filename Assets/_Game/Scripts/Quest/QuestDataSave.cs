@@ -119,18 +119,22 @@ public class QuestDataSave : SaveBase
 
     public void ClaimQuest(QuestType questType) {
         // TODO
+        bool found = false;
         for (int i = 0; i < quessProcess.Count; i++)
         {
             if (quessProcess[i].questType == questType)
             {
                 quessProcess[i].marked++;
+                found = true;
             }
         }
-        QuestProcess quest = new QuestProcess();
-        quest.questType = questType;
-        quest.marked = 1;
-        quessProcess.Add(quest);
-
+        if (!found)
+        {
+            QuestProcess quest = new QuestProcess();
+            quest.questType = questType;
+            quest.marked = 1;
+            quessProcess.Add(quest);
+        }
         starsEarned += ConstantValue.VAL_QUEST_STAR;
         IsMarkChangeData();
         SaveData();
@@ -139,17 +143,22 @@ public class QuestDataSave : SaveBase
     }
 
     public void AddProgress(float amount, QuestType questType) {
+        bool found = false;
         for (int i = 0; i < quessProcess.Count; i++)
         {
             if (quessProcess[i].questType == questType)
             {
                 quessProcess[i].process += amount;
+                found = true;
             }
         }
-        QuestProcess quest = new QuestProcess();
-        quest.questType = questType;
-        quest.process = amount;
-        quessProcess.Add(quest);
+        if(!found)
+        {
+            QuestProcess quest = new QuestProcess();
+            quest.questType = questType;
+            quest.process = amount;
+            quessProcess.Add(quest);
+        }
         IsMarkChangeData();
         SaveData();
         UIManager.instance.panelTotal.CheckNoti();

@@ -24,6 +24,7 @@ public class PanelCakeReward : UIPanel
         DOVirtual.DelayedCall(2.5f, ActiveCloseBtn);
         GameManager.Instance.cakeManager.cakeShowComponent.ShowNewUnlockCake();
         tapToContinueTxt.localScale = Vector3.zero;
+        transform.SetAsLastSibling();
     }
 
     void Start()
