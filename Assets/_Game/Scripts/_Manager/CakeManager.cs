@@ -631,4 +631,22 @@ public class CakeManager : MonoBehaviour
         }
     }
     #endregion
+
+    #region Ads
+
+    int cakeCount;
+    public void AddCakeCount()
+    {
+        if(ProfileManager.Instance.playerData.playerResourseSave.currentLevel >= 3)
+        {
+            cakeCount++;
+            if(cakeCount > ConstantValue.VAL_CAKECOUNT_ADS)
+            {
+                cakeCount = 0;
+                GameManager.Instance.ShowInter();
+            }
+        }
+    }
+
+    #endregion
 }

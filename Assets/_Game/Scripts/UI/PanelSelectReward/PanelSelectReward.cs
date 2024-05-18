@@ -113,10 +113,12 @@ public class PanelSelectReward : UIPanel
     void GetExtraByAds()
     {
         GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
-        if (GameManager.Instance.IsHasNoAds())
-            OnGetExtraReward();
-        else
-            AdsManager.Instance.ShowRewardVideo(WatchVideoRewardType.GetExtraCard.ToString(), OnGetExtraReward);
+        //if (GameManager.Instance.IsHasNoAds())
+        //    OnGetExtraReward();
+        //else
+        //    AdsManager.Instance.ShowRewardVideo(WatchVideoRewardType.GetExtraCard.ToString(), OnGetExtraReward);
+
+        GameManager.Instance.ShowRewardVideo(WatchVideoRewardType.GetExtraCard, OnGetExtraReward);
     }
 
     void OnGetExtraReward()
