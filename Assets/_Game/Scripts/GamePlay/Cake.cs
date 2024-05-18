@@ -488,8 +488,6 @@ public class Cake : MonoBehaviour
         GameManager.Instance.itemManager.RemoveCake();
     }
 
-    
-
     public bool CheckDrop()
     {
         if (GameManager.Instance.cakeManager.onCheckLooseGame)

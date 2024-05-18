@@ -22,9 +22,9 @@ public class Plate : MonoBehaviour
     public int currentSpace;
     private void Awake()
     {
-        pointMoveUp = trsMove.position;
-        pointMoveDown = trsMove.position;
-        pointMoveUp.y += .3f;
+        //pointMoveUp = trsMove.position;
+        //pointMoveDown = trsMove.position;
+        //pointMoveUp.y += .3f;
     }
     public void SetPlateIndex(int x, int y) {
         plateIndex = new PlateIndex(x, y);
@@ -45,7 +45,7 @@ public class Plate : MonoBehaviour
 
     public void Active() {
         anim.SetBool("Active", true);
-        trsMove.DOMove(pointMoveUp, .15f);
+        //trsMove.DOMove(pointMoveUp, .15f);
     }
 
     public void ActiveByItem() {
@@ -55,7 +55,7 @@ public class Plate : MonoBehaviour
     public void Deactive()
     {
         anim.SetBool("Active", false);
-        trsMove.DOMove(pointMoveDown, 1f).SetEase(Ease.InOutCubic);
+        //trsMove.DOMove(pointMoveDown, 1f).SetEase(Ease.InOutCubic);
     }
 
     public void DeActiveByItem()

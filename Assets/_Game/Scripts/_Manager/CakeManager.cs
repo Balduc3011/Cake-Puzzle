@@ -212,10 +212,28 @@ public class CakeManager : MonoBehaviour
         if (!onCheckCake)
         {
             //Debug.Log("on check cake set true");
+            timeCallAddCheckCake = 0;
             onCheckCake = true;
-            CheckNextCake();
+            CheckOtherCake();
         }
 
+    }
+
+    Cake cakeCheckTemp;
+    void CheckOtherCake(Cake cake = null) {
+        GameManager.Instance.objectPooling.CheckGroupCake();
+        if (cakeNeedCheck.Count > 0)
+        {
+            cakeCheckTemp = cakeNeedCheck[0];
+            cakeNeedCheck.RemoveAt(0);
+            StartCheckCake(cakeCheckTemp, CheckOtherCake);
+        }
+        else {
+            table.SaveCake();
+            onCheckCake = false;
+            StartCheckLoseGame();
+            CheckSpawnCakeGroup();
+        }
     }
 
     void CheckNextCake(Cake cake = null) {
@@ -270,8 +288,15 @@ public class CakeManager : MonoBehaviour
     }
 
     void ClearCakeCheckDone() { cakeCheckDone.Clear(); }
-
+    int timeCallAddCheckCake;
+    void ResetCheckCake() {
+        Debug.LogError("Loi roi dmm");
+        cakeNeedCheck.Clear();
+    }
     public void AddCakeNeedCheck(Cake cake, UnityAction actionCallBackSameCake = null) {
+        timeCallAddCheckCake++;
+        if (timeCallAddCheckCake > 30)
+            ResetCheckCake();
         if (cakeNeedCheck.Contains(cake))
         {
             Debug.Log("add same cake: "+cake.currentPlate);
@@ -303,17 +328,23 @@ public class CakeManager : MonoBehaviour
     int totalIDNeedCheck = 0;
     public void CheckIDOfCake() {
         cakeIDIndex++;
-        if (cakeIDIndex < totalIDNeedCheck) 
+        if (cakeIDIndex < totalIDNeedCheck)
         {
+            if (totalIDNeedCheck > currentCakeCheck.pieceCakeID.Count) {
+                cakeIDIndex--;
+                totalIDNeedCheck = currentCakeCheck.pieceCakeID.Count;
+            }
+
             if (cakeIDIndex >= currentCakeCheck.pieceCakeID.Count)
             {
                 cakeIDIndex = currentCakeCheck.pieceCakeID.Count - 1;
                 totalIDNeedCheck = cakeIDIndex;
             }
+
             if (CheckHaveCakeID(currentCakeCheck.pieceCakeID[cakeIDIndex]))
             {
-                //Debug.Log("==================================================================================================");
-                //Debug.Log("CHECK ID: "+ currentCakeCheck.pieceCakeID[cakeIDIndex] + " plate: "+ currentCakeCheck.currentPlate);
+                Debug.Log("==================================================================================================");
+                Debug.Log("CHECK ID: "+ currentCakeCheck.pieceCakeID[cakeIDIndex] + " plate: "+ currentCakeCheck.currentPlate);
                 table.ClearMapPlate(currentCakeCheck.pieceCakeID[cakeIDIndex]);
                 table.AddFirstPlate(currentCakeCheck.currentPlate);
                 table.CreateMapPlate(currentCakeCheck.currentPlate.GetPlateIndex(), currentCakeCheck.pieceCakeID[cakeIDIndex]);

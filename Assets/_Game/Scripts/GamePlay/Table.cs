@@ -143,13 +143,17 @@ public class Table : MonoBehaviour
         {
             if (mapPlate[0].currentCake != null)
             {
-                GameManager.Instance.cakeManager.AddCakeNeedCheck(mapPlate[0].currentCake, ActionCallBackSameCake);
-                if (!GameManager.Instance.cakeManager.onMove)
+                if (mapPlate[0].currentCake.IsHaveCakeID(currentCakeID))
                 {
-                    GameManager.Instance.cakeManager.CheckIDOfCake();
-                    Debug.Log("on check cake set false");
-                    GameManager.Instance.cakeManager.onCheckCake = false;
+                    GameManager.Instance.cakeManager.AddCakeNeedCheck(mapPlate[0].currentCake, ActionCallBackSameCake);
+                    if (/*GameManager.Instance.cakeManager.cakeNeedCheck.Count == 1 && */!GameManager.Instance.cakeManager.onMove)
+                    {
+                        GameManager.Instance.cakeManager.CheckIDOfCake();
+                        Debug.Log("on check cake set false");
+                        GameManager.Instance.cakeManager.onCheckCake = false;
+                    }
                 }
+                
             }
           
             //Plate plateCheck = mapPlate[0];
@@ -418,13 +422,13 @@ public class Table : MonoBehaviour
             {
                 if (positionSecondCake == -1)
                 {
-                    Debug.LogWarning("Check cake doc");
+                    //Debug.LogWarning("Check cake doc");
                     //Debug.LogWarning(i + " " + j);
                     if (plateArray[i, j].CheckIsNull() && plateArray[i - 1, j].CheckIsNull())
                         return true;
                 }
                 else {
-                    Debug.LogWarning("Check cake ngang");
+                    //Debug.LogWarning("Check cake ngang");
                     //Debug.LogWarning(i + " " + j);
                     if (plateArray[i, j].CheckIsNull() && plateArray[i, j + 1].CheckIsNull())
                         return true;
