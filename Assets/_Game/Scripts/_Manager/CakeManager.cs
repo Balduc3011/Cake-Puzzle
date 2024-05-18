@@ -163,6 +163,7 @@ public class CakeManager : MonoBehaviour
         CheckLooseGame(true);
     }
 
+
     public void RemoveCakeWait(GroupCake gCake)
     {
         ProfileManager.Instance.playerData.cakeSaveData.RemoveCakeWait(gCake.groupCakeIndex);
@@ -210,7 +211,7 @@ public class CakeManager : MonoBehaviour
         timeCheckCake = 0;
         if (!onCheckCake)
         {
-            Debug.Log("on check cake set true");
+            //Debug.Log("on check cake set true");
             onCheckCake = true;
             CheckNextCake();
         }
@@ -233,25 +234,24 @@ public class CakeManager : MonoBehaviour
         else
         {
             timeCheckCake++;
-            Debug.Log("on check cake set false");
+            //Debug.Log("on check cake set false");
             onCheckCake = false;
             if (timeCheckCake >= 2)
             {
                 table.SaveCake();
                 CheckSpawnCakeGroup();
-                Debug.Log("on check cake set false");
+                //Debug.Log("on check cake set false");
                 onCheckCake = false;
                 ClearCakeNeedCheck();
                 AddCakeCheckDone(cake);
             }
             else
             {
-                Debug.Log("on check cake set false");
+                //Debug.Log("on check cake set false");
                 onCheckCake = true;
                 indexCakeCheck = -1;
                 CheckNextCake();
             }
-
         }
     }
 
@@ -260,6 +260,7 @@ public class CakeManager : MonoBehaviour
         if (cake == null) return;
         if (!cakeCheckDone.Contains(cake))
         {
+            Debug.Log("add cake done");
             cakeCheckDone.Add(cake);
             if (cakeNeedCheck.Count == 0)
             {
@@ -341,12 +342,16 @@ public class CakeManager : MonoBehaviour
     {
         if (cakesWait.Count > 0) {
             if (!onCheckLooseGame)
+            {
+                Debug.Log("Start check loose game!");
                 CheckLooseGame(false);
+            }
         }
     }
     
     void CheckLooseGame(bool isCheckOnInit = false) {
         if (cakesWait.Count == 0 || onInitGroup) return;
+        Debug.Log("On check Loose Game");
         onCheckLooseGame = true;
         countCheckFaild = isCheckOnInit ? 3 : cakesWait.Count;
         countFaild = 0;
