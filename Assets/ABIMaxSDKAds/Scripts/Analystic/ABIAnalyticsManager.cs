@@ -52,7 +52,7 @@ namespace SDK {
             List<int> trackPoints = new List<int> { 5, 15, 30, 50, 100 };
             switch (adFormat) {
                 case "REWARDED": {
-                        
+
                         int totalWatched = PlayerPrefs.GetInt(key_ad_rewarded_count, 0);
                         totalWatched++;
                         PlayerPrefs.SetInt(key_ad_rewarded_count, totalWatched);
@@ -184,6 +184,11 @@ namespace SDK {
             ABIAppsflyerManager.SendEvent(eventName, null);
 #endif
         }
+
+        public void TrackEventLevelComplete(int level) { }
+
+        public void TrackEventCakeLevelUp(int cakeID, int cakeLevel) { }
+
     }
     public class ImpressionData {
         public string ad_platform;

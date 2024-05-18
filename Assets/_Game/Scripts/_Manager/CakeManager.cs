@@ -213,9 +213,28 @@ public class CakeManager : MonoBehaviour
         {
             //Debug.Log("on check cake set true");
             onCheckCake = true;
-            CheckNextCake();
+            CheckOtherCake();
+            //CheckNextCake();
         }
 
+    }
+    Cake cakeCheckTemp;
+    void CheckOtherCake(Cake cake = null)
+    {
+        GameManager.Instance.objectPooling.CheckGroupCake();
+        if (cakeNeedCheck.Count > 0)
+        {
+            cakeCheckTemp = cakeNeedCheck[0];
+            cakeNeedCheck.RemoveAt(0);
+            StartCheckCake(cakeCheckTemp, CheckOtherCake);
+        }
+        else
+        {
+            table.SaveCake();
+            onCheckCake = false;
+            StartCheckLoseGame();
+            CheckSpawnCakeGroup();
+        }
     }
 
     void CheckNextCake(Cake cake = null) {
@@ -269,11 +288,20 @@ public class CakeManager : MonoBehaviour
         }
     }
 
+    int timeCallAddCheckCake;
+    void ResetCheckCake()
+    {
+        Debug.LogError("Loi roi dmm");
+        cakeNeedCheck.Clear();
+    }
     void ClearCakeCheckDone() { cakeCheckDone.Clear(); }
 
     public void AddCakeNeedCheck(Cake cake, UnityAction actionCallBackSameCake = null) {
         if (cakeNeedCheck.Contains(cake))
         {
+            timeCallAddCheckCake++;
+            if (timeCallAddCheckCake > 30)
+                ResetCheckCake();
             Debug.Log("add same cake: "+cake.currentPlate);
             //Debug.Break();
             actionCallBackSameCake();
@@ -303,12 +331,12 @@ public class CakeManager : MonoBehaviour
     int totalIDNeedCheck = 0;
     public void CheckIDOfCake() {
         cakeIDIndex++;
-        if (cakeIDIndex < totalIDNeedCheck) 
+        if (cakeIDIndex < totalIDNeedCheck)
         {
-            if (cakeIDIndex >= currentCakeCheck.pieceCakeID.Count)
+            if (totalIDNeedCheck > currentCakeCheck.pieceCakeID.Count)
             {
-                cakeIDIndex = currentCakeCheck.pieceCakeID.Count - 1;
-                totalIDNeedCheck = cakeIDIndex;
+                cakeIDIndex--;
+                totalIDNeedCheck = currentCakeCheck.pieceCakeID.Count;
             }
             if (CheckHaveCakeID(currentCakeCheck.pieceCakeID[cakeIDIndex]))
             {
