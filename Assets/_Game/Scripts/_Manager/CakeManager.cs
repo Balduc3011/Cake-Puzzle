@@ -34,8 +34,8 @@ public class CakeManager : MonoBehaviour
 
     bool haveMoreThan3Cake;
     bool onInitGroup;
-    bool haveMoreCake; 
-    bool onCheckCake = false;
+    bool haveMoreCake;
+    public bool onCheckCake = false;
     bool loaded = false;
 
     public Table table;
@@ -65,7 +65,7 @@ public class CakeManager : MonoBehaviour
     [SerializeField] Transform pointStart;
     [SerializeField] Transform pointEnd;
 
-    UnityAction actionCallBack;
+    UnityAction<Cake> actionCallBack;
 
     private void Start()
     {
@@ -112,7 +112,7 @@ public class CakeManager : MonoBehaviour
         mousePos.z = Vector3.Distance(gCake.transform.position, Camera.main.transform.position);
         currentPos = Camera.main.ScreenToWorldPoint(mousePos) + vectorOffset;
         currentPos.y = posYDefault;
-        gCake.transform.DOMove(currentPos, .1f).SetEase(Ease.InCirc).OnComplete(()=> {
+        gCake.transform.DOMove(currentPos, .1f).SetEase(Ease.InCirc).OnComplete(() => {
             currentGCake = gCake;
             isFirstTimeMove = true;
         });
@@ -144,7 +144,7 @@ public class CakeManager : MonoBehaviour
                 if (NeedResolve())
                 {
                     idInfor = GetIDInfor();
-                    if (idInfor == null || idInfor.Count == 0 || idInfor[0].count==0)
+                    if (idInfor == null || idInfor.Count == 0 || idInfor[0].count == 0)
                         groupCake.InitData((int)countCake[indexGroupCake], pointSpawnGroupCake[indexGroupCake], indexGroupCake);
                     else
                         groupCake.InitData(idInfor, pointSpawnGroupCake[indexGroupCake], indexGroupCake);
@@ -152,7 +152,7 @@ public class CakeManager : MonoBehaviour
                 else
                     groupCake.InitData((int)countCake[indexGroupCake], pointSpawnGroupCake[indexGroupCake], indexGroupCake);
             }
-            else 
+            else
                 groupCake.InitData((int)countCake[indexGroupCake], pointSpawnGroupCake[indexGroupCake], indexGroupCake);
             ProfileManager.Instance.playerData.cakeSaveData.AddCakeWait(groupCake, indexGroupCake);
             yield return new WaitForSeconds(.25f);
@@ -183,7 +183,7 @@ public class CakeManager : MonoBehaviour
         InitGroupCake();
     }
 
-  
+
     void SetCountPieces() {
         countCake.Clear();
         haveMoreCake = ProfileManager.Instance.playerData.cakeSaveData.IsHaveMoreThanThreeCake();
@@ -203,18 +203,21 @@ public class CakeManager : MonoBehaviour
     }
 
     public void SetupCheckCake() {
-        indexCakeCheck = -1;
         table.SaveCake();
+        if (onCheckCake) return;
+        ClearCakeCheckDone();
+        indexCakeCheck = -1;
         timeCheckCake = 0;
         if (!onCheckCake)
         {
+            Debug.Log("on check cake set true");
             onCheckCake = true;
             CheckNextCake();
         }
-        
+
     }
 
-    void CheckNextCake() {
+    void CheckNextCake(Cake cake = null) {
         //Debug.Log("Check next Cake");
         indexCakeCheck++;
         GameManager.Instance.objectPooling.CheckGroupCake();
@@ -230,32 +233,65 @@ public class CakeManager : MonoBehaviour
         else
         {
             timeCheckCake++;
-            //Debug.Log("Time check cake: "+timeCheckCake);
+            Debug.Log("on check cake set false");
+            onCheckCake = false;
             if (timeCheckCake >= 2)
             {
                 table.SaveCake();
-                StartCheckLoseGame();
                 CheckSpawnCakeGroup();
-                //Debug.Log("Check Cake Done!");
+                Debug.Log("on check cake set false");
                 onCheckCake = false;
                 ClearCakeNeedCheck();
+                AddCakeCheckDone(cake);
             }
             else
             {
+                Debug.Log("on check cake set false");
+                onCheckCake = true;
                 indexCakeCheck = -1;
                 CheckNextCake();
             }
-            
+
         }
     }
 
-    public void AddCakeNeedCheck(Cake cake) { 
-        cakeNeedCheck.Add(cake); 
+    public List<Cake> cakeCheckDone = new();
+    void AddCakeCheckDone(Cake cake) {
+        if (cake == null) return;
+        if (!cakeCheckDone.Contains(cake))
+        {
+            cakeCheckDone.Add(cake);
+            if (cakeNeedCheck.Count == 0)
+            {
+                Invoke("StartCheckLoseGame", 0f);
+            }
+        }
+    }
+
+    void ClearCakeCheckDone() { cakeCheckDone.Clear(); }
+
+    public void AddCakeNeedCheck(Cake cake, UnityAction actionCallBackSameCake = null) {
+        if (cakeNeedCheck.Contains(cake))
+        {
+            Debug.Log("add same cake: "+cake.currentPlate);
+            //Debug.Break();
+            actionCallBackSameCake();
+            return;
+        }
+        cakeNeedCheck.Add(cake);
+        if (onCheckLooseGame) CancelCheckLooseCake();
+      
+    }
+
+    void CancelCheckLooseCake() {
+        Debug.Log("Cancel invoke");
+        CancelInvoke("CheckLooseGame"); 
+
     }
 
     public void ClearCakeNeedCheck() { cakeNeedCheck.Clear(); }
 
-    public void StartCheckCake(Cake cake, UnityAction actionCallBack)
+    public void StartCheckCake(Cake cake, UnityAction<Cake> actionCallBack)
     {
         this.actionCallBack = actionCallBack;
         currentCakeCheck = cake;
@@ -291,7 +327,7 @@ public class CakeManager : MonoBehaviour
         }
         else
         {
-            actionCallBack();
+            actionCallBack(currentCakeCheck);
         }
     }
 
@@ -304,10 +340,8 @@ public class CakeManager : MonoBehaviour
     public void StartCheckLoseGame()
     {
         if (cakesWait.Count > 0) {
-            DOVirtual.DelayedCall(.5f, () => {
+            if (!onCheckLooseGame)
                 CheckLooseGame(false);
-            });
-        
         }
     }
     

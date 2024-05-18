@@ -99,6 +99,23 @@ public class Cake : MonoBehaviour
         onUsingFillUp = false;
     }
 
+    public bool CheckPlateOtherCake(PlateIndex plateIndex, int cakePosition)
+    {
+        switch (cakePosition)
+        {
+            case -1:
+                if (plateIndex.indexY - 1 != currentPlate.plateIndex.indexY)
+                    return false;
+                return true;
+            case 1:
+                if (plateIndex.indexX - 1 != currentPlate.plateIndex.indexX)
+                    return false;
+                return true;
+            default:
+                return true;
+        }
+    }
+
     bool onUsingHammger;
     void UsingHammerMode()
     {
@@ -475,6 +492,8 @@ public class Cake : MonoBehaviour
 
     public bool CheckDrop()
     {
+        if (GameManager.Instance.cakeManager.onCheckLooseGame)
+            return false;
         if (currentPlate != null && currentPlate.currentCake == null)
         {
             currentPlate.SetCurrentCake(this);
@@ -928,5 +947,12 @@ public class Cake : MonoBehaviour
                 if (tweenAnimations[i] != null) { tweenAnimations[i].Kill(); }
             }
         }
+    }
+
+    private void OnDestroy()
+    {
+        if (tweens.Count > 0)
+            for (int i = 0; i < tweens.Count; i++)
+                tweens[i].Kill();
     }
 }
