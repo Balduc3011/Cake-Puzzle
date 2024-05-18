@@ -1,4 +1,5 @@
 
+using SDK;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -367,6 +368,7 @@ public class OwnedCake
         if (cardAmount >= cardRequire)
         {
             level++;
+            ABIAnalyticsManager.Instance.TrackEventCakeLevelUp(level, cakeID);
             cardAmount -= cardRequire;
             UpdateCardRequire();
             GameManager.Instance.cakeManager.ReInitData(cakeID);
