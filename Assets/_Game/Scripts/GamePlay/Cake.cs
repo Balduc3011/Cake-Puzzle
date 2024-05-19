@@ -693,7 +693,8 @@ public class Cake : MonoBehaviour
                 if (indexRotateRW == pieces.Count)
                 {
                     callBackRotateDone = true;
-                    rotateRWDone();
+                    if (rotateRWDone != null) 
+                        rotateRWDone();
                 }
             });
             indexRotateRW++;
@@ -701,7 +702,7 @@ public class Cake : MonoBehaviour
             //yield return new WaitForSeconds(timeRotate-.15f);
         }
 
-        if (!callBackRotateDone)
+        if (!callBackRotateDone && rotateRWDone != null)
             rotateRWDone();
     }
 

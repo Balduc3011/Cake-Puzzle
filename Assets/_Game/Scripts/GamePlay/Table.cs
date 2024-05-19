@@ -6,6 +6,7 @@ using UnityEngine.Events;
 using DG.Tweening;
 using UnityEngine.Purchasing;
 using UnityEngine.UIElements;
+using Unity.VisualScripting;
 public class Table : MonoBehaviour
 {
     public List<Way> ways = new List<Way>();
@@ -129,7 +130,7 @@ public class Table : MonoBehaviour
         //onMove = true;
         Move(cakeID);
     }
-    void CallBackCheckOtherCakeOnMap() {
+    void CallBackCheckOtherIDOnMap() {
         ClearDoneSetWayPoint();
         //Debug.Log("Way Clear");
         ways.Clear();
@@ -144,37 +145,17 @@ public class Table : MonoBehaviour
             if (mapPlate[0].currentCake != null)
             {
                 GameManager.Instance.cakeManager.AddCakeNeedCheck(mapPlate[0].currentCake, ActionCallBackSameCake);
-                if (!GameManager.Instance.cakeManager.onMove)
-                {
-                    GameManager.Instance.cakeManager.CheckIDOfCake();
-                    Debug.Log("on check cake set false");
-                    GameManager.Instance.cakeManager.onCheckCake = false;
-                }
+                //if (!GameManager.Instance.cakeManager.onMove)
+                //{
+                //    GameManager.Instance.cakeManager.CheckIDOfCake();
+                //    Debug.Log("on check cake set false");
+                //    GameManager.Instance.cakeManager.onCheckCake = false;
+                //}
             }
-          
-            //Plate plateCheck = mapPlate[0];
-            //ClearMapPlate(currentCakeID);
-            //AddFirstPlate(plateCheck);
-            //CreateMapPlate(plateCheck.GetPlateIndex(), currentCakeID);
-            //ClearDoneSetWayPoint();
-            //FindPlateBest(currentCakeID);
-            //StartCreateWay();
-            //if (ways.Count > 0)
-            //{
-            //    Debug.Log("call start move from check id sot lai");
-            //    StartMove(currentCakeID);
-            //}
-            //else
-            //{
-            //    GameManager.Instance.cakeManager.CheckIDOfCake();
-            //}
-
         }
-        else
-        {
-            //onMove = false;
-            GameManager.Instance.cakeManager.CheckIDOfCake();
-        }
+        //Debug.Log("Check other ID");
+        GameManager.Instance.cakeManager.CheckOtherIDOfCake();
+        //GameManager.Instance.cakeManager.CheckOtherCake();
     }
 
     void ActionCallBackSameCake() {
@@ -367,7 +348,8 @@ public class Table : MonoBehaviour
                 if (plates[i].currentCake.needRotateRightWay && !plates[i].currentCake.cakeDone)
                 {
                     totalNeedRotate++;
-                    plates[i].currentCake.RotateOtherPieceRight(() => { RotateDone(); });
+                    plates[i].currentCake.RotateOtherPieceRight(null);
+                    //plates[i].currentCake.RotateOtherPieceRight(() => { RotateDone(); });
                 }
                 //if (plates[i].currentCake.cakeDone)
                 //{
@@ -377,15 +359,15 @@ public class Table : MonoBehaviour
         }
         clearCakeLoadDone = true;
         //Debug.Log("Total need rotate: "+totalNeedRotate);
-        if (totalNeedRotate == 0)
-            CallBackCheckOtherCakeOnMap();
+        //if (totalNeedRotate == 0)
+            CallBackCheckOtherIDOnMap();
     }
 
     void RotateDone(bool addCurrentRotateDone = true) {
         if (addCurrentRotateDone) currentRotateDone++;
         if (currentRotateDone >= totalNeedRotate) {
             if (clearCakeLoadDone)
-                CallBackCheckOtherCakeOnMap();
+                CallBackCheckOtherIDOnMap();
             //else
             //    DOVirtual.DelayedCall(.15f, () => { RotateDone(false); });
         }
@@ -418,13 +400,13 @@ public class Table : MonoBehaviour
             {
                 if (positionSecondCake == -1)
                 {
-                    Debug.LogWarning("Check cake doc");
+                    //Debug.LogWarning("Check cake doc");
                     //Debug.LogWarning(i + " " + j);
                     if (plateArray[i, j].CheckIsNull() && plateArray[i - 1, j].CheckIsNull())
                         return true;
                 }
                 else {
-                    Debug.LogWarning("Check cake ngang");
+                    //Debug.LogWarning("Check cake ngang");
                     //Debug.LogWarning(i + " " + j);
                     if (plateArray[i, j].CheckIsNull() && plateArray[i, j + 1].CheckIsNull())
                         return true;
@@ -572,6 +554,11 @@ public class Table : MonoBehaviour
             }
         }    
     }
+
+    public bool CheckStuck()
+    {
+        return mapWay.Count == 1 && ways.Count == 0; 
+    }
 }
 
 [System.Serializable]
@@ -629,19 +616,17 @@ public class Way
         lastMove = GameManager.Instance.cakeManager.table.IsLastMove(cakeIDCallBack);
         //Debug.Log("is last move: " + lastMove);
         if (lastMove)
+        {
             DOVirtual.DelayedCall(timeMove, () =>
-              {
-            //if (plateGo == GameManager.Instance.cakeManager.table.bestPlate)
-            //{
-            if (pieces != null)
-                      if (plateGo.CheckCakeIsDone(pieces.cakeID))
-                      {
-                          //Debug.Log("cake done!");
-                          plateGo.DoneCake();
-                      }
-            //}
-        });
-
+            {
+                if (pieces != null)
+                    if (plateGo.CheckCakeIsDone(pieces.cakeID))
+                    {
+                        //Debug.Log("cake done!");
+                        plateGo.DoneCake();
+                    }
+            });
+        }
 
         if (lastMove)
         {

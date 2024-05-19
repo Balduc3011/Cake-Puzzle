@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using DG.Tweening;
 
 public class ProfileManager : Singleton<ProfileManager>
 {
@@ -12,13 +13,10 @@ public class ProfileManager : Singleton<ProfileManager>
     {
         base.Awake();
         playerData.LoadData();
+        DOTween.SetTweensCapacity(3000, 200);
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            PlayerPrefs.DeleteAll();
-        }
         playerData.Update();
     }
 
