@@ -1,4 +1,5 @@
 using DG.Tweening;
+using SDK;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -130,6 +131,7 @@ public class GroupCake : MonoBehaviour
     }
 
     void CallBackStartCheckCake() {
+        ABIAnalyticsManager.Instance.TrackEventMove();
         GameManager.Instance.cakeManager.SetupCheckCake();
     }
 

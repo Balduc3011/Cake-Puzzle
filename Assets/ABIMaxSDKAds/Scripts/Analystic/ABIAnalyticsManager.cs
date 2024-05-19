@@ -185,9 +185,22 @@ namespace SDK {
 #endif
         }
 
-        public void TrackEventLevelComplete(int level) { }
+        public void TrackEventLevelComplete(int level) {
+            string eventName = "Level Up: " + level;
+            ABIFirebaseManager.Instance.LogFirebaseEvent(eventName);
+        }
 
-        public void TrackEventCakeLevelUp(int cakeID, int cakeLevel) { }
+        public void TrackEventCakeLevelUp(int cakeID, int cakeLevel) {
+            string eventName = "Level Up cake ID: " + cakeID+ " level: "+cakeLevel;
+            ABIFirebaseManager.Instance.LogFirebaseEvent(eventName);
+        }
+
+        int moveTime = 0 ;
+        public void TrackEventMove() {
+            moveTime++;
+            string eventName = "Level Up cake ID: " + moveTime;
+            ABIFirebaseManager.Instance.LogFirebaseEvent(eventName);
+        }
 
     }
     public class ImpressionData {

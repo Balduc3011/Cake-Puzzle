@@ -1,3 +1,4 @@
+using SDK;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -276,6 +277,7 @@ public class PlayerResourseSave : SaveBase
         //}
         GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_LevelUp);
         currentLevel++;
+        ABIAnalyticsManager.Instance.TrackEventLevelComplete(currentLevel);
         GameManager.Instance.GetLevelUpReward();
         EventManager.TriggerEvent(EventName.ChangeLevel.ToString());
         expMax = ProfileManager.Instance.dataConfig.levelDataConfig.GetExpToNextLevel(currentLevel);
