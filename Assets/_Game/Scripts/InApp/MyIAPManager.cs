@@ -16,12 +16,14 @@ public class MyIAPManager : MonoBehaviour, IStoreListener {
     public static MyIAPManager instance;
     public const string product_noads = "remove_ads";
 
-    public const string sale_pack1 = "Pack1";
-    public const string sale_pack2 = "Pack2";
-    public const string PackHammer = "PackHammer";
-    public const string PackFillUp = "PackFillUp";
-    public const string PackReRoll = "PackReRoll";
-    public const string PackMoney1 = "PackMoney1";
+    public const string salePack1 = "pack1";
+    public const string piggyPack = "piggy_pack";
+    public const string PackHammer = "pack_hammer";
+    public const string PackFillUp = "pack_fillup";
+    public const string PackReRoll = "pack_reroll";
+    public const string PackMoney1 = "pack_money1";
+    public const string PackMoney2 = "pack_money2";
+    public const string PackMoney3 = "pack_money3";
 
     UnityAction buyFailed, buySuccess;
     void Awake() {
@@ -52,12 +54,14 @@ public class MyIAPManager : MonoBehaviour, IStoreListener {
         Debug.Log("InitializePurchasing");
         // Create a builder, first passing in a suite of Unity provided stores.
         var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
-        builder.AddProduct(sale_pack1, ProductType.Consumable);
-        builder.AddProduct(sale_pack2, ProductType.Consumable);
+        builder.AddProduct(salePack1, ProductType.Consumable);
+        builder.AddProduct(piggyPack, ProductType.Consumable);
         builder.AddProduct(PackHammer, ProductType.Consumable);
         builder.AddProduct(PackFillUp, ProductType.Consumable);
         builder.AddProduct(PackReRoll, ProductType.Consumable);
         builder.AddProduct(PackMoney1, ProductType.Consumable);
+        builder.AddProduct(PackMoney2, ProductType.Consumable);
+        builder.AddProduct(PackMoney3, ProductType.Consumable);
         builder.AddProduct(product_noads, ProductType.Consumable);
         // and this class' instance. Expect a response either in OnInitialized or OnInitializeFailed.
         UnityPurchasing.Initialize(this, builder);
@@ -130,12 +134,14 @@ public class MyIAPManager : MonoBehaviour, IStoreListener {
     private void OnExecutePurchase(string productID) {
         //Debug.Log(productID + " purchased");
         switch (productID) {
-            case sale_pack1:
-            case sale_pack2:
+            case salePack1:
+            case piggyPack:
             case PackHammer:
             case PackFillUp:
             case PackReRoll:
             case PackMoney1:
+            case PackMoney2:
+            case PackMoney3:
                 // TODO //
                 ShopPack pack = ProfileManager.Instance.dataConfig.shopDataConfig.GetShopPack(productID);
                 if (pack != null)

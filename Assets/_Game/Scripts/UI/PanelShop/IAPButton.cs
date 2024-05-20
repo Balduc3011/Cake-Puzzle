@@ -28,11 +28,11 @@ public class IAPButton : MonoBehaviour
         {
             case OfferID.None:
                 break;
-            case OfferID.Pack2:
+            case OfferID.pack1:
                 if(valueTxt != null)
                     valueTxt.text = ProfileManager.Instance.playerData.playerResourseSave.piggySave.ToString();
                 break;
-            case OfferID.Pack1:
+            case OfferID.piggy_pack:
                 break;
             default:
                 break;

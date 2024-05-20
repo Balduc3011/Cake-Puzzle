@@ -54,13 +54,13 @@ public class BoosterItemButton : MonoBehaviour
             switch (boosterType)
             {
                 case ItemType.Hammer:
-                    UIManager.instance.ShowPanelQuickIAP(OfferID.PackHammer);
+                    UIManager.instance.ShowPanelQuickIAP(OfferID.pack_hammer);
                     break;
                 case ItemType.ReRoll:
-                    UIManager.instance.ShowPanelQuickIAP(OfferID.PackReRoll);
+                    UIManager.instance.ShowPanelQuickIAP(OfferID.pack_reroll);
                     break;
                 case ItemType.FillUp:
-                    UIManager.instance.ShowPanelQuickIAP(OfferID.PackFillUp);
+                    UIManager.instance.ShowPanelQuickIAP(OfferID.pack_fillup);
                     break;
                 default:
                     break;

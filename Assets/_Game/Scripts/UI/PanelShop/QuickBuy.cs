@@ -51,7 +51,7 @@ public class QuickBuy : MonoBehaviour
         else
         {
             UIManager.instance.ClosePanelQuickIAP();
-            UIManager.instance.ShowPanelQuickIAP(OfferID.PackMoney1);
+            UIManager.instance.ShowPanelQuickIAP(OfferID.pack_money1);
         }
     }
     void OnWatchAds()

@@ -38,10 +38,12 @@ public class ShopPack
 public enum OfferID
 {
     None = 0,
-    Pack2 = 1,
-    Pack1 = 2,
-    PackHammer = 10,
-    PackFillUp = 20,
-    PackReRoll = 30,
-    PackMoney1 = 40,
+    pack1 = 1,
+    piggy_pack = 2,
+    pack_hammer = 10,
+    pack_fillup = 20,
+    pack_reroll = 30,
+    pack_money1 = 40,
+    pack_money2 = 41,
+    pack_money3 = 42,
 }
