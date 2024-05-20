@@ -18,6 +18,7 @@ public class UIManager : MonoBehaviour {
     public bool isHasPanelIgnoreTutorial = false;
     [SerializeField] RectTransform myRect;
     [SerializeField] GameObject ingameDebugConsole;
+    [SerializeField] GameObject objBlock;
   
     public Camera mainCamera;
     public PanelTotal panelTotal;
@@ -48,6 +49,10 @@ public class UIManager : MonoBehaviour {
         {
             objCheat.SetActive(false);
         }
+    }
+
+    public void TurnBlock(bool active) {
+        objBlock.SetActive(active);
     }
 
     void OffUI() {
