@@ -13,6 +13,16 @@ public class CakeDataConfig : ScriptableObject
     //{
     //    InitCardLevelData();
     //}
+
+    public Sprite GetCakeIcon(int cakeID, int cakeTier) {
+        for (int i = 0; i < cakeDatas.Count; i++)
+        {
+            if (cakeDatas[i].id == cakeID)
+            return cakeDatas[i].icons[cakeTier];
+        }
+        return null;
+    }
+
     public CakeData GetCakeData(int id)
     {
         for (int i = 0; i < cakeDatas.Count; i++)
