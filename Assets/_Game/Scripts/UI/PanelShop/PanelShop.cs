@@ -6,6 +6,7 @@ public class PanelShop : UIPanel
 {
     [SerializeField] UIPanelShowUp uiPanelShowUp;
     [SerializeField] SheetAnimation sheetAnimation;
+    [SerializeField] RectTransform contentRect;
     public override void Awake()
     {
         panelType = UIPanelType.PanelShop;

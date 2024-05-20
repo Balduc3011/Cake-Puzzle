@@ -17,6 +17,7 @@ public class MyIAPManager : MonoBehaviour, IStoreListener {
     public const string product_noads = "remove_ads";
 
     public const string salePack1 = "pack1";
+    public const string salePack2 = "pack2";
     public const string piggyPack = "piggy_pack";
     public const string PackHammer = "pack_hammer";
     public const string PackFillUp = "pack_fillup";
@@ -58,6 +59,7 @@ public class MyIAPManager : MonoBehaviour, IStoreListener {
         // Create a builder, first passing in a suite of Unity provided stores.
         var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
         builder.AddProduct(salePack1, ProductType.Consumable);
+        builder.AddProduct(salePack2, ProductType.Consumable);
         builder.AddProduct(piggyPack, ProductType.Consumable);
         builder.AddProduct(PackHammer, ProductType.Consumable);
         builder.AddProduct(PackFillUp, ProductType.Consumable);
@@ -141,6 +143,7 @@ public class MyIAPManager : MonoBehaviour, IStoreListener {
         //Debug.Log(productID + " purchased");
         switch (productID) {
             case salePack1:
+            case salePack2:
             case piggyPack:
             case PackHammer:
             case PackFillUp:

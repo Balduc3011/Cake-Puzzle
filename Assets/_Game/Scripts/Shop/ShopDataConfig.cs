@@ -40,7 +40,8 @@ public enum OfferID
 {
     None = 0,
     pack1 = 1,
-    piggy_pack = 2,
+    pack2 = 2,
+    piggy_pack = 5,
     pack_hammer = 10,
     pack_fillup = 20,
     pack_reroll = 30,

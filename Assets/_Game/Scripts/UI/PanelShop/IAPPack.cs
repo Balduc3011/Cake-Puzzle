@@ -33,6 +33,10 @@ public class IAPPack : MonoBehaviour
             if(rewards[i].amount != null)
                 rewards[i].amount.text = rewardItems[i].amount.ToString();
         }
+        if(priceTxt != null)
+        {
+            priceTxt.text = "$" + shopPack.defaultPrice.ToString();
+        }
     }
 
     private void Start()
