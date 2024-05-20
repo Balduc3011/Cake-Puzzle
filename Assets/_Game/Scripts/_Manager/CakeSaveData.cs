@@ -34,6 +34,12 @@ public class CakeSaveData : SaveBase
             IsMarkChangeData();
             SaveData();
         }
+        if (ProfileManager.Instance.playerData.playerResourseSave.currentLevel == 0)
+        {
+            AddTutorialCake();
+            IsMarkChangeData();
+            SaveData();
+        }
     }
 
     void AddFirstCake()
@@ -300,6 +306,42 @@ public class CakeSaveData : SaveBase
                 return true;
         }
         return false;
+    }
+
+    void AddTutorialCake()
+    {
+        ClearAllCake();
+
+        CakeOnWait cakeOnWait1 = new CakeOnWait();
+        cakeOnWait1.cakeSaves = new List<CakeSave>();
+        CakeSave cakeSave1 = new CakeSave();
+        cakeOnWait1.cakeSaves.Add(cakeSave1);
+        cakeSave1.pieceCakeIDCount = new List<int>();
+        cakeSave1.pieceCakeIDCount.Add(3);
+        cakeSave1.pieceCakeID = new List<int>();
+        cakeSave1.pieceCakeID.Add(0);
+        cakeOnWaits.Add(cakeOnWait1);
+        
+        CakeOnWait cakeOnWait2 = new CakeOnWait();
+        cakeOnWait2.cakeSaves = new List<CakeSave>();
+        CakeSave cakeSave2 = new CakeSave();
+        cakeOnWait2.cakeSaves.Add(cakeSave2);
+        cakeSave2.pieceCakeIDCount = new List<int>();
+        cakeSave2.pieceCakeIDCount.Add(3);
+        cakeSave2.pieceCakeID = new List<int>();
+        cakeSave2.pieceCakeID.Add(1);
+        cakeOnWaits.Add(cakeOnWait2);
+        
+        CakeOnWait cakeOnWait3 = new CakeOnWait();
+        cakeOnWait3.cakeSaves = new List<CakeSave>();
+        CakeSave cakeSave3 = new CakeSave();
+        cakeOnWait3.cakeSaves.Add(cakeSave3);
+        cakeSave3.pieceCakeIDCount = new List<int>();
+        cakeSave3.pieceCakeIDCount.Add(3);
+        cakeSave3.pieceCakeID = new List<int>();
+        cakeSave3.pieceCakeID.Add(0);
+        cakeOnWaits.Add(cakeOnWait3);
+
     }
 }
 

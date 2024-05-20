@@ -46,8 +46,8 @@ public class ConstantValue
     public static float VAL_DEFAULT_CAKE_ID = 2f;
     public static int VAL_DEFAULT_TROPHY = 10;
     public static float VAL_X2BOOSTER_TIME = 2.5f;
-    public static float VAL_DRAW_PIGGY = 800f;
-    public static float VAL_MAX_PIGGY = 1600f;
+    public static float VAL_DRAW_PIGGY = 1000f;
+    public static float VAL_MAX_PIGGY = 2000f;
     public static float VAL_PIGGY_SAVE = 10;
     public static float VAL_QUEST_STAR = 5;
     public static float VAL_QUEST_COIN = 25;

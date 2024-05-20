@@ -33,6 +33,7 @@ public class ShopPack
 {
     public OfferID packageId;
     public List<ItemData> rewards = new();
+    public float defaultPrice;
 }
 
 public enum OfferID
@@ -46,4 +47,7 @@ public enum OfferID
     pack_money1 = 40,
     pack_money2 = 41,
     pack_money3 = 42,
+    pack_money4 = 43,
+    pack_money5 = 44,
+    pack_money6 = 45,
 }
