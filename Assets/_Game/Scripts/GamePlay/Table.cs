@@ -70,6 +70,7 @@ public class Table : MonoBehaviour
     public void AddFirstPlate(Plate firstPlate) { mapPlate.Add(firstPlate); }
     int currentCakeID;
     public void CreateMapPlate(PlateIndex plateIndex, int cakeID) {
+        Debug.Log("create map plate for cakeid: " + cakeID + " time: " + DateTime.Now);
         List<Plate> plateNeedCheck = new List<Plate>();
 
         if ((plateIndex.indexX + 1) < plateArray.GetLength(0))
@@ -553,11 +554,6 @@ public class Table : MonoBehaviour
                 if (plates[i].currentCake.IsHaveCakeID(cakeID)) plates[i].currentCake.ReInitData();
             }
         }    
-    }
-
-    public bool CheckStuck()
-    {
-        return mapWay.Count == 1 && ways.Count == 0; 
     }
 }
 
