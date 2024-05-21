@@ -150,6 +150,21 @@ public class Cake : MonoBehaviour
         UpdatePlateDecor();
     }
 
+    public void InitData(Plate plate)
+    {
+        SetFirstIndexOfPiece();
+        tweenAnimations.Add(transform.DOScale(scaleDefault, .5f).From(1.2f).SetEase(Ease.InOutBack));
+        totalPieces = GameManager.Instance.cakeManager.GetPiecesTotal() + 1;
+        SetupPiecesCakeID();
+        pieceIndex = 0;
+        SetUpCakeID();
+        for (int i = 0; i < pieceCakeIDCount.Count; i++)
+        {
+            InitPiecesSame(pieceCakeIDCount[i], pieceCakeID[i]);
+        }
+        currentPlate = plate;
+        UpdatePlateDecor();
+    }
     public void InitData(CakeSave cakeSaveData) {
         //Debug.Log("init by data save");
         SetFirstIndexOfPiece();

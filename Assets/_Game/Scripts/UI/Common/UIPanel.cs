@@ -24,7 +24,8 @@ public enum UIPanelType {
     PanelHint,
     PanelDailyQuest,
     PanelQuickTimeEvent,
-    PanelPreAds
+    PanelPreAds,
+    PanelCheat
 }
 public class UIPanel : MonoBehaviour {
     public bool isRegisterInUI = true;

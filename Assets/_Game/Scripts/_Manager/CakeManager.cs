@@ -535,6 +535,11 @@ public class CakeManager : MonoBehaviour
         SetupCheckCake();
     }
 
+    public void LoadCakeCheat() {
+        Cake newCake = Instantiate(cakePref);
+        table.LoadCakeOnPlateCheat(newCake);
+    }
+
     public bool CakeOnWait(GroupCake myGroupCake)
     {
         for (int i = 0; i < cakesWait.Count; i++)

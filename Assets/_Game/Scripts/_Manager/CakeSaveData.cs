@@ -301,6 +301,26 @@ public class CakeSaveData : SaveBase
         }
         return false;
     }
+
+    public void SetData(int cakeID, int currentTier)
+    {
+        for (int i = 0; i < ownedCakes.Count; i++)
+        {
+            if (ownedCakes[i].cakeID == cakeID)
+            {
+                ownedCakes[i].level = currentTier + 1;
+                IsMarkChangeData();
+                SaveData();
+                return;
+            }
+        }
+        OwnedCake cake = new();
+        cake.cakeID = cakeID;
+        cake.level = currentTier + 1;
+        ownedCakes.Add(cake);
+        IsMarkChangeData();
+        SaveData();
+    }
 }
 
 [System.Serializable]

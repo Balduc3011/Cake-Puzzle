@@ -61,11 +61,11 @@ public class CameraManager : MonoBehaviour
         });
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space)) { UsingItemMode(); }
-        if (Input.GetKeyDown(KeyCode.V)) { OutItemMode(); }
-    }
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.Space)) { UsingItemMode(); }
+    //    if (Input.GetKeyDown(KeyCode.V)) { OutItemMode(); }
+    //}
 
     public void UsingItemMode() {
         mainCamera.transform.DOMove(positionUsingItem, .5f).SetEase(Ease.OutCubic);
