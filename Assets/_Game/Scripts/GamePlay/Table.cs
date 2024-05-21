@@ -377,7 +377,7 @@ public class Table : MonoBehaviour
     public bool CheckGroupOneAble() {
         for (int i = 0; i < plates.Count; i++)
         {
-            if (plates[i].currentCake == null || plates[i].currentCake.cakeDone)
+            if (plates[i].CheckIsNull())
                 return true;
         }
         return false;

@@ -362,6 +362,7 @@ public class CakeManager : MonoBehaviour
         }
         else
         {
+            Debug.Log("Call back check loose game");
             actionCallBack(currentCakeCheck);
         }
     }
@@ -416,17 +417,14 @@ public class CakeManager : MonoBehaviour
         if (cakesWait.Count > 0) {
             if (!onCheckLooseGame)
             {
-                //Debug.ClearDeveloperConsole();
-                //Debug.Log("Start check loose game!");
-                DOVirtual.DelayedCall(.4f, ()=> { CheckLooseGame(false); });
-              
+                CheckLooseGame(false);
             }
         }
     }
     
     void CheckLooseGame(bool isCheckOnInit = false) {
         if (cakesWait.Count == 0 || onInitGroup) return;
-       // Debug.Log("On check Loose Game: "+ DateTime.Now);
+        Debug.Log("On check Loose Game: "+ DateTime.Now);
         onCheckLooseGame = true;
         countCheckFaild = isCheckOnInit ? 3 : cakesWait.Count;
         countFaild = 0;
@@ -446,9 +444,12 @@ public class CakeManager : MonoBehaviour
         //Debug.Log(countFaild + " count check fail: " + countCheckFaild);
         if (countFaild == countCheckFaild && countFaild > 0)
         {
-            UIManager.instance.ShowPanelLevelComplete(false);
-            UIManager.instance.panelTotal.OutTimeEvent();
-        }
+            DOVirtual.DelayedCall(.5f, () =>
+            {
+                UIManager.instance.ShowPanelLevelComplete(false);
+                UIManager.instance.panelTotal.OutTimeEvent();
+            });
+        }  
         onCheckLooseGame = false;
         DOTween.ClearCachedTweens();
     }
