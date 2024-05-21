@@ -20,11 +20,18 @@ public class Plate : MonoBehaviour
     [SerializeField] Vector3 pointMoveDown;
     public int currentPieceSame;
     public int currentSpace;
+    [SerializeField] bool tutPlate;
+    public bool actived;
+
     private void Awake()
     {
         pointMoveUp = trsMove.position;
         pointMoveDown = trsMove.position;
         pointMoveUp.y += .3f;
+    }
+    public void ActivePlate()
+    {
+        actived = tutPlate || ProfileManager.Instance.playerData.playerResourseSave.currentLevel > 0;
     }
     public void SetPlateIndex(int x, int y) {
         plateIndex = new PlateIndex(x, y);

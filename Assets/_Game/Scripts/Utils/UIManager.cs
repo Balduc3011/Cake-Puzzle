@@ -142,6 +142,9 @@ public class UIManager : MonoBehaviour {
                 case UIPanelType.PanelPreAds:
                     panel = Instantiate(Resources.Load("UI/PanelPreAds") as GameObject, mainCanvas);
                     break;
+                case UIPanelType.PanelTutorial:
+                    panel = Instantiate(Resources.Load("UI/PanelTutorial") as GameObject, mainCanvas);
+                    break;
             }
             if (panel) panel.SetActive(true);
             return panel;
@@ -168,7 +171,19 @@ public class UIManager : MonoBehaviour {
         GameObject go = GetPanel(UIPanelType.PanelBase);
         go.SetActive(false);
     }
-    
+
+    public void ShowPanelTutorial()
+    {
+        GameObject go = GetPanel(UIPanelType.PanelTutorial);
+        go.SetActive(true);
+    }
+
+    public void ClosePanelTutorial()
+    {
+        GameObject go = GetPanel(UIPanelType.PanelTutorial);
+        go.SetActive(false);
+    }
+
     public void ShowPanelHint(ItemType itemType)
     {
         GameObject go = GetPanel(UIPanelType.PanelHint);

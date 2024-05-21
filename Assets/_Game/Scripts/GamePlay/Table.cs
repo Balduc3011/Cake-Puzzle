@@ -20,12 +20,22 @@ public class Table : MonoBehaviour
     private void Start()
     {
         InitData();
+        EventManager.AddListener(EventName.ChangeLevel.ToString(), ActivePlate);
+        ActivePlate();
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space)) { 
         ClearAllCake();
+        }
+    }
+
+    public void ActivePlate()
+    {
+        for (int i = 0; i < plates.Count; i++)
+        {
+            plates[i].ActivePlate();
         }
     }
 

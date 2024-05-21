@@ -89,6 +89,7 @@ public class AudioManager : MonoBehaviour
 
     public void PlaySoundEffect(SoundId soundId, float volume = 1f)
     {
+        if (!ProfileManager.Instance.GetSettingStatus(SettingId.Sound)) return;
         AudioClip audioClip = GetAudioClip(soundId);
         if (audioClip != null)
         {

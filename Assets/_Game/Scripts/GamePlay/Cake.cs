@@ -333,6 +333,16 @@ public class Cake : MonoBehaviour
       
     }
 
+    bool CheckPickable()
+    {
+        if(ProfileManager.Instance.playerData.playerResourseSave.currentLevel == 0)
+        {
+            return myGroupCake.groupCakeIndex ==
+                GameManager.Instance.tutorialManager.tutCakesId[GameManager.Instance.tutorialManager.currentTutIndex - 1];
+        }
+        return true;
+    }
+
     private void OnMouseDown()
     {
         if (EventSystem.current.IsPointerOverGameObject() || EventSystem.current.IsPointerOverGameObject(0) || UIManager.instance.isHasPopupOnScene)
@@ -342,6 +352,7 @@ public class Cake : MonoBehaviour
             if (EventSystem.current.IsPointerOverGameObject(0))
                 return;
         }
+        if (!CheckPickable()) return;
         //Debug.Log("On click");
         if (onChooseRevive) {
             centerRevive = true;
@@ -518,7 +529,7 @@ public class Cake : MonoBehaviour
             if (lastDrop)
                 actionCallback();
         });
-      
+
         //transform.DOScale(Vector3.one * .9f, .25f).OnComplete(() =>
         //{
         //    if (lastDrop)
@@ -527,6 +538,10 @@ public class Cake : MonoBehaviour
         //    transform.DOScale(Vector3.one, .2f).SetDelay(.2f);
 
         //});
+        if (ProfileManager.Instance.playerData.playerResourseSave.currentLevel == 0)
+        {
+            GameManager.Instance.tutorialManager.PlayTutorial();
+        }
     }
 
     public void GroupDropFail() {
@@ -550,6 +565,7 @@ public class Cake : MonoBehaviour
                 Plate plate = hitInfor.collider.gameObject.GetComponent<Plate>();
                 if (currentPlate != null)
                     currentPlate.Deactive();
+                if (!plate.actived) return;
                 if (plate.currentCake != null)
                 {
                     currentPlate = null;

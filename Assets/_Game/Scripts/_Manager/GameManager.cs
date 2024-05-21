@@ -21,6 +21,7 @@ public class GameManager : Singleton<GameManager>
     public LightManager lightManager;
     public QuestManager questManager;
     public QuickTimeEventManager quickTimeEventManager;
+    public TutorialManager tutorialManager;
     public List<ItemData> rewardItems;
     private void Start()
     {
@@ -33,6 +34,10 @@ public class GameManager : Singleton<GameManager>
         UIManager.instance.ShowPanelPlayGame();
         cakeManager.PlayGame();
         playing = true;
+        if(ProfileManager.Instance.playerData.playerResourseSave.currentLevel == 0 )
+        {
+            tutorialManager.PlayTutorial();
+        }
     }
 
     public void BackToMenu()
