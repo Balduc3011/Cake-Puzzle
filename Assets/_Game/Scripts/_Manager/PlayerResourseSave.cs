@@ -354,6 +354,38 @@ public class PlayerResourseSave : SaveBase
         IsMarkChangeData();
         SaveData();
     }
+
+
+    public void SetCoin() {
+        coins = new BigNumber();
+        coins.value = 1;
+        coins.exp = 29;
+        IsMarkChangeData();
+        SaveData();
+    }
+
+    public void SetItem(ItemType itemType)
+    {
+        for (int i = 0; i < ownedItem.Count; i++)
+        {
+            if (ownedItem[i].ItemType == itemType)
+            {
+                ownedItem[i].amount = 10000;
+                EventManager.TriggerEvent(EventName.AddItem.ToString());
+                IsMarkChangeData();
+                SaveData();
+                return;
+            }
+        }
+        ItemData data = new ItemData();
+        data.ItemType = itemType;
+        data.amount = 10000;
+        ownedItem.Add(data);
+        IsMarkChangeData();
+        SaveData();
+        EventManager.TriggerEvent(EventName.AddItem.ToString());
+
+    }
 }
 
 [System.Serializable]

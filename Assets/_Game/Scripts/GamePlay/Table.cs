@@ -7,6 +7,7 @@ using DG.Tweening;
 using UnityEngine.Purchasing;
 using UnityEngine.UIElements;
 using Unity.VisualScripting;
+using System.Linq;
 public class Table : MonoBehaviour
 {
     public List<Way> ways = new List<Way>();
@@ -80,6 +81,7 @@ public class Table : MonoBehaviour
     public void AddFirstPlate(Plate firstPlate) { mapPlate.Add(firstPlate); }
     int currentCakeID;
     public void CreateMapPlate(PlateIndex plateIndex, int cakeID) {
+        Debug.Log("create map plate for cakeid: " + cakeID + " time: " + DateTime.Now);
         List<Plate> plateNeedCheck = new List<Plate>();
 
         if ((plateIndex.indexX + 1) < plateArray.GetLength(0))
@@ -387,7 +389,7 @@ public class Table : MonoBehaviour
     public bool CheckGroupOneAble() {
         for (int i = 0; i < plates.Count; i++)
         {
-            if (plates[i].currentCake == null || plates[i].currentCake.cakeDone)
+            if (plates[i].CheckIsNull())
                 return true;
         }
         return false;
@@ -427,26 +429,15 @@ public class Table : MonoBehaviour
 
     }
 
-    int indexCakeClear = 0;
     public void ClearAllCakeByItem()
     {
-        indexCakeClear = 0;
-        StartCoroutine(IE_WaitClearCake());
-    }
-
-    IEnumerator IE_WaitClearCake() {
-
-        while (indexCakeClear < plates.Count)
+        for (int i = 0; i < plates.Count; i++)
         {
-            if (plates[indexCakeClear].currentCake != null)
+            if (plates[i].currentCake != null)
             {
-                plates[indexCakeClear].ClearCakeFromItem();
-                yield return new WaitForSeconds(.25f);
+                Destroy(plates[i].currentCake.gameObject);
             }
-            indexCakeClear++;
         }
-
-        GameManager.Instance.cakeManager.TrashOut(UIManager.instance.CloseBlockAll);
     }
 
     public void ClearAllCake() {
@@ -487,6 +478,20 @@ public class Table : MonoBehaviour
         newCake.transform.localPosition = Vector3.zero;
         plateArray[plateIndexTemp.indexX, plateIndexTemp.indexY].currentCake = newCake;
         newCake.InitData(cakeOnPlate.cakeIDs, plateArray[plateIndexTemp.indexX, plateIndexTemp.indexY]);
+    }
+    public Plate GetNullPlate() {
+        List<Plate> plateTemp = new();
+        plateTemp = plates.Where(e => e.currentCake == null).ToList();
+        if (plateTemp.Count > 0)
+            return plateTemp[UnityEngine.Random.Range(0, plateTemp.Count)];
+        return null;
+    }
+    public void LoadCakeOnPlateCheat(Cake newCake) {
+        Plate plateTemp = GetNullPlate();
+        newCake.transform.parent = plateTemp.pointStay.transform;
+        newCake.transform.localPosition = Vector3.zero;
+        plateTemp.currentCake = newCake;
+        newCake.InitData(plateTemp);
     }
 
     public void SaveCake() {
@@ -563,11 +568,6 @@ public class Table : MonoBehaviour
                 if (plates[i].currentCake.IsHaveCakeID(cakeID)) plates[i].currentCake.ReInitData();
             }
         }    
-    }
-
-    public bool CheckStuck()
-    {
-        return mapWay.Count == 1 && ways.Count == 0; 
     }
 }
 

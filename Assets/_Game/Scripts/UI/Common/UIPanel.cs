@@ -25,6 +25,7 @@ public enum UIPanelType {
     PanelDailyQuest,
     PanelQuickTimeEvent,
     PanelPreAds,
+    PanelCheat,
     PanelTutorial
 }
 public class UIPanel : MonoBehaviour {

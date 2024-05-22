@@ -321,7 +321,7 @@ public class CakeSaveData : SaveBase
         cakeSave1.pieceCakeID = new List<int>();
         cakeSave1.pieceCakeID.Add(0);
         cakeOnWaits.Add(cakeOnWait1);
-        
+
         CakeOnWait cakeOnWait2 = new CakeOnWait();
         cakeOnWait2.cakeSaves = new List<CakeSave>();
         CakeSave cakeSave2 = new CakeSave();
@@ -331,7 +331,7 @@ public class CakeSaveData : SaveBase
         cakeSave2.pieceCakeID = new List<int>();
         cakeSave2.pieceCakeID.Add(1);
         cakeOnWaits.Add(cakeOnWait2);
-        
+
         CakeOnWait cakeOnWait3 = new CakeOnWait();
         cakeOnWait3.cakeSaves = new List<CakeSave>();
         CakeSave cakeSave3 = new CakeSave();
@@ -341,7 +341,25 @@ public class CakeSaveData : SaveBase
         cakeSave3.pieceCakeID = new List<int>();
         cakeSave3.pieceCakeID.Add(0);
         cakeOnWaits.Add(cakeOnWait3);
-
+    }
+    public void SetData(int cakeID, int currentTier)
+    {
+        for (int i = 0; i < ownedCakes.Count; i++)
+        {
+            if (ownedCakes[i].cakeID == cakeID)
+            {
+                ownedCakes[i].level = currentTier + 1;
+                IsMarkChangeData();
+                SaveData();
+                return;
+            }
+        }
+        OwnedCake cake = new();
+        cake.cakeID = cakeID;
+        cake.level = currentTier + 1;
+        ownedCakes.Add(cake);
+        IsMarkChangeData();
+        SaveData();
     }
 }
 

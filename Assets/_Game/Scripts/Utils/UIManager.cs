@@ -27,9 +27,55 @@ public class UIManager : MonoBehaviour {
     PanelShop panelShop;
     PanelTopUp panelTopUp;
 
+    [SerializeField] GameObject objSpawnPanel;
+    [SerializeField] GameObject objEffect;
+    [SerializeField] GameObject objCheat;
+    [SerializeField] Button btnCheat;
+    [SerializeField] Button btnShowUI;
+    [SerializeField] Button btnTurnOffUI;
+
     // Start is called before the first frame update
     void Awake() {
         instance = this;
+        if (ProfileManager.Instance.versionStatus == VersionStatus.Cheat)
+        {
+            objCheat.SetActive(true);
+            btnCheat.onClick.AddListener(ShowPanelCheat);
+            btnTurnOffUI.onClick.AddListener(OffUI);
+            btnShowUI.onClick.AddListener(ShowUI);
+        }
+        else
+        {
+            objCheat.SetActive(false);
+        }
+    }
+
+    void OffUI() {
+        objSpawnPanel.SetActive(false);
+        objEffect.SetActive(false);
+        objCheat.SetActive(false);
+        btnShowUI.gameObject.SetActive(true);
+    }
+
+    void ShowUI() {
+        objSpawnPanel.SetActive(true);
+        objEffect.SetActive(true);
+        objCheat.SetActive(true);
+        btnShowUI.gameObject.SetActive(false);
+    }
+
+    public void ShowPanelCheat() {
+        isHasPopupOnScene = true;
+        objCheat.SetActive(false);
+        GameObject go = GetPanel(UIPanelType.PanelCheat);
+        go.transform.SetAsLastSibling();
+        go.SetActive(true);
+    }
+    public void ClosePanelCheat() {
+        isHasPopupOnScene = false;
+        objCheat.SetActive(true);
+        GameObject go = GetPanel(UIPanelType.PanelCheat);
+        go.SetActive(false);
     }
     private void Start()
     {
@@ -141,6 +187,9 @@ public class UIManager : MonoBehaviour {
                     break;
                 case UIPanelType.PanelPreAds:
                     panel = Instantiate(Resources.Load("UI/PanelPreAds") as GameObject, mainCanvas);
+                    break;
+                case UIPanelType.PanelCheat:
+                    panel = Instantiate(Resources.Load("UI/CheatPanel") as GameObject, mainCanvas);
                     break;
                 case UIPanelType.PanelTutorial:
                     panel = Instantiate(Resources.Load("UI/PanelTutorial") as GameObject, mainCanvas);
