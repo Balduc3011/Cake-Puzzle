@@ -23,7 +23,6 @@ public class PanelSetting : UIPanel
         toMenuBtn.onClick.AddListener(BackToMenu);
         Transform = transform;
         SetFirstState();
-        SetUpCheat();
     }
 
     void SetFirstState()
@@ -60,42 +59,5 @@ public class PanelSetting : UIPanel
     {
         GameManager.Instance.BackToMenu();
         OnClose();
-    }
-
-    [SerializeField] GameObject cheatObj;
-    [SerializeField] Button coinBtn;
-    [SerializeField] Button boosterBtn;
-
-    void SetUpCheat()
-    {
-        cheatObj.SetActive(ProfileManager.Instance.versionStatus == VersionStatus.Cheat);
-        coinBtn.onClick.AddListener(AddCoin);
-        boosterBtn.onClick.AddListener(AddBooster);
-    }
-
-    void AddCoin()
-    {
-        ItemData coins = new ItemData();
-        coins.ItemType = ItemType.Coin;
-        coins.amount = 2000;
-        GameManager.Instance.AddItem(coins);
-        EventManager.TriggerEvent(EventName.AddItem.ToString());
-    }
-
-    void AddBooster()
-    {
-        ItemData b1 = new ItemData();
-        b1.ItemType = ItemType.Hammer;
-        b1.amount = 20;
-        GameManager.Instance.AddItem(b1);
-        ItemData b2 = new ItemData();
-        b2.ItemType = ItemType.FillUp;
-        b2.amount = 20;
-        GameManager.Instance.AddItem(b2);
-        ItemData b3 = new ItemData();
-        b3.ItemType = ItemType.ReRoll;
-        b3.amount = 20;
-        GameManager.Instance.AddItem(b3);
-        EventManager.TriggerEvent(EventName.AddItem.ToString());
     }
 }

@@ -27,12 +27,14 @@ public class CheatPanel : UIPanel
     }
 
     void SetItem() {
-        ProfileManager.Instance.playerData.playerResourseSave.SetCoin();
-    }
-    void SetCoin() {
         ProfileManager.Instance.playerData.playerResourseSave.SetItem(ItemType.Hammer);
         ProfileManager.Instance.playerData.playerResourseSave.SetItem(ItemType.FillUp);
         ProfileManager.Instance.playerData.playerResourseSave.SetItem(ItemType.ReRoll);
+        EventManager.TriggerEvent(EventName.AddItem.ToString());
+    }
+    void SetCoin() {
+        ProfileManager.Instance.playerData.playerResourseSave.SetCoin();
+        EventManager.TriggerEvent(EventName.ChangeCoin.ToString());
     }
 
     void ExitPanel() {

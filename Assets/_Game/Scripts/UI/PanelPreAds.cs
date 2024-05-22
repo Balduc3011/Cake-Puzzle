@@ -36,6 +36,8 @@ public class PanelPreAds : UIPanel
     void ShowAds()
     {
         UIManager.instance.ClosePanelPreAds();
+        if (GameManager.Instance.IsHasNoAds()) return;
+        if (ProfileManager.Instance.versionStatus == VersionStatus.Cheat) return;
         AdsManager.Instance.ShowInterstitial();
     }
 }

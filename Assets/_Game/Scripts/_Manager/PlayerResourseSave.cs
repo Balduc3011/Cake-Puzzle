@@ -371,7 +371,6 @@ public class PlayerResourseSave : SaveBase
             if (ownedItem[i].ItemType == itemType)
             {
                 ownedItem[i].amount = 10000;
-                EventManager.TriggerEvent(EventName.AddItem.ToString());
                 IsMarkChangeData();
                 SaveData();
                 return;
@@ -383,7 +382,6 @@ public class PlayerResourseSave : SaveBase
         ownedItem.Add(data);
         IsMarkChangeData();
         SaveData();
-        EventManager.TriggerEvent(EventName.AddItem.ToString());
 
     }
 }

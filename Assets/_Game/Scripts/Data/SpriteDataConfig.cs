@@ -34,7 +34,14 @@ public class SpriteDataConfig : ScriptableObject
 
     public Sprite GetCakeSprite(int cakeUnlockID)
     {
-        return cakeSprite[cakeUnlockID];
+        CakeData cakeData = ProfileManager.Instance.dataConfig.cakeDataConfig.GetCakeData(cakeUnlockID);
+        if(cakeData != null)
+        {
+            int levelPref = ProfileManager.Instance.playerData.cakeSaveData.GetOwnedCakeLevel(cakeUnlockID);
+            if (levelPref > 2) levelPref = 2;
+            return cakeData.icons[levelPref - 1];
+        }
+        return null;
     }
 
 
