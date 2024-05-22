@@ -35,7 +35,8 @@ public class IAPPack : MonoBehaviour
         }
         if(priceTxt != null)
         {
-            priceTxt.text = "$" + shopPack.defaultPrice.ToString();
+            //priceTxt.text = "$" + shopPack.defaultPrice.ToString();
+            SetPrice();
         }
     }
 
@@ -55,6 +56,19 @@ public class IAPPack : MonoBehaviour
     void OnBuyPackSuccess()
     {
         UIManager.instance.ShowPanelItemsReward();
+    }
+
+    void SetPrice()
+    {
+        string priceLocal = MyIAPManager.instance.GetProductPriceFromStore(shopPack.packageId.ToString());
+        if (priceLocal != "$0.01" && priceLocal != "")
+        {
+            priceTxt.text = priceLocal;
+        }
+        else
+        {
+            priceTxt.text = "$" + shopPack.defaultPrice.ToString();
+        }
     }
 }
 
