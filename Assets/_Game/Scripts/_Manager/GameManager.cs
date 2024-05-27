@@ -331,10 +331,17 @@ public class GameManager : Singleton<GameManager>
         AdsManager.Instance.ShowCollapsibleBannerAds(false, null);
     }
 
-    public void ShowInter()
+    public void ShowInterRest()
     {
         if (ProfileManager.Instance.playerData.playerResourseSave.currentLevel >= 3)
             UIManager.instance.ShowPanelPreAds();
+    }
+
+    public void ShowInter()
+    {
+        if (GameManager.Instance.IsHasNoAds()) return;
+        if (ProfileManager.Instance.versionStatus == VersionStatus.Cheat) return;
+        AdsManager.Instance.ShowInterstitial();
     }
 }
 

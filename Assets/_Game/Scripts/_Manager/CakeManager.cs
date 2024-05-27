@@ -698,7 +698,7 @@ public class CakeManager : MonoBehaviour
             if(cakeCount > ConstantValue.VAL_CAKECOUNT_ADS)
             {
                 cakeCount = 0;
-                GameManager.Instance.ShowInter();
+                GameManager.Instance.ShowInterRest();
             }
         }
     }

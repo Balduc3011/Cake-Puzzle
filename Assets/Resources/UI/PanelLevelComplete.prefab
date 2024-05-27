@@ -331,7 +331,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1105339473}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -345,8 +345,8 @@ RectTransform:
   - {fileID: 828951448}
   - {fileID: 818898614}
   - {fileID: 1723876428}
-  m_Father: {fileID: 5220999213121779355}
-  m_RootOrder: 3
+  m_Father: {fileID: 6911256037430158362}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1855,6 +1855,69 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &1875691069784889808
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6911256037430158362}
+  - component: {fileID: 195726983906819384}
+  m_Layer: 0
+  m_Name: Popup
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &6911256037430158362
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1875691069784889808}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2172116514819679486}
+  - {fileID: 7193222007108467804}
+  - {fileID: 1105339474}
+  m_Father: {fileID: 5220999213121779355}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &195726983906819384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1875691069784889808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fce32c5db43d82a4084cc6ae487883e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  overflow: 1
+  itemAnimType: 0
+  startDelay: 0
+  delta: 0.05
+  itemTrs:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  itemCGs: []
 --- !u!1 &2032511446936340302
 GameObject:
   m_ObjectHideFlags: 0
@@ -2010,8 +2073,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5285263615147692371}
-  m_Father: {fileID: 5220999213121779355}
-  m_RootOrder: 1
+  m_Father: {fileID: 6911256037430158362}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -4735,9 +4798,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2682262141557648071}
-  - {fileID: 2172116514819679486}
-  - {fileID: 7193222007108467804}
-  - {fileID: 1105339474}
+  - {fileID: 6911256037430158362}
   m_Father: {fileID: 5327620766031164755}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5436,7 +5497,7 @@ MonoBehaviour:
   btnReviveAds: {fileID: 5745141117805042876}
   winGameCloseBtn: {fileID: 3903800643671848122}
   btnExit: {fileID: 8884844782996040427}
-  panelWrapTrs: {fileID: 5220999213121779355}
+  panelWrapTrs: {fileID: 6911256037430158362}
   bgCanvanGroup: {fileID: 684433710089942966}
   objWinGame: {fileID: 7193222007108467805}
   objLooseGame: {fileID: 2172116514819679487}
@@ -8225,8 +8286,8 @@ RectTransform:
   - {fileID: 7193222007561142807}
   - {fileID: 989851009411672794}
   - {fileID: 5893831733812047740}
-  m_Father: {fileID: 5220999213121779355}
-  m_RootOrder: 2
+  m_Father: {fileID: 6911256037430158362}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}

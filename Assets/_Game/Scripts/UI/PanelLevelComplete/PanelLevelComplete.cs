@@ -41,6 +41,7 @@ public class PanelLevelComplete : UIPanel
 
     private void OnEnable()
     {
+        objLooseGame.SetActive(true);
         panelWrapTrs.DOScale(1, 0.35f).From(0);
         bgCanvanGroup.DOFade(1, 0.35f).From(0);
         btnReviveCoin.interactable = ProfileManager.Instance.playerData.playerResourseSave.IsHasEnoughMoney(ConstantValue.VAL_REVIVE_COIN);
@@ -56,12 +57,12 @@ public class PanelLevelComplete : UIPanel
 
     void ExitPanel() {
         OnClose();
+        GameManager.Instance.ShowInter();
         ProfileManager.Instance.playerData.cakeSaveData.ClearAllCake();
         GameManager.Instance.cakeManager.SetOnMove(false);
         GameManager.Instance.ClearAllCake();
         GameManager.Instance.BackToMenu();
         UIManager.instance.ShowPanelLoading();
-        GameManager.Instance.ShowInter();
     }
 
     void ClosePanel()
