@@ -216,6 +216,16 @@ public class Plate : MonoBehaviour
         return false;
 
     }
+
+    public void AnimationLoose()
+    {
+        anim.SetBool("Alert", true);
+    }
+
+    public void AnimationLooseOut()
+    {
+        anim.SetBool("Alert", false);
+    }
 }
 [System.Serializable]
 public class PlateIndex {

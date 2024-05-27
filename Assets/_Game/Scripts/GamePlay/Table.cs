@@ -569,6 +569,22 @@ public class Table : MonoBehaviour
             }
         }    
     }
+
+    public void AnimLooseGame() {
+        for (int i = 0; i < plates.Count; i++)
+        {
+            if (plates[i].currentCake == null)
+                plates[i].AnimationLoose();
+        }
+    }
+
+    public void AnimLooseGameOut()
+    {
+        for (int i = 0; i < plates.Count; i++)
+        {
+            plates[i].AnimationLooseOut();
+        }
+    }
 }
 
 [System.Serializable]
