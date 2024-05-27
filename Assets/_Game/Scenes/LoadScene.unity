@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731725, g: 0.1341475, b: 0.121078506, a: 1}
+  m_IndirectSpecularColor: {r: 0.1273174, g: 0.13414761, b: 0.12107885, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -218,11 +218,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3744565625552255737, guid: 72fec712b86322e4a86060c37a805d29, type: 3}
       propertyPath: m_AdmobAdSetup.appOpenAdUnitID.AndroidID.Array.data[0]
-      value: ca-app-pub-3940256099942544/2014213617
+      value: ca-app-pub-1618962568938996/1201456249
       objectReference: {fileID: 0}
     - target: {fileID: 3744565625552255737, guid: 72fec712b86322e4a86060c37a805d29, type: 3}
       propertyPath: m_AdmobAdSetup.interstitialAdUnitID.AndroidID.Array.size
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3744565625552255737, guid: 72fec712b86322e4a86060c37a805d29, type: 3}
+      propertyPath: m_AdmobAdSetup.collapsibleBannerAdUnitID.AndroidID.Array.data[0]
+      value: ca-app-pub-1618962568938996/6433515900
       objectReference: {fileID: 0}
     - target: {fileID: 6685391519484111099, guid: 72fec712b86322e4a86060c37a805d29, type: 3}
       propertyPath: m_MainAdsMediationType
@@ -548,9 +552,7 @@ MonoBehaviour:
     playerResourseSave:
       IsChangeData: 0
       stringSave: 
-      coins:
-        value: 0
-        exp: 0
+      coins: 0
       ownedItem: []
       trophy: 0
       trophyRecord: 0
