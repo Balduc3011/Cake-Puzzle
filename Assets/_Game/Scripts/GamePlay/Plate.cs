@@ -25,8 +25,8 @@ public class Plate : MonoBehaviour
 
     private void Awake()
     {
-        pointMoveUp = trsMove.position;
-        pointMoveDown = trsMove.position;
+        //pointMoveUp = trsMove.position;
+        //pointMoveDown = trsMove.position;
         pointMoveUp.y += .3f;
     }
     public void ActivePlate()
