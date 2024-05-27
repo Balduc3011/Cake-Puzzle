@@ -45,6 +45,7 @@ public class PanelLevelComplete : UIPanel
         bgCanvanGroup.DOFade(1, 0.35f).From(0);
         btnReviveCoin.interactable = ProfileManager.Instance.playerData.playerResourseSave.IsHasEnoughMoney(ConstantValue.VAL_REVIVE_COIN);
         hintObj.gameObject.SetActive(false);
+        transform.SetAsLastSibling();
     }
 
     void OnClose()
@@ -58,8 +59,9 @@ public class PanelLevelComplete : UIPanel
         ProfileManager.Instance.playerData.cakeSaveData.ClearAllCake();
         GameManager.Instance.cakeManager.SetOnMove(false);
         GameManager.Instance.ClearAllCake();
-        //UIManager.instance.ShowPanelLoading();
         GameManager.Instance.BackToMenu();
+        UIManager.instance.ShowPanelLoading();
+        GameManager.Instance.ShowInter();
     }
 
     void ClosePanel()
@@ -70,6 +72,8 @@ public class PanelLevelComplete : UIPanel
 
     void ShowPanelHint()
     {
+        objLooseGame.SetActive(false);
+        objWinGame.SetActive(false);
         hintObj.gameObject.SetActive(true);
         sheetAnimation.PlayAnim();
     }

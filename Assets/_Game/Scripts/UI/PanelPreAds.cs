@@ -31,6 +31,7 @@ public class PanelPreAds : UIPanel
         mainSquence.Join(imgCanvasGroup.DOFade(1, timeDuration * 2).From(0).SetEase(Ease.InOutQuad));
         mainSquence.Play();
         mainSquence.OnComplete(ShowAds);
+        transform.SetAsLastSibling();
     }
 
     void ShowAds()

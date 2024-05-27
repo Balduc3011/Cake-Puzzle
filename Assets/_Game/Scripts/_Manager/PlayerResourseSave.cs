@@ -8,7 +8,7 @@ using UnityEngine;
 [System.Serializable]
 public class PlayerResourseSave : SaveBase
 {
-    public BigNumber coins;
+    public int coins;
     public List<ItemData> ownedItem;
     public int trophy;
     public int trophyRecord;
@@ -79,12 +79,12 @@ public class PlayerResourseSave : SaveBase
 
     public bool IsHasEnoughMoney(float amount)
     {
-        return coins.IsBigger(amount);
+        return coins >= amount;
     }
 
     public void AddMoney(float amount)
     {
-        coins.Add(amount);
+        coins += (int)amount;
         IsMarkChangeData();
         SaveData();
         EventManager.TriggerEvent(EventName.ChangeCoin.ToString());
@@ -92,7 +92,7 @@ public class PlayerResourseSave : SaveBase
 
     public void ConsumeMoney(float amount)
     {
-        coins.Substract(amount);
+        coins -= (int)amount;
         IsMarkChangeData();
         SaveData();
         EventManager.TriggerEvent(EventName.ChangeCoin.ToString());
@@ -357,9 +357,7 @@ public class PlayerResourseSave : SaveBase
 
 
     public void SetCoin() {
-        coins = new BigNumber();
-        coins.value = 1;
-        coins.exp = 29;
+        coins = 10000;
         IsMarkChangeData();
         SaveData();
     }

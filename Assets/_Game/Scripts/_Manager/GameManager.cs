@@ -333,7 +333,8 @@ public class GameManager : Singleton<GameManager>
 
     public void ShowInter()
     {
-        UIManager.instance.ShowPanelPreAds();
+        if (ProfileManager.Instance.playerData.playerResourseSave.currentLevel >= 3)
+            UIManager.instance.ShowPanelPreAds();
     }
 }
 

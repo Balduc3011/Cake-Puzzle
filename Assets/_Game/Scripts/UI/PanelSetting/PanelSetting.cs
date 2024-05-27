@@ -58,6 +58,7 @@ public class PanelSetting : UIPanel
     void BackToMenu()
     {
         GameManager.Instance.BackToMenu();
+        UIManager.instance.ShowPanelLoading();
         OnClose();
     }
 }

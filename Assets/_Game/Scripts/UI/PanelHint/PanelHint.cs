@@ -16,6 +16,7 @@ public class PanelHint : UIPanel
 
     public void ShowComponent(ItemType itemType)
     {
+        transform.SetAsLastSibling();
         for (int i = 0; i < hintComponents.Count; i++)
         {
             if (hintComponents[i].itemType == itemType)

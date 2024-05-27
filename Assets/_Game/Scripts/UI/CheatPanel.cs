@@ -26,6 +26,11 @@ public class CheatPanel : UIPanel
         btnCoin.onClick.AddListener(SetCoin);
     }
 
+    private void OnEnable()
+    {
+        transform.SetAsLastSibling();
+    }
+
     void SetItem() {
         ProfileManager.Instance.playerData.playerResourseSave.SetItem(ItemType.Hammer);
         ProfileManager.Instance.playerData.playerResourseSave.SetItem(ItemType.FillUp);

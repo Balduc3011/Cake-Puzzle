@@ -216,6 +216,7 @@ public class PanelTotal : UIPanel
         backGround.SetActive(false);
         functinBar.SetActive(false);
         CheckNoti();
+        UIManager.instance.ShowPanelLoading();
     }
 
     public void BackToMenu()
