@@ -444,9 +444,11 @@ public class CakeManager : MonoBehaviour
         //Debug.Log(countFaild + " count check fail: " + countCheckFaild);
         if (countFaild == countCheckFaild && countFaild > 0)
         {
+            UIManager.instance.TurnBlock(true);
             table.AnimLooseGame();
             DOVirtual.DelayedCall(2f, () =>
             {
+                UIManager.instance.TurnBlock(false);
                 UIManager.instance.ShowPanelLevelComplete(false);
                 UIManager.instance.panelTotal.OutTimeEvent();
                 table.AnimLooseGameOut();
