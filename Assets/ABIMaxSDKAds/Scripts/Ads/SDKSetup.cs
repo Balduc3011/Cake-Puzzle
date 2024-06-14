@@ -6,6 +6,7 @@ using SDK;
 using Sirenix.OdinInspector;
 
 using UnityEngine;
+using UnityEngine.Serialization;
 #if UNITY_EDITOR
 using GoogleMobileAds.Editor;
 using UnityEditor;
@@ -50,7 +51,7 @@ public partial class SDKSetup : ScriptableObject
         AdsManager adsManager = FindObjectOfType<AdsManager>();
         if (adsManager != null)
         {
-            adsManager.UpdateAdsMediationConfig();
+            adsManager.UpdateAdsMediationConfig(this);
             EditorUtility.SetDirty(adsManager);
             EditorSceneManager.MarkSceneDirty(adsManager.gameObject.scene);
         }
@@ -58,24 +59,20 @@ public partial class SDKSetup : ScriptableObject
         {
             Debug.LogError("Please add Manager Prefab to scene (Assets/ABIMaxSDKAds/Prefabs/Manager.prefab)");
         }
-
-        string appsflyerDefineSymbol = "UNITY_APPSFLYER";
-        if (IsActiveAppsflyer)
+        
+        SetupSymbol();
+        if (adsManager)
         {
-            AddDefineSymbol(appsflyerDefineSymbol);   
-        }
-        else
-        {
-            RemoveDefineSymbol(appsflyerDefineSymbol);
-        }
-
-        if (adsMediationType == AdsMediationType.MAX)
-        {
-            string assetPath = "Assets/MaxSdk/Resources/AppLovinSettings.asset";
-            AppLovinSettings applovinSettings = AssetDatabase.LoadAssetAtPath<AppLovinSettings>(assetPath);
-            applovinSettings.SdkKey = sdkKey_MAX;
-            EditorUtility.SetDirty(applovinSettings);
-            AssetDatabase.SaveAssets();
+#if UNITY_AD_MAX
+            if (adsMediationType == AdsMediationType.MAX)
+            {
+                string assetPath = "Assets/MaxSdk/Resources/AppLovinSettings.asset";
+                AppLovinSettings applovinSettings = AssetDatabase.LoadAssetAtPath<AppLovinSettings>(assetPath);
+                applovinSettings.SdkKey = sdkKey_MAX;
+                EditorUtility.SetDirty(applovinSettings);
+                AssetDatabase.SaveAssets();
+            }
+#endif
         }
         
     }
@@ -106,22 +103,10 @@ public partial class SDKSetup : ScriptableObject
         PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup,
             currentDefineSymbols);
     }
-#endif
-}
-public partial class SDKSetup
-{
-    [OnValueChanged("OnAdsTypeChanged")]
-    [BoxGroup("SDK Key")]public AdsMediationType adsMediationType;
-    [BoxGroup("SDK Key")][ShowInInspector, ShowIf("@adsMediationType == AdsMediationType.MAX")]
-    public string sdkKey_MAX
+
+    private void SetupSymbol()
     {
-        get => maxAdsSetup.SDKKey;
-        set => maxAdsSetup.SDKKey = value;
-    }
-    private void OnAdsTypeChanged()
-    {
-#if UNITY_EDITOR
-        string defineSymbol = MAX_MEDIATION_SYMBOL; 
+        string defineSymbol = MAX_MEDIATION_SYMBOL;
         string removeSymbol = IRONSOURCE_MEDIATION_SYMBOL;
         switch (adsMediationType)
         {
@@ -144,11 +129,11 @@ public partial class SDKSetup
                 break;
             case AdsMediationType.NONE:
             {
-                
+
             }
                 break;
         }
-        
+
 
         string currentDefineSymbols =
             PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup);
@@ -162,7 +147,29 @@ public partial class SDKSetup
             PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup,
                 currentDefineSymbols);
         }
+        
+        string appsflyerDefineSymbol = "UNITY_APPSFLYER";
+        if (IsActiveAppsflyer)
+        {
+            AddDefineSymbol(appsflyerDefineSymbol);   
+        }
+        else
+        {
+            RemoveDefineSymbol(appsflyerDefineSymbol);
+        }
+    }
 #endif
+}
+public partial class SDKSetup
+{
+    [BoxGroup("SDK Key")]public AdsMediationType adsMediationType;
+
+    [BoxGroup("SDK Key")]
+    [ShowInInspector, ShowIf("@adsMediationType == AdsMediationType.MAX")]
+    public string sdkKey_MAX
+    {
+        get => maxAdsSetup.SDKKey;
+        set => maxAdsSetup.SDKKey = value;
     }
 }
 public partial class SDKSetup
@@ -184,6 +191,7 @@ public partial class SDKSetup
 public partial class SDKSetup
 {
     [BoxGroup("REWARDED")]public AdsMediationType rewardedAdsMediationType;
+    [BoxGroup("REWARDED")][ShowInInspector, ShowIf("@rewardedAdsMediationType != AdsMediationType.NONE")]public bool IsLinkToRemoveAds = true;
     [BoxGroup("REWARDED")][ShowInInspector, ShowIf("@rewardedAdsMediationType == AdsMediationType.MAX")]
     public string rewardedAdUnitID_MAX
     {
@@ -203,7 +211,6 @@ public partial class SDKSetup
     #if UNITY_AD_MAX
     [BoxGroup("BANNER")][ShowInInspector, ShowIf("@bannerAdsMediationType == AdsMediationType.MAX")] public MaxSdkBase.BannerPosition maxBannerAdsPosition;
     #endif
-    
     #if UNITY_AD_ADMOB
     [BoxGroup("BANNER")][ShowInInspector, ShowIf("@bannerAdsMediationType == AdsMediationType.ADMOB")] public AdPosition admobBannerAdsPosition;
     #endif
@@ -227,9 +234,14 @@ public partial class SDKSetup
 {
     [BoxGroup("COLLAPSIBLE BANNER")] public AdsMediationType collapsibleBannerAdsMediationType;
     
-    [BoxGroup("COLLAPSIBLE BANNER")][ShowInInspector, ShowIf("@collapsibleBannerAdsMediationType != AdsMediationType.NONE")] public AdPosition collapsibleBannerAdsPosition;
+    [BoxGroup("COLLAPSIBLE BANNER")][ShowInInspector, ShowIf("@collapsibleBannerAdsMediationType != AdsMediationType.NONE")] public AdPosition adsPositionCollapsibleBanner;
     
-    [BoxGroup("COLLAPSIBLE BANNER")][ShowInInspector, ShowIf("@collapsibleBannerAdsMediationType != AdsMediationType.NONE")] public bool isCollapsibleBannerShowingOnStart = false;
+    [BoxGroup("COLLAPSIBLE BANNER")][ShowInInspector, ShowIf("@collapsibleBannerAdsMediationType != AdsMediationType.NONE")] public bool isShowingOnStartCollapsibleBanner = false;
+    [BoxGroup("COLLAPSIBLE BANNER")][ShowInInspector, ShowIf("@collapsibleBannerAdsMediationType != AdsMediationType.NONE")] public bool isAutoRefreshCollapsibleBanner = false;
+    [BoxGroup("COLLAPSIBLE BANNER")][ShowInInspector, ShowIf("@collapsibleBannerAdsMediationType != AdsMediationType.NONE && isAutoRefreshCollapsibleBanner")] public bool isAutoRefreshExtendCollapsibleBanner = false;
+    [BoxGroup("COLLAPSIBLE BANNER")][ShowInInspector, ShowIf("@collapsibleBannerAdsMediationType != AdsMediationType.NONE && isAutoRefreshCollapsibleBanner")] [Range(20f,60f)]public float autoRefreshTime = 30;
+    [BoxGroup("COLLAPSIBLE BANNER")][ShowInInspector, ShowIf("@collapsibleBannerAdsMediationType != AdsMediationType.NONE")] public bool isAutoCloseCollapsibleBanner = false;
+    [BoxGroup("COLLAPSIBLE BANNER")][ShowInInspector, ShowIf("@collapsibleBannerAdsMediationType != AdsMediationType.NONE && isAutoCloseCollapsibleBanner")] [Range(20f,60f)]public float autoCloseTime = 30;
 
     [BoxGroup("COLLAPSIBLE BANNER")][ShowInInspector, ShowIf("@collapsibleBannerAdsMediationType == AdsMediationType.MAX")]
     public string collapsibleBannerAdUnitID_MAX

@@ -21,7 +21,7 @@ public class GameManager : Singleton<GameManager>
     public LightManager lightManager;
     public QuestManager questManager;
     public QuickTimeEventManager quickTimeEventManager;
-    public TutorialManager tutorialManager;
+    [field: SerializeField] public TutorialManager tutorialManager { get; private set; }
     public List<ItemData> rewardItems;
     private void Start()
     {
@@ -47,6 +47,7 @@ public class GameManager : Singleton<GameManager>
         cameraManager.ShowARoom(0);
         cameraManager.CloseMainCamera();
         playing = false;
+        ShowCollapsibleBanner();
     }
 
     public float GetDefaultCakeProfit(int cakeID, int level, bool booster = false)
@@ -328,7 +329,8 @@ public class GameManager : Singleton<GameManager>
 
     public void ShowCollapsibleBanner()
     {
-        AdsManager.Instance.ShowCollapsibleBannerAds(false, null);
+        //AdsManager.Instance.ShowCollapsibleBannerAds(false, null);
+        AdsManager.Instance.ShowBannerAds();
     }
 
     public void ShowInterRest()
@@ -345,3 +347,20 @@ public class GameManager : Singleton<GameManager>
     }
 }
 
+public enum WatchVideoRewardType
+{
+    NONE,
+    X2CLAIM,
+    UNLOCKITEM,
+    TEST_ADS,
+    GetFreeBooster,
+    FreeCoinAds,
+    X2RewardAds,
+    CollectCoinAds,
+    BoosterPlayTime,
+    TimeBooster,
+    UpgradeCake,
+    GameOverRevive,
+    FreeSpinAds,
+    GetExtraCard,
+}

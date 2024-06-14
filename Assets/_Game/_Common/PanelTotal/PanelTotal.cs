@@ -379,7 +379,8 @@ public class PanelTotal : UIPanel
         currentCakeDone++;
         txtCountCake.text = currentCakeDone + "/" + sliderQuickTimeEvent.maxValue;
         sliderQuickTimeEvent.value = currentCakeDone;
-        if (currentCakeDone >= sliderQuickTimeEvent.maxValue)
+        if (currentCakeDone >= sliderQuickTimeEvent.maxValue &&
+            GameManager.Instance.quickTimeEventManager.onQuickTimeEvent)
         { 
             UIManager.instance.panelTotal.OutTimeEvent();
             GameManager.Instance.RandonReward();

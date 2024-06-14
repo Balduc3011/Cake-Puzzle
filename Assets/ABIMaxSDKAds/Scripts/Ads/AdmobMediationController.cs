@@ -13,7 +13,6 @@ namespace SDK
 {
     public class AdmobMediationController : AdsMediationController
     {
-        public string m_AndroidAdmobID_AppId;
         public AdmobAdSetup m_AdmobAdSetup;
 
         private InterstitialAd m_InterstitialAds;
@@ -27,14 +26,6 @@ namespace SDK
             if (IsInited) return;
             base.Init();
             InitAdmob();
-        }
-
-        private void Update()
-        {
-            // if (Input.GetKeyDown(KeyCode.A))
-            // {
-            //     ShowCollapsibleBannerAds();
-            // }
         }
 
         #region Consent
@@ -118,9 +109,9 @@ namespace SDK
         public AdPosition m_BannerPosition;
         public bool IsBannerShowingOnStart = false;
         public override void InitBannerAds(UnityAction bannerLoadedCallback, UnityAction bannerAdLoadedFailCallback,
-            UnityAction bannerAdsCollapsedCallback, UnityAction bannerAdsExpandedCallback)
+            UnityAction bannerAdsCallback, UnityAction bannerAdsExpandedCallback)
         {
-            base.InitBannerAds(bannerLoadedCallback, bannerAdLoadedFailCallback, bannerAdsCollapsedCallback, bannerAdsExpandedCallback);
+            base.InitBannerAds(bannerLoadedCallback, bannerAdLoadedFailCallback, bannerAdsCallback, bannerAdsExpandedCallback);
             Debug.Log("Init Admob Banner");
             RequestBannerAds();
             if (!IsBannerShowingOnStart)
@@ -256,19 +247,20 @@ namespace SDK
         public AdPosition m_CollapsibleBannerPosition;
         public bool IsCollapsibleBannerShowingOnStart = false;
         public override void InitCollapsibleBannerAds(UnityAction bannerLoadedCallback, UnityAction bannerAdLoadedFailCallback,
-            UnityAction bannerAdsCollapsedCallback, UnityAction bannerAdsExpandedCallback)
+            UnityAction bannerAdsCollapsedCallback, UnityAction bannerAdsExpandedCallback, UnityAction bannerAdsDestroyedCallback, UnityAction bannerAdsHideCallback)
         {
-            base.InitCollapsibleBannerAds(bannerLoadedCallback, bannerAdLoadedFailCallback, bannerAdsCollapsedCallback, bannerAdsExpandedCallback);
+            base.InitCollapsibleBannerAds(bannerLoadedCallback, bannerAdLoadedFailCallback, bannerAdsCollapsedCallback, bannerAdsExpandedCallback, bannerAdsDestroyedCallback, bannerAdsHideCallback);
             Debug.Log("Init Admob Collapsible Banner");
             RequestCollapsibleBannerAds(IsCollapsibleBannerShowingOnStart);
         }
-
+        
         private BannerView CreateCollapsibleBannerView()
         {
             Debug.Log("Creating Collapsible Banner view");
             string adUnitId = GetCollapsibleBannerID();
             // Create a 320x50 banner at top of the screen
-            BannerView bannerView = new BannerView(adUnitId, AdSize.Banner, m_CollapsibleBannerPosition);
+            AdSize adaptiveSize = AdSize.GetCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(AdSize.FullWidth);
+            BannerView bannerView = new BannerView(adUnitId, adaptiveSize, m_CollapsibleBannerPosition);
             RegisterCollapsibleBannerEvents(bannerView);
             return bannerView;
         }
@@ -331,6 +323,7 @@ namespace SDK
         {
             base.HideCollapsibleBannerAds();
             m_CurrentCollapsibleBanner?.Hide();
+            m_CollapsibleBannerAdsHideCallback?.Invoke();
         }
         public override bool IsCollapsibleBannerLoaded()
         {
@@ -384,6 +377,7 @@ namespace SDK
                 Debug.Log("Destroying banner ad.");
                 m_CurrentCollapsibleBanner.Destroy();
                 m_CurrentCollapsibleBanner = null;
+                m_CollapsibleBannerAdsDestroyedCallback?.Invoke();
             }
             else
             {
@@ -953,4 +947,5 @@ namespace SDK
             return CurrentPlatformID.Count > 0;
         }
     }
+    
 }

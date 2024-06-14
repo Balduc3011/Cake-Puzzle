@@ -51,8 +51,9 @@ public class Plate : MonoBehaviour
     public void CakeDone() { currentCake = null; }
 
     public void Active() {
-        anim.SetBool("Active", true);
-        trsMove.DOMove(pointMoveUp, .15f);
+        //anim.SetBool("Active", true);
+        if (trsMove != null)
+            trsMove.DOMove(pointMoveUp, .15f);
     }
 
     public void ActiveByItem() {
@@ -61,13 +62,14 @@ public class Plate : MonoBehaviour
 
     public void Deactive()
     {
-        anim.SetBool("Active", false);
-        trsMove.DOMove(pointMoveDown, 1f).SetEase(Ease.InOutCubic);
+        //anim.SetBool("Active", false);
+        if(trsMove != null)
+            trsMove.DOMove(pointMoveDown, 1f).SetEase(Ease.InOutCubic);
     }
 
     public void DeActiveByItem()
     { 
-        anim.SetBool("Active", false);
+        //anim.SetBool("Active", false);
     }
     
     public int CalculatePoint(int cakeID)
