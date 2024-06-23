@@ -11,6 +11,7 @@ public class BoosterItemButton : MonoBehaviour
     [SerializeField] Image itemBarIconImg;
     [SerializeField] TextMeshProUGUI itemAmountTxt;
     [SerializeField] Button btnChoose;
+    [SerializeField] GameObject amountBar;
     [SerializeField] GameObject addMoreAlert;
     UnityAction CallBack;
     private void Start()
@@ -31,6 +32,7 @@ public class BoosterItemButton : MonoBehaviour
             if (itemAmountTxt != null)
                 itemAmountTxt.text = itemAmount.ToString();
             addMoreAlert.SetActive(false);
+            amountBar.SetActive(true);
         }
         else
         {
@@ -38,6 +40,7 @@ public class BoosterItemButton : MonoBehaviour
             if (itemAmountTxt != null)
                 itemAmountTxt.text = ConstantValue.STR_BLANK;
             addMoreAlert.SetActive(true);
+            amountBar.SetActive(false);
         }
     }
 
