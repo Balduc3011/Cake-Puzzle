@@ -254,10 +254,10 @@ public class PlayerResourseSave : SaveBase
     }
 
     public void AddExp(float expAdd) {
-        if (currentLevel >= levelMax && currentExp==expMax) {
-            LevelUp();
-            return;
-        }
+        //if (currentLevel >= levelMax && currentExp==expMax) {
+        //    LevelUp();
+        //    return;
+        //}
         currentExp += expAdd;
         if (currentExp >= expMax)
         {
@@ -269,12 +269,6 @@ public class PlayerResourseSave : SaveBase
     }
 
     public void LevelUp() {
-        //int cakeID = ProfileManager.Instance.dataConfig.levelDataConfig.GetCakeID(currentLevel);
-        //if (cakeID != -1)
-        //{
-        //    ProfileManager.Instance.playerData.cakeSaveData.AddCake(cakeID);
-        //    ProfileManager.Instance.playerData.cakeSaveData.UseCake(cakeID);
-        //}
         GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_LevelUp);
         currentLevel++;
         ABIAnalyticsManager.Instance.TrackEventLevelComplete(currentLevel);

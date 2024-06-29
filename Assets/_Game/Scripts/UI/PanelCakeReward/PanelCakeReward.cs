@@ -43,11 +43,6 @@ public class PanelCakeReward : UIPanel
     {
         GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         UIManager.instance.ClosePanelCakeReward();
-        //GameManager.Instance.cakeManager.cakeShowComponent.ShowNormalCake();
-        //GameManager.Instance.cakeManager.cakeShowComponent.ShowNextToUnlockCake();
-        //GameManager.Instance.cakeManager.ClearAllCake();
-        //GameManager.Instance.cakeManager.SetOnMove(false);
-        //UIManager.instance.ShowPanelLoading();
         UIManager.instance.ShowPanelSelectReward();
     }
 }

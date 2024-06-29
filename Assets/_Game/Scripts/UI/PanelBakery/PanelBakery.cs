@@ -38,6 +38,7 @@ public class PanelBakery : UIPanel
             ReloadPanel(true);
         OnCakeSwaped();
         cakeInfoPopup.SetActive(false);
+        closeBtn.gameObject.SetActive(GameManager.Instance.playing);
 
     }
 

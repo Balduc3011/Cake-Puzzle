@@ -30,7 +30,7 @@ public class PanelPreAds : UIPanel
         mainSquence.Join(imgTransform.DOMoveY(transform.position.y, timeDuration).From(transform.position.y - 100f).SetEase(Ease.OutBack));
         mainSquence.Join(imgCanvasGroup.DOFade(1, timeDuration * 2).From(0).SetEase(Ease.InOutQuad));
         mainSquence.Play();
-        mainSquence.OnComplete(ShowAds);
+        DOVirtual.DelayedCall(4, ShowAds);
         transform.SetAsLastSibling();
     }
 
