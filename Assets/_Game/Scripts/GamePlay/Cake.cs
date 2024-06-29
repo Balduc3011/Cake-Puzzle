@@ -48,6 +48,7 @@ public class Cake : MonoBehaviour
     bool flagDoActionCallBack = false;
     bool onChooseRevive = false;
     bool centerRevive = false;
+    bool doneDrop = false;
 
     [Header("OTHER COMPONENT")]
     public Plate currentPlate;
@@ -93,12 +94,14 @@ public class Cake : MonoBehaviour
     bool onUsingFillUp;
     void UsingFillUpMode()
     {
-        SetActiveCollider(true);
+        if (doneDrop)
+            SetActiveCollider(true);
         onUsingFillUp = true;
     }
 
     void UsingFillUpDone() {
-        SetActiveCollider(false);
+        if (doneDrop)
+            SetActiveCollider(false);
         onUsingFillUp = false;
     }
 
@@ -107,13 +110,10 @@ public class Cake : MonoBehaviour
         switch (cakePosition)
         {
             case -1:
-                Debug.Log((plateIndex.indexX + 1) + " / " + currentPlate.plateIndex.indexX);
                 if (plateIndex.indexX + 1 != currentPlate.plateIndex.indexX)
                     return false;
                 return true;
             case 1:
-                Debug.Log(plateIndex + " " + currentPlate.plateIndex);
-                Debug.Log((plateIndex.indexY - 1) + " / " + currentPlate.plateIndex.indexY);
                 if (plateIndex.indexY - 1 != currentPlate.plateIndex.indexY)
                     return false;
                 return true;
@@ -125,22 +125,26 @@ public class Cake : MonoBehaviour
     bool onUsingHammger;
     void UsingHammerMode()
     {
-        SetActiveCollider(true);
+        if (doneDrop)
+            SetActiveCollider(true);
         onUsingHammger = true;
     }
 
     void UsingHammerModeDone() {
-        SetActiveCollider(false);
+        if (doneDrop)
+            SetActiveCollider(false);
         onUsingHammger = false;
     }
 
     void OnUsingRevive() {
-        SetActiveCollider(true);
+        if (doneDrop)
+            SetActiveCollider(true);
         onChooseRevive = true;
     }
 
     void OnUsingReviveDone() {
-        SetActiveCollider(false);
+        if (doneDrop)
+            SetActiveCollider(false);
         onChooseRevive = false;
     }
 
@@ -192,6 +196,7 @@ public class Cake : MonoBehaviour
 
     public void InitData(List<int> cakeIDs, Plate plate) {
         //Debug.Log("init by data save on plate");
+        doneDrop = true;
         SetFirstIndexOfPiece();
         currentPlate = plate;
         InitData(cakeIDs);
@@ -547,6 +552,7 @@ public class Cake : MonoBehaviour
 
     
     public void DropDone(bool lastDrop, UnityAction actionCallback) {
+        doneDrop = true;
         myCollider.enabled = false;
         onDrop = true;
         transform.parent = currentPlate.pointStay;
