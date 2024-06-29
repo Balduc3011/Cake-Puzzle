@@ -152,6 +152,10 @@ public class GameManager : Singleton<GameManager>
                 newItem.subId = randonCake;
                 //ColectRewardCakeCard((int)newItem.amount);
             }
+            else if(newItem.ItemType == ItemType.Coin)
+            {
+                newItem.amount = (int)(UnityEngine.Random.Range(2, 8)) * 10;
+            }
             else
             {
                 //newItem.amount = UnityEngine.Random.Range(1, 5);
