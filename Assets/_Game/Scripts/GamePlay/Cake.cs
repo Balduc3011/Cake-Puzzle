@@ -55,6 +55,7 @@ public class Cake : MonoBehaviour
 
     [SerializeField] Transform spawnContainer;
     [SerializeField] LayerMask mask;
+    [SerializeField] Collider myCollider;
     RaycastHit hitInfor;
 
     GroupCake myGroupCake;
@@ -92,10 +93,12 @@ public class Cake : MonoBehaviour
     bool onUsingFillUp;
     void UsingFillUpMode()
     {
+        SetActiveCollider(true);
         onUsingFillUp = true;
     }
 
     void UsingFillUpDone() {
+        SetActiveCollider(false);
         onUsingFillUp = false;
     }
 
@@ -104,11 +107,14 @@ public class Cake : MonoBehaviour
         switch (cakePosition)
         {
             case -1:
-                if (plateIndex.indexY - 1 != currentPlate.plateIndex.indexY)
+                Debug.Log((plateIndex.indexX + 1) + " / " + currentPlate.plateIndex.indexX);
+                if (plateIndex.indexX + 1 != currentPlate.plateIndex.indexX)
                     return false;
                 return true;
             case 1:
-                if (plateIndex.indexX - 1 != currentPlate.plateIndex.indexX)
+                Debug.Log(plateIndex + " " + currentPlate.plateIndex);
+                Debug.Log((plateIndex.indexY - 1) + " / " + currentPlate.plateIndex.indexY);
+                if (plateIndex.indexY - 1 != currentPlate.plateIndex.indexY)
                     return false;
                 return true;
             default:
@@ -119,18 +125,22 @@ public class Cake : MonoBehaviour
     bool onUsingHammger;
     void UsingHammerMode()
     {
+        SetActiveCollider(true);
         onUsingHammger = true;
     }
 
     void UsingHammerModeDone() {
+        SetActiveCollider(false);
         onUsingHammger = false;
     }
 
     void OnUsingRevive() {
+        SetActiveCollider(true);
         onChooseRevive = true;
     }
 
-    void OnUsingReviveDone() { 
+    void OnUsingReviveDone() {
+        SetActiveCollider(false);
         onChooseRevive = false;
     }
 
@@ -167,6 +177,7 @@ public class Cake : MonoBehaviour
     }
     public void InitData(CakeSave cakeSaveData) {
         //Debug.Log("init by data save");
+        
         SetFirstIndexOfPiece();
         tweenAnimations.Add(transform.DOScale(scaleDefault, .5f).From(1.2f).SetEase(Ease.InOutBack));
         pieceCakeIDCount = cakeSaveData.pieceCakeIDCount;
@@ -474,6 +485,11 @@ public class Cake : MonoBehaviour
         EventManager.TriggerEvent(EventName.UsingHammerDone.ToString());
     }
 
+    public void SetActiveCollider(bool active)
+    {
+        myCollider.enabled = active;
+    }
+
     public void UsingRevive(bool lastCake = false) {
         if (cakeDone)
             return;
@@ -531,6 +547,7 @@ public class Cake : MonoBehaviour
 
     
     public void DropDone(bool lastDrop, UnityAction actionCallback) {
+        myCollider.enabled = false;
         onDrop = true;
         transform.parent = currentPlate.pointStay;
         tweenAnimations.Add(transform.DOLocalMove(Vector3.zero, .1f).SetEase(Ease.InQuad).OnComplete(()=> {
@@ -570,11 +587,11 @@ public class Cake : MonoBehaviour
 
     public void CheckOnMouse() {
         if (onDrop) return;
-        Debug.DrawLine(transform.position, transform.position - vectorCheckOffset);
+        //Debug.DrawLine(transform.position, transform.position - vectorCheckOffset);
         if (Physics.Linecast(transform.position, transform.position - vectorCheckOffset, out hitInfor))
         {
             //Debug.Log(hitInfor.collider.gameObject.name);
-            //Debug.DrawLine(transform.position, hitInfor.point);
+            Debug.DrawLine(transform.position, hitInfor.point);
             if (hitInfor.collider.gameObject.layer == 6)
             {
                 Plate plate = hitInfor.collider.gameObject.GetComponent<Plate>();

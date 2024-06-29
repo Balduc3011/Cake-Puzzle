@@ -101,7 +101,7 @@ public class GroupCake : MonoBehaviour
         }
 
         if (cake.Count == 2) {
-            if (cake[0].CheckPlateOtherCake(cake[1].currentPlate.plateIndex, cakePosition))
+            if (!cake[0].CheckPlateOtherCake(cake[1].currentPlate.plateIndex, cakePosition))
             {
                 DropFail();
                 return;

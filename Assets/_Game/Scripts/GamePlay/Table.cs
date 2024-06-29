@@ -28,7 +28,7 @@ public class Table : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space)) { 
-        ClearAllCake();
+            ClearAllCake();
         }
     }
 
@@ -478,6 +478,7 @@ public class Table : MonoBehaviour
         newCake.transform.localPosition = Vector3.zero;
         plateArray[plateIndexTemp.indexX, plateIndexTemp.indexY].currentCake = newCake;
         newCake.InitData(cakeOnPlate.cakeIDs, plateArray[plateIndexTemp.indexX, plateIndexTemp.indexY]);
+        newCake.SetActiveCollider(false);
     }
     public Plate GetNullPlate() {
         List<Plate> plateTemp = new();
