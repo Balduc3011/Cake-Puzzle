@@ -106,6 +106,18 @@ public class CakeManager : MonoBehaviour
             }
         }
     }
+
+    public bool CheckPlateHaveCakeDone(PlateIndex plateIndex)
+    {
+        
+        if (currentCakeCheck != null)
+        {
+            if (currentCakeCheck.cakeDone || currentCakeCheck.pieces.Count == 0)
+                return true;
+            return false;
+        }return true;
+    }
+
     public bool SetCurrentGroupCake(GroupCake gCake) {
         if (currentGCake != null) return false;
         mousePos = Input.mousePosition;
@@ -362,38 +374,7 @@ public class CakeManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Call back check loose game");
-            actionCallBack(currentCakeCheck);
-        }
-    }
-    public void CheckIDOfCake() {
-        cakeIDIndex++;
-        if (cakeIDIndex < totalIDNeedCheck)
-        {
-            if (totalIDNeedCheck > currentCakeCheck.pieceCakeID.Count)
-            {
-                cakeIDIndex--;
-                totalIDNeedCheck = currentCakeCheck.pieceCakeID.Count;
-            }
-            if (CheckHaveCakeID(currentCakeCheck.pieceCakeID[cakeIDIndex]))
-            {
-                //Debug.Log("==================================================================================================");
-                //Debug.Log("CHECK ID: "+ currentCakeCheck.pieceCakeID[cakeIDIndex] + " plate: "+ currentCakeCheck.currentPlate);
-                
-                table.ClearMapPlate(currentCakeCheck.pieceCakeID[cakeIDIndex]);
-                table.AddFirstPlate(currentCakeCheck.currentPlate);
-                table.CreateMapPlate(currentCakeCheck.currentPlate.GetPlateIndex(), currentCakeCheck.pieceCakeID[cakeIDIndex]);
-                table.FindPlateBest(currentCakeCheck.pieceCakeID[cakeIDIndex]);
-                table.StartCreateWay();
-                table.StartMove(currentCakeCheck.pieceCakeID[cakeIDIndex]);
-            }
-            else
-            {
-                CheckIDOfCake();
-            }
-        }
-        else
-        {
+            //Debug.Log("Call back check loose game");
             actionCallBack(currentCakeCheck);
         }
     }
@@ -424,7 +405,7 @@ public class CakeManager : MonoBehaviour
     
     void CheckLooseGame(bool isCheckOnInit = false) {
         if (cakesWait.Count == 0 || onInitGroup) return;
-        Debug.Log("On check Loose Game: "+ DateTime.Now);
+        //Debug.Log("On check Loose Game: "+ DateTime.Now);
         onCheckLooseGame = true;
         countCheckFaild = isCheckOnInit ? 3 : cakesWait.Count;
         countFaild = 0;
