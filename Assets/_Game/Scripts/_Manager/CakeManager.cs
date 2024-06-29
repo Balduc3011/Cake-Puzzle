@@ -188,9 +188,9 @@ public class CakeManager : MonoBehaviour
     void SetCountPieces() {
         countCake.Clear();
         haveMoreCake = ProfileManager.Instance.playerData.cakeSaveData.IsHaveMoreThanThreeCake();
-        countCake.Add(ProfileManager.Instance.dataConfig.rateDataConfig.GetRandomSlot(haveMoreCake) + 1);
-        countCake.Add(ProfileManager.Instance.dataConfig.rateDataConfig.GetRandomSlot(haveMoreCake) + 1);
-        countCake.Add(ProfileManager.Instance.dataConfig.rateDataConfig.GetRandomSlot(haveMoreCake) + 1);
+        countCake.Add(ProfileManager.Instance.dataConfig.rateDataConfig.GetRandomSlot(haveMoreCake, cakeOnPlates.Count) + 1);
+        countCake.Add(1);
+        countCake.Add(1);
     }
 
     public int GetPiecesTotal() {

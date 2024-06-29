@@ -41,7 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3108695516489363357}
   - component: {fileID: 3108695516489363356}
-  - component: {fileID: 6308411296484759747}
+  - component: {fileID: 5952106790105747276}
   m_Layer: 0
   m_Name: Cake
   m_TagString: Untagged
@@ -94,14 +94,15 @@ MonoBehaviour:
   mask:
     serializedVersion: 2
     m_Bits: 64
+  myCollider: {fileID: 5952106790105747276}
   vectorOffsetEffect: {x: 0, y: 0.5, z: 0}
   vectorOffsetEffectDrop: {x: 0, y: 0.1, z: 0}
   vectorOffsetExp: {x: 0, y: 30, z: 0}
-  vectorCheckOffset: {x: 0, y: 10, z: -5}
+  vectorCheckOffset: {x: 0, y: 20, z: -20}
   listPieceTemp:
   - {fileID: 0}
---- !u!135 &6308411296484759747
-SphereCollider:
+--- !u!65 &5952106790105747276
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -111,5 +112,5 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.45
+  m_Size: {x: 1.4, y: 0.2, z: 1.4}
   m_Center: {x: 0, y: 0, z: 0}

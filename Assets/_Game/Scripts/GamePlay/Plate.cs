@@ -22,6 +22,7 @@ public class Plate : MonoBehaviour
     public int currentSpace;
     [SerializeField] bool tutPlate;
     public bool actived;
+    [SerializeField] GameObject ring;
 
     private void Awake()
     {
@@ -51,6 +52,7 @@ public class Plate : MonoBehaviour
     public void CakeDone() { currentCake = null; }
 
     public void Active() {
+        ring.SetActive(true);
         //anim.SetBool("Active", true);
         if (trsMove != null)
             trsMove.DOMove(pointMoveUp, .15f);
@@ -62,8 +64,9 @@ public class Plate : MonoBehaviour
 
     public void Deactive()
     {
+        ring.SetActive(false);
         //anim.SetBool("Active", false);
-        if(trsMove != null)
+        if (trsMove != null)
             trsMove.DOMove(pointMoveDown, 1f).SetEase(Ease.InOutCubic);
     }
 
