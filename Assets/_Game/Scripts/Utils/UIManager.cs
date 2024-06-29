@@ -86,7 +86,8 @@ public class UIManager : MonoBehaviour {
     {
         //uiPooling.FirstPooling();
         //StartCoroutine(WaitToSpawnUIPool());
-        //ingameDebugConsole.SetActive(ProfileManager.Instance.IsShowDebug());
+        if(ingameDebugConsole != null)
+        ingameDebugConsole.SetActive(ProfileManager.Instance.IsShowDebug());
         ShowPanelTotal();
         ShowPanelLoading();
     }

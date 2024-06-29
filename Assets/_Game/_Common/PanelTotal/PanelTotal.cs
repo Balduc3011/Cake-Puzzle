@@ -210,12 +210,14 @@ public class PanelTotal : UIPanel
         GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         GameManager.Instance.cameraManager.FirstCamera();
         GameManager.Instance.cameraManager.OpenMainCamera();
-        GameManager.Instance.PlayGame();
+        //GameManager.Instance.PlayGame();
         navBarContent.SetActive(false);
         mainMenuContent.SetActive(false);
         backGround.SetActive(false);
         functinBar.SetActive(false);
         CheckNoti();
+        UIManager.instance.ShowPanelLoading();
+        DOVirtual.DelayedCall(2.5f, GameManager.Instance.PlayGame);
     }
 
     public void BackToMenu()
@@ -377,7 +379,8 @@ public class PanelTotal : UIPanel
         currentCakeDone++;
         txtCountCake.text = currentCakeDone + "/" + sliderQuickTimeEvent.maxValue;
         sliderQuickTimeEvent.value = currentCakeDone;
-        if (currentCakeDone >= sliderQuickTimeEvent.maxValue)
+        if (currentCakeDone >= sliderQuickTimeEvent.maxValue &&
+            GameManager.Instance.quickTimeEventManager.onQuickTimeEvent)
         { 
             UIManager.instance.panelTotal.OutTimeEvent();
             GameManager.Instance.RandonReward();

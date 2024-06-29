@@ -31,8 +31,8 @@ public class ConstantValue
     public static string STR_FURNITURE = "Furniture";
     public static string STR_EXP = "exp";
     public static string STR_POINT = "p";
-    public static string STR_ShowX2BoosterAds = "Get x2 coin from any cake completed";
-    public static string STR_ShowCoinBoosterAds = "Instantly get extra 100 coins";
+    public static string STR_ShowX2BoosterAds = "Get x2 income from completed cake";
+    public static string STR_ShowCoinBoosterAds = "Get extra 100 coins";
 
     // VECTOR3
     public static Vector3 VEC3_VECTOR3_1 = new Vector3(1, 1, 1);

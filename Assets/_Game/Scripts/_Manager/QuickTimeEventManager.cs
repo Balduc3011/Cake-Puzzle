@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class QuickTimeEventManager : MonoBehaviour
 {
-    bool onQuickTimeEvent;
+    public bool onQuickTimeEvent;
     float timeGamePlay;
     [SerializeField] float timeGamePlaySetting;
     [SerializeField] int cakeNeedDone;

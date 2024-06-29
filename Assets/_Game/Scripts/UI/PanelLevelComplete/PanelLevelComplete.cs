@@ -1,6 +1,5 @@
 using AssetKits.ParticleImage.Enumerations;
 using DG.Tweening;
-using SDK;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -41,10 +40,12 @@ public class PanelLevelComplete : UIPanel
 
     private void OnEnable()
     {
+        objLooseGame.SetActive(true);
         panelWrapTrs.DOScale(1, 0.35f).From(0);
         bgCanvanGroup.DOFade(1, 0.35f).From(0);
         btnReviveCoin.interactable = ProfileManager.Instance.playerData.playerResourseSave.IsHasEnoughMoney(ConstantValue.VAL_REVIVE_COIN);
         hintObj.gameObject.SetActive(false);
+        transform.SetAsLastSibling();
     }
 
     void OnClose()
@@ -55,11 +56,12 @@ public class PanelLevelComplete : UIPanel
 
     void ExitPanel() {
         OnClose();
+        GameManager.Instance.ShowInter();
         ProfileManager.Instance.playerData.cakeSaveData.ClearAllCake();
         GameManager.Instance.cakeManager.SetOnMove(false);
         GameManager.Instance.ClearAllCake();
-        //UIManager.instance.ShowPanelLoading();
         GameManager.Instance.BackToMenu();
+        UIManager.instance.ShowPanelLoading();
     }
 
     void ClosePanel()
@@ -70,6 +72,8 @@ public class PanelLevelComplete : UIPanel
 
     void ShowPanelHint()
     {
+        objLooseGame.SetActive(false);
+        objWinGame.SetActive(false);
         hintObj.gameObject.SetActive(true);
         sheetAnimation.PlayAnim();
     }

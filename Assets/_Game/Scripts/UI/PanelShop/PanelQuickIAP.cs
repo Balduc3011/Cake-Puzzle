@@ -25,6 +25,7 @@ public class PanelQuickIAP : UIPanel
             if (popups[i].packageId == packageId)
             {
                 popups[i].popUp.SetActive(true);
+                transform.SetAsLastSibling();
             }
             else
             {

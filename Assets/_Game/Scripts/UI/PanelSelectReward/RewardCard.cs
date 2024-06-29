@@ -21,7 +21,7 @@ public class RewardCard : MonoBehaviour
     [SerializeField] GameObject bg;
     [SerializeField] CanvasGroup cardLight;
     Transform moveTarget;
-    [SerializeField] GameObject border1;
+    //[SerializeField] GameObject border1;
 
     List<ItemData> rewards = new();
     ItemData toReward;
@@ -141,7 +141,7 @@ public class RewardCard : MonoBehaviour
             toReward = rewards[cardID];
             //rewardIcon.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetItemSprite(toReward.ItemType);
             rewardAmountTxt.text = toReward.amount.ToString();
-            border1.SetActive(toReward.ItemType == ItemType.Cake);
+            //border1.SetActive(toReward.ItemType == ItemType.Cake);
             if (toReward.ItemType != ItemType.Cake)
                 rewardIcon.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetItemSprite(toReward.ItemType);
             else

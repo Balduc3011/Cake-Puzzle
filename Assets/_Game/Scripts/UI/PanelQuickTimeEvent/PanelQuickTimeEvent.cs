@@ -29,6 +29,7 @@ public class PanelQuickTimeEvent : UIPanel
         mainSquence.Join(imgCanvasGroup.DOFade(1, timeDuration * 2).From(0).SetEase(Ease.InOutQuad));
         mainSquence.Play();
         mainSquence.OnComplete(AnimationDone);
+        transform.SetAsLastSibling();
     }
 
     void AnimationDone() {
