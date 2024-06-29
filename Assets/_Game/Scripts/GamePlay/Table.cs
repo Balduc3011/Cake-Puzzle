@@ -81,8 +81,13 @@ public class Table : MonoBehaviour
     public void AddFirstPlate(Plate firstPlate) { mapPlate.Add(firstPlate); }
     int currentCakeID;
     public void CreateMapPlate(PlateIndex plateIndex, int cakeID) {
-        Debug.Log("create map plate for cakeid: " + cakeID + " time: " + DateTime.Now);
+        //Debug.Log("create map plate for cakeid: " + cakeID + " time: " + DateTime.Now);
         List<Plate> plateNeedCheck = new List<Plate>();
+        if (CheckPlateHaveCakeDone(plateIndex))
+        {
+            GameManager.Instance.cakeManager.CheckOtherIDOfCake();
+            return;
+        }
 
         if ((plateIndex.indexX + 1) < plateArray.GetLength(0))
             plateNeedCheck.Add(plateArray[plateIndex.indexX + 1, plateIndex.indexY]);
@@ -109,6 +114,17 @@ public class Table : MonoBehaviour
                 }
             }
         }
+    }
+
+    public bool CheckPlateHaveCakeDone(PlateIndex plateIndex) {
+        
+        if (plateArray[plateIndex.indexX, plateIndex.indexY].currentCake != null)
+        {
+            if (plateArray[plateIndex.indexX, plateIndex.indexY].currentCake.cakeDone || plateArray[plateIndex.indexX, plateIndex.indexY].currentCake.pieces.Count == 0)
+                return true;
+            return false;
+        }
+        return true;
     }
 
     public Plate bestPlate;
