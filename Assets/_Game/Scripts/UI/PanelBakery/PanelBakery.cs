@@ -8,8 +8,6 @@ using UnityEngine.UI;
 public class PanelBakery : UIPanel
 {
     [SerializeField] UIPanelShowUp uiPanelShowUp;
-    [SerializeField] GameObject lobbyTitle;
-    [SerializeField] GameObject playingTitle;
     [SerializeField] Button closeBtn;
     [SerializeField] InventoryCake inventoryCakePrefab;
     [SerializeField] List<InventoryCake> inventoryCakeList;
@@ -40,8 +38,6 @@ public class PanelBakery : UIPanel
             ReloadPanel(true);
         OnCakeSwaped();
         cakeInfoPopup.SetActive(false);
-        lobbyTitle.SetActive(!GameManager.Instance.playing);
-        playingTitle.SetActive(GameManager.Instance.playing);
 
     }
 

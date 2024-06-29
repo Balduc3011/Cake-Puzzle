@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class NavBarItem : MonoBehaviour
 {
     [SerializeField] Button itemBtn;
+    public RectTransform rectTransform;
     [SerializeField] Image iconImg;
     public Transform position;
     public Transform lowPosition;

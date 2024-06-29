@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -32,6 +33,8 @@ public class PanelSpin : UIPanel
     float markValue = 45f;
     float overrun = 0;
     [SerializeField] int selectedSlide = -1;
+    float amountToSpin;
+    float spinTime = 4;
     public override void Awake()
     {
         panelType = UIPanelType.PanelSpin;
@@ -107,14 +110,11 @@ public class PanelSpin : UIPanel
             OnSpin();
         else
         {
-            //if (GameManager.Instance.IsHasNoAds())
-            //    OnSpin();
-            //else
-            //    AdsManager.Instance.ShowRewardVideo(WatchVideoRewardType.FreeSpinAds.ToString(), OnSpin);
-
-            GameManager.Instance.ShowRewardVideo(WatchVideoRewardType.FreeSpinAds, OnSpin);
+            if (GameManager.Instance.IsHasNoAds())
+                OnSpin();
+            else
+                GameManager.Instance.ShowRewardVideo(WatchVideoRewardType.FreeSpinAds, OnSpin);
         }
-        
     }
 
     void OnSpin()
@@ -128,135 +128,22 @@ public class PanelSpin : UIPanel
         stopClicked = false;
         stopCounter = stopCooldow;
         blocker.SetActive(true);
-    }
-
-    void OnSpinToMax()
-    {
-        spinBtn.gameObject.SetActive(false);
-        //stopBtn.gameObject.SetActive(true);
-    }
-
-    void OnStopSpin()
-    {
-        spinBtn.gameObject.SetActive(false);
-        //stopBtn.gameObject.SetActive(false);
-        if (selectedSlide >= 0)
-        {
-            spinState = SpinState.WaitToStop;
-        }
-        else
-        {
-            spinState = SpinState.Stop;
-            overrun = 0;
-        }
-    }
-
-    bool CheckWaitToStop()
-    {
-        float stopAngle = dynamicSpinWheel.eulerAngles.z;
-        stopAngle = stopAngle % 360;
-        if(selectedSlide == 0)
-        {
-            return stopAngle > 360 - 15f ||
-                stopAngle < +15f;
-        }
-        else
-        {
-            return stopAngle > firstMark + (selectedSlide - 1) * markValue - 15f  &&
-                stopAngle < firstMark + (selectedSlide - 1) * markValue + 15f;
-        }
-    }
-
-    void OnStopAtDirectSlide()
-    {
-        spinState = SpinState.Stop;
-        overrun = 0;
+        amountToSpin = (360 * 4) + ((slides.Count - selectedSlide) * markValue);
+        dynamicSpinWheel.DORotate(Vector3.back * amountToSpin, spinTime, RotateMode.FastBeyond360).OnComplete(OnSpinStoped).SetEase(Ease.OutQuart);
     }
 
     void OnSpinStoped()
     {
-        spinState = SpinState.Default;
-        spinSpeed = 0;
-        spin = false;
         spinBtn.gameObject.SetActive(true);
         CheckFreeSpin();
-        //stopBtn.gameObject.SetActive(false);
         CheckResult();
-        slides[selectedSlide].OnReward(true);
     }
 
     void CheckResult()
     {
         GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_LevelUp);
         blocker.SetActive(false);
-        float stopAngle = dynamicSpinWheel.eulerAngles.z;
-        stopAngle = stopAngle % 360;
-        int index = 0;
-        if(stopAngle > firstMark + (slides.Count - 1) * markValue)
-        {
-            index = 0;
-        }
-        else
-        {
-            while (firstMark + index * markValue < stopAngle)
-            {
-                index++;
-            }
-        }
         GameManager.Instance.spinManager.OnSpinStoped();
-    }
-
-    private void Update()
-    {
-        if (spin)
-        {
-            if(!stopClicked)
-            {
-                stopCounter -= Time.deltaTime;
-                if(stopCounter <= 0)
-                {
-                    OnStopSpin();
-                    stopClicked = true;
-                }
-            }
-            switch (spinState)
-            {
-                case SpinState.Default:
-                    spinSpeed = defaultSpinSpeed;
-                    break;
-                case SpinState.Spin:
-                    if (spinSpeed < maxSpinSpeed)
-                    {
-                        spinSpeed += Time.deltaTime * acceleration;
-                        if (spinSpeed >= maxSpinSpeed)
-                        {
-                            OnSpinToMax();
-                        }
-                    }    
-                    break;
-                case SpinState.Stop:
-                    if (overrun < stopAfter * 360 - 1)
-                    {
-                        spinSpeed = maxSpinSpeed * (stopAfter * 360 - overrun) / (stopAfter * 360);
-                    }
-                    else
-                    {
-                        spinSpeed = 0;
-                        OnSpinStoped();
-                    }
-                    break;
-                case SpinState.WaitToStop:
-                    if(CheckWaitToStop())
-                    {
-                        OnStopAtDirectSlide();
-                    }
-                    break;
-                default:
-                    break;
-            }
-            dynamicSpinWheel.eulerAngles -= new Vector3(0f, 0f, Time.deltaTime * spinSpeed);
-            overrun += Time.deltaTime * spinSpeed;
-        }
     }
 }
 

@@ -163,26 +163,31 @@ public class PanelTotal : UIPanel
             GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
             UIManager.instance.ShowPanelTotalContent();
             ShowBGCanvasGroup(true);
+            functinBar.SetActive(true);
         });
         bakeryNavBtn.onClick.AddListener(() => {
             GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
             UIManager.instance.ShowPanelBakery();
             ShowBGCanvasGroup(false);
+            functinBar.SetActive(false);
         }); 
         decorationNavBtn.onClick.AddListener(() => {
             GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
             UIManager.instance.ShowPanelDecorations();
             ShowBGCanvasGroup(false);
+            functinBar.SetActive(false);
         });
         shopNavBtn.onClick.AddListener(() => {
             GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
             UIManager.instance.ShowPanelShop();
             ShowBGCanvasGroup(false);
+            functinBar.SetActive(false);
         });
         questNavBtn.onClick.AddListener(() => {
             GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
             UIManager.instance.ShowPanelTopUp();
             ShowBGCanvasGroup(false);
+            functinBar.SetActive(false);
         });
         confirmBuyBtn.onClick.AddListener(OnConfirmShowAds);
         confirmCloseBtn.onClick.AddListener(CloseConfirmShowAds);

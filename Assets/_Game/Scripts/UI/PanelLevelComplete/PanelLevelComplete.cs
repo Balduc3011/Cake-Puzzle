@@ -97,7 +97,7 @@ public class PanelLevelComplete : UIPanel
 
     void ReviveCoin()
     {
-        ProfileManager.Instance.playerData.playerResourseSave.ConsumeMoney(ConstantValue.VAL_REVICE_PRICE);
+        ProfileManager.Instance.playerData.playerResourseSave.ConsumeMoney(ConstantValue.VAL_REVIVE_COIN);
         //UIManager.instance.OpenBlockAll();
         GameManager.Instance.itemManager.UsingItem(ItemType.Revive);
         EventManager.TriggerEvent(EventName.OnUsingRevive.ToString());

@@ -10,14 +10,11 @@ public class InventoryCake : MonoBehaviour
 {
     CakeData cakeData;
     OwnedCake currentCake;
-    [SerializeField] TextMeshProUGUI cakeNameTxt;
-    [SerializeField] TextMeshProUGUI cakePointTxt;
     [SerializeField] Button button;
     [SerializeField] Image onIconImg;
     [SerializeField] Image offIconImg;
     [SerializeField] GameObject usingMarkObj;
     [SerializeField] GameObject lockingMarkObj;
-    string PERCAKE = "/cake";
     PanelBakery panelBakery;
     bool isUsing;
     [SerializeField] GameObject levelBar;
@@ -44,8 +41,6 @@ public class InventoryCake : MonoBehaviour
         if (levelPref > 2) levelPref = 2;
         onIconImg.sprite = cakeData.icons[levelPref - 1];
         offIconImg.sprite = cakeData.icons[levelPref - 1];
-        cakeNameTxt.text = "Cake " + cakeData.id.ToString();
-        cakePointTxt.text = ((cakeData.id + 1) * 5).ToString() + ConstantValue.STR_SPACE + ConstantValue.STR_EXP + PERCAKE;
         InitUsing();
     }
 
