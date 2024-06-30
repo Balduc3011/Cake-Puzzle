@@ -581,6 +581,7 @@ public class UIManager : MonoBehaviour {
     }
     
     public void ShowPanelPreAds() {
+        if (ProfileManager.Instance.versionStatus == VersionStatus.Cheat) return;
         GameObject go = GetPanel(UIPanelType.PanelPreAds);
         go.SetActive(true);
     }
