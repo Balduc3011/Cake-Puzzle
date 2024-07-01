@@ -1,5 +1,6 @@
 using DG.Tweening.Core.Easing;
 using SDK;
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -130,6 +131,22 @@ public class GameManager : Singleton<GameManager>
         {
             int randonCake = ProfileManager.Instance.playerData.cakeSaveData.GetRandomUnlockedCake();
             ProfileManager.Instance.playerData.cakeSaveData.AddCakeCard(randonCake, 1);
+        }
+    }
+
+    [Button]
+    public void CallTest(int testTime = 500)
+    {
+        StartCoroutine(TestRandonReward(testTime));
+    }
+
+    IEnumerator TestRandonReward(int testTime)
+    {
+        for (int i = 0; i < testTime; i++)
+        {
+            Debug.Log(i);
+            yield return new WaitForSeconds(0.005f);
+            RandonReward();
         }
     }
 
