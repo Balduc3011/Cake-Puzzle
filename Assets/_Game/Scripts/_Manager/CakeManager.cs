@@ -670,7 +670,7 @@ public class CakeManager : MonoBehaviour
 
     #region Ads
 
-    int cakeCount;
+    public int cakeCount;
     public void AddCakeCount()
     {
         if(ProfileManager.Instance.playerData.playerResourseSave.currentLevel >= 3)

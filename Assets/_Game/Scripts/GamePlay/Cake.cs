@@ -865,7 +865,6 @@ public class Cake : MonoBehaviour
    
     public void DoneCakeMode()
     {
-        GameManager.Instance.cakeManager.AddCakeCount();
         GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_TapCube);
         GameManager.Instance.questManager.AddProgress(QuestType.CompleteCake, 1);
         GameManager.Instance.quickTimeEventManager.AddProgess();
@@ -878,7 +877,10 @@ public class Cake : MonoBehaviour
             cakeLevel = ProfileManager.Instance.playerData.cakeSaveData.GetOwnedCakeLevel(pieces[0].cakeID);
 
         GameManager.Instance.AddPiggySave(GameManager.Instance.GetDefaultCakeProfit(pieces[0].cakeID, cakeLevel, true));
-        ProfileManager.Instance.playerData.playerResourseSave.AddExp(GameManager.Instance.GetDefaultCakeProfit(pieces[0].cakeID, cakeLevel));
+        if(!ProfileManager.Instance.playerData.playerResourseSave.AddExp(GameManager.Instance.GetDefaultCakeProfit(pieces[0].cakeID, cakeLevel)))
+        {
+            GameManager.Instance.cakeManager.AddCakeCount();
+        }
         ProfileManager.Instance.playerData.playerResourseSave.AddMoney(GameManager.Instance.GetDefaultCakeProfit(pieces[0].cakeID, cakeLevel, true));
         ProfileManager.Instance.playerData.playerResourseSave.AddTrophy((int)GameManager.Instance.GetDefaultCakeProfit(pieces[0].cakeID, cakeLevel));
         DOVirtual.DelayedCall(0.18f, () => {
