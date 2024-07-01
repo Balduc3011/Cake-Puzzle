@@ -135,6 +135,8 @@ public class GameManager : Singleton<GameManager>
 
     public void RandonReward()
     {
+        rewardItems.Clear();
+        ProfileManager.Instance.dataConfig.itemDataConfig.InitRewardRandonList();
         for (int i = 0; i < 2; i++)
         {
             ItemData newItem = new();
@@ -144,6 +146,7 @@ public class GameManager : Singleton<GameManager>
             {
                 newItem.ItemType = ProfileManager.Instance.dataConfig.itemDataConfig.GetRewardItemOnLevel();
             }
+            ProfileManager.Instance.dataConfig.itemDataConfig.RemoveFromTemp(newItem.ItemType);
 
             if (newItem.ItemType == ItemType.Cake)
             {
@@ -169,6 +172,7 @@ public class GameManager : Singleton<GameManager>
     {
         if(rewardItems == null || rewardItems.Count == 0)
             return false;
+        if (itemType == ItemType.Coin) return false;
         for (int i = 0; i < rewardItems.Count; i++)
         {
             if (rewardItems[i].ItemType == itemType)
@@ -205,14 +209,6 @@ public class GameManager : Singleton<GameManager>
         extraCake.amount = UnityEngine.Random.Range(5, 10);
         rewardItems.Add(firstCake);
         rewardItems.Add(extraCake);
-    }
-
-    void GetLevelUpItem()
-    {
-        ItemData newItem = new();
-        newItem.ItemType = ProfileManager.Instance.dataConfig.itemDataConfig.GetRewardItemOnLevel();
-        newItem.amount = UnityEngine.Random.Range(1, 5);
-        rewardItems.Add(newItem);
     }
 
     public void GetItemRewards(List<ItemData> items)

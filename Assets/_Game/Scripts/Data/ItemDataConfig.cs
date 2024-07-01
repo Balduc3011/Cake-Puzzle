@@ -7,6 +7,7 @@ public class ItemDataConfig : ScriptableObject
 {
     public List<ItemDataCF> itemDataCFs = new List<ItemDataCF>();
     public List<ItemType> rewardOnLevelUp = new();
+    public List<ItemType> tempRewardList = new();
     public ItemDataCF GetItemData(ItemType itemType) {
         for (int i = 0; i < itemDataCFs.Count; i++)
         {
@@ -16,9 +17,30 @@ public class ItemDataConfig : ScriptableObject
         return null;
     }
 
+    public void InitRewardRandonList()
+    {
+        tempRewardList = new();
+        for (int i = 0; i < rewardOnLevelUp.Count; i++)
+        {
+            tempRewardList.Add(rewardOnLevelUp[i]);
+        }
+    }
+
+    public void RemoveFromTemp(ItemType itemType)
+    {
+        for (int i = 0; i < tempRewardList.Count; i++)
+        {
+            if (tempRewardList[i] == itemType)
+            {
+                tempRewardList.RemoveAt(i);
+                break;
+            }
+        }
+    }
+
     public ItemType GetRewardItemOnLevel()
     {
-        return rewardOnLevelUp[Random.Range(0, rewardOnLevelUp.Count)];
+        return tempRewardList[Random.Range(0, tempRewardList.Count)];
     }
 }
 
