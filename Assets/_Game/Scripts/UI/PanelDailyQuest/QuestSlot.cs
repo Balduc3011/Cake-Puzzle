@@ -40,7 +40,7 @@ public class QuestSlot : MonoBehaviour
         currentProgress = ProfileManager.Instance.playerData.questDataSave.GetCurrentProgress(questType);
         questRequire = ProfileManager.Instance.playerData.questDataSave.GetCurrentRequire(questType);
         collectBtn.gameObject.SetActive(currentProgress >= questRequire);
-        objSlider.SetActive(!collectBtn.gameObject.activeSelf);
+        //objSlider.SetActive(!collectBtn.gameObject.activeSelf);
 
         txtProgress.text = currentProgress.ToString() + ConstantValue.STR_SLASH + questRequire;
         if (currentProgress > questRequire)
