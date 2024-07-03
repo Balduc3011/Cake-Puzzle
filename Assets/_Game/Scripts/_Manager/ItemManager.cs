@@ -128,7 +128,6 @@ public class ItemManager : MonoBehaviour
                 {
                     trsSmoke.gameObject.SetActive(false);
                 });
-                
                 if (lastItem)
                 {
                     DoLastMove(actionCallBack);
@@ -145,7 +144,6 @@ public class ItemManager : MonoBehaviour
     {
         UsingItemDone();
         panelUsingItem.UsingItemDone();
-        EventManager.TriggerEvent(EventName.OnUsingReviveDone.ToString());
         objHammer.DOMove(itemTrs.position, .25f).OnComplete(() => {
             actionCallBack();
         });
