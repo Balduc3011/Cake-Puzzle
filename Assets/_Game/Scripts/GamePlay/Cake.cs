@@ -389,6 +389,7 @@ public class Cake : MonoBehaviour
             centerRevive = true;
             GameManager.Instance.itemManager.OnUsingItem();
             UsingRevive();
+            EventManager.TriggerEvent(EventName.OnUsingReviveDone.ToString());
             return;
         }
 
@@ -505,6 +506,7 @@ public class Cake : MonoBehaviour
             if (GameManager.Instance.cakeManager.CakeOnWait(myGroupCake))
                 return;
         }
+
         this.lastCake = lastCake;
         if (!lastCake)
             GameManager.Instance.itemManager.Revie(this, CallBackOnReviveDone, lastCake);
