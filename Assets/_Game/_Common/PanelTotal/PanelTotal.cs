@@ -164,30 +164,35 @@ public class PanelTotal : UIPanel
             UIManager.instance.ShowPanelTotalContent();
             ShowBGCanvasGroup(true);
             functinBar.SetActive(true);
+            mainGameNavBtn.GetComponent<NavBarItem>().ButtonOnClick();
         });
         bakeryNavBtn.onClick.AddListener(() => {
             GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
             UIManager.instance.ShowPanelBakery();
             ShowBGCanvasGroup(false);
             functinBar.SetActive(false);
+            bakeryNavBtn.GetComponent<NavBarItem>().ButtonOnClick();
         }); 
         decorationNavBtn.onClick.AddListener(() => {
             GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
             UIManager.instance.ShowPanelDecorations();
             ShowBGCanvasGroup(false);
             functinBar.SetActive(false);
+            decorationNavBtn.GetComponent<NavBarItem>().ButtonOnClick();
         });
         shopNavBtn.onClick.AddListener(() => {
             GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
             UIManager.instance.ShowPanelShop();
             ShowBGCanvasGroup(false);
             functinBar.SetActive(false);
+            shopNavBtn.GetComponent<NavBarItem>().ButtonOnClick();
         });
         questNavBtn.onClick.AddListener(() => {
             GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
             UIManager.instance.ShowPanelTopUp();
             ShowBGCanvasGroup(false);
             functinBar.SetActive(false);
+            questNavBtn.GetComponent<NavBarItem>().ButtonOnClick();
         });
         confirmBuyBtn.onClick.AddListener(OnConfirmShowAds);
         confirmCloseBtn.onClick.AddListener(CloseConfirmShowAds);

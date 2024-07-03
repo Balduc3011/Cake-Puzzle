@@ -39,8 +39,7 @@ public class QuestSlot : MonoBehaviour
         txtRewardAmount.text = ConstantValue.VAL_QUEST_COIN.ToString();
         currentProgress = ProfileManager.Instance.playerData.questDataSave.GetCurrentProgress(questType);
         questRequire = ProfileManager.Instance.playerData.questDataSave.GetCurrentRequire(questType);
-        collectBtn.gameObject.SetActive(currentProgress >= questRequire);
-        //objSlider.SetActive(!collectBtn.gameObject.activeSelf);
+        collectBtn.interactable = (currentProgress >= questRequire);
 
         txtProgress.text = currentProgress.ToString() + ConstantValue.STR_SLASH + questRequire;
         if (currentProgress > questRequire)

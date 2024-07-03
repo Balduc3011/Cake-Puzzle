@@ -17,7 +17,7 @@ public class NavBarItem : MonoBehaviour
 
     void Start()
     {
-        itemBtn.onClick.AddListener(ButtonOnClick);
+        //itemBtn.onClick.AddListener(ButtonOnClick);
     }
 
     public void SetupButton(UnityAction callBack)
@@ -25,7 +25,7 @@ public class NavBarItem : MonoBehaviour
         navBarCallBack = callBack;
     }
 
-    void ButtonOnClick()
+    public void ButtonOnClick()
     {
         if(navBarCallBack != null) {  navBarCallBack(); }
     }

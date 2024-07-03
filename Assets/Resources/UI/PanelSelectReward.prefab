@@ -4380,10 +4380,10 @@ RectTransform:
   m_Father: {fileID: 3931278502290664932}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -747}
-  m_SizeDelta: {x: 758.7, y: 123.7}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 300}
+  m_SizeDelta: {x: 758.7, y: 123.70001}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &738417497942294268
 CanvasRenderer:
@@ -4413,7 +4413,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Tap to Continue
+  m_text: Tap to Close
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1c2e6505f3723904b9a7f48f3f22c542, type: 2}
   m_sharedMaterial: {fileID: 3825668454006616592, guid: 1c2e6505f3723904b9a7f48f3f22c542, type: 2}
@@ -8532,6 +8532,10 @@ PrefabInstance:
     - target: {fileID: 4162107974389773316, guid: f8e0b2fc043defc4b80a479030fee042, type: 3}
       propertyPath: m_Name
       value: RewardCard (0)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4162107974389773316, guid: f8e0b2fc043defc4b80a479030fee042, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5258399466049096957, guid: f8e0b2fc043defc4b80a479030fee042, type: 3}
       propertyPath: m_AnchoredPosition.y

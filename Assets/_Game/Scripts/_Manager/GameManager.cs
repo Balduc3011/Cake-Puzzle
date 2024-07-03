@@ -189,7 +189,6 @@ public class GameManager : Singleton<GameManager>
     {
         if(rewardItems == null || rewardItems.Count == 0)
             return false;
-        if (itemType == ItemType.Coin) return false;
         for (int i = 0; i < rewardItems.Count; i++)
         {
             if (rewardItems[i].ItemType == itemType)
@@ -352,6 +351,7 @@ public class GameManager : Singleton<GameManager>
 
     public void ShowInterRest()
     {
+        if (IsHasNoAds()) return;
         if (ProfileManager.Instance.playerData.playerResourseSave.currentLevel >= 3)
             UIManager.instance.ShowPanelPreAds();
     }

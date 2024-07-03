@@ -28,12 +28,11 @@ public class ItemDataConfig : ScriptableObject
 
     public void RemoveFromTemp(ItemType itemType)
     {
-        for (int i = 0; i < tempRewardList.Count; i++)
+        for (int i = tempRewardList.Count - 1; i >= 0; i--)
         {
             if (tempRewardList[i] == itemType)
             {
                 tempRewardList.RemoveAt(i);
-                break;
             }
         }
     }
