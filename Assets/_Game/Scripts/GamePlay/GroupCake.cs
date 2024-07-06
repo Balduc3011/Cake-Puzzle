@@ -156,6 +156,7 @@ public class GroupCake : MonoBehaviour
     {
         groupCakeIndex = cakeWaitIndex;
         this.pointSpawn = pointSpawn;
+        transform.DOMove(pointSpawn.position, .5f).SetEase(Ease.OutCubic);
         //if (cakeWaitIndex == 2) countCake = 1;
         if (countCake == 2)
         {
@@ -207,6 +208,7 @@ public class GroupCake : MonoBehaviour
     public void InitData(List<IDInfor> idInfors, Transform pointSpawn, int cakeWaitIndex) {
         groupCakeIndex = cakeWaitIndex;
         this.pointSpawn = pointSpawn;
+        transform.DOMove(pointSpawn.position, .5f).SetEase(Ease.OutCubic);
         cake[0].gameObject.SetActive(true);
         ClearCakeNotUsing();
         cake[0].InitData(idInfors);
