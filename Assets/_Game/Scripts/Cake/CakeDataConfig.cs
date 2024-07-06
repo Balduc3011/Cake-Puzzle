@@ -95,6 +95,20 @@ public class CakeDataConfig : ScriptableObject
         }
         return null;
     }
+
+    public Mesh GetCakeFullMesh2(int cakeId)
+    {
+        int levelPref = ProfileManager.Instance.playerData.cakeSaveData.GetOwnedCakeLevel(cakeId);
+        if (levelPref > 2) levelPref = 2;
+        for (int i = 0; i < cakeDatas.Count; i++)
+        {
+            if (cakeDatas[i].id == cakeId)
+            {
+                return cakeDatas[i].fullCake[levelPref - 1];
+            }
+        }
+        return null;
+    }
 }
 
 [System.Serializable]

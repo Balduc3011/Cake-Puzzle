@@ -165,7 +165,7 @@ public class PanelTotal : UIPanel
             ShowBGCanvasGroup(true);
             functinBar.SetActive(true);
             mainGameNavBtn.GetComponent<NavBarItem>().ButtonOnClick(2);
-            Debug.Log("Nav Btn On Click");
+            InitCakeDecor();
         });
         bakeryNavBtn.onClick.AddListener(() => {
             GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
@@ -173,7 +173,6 @@ public class PanelTotal : UIPanel
             ShowBGCanvasGroup(false);
             functinBar.SetActive(false);
             bakeryNavBtn.GetComponent<NavBarItem>().ButtonOnClick(3);
-            Debug.Log("Nav Btn On Click");
         }); 
         decorationNavBtn.onClick.AddListener(() => {
             GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
@@ -181,7 +180,6 @@ public class PanelTotal : UIPanel
             ShowBGCanvasGroup(false);
             functinBar.SetActive(false);
             decorationNavBtn.GetComponent<NavBarItem>().ButtonOnClick(1);
-            Debug.Log("Nav Btn On Click");
         });
         shopNavBtn.onClick.AddListener(() => {
             GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
@@ -189,7 +187,6 @@ public class PanelTotal : UIPanel
             ShowBGCanvasGroup(false);
             functinBar.SetActive(false);
             shopNavBtn.GetComponent<NavBarItem>().ButtonOnClick(4);
-            Debug.Log("Nav Btn On Click");
         });
         questNavBtn.onClick.AddListener(() => {
             GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
@@ -197,7 +194,6 @@ public class PanelTotal : UIPanel
             ShowBGCanvasGroup(false);
             functinBar.SetActive(false);
             questNavBtn.GetComponent<NavBarItem>().ButtonOnClick(0);
-            Debug.Log("Nav Btn On Click");
         });
         confirmBuyBtn.onClick.AddListener(OnConfirmShowAds);
         confirmCloseBtn.onClick.AddListener(CloseConfirmShowAds);
@@ -240,6 +236,7 @@ public class PanelTotal : UIPanel
         mainMenuContent.SetActive(true);
         backGround.SetActive(true);
         functinBar.SetActive(true);
+        InitCakeDecor();
     }
 
     void ShowPanelSetting()

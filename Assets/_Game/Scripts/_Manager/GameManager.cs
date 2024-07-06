@@ -332,13 +332,21 @@ public class GameManager : Singleton<GameManager>
     {
         if (IsHasNoAds())
         {
-            questManager.AddProgress(QuestType.CompleteCake, 1);
+            questManager.AddProgress(QuestType.WatchADS, 1);
             if (callBack != null)
                 callBack();
         } 
         else
         {
-            questManager.AddProgress(QuestType.CompleteCake, 1);
+#if UNITY_EDITOR
+            if(callBack != null)
+            {
+                callBack();
+                questManager.AddProgress(QuestType.WatchADS, 1);
+                return;
+            }
+#endif
+            questManager.AddProgress(QuestType.WatchADS, 1);
             AdsManager.Instance.ShowRewardVideo(watchVideoRewardType.ToString(), callBack);
         }  
     }
