@@ -244,20 +244,11 @@ public class UIManager : MonoBehaviour {
 
     public void ShowPanelHint(ItemType itemType)
     {
-        if (isHasPopupOnScene)
-        {
-            actionShowPanels.Add(()=> {
-                ShowPanelHint(itemType);
-            });
-        }
-        else
-        {
-            isHasPopupOnScene = true;
-            GameObject go = GetPanel(UIPanelType.PanelHint);
-            go.SetActive(true);
-            go.GetComponent<PanelHint>().ShowComponent(itemType);
-            go.transform.SetAsLastSibling();
-        }
+        isHasPopupOnScene = true;
+        GameObject go = GetPanel(UIPanelType.PanelHint);
+        go.SetActive(true);
+        go.GetComponent<PanelHint>().ShowComponent(itemType);
+        go.transform.SetAsLastSibling();
     }
 
     public void ClosePanelHint() {
@@ -366,16 +357,9 @@ public class UIManager : MonoBehaviour {
 
     public void ShowPanelItemsReward()
     {
-        if (isHasPopupOnScene)
-        {
-            actionShowPanels.Add(ShowPanelItemsReward);
-        }
-        else
-        {
-            isHasPopupOnScene = true;
-            GameObject go = GetPanel(UIPanelType.PanelItemsReward);
-            go.SetActive(true);
-        }
+        isHasPopupOnScene = true;
+        GameObject go = GetPanel(UIPanelType.PanelItemsReward);
+        go.SetActive(true);
     }
     public void ClosePanelItemsReward()
     {
@@ -391,7 +375,7 @@ public class UIManager : MonoBehaviour {
 
     public void ShowPanelBakery()
     {
-        if (isHasPopupOnScene)
+        if (isHasPopupOnScene && GameManager.Instance.playing)
         {
             actionShowPanels.Add(ShowPanelBakery);
         }
@@ -505,7 +489,7 @@ public class UIManager : MonoBehaviour {
 
     public void ShowPanelDecorations()
     {
-        if (isHasPopupOnScene)
+        if (isHasPopupOnScene && GameManager.Instance.playing)
         {
             actionShowPanels.Add(ShowPanelDecorations);
         }
@@ -539,7 +523,7 @@ public class UIManager : MonoBehaviour {
 
     public void ShowPanelShop()
     {
-        if (isHasPopupOnScene)
+        if (isHasPopupOnScene && GameManager.Instance.playing)
         {
             actionShowPanels.Add(ShowPanelShop);
         }
@@ -571,16 +555,9 @@ public class UIManager : MonoBehaviour {
 
     public void ShowPanelCakeReward()
     {
-        if (isHasPopupOnScene)
-        {
-            actionShowPanels.Add(ShowPanelCakeReward);
-        }
-        else
-        {
-            isHasPopupOnScene = true;
-            GameObject go = GetPanel(UIPanelType.PanelCakeReward);
-            go.SetActive(true);
-        }
+        isHasPopupOnScene = true;
+        GameObject go = GetPanel(UIPanelType.PanelCakeReward);
+        go.SetActive(true);
     }
     public void ClosePanelCakeReward()
     {
