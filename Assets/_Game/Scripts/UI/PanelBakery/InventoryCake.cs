@@ -63,7 +63,9 @@ public class InventoryCake : MonoBehaviour
             usingMarkObj.SetActive(ProfileManager.Instance.playerData.cakeSaveData.IsUsingCake(cakeData.id));
             isUsing = ProfileManager.Instance.playerData.cakeSaveData.IsUsingCake(cakeData.id);
             if(currentCake == null) currentCake = ProfileManager.Instance.playerData.cakeSaveData.GetOwnedCake(cakeData.id);
-            upgradeNotify.SetActive(currentCake.IsAbleToUpgrade());
+            float upgradePrice = upgradePrice = ConstantValue.VAL_CAKEUPGRADE_COIN * currentCake.level;
+            upgradeNotify.SetActive(currentCake.IsAbleToUpgrade() &&
+                ProfileManager.Instance.playerData.playerResourseSave.IsHasEnoughMoney(upgradePrice));
             cardAmountSlider.value = (float)currentCake.cardAmount / (float)currentCake.CardRequire;
             cardAmountSlider.gameObject.SetActive(true);
             cardAmountTxt.text = currentCake.cardAmount.ToString() + ConstantValue.STR_SLASH + currentCake.CardRequire.ToString();

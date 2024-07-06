@@ -147,6 +147,7 @@ public class PanelBakery : UIPanel
     [SerializeField] TextMeshProUGUI cardAmountTxt;
     [SerializeField] TextMeshProUGUI levelTxt;
     [SerializeField] TextMeshProUGUI upgradeCakePrice;
+    [SerializeField] float upgradePrice;
 
     [SerializeField] TextMeshProUGUI expTxt;
     [SerializeField] TextMeshProUGUI trophyTxt;
@@ -166,7 +167,6 @@ public class PanelBakery : UIPanel
         popupCake = cakeData;
         cakeInfoPopup.SetActive(true);
         LoadPopup();
-        upgradeCakePrice.text = ConstantValue.VAL_CAKEUPGRADE_COIN.ToString();
     }
 
     void LoadPopup()
@@ -179,8 +179,9 @@ public class PanelBakery : UIPanel
             levelTxt.text = "Level " + currentCake.level.ToString();
             cardAmountSlider.value = (float)currentCake.cardAmount / (float)currentCake.CardRequire;
             cardAmountTxt.text = currentCake.cardAmount.ToString() + ConstantValue.STR_SLASH + currentCake.CardRequire.ToString();
+            upgradePrice = ConstantValue.VAL_CAKEUPGRADE_COIN * currentCake.level;
             upgradeCakeBtn.interactable = currentCake.IsAbleToUpgrade() &&
-                ProfileManager.Instance.playerData.playerResourseSave.IsHasEnoughMoney(ConstantValue.VAL_CAKEUPGRADE_COIN);
+                ProfileManager.Instance.playerData.playerResourseSave.IsHasEnoughMoney(upgradePrice);
             upradeAbleParticle.SetActive(upgradeCakeBtn.interactable);
             expTxt.text = (GameManager.Instance.GetDefaultCakeProfit(popupCake.id, currentCake.level)).ToString() + " exp";
             trophyTxt.text = (GameManager.Instance.GetDefaultCakeProfit(popupCake.id, currentCake.level)).ToString() + " trophy";
@@ -201,7 +202,9 @@ public class PanelBakery : UIPanel
             coinTxt.text = "0";
             useCakeBtn.interactable = false;
             noCakeBtnObj.SetActive(true);
-        } 
+            upgradePrice = ConstantValue.VAL_CAKEUPGRADE_COIN;
+        }
+        upgradeCakePrice.text = upgradePrice.ToString();
     }
 
     void PopupAnim()
@@ -247,21 +250,9 @@ public class PanelBakery : UIPanel
         {
             if (currentCake.IsAbleToUpgrade())
             {
-                //if (GameManager.Instance.IsHasNoAds())
-                //{
-                //    OnUpgradeCake();
-                //    LoadPopup();
-                //    inventoryCake?.InitUsing();
-                //}
-                //else
-                //{
-                //    AdsManager.Instance.ShowRewardVideo(WatchVideoRewardType.UpgradeCake.ToString(), OnUpgradeCake);
-                //    LoadPopup();
-                //    inventoryCake?.InitUsing();
-                //}
-                if(ProfileManager.Instance.playerData.playerResourseSave.IsHasEnoughMoney(ConstantValue.VAL_CAKEUPGRADE_COIN))
+                if(ProfileManager.Instance.playerData.playerResourseSave.IsHasEnoughMoney(upgradePrice))
                 {
-                    ProfileManager.Instance.playerData.playerResourseSave.ConsumeMoney(ConstantValue.VAL_CAKEUPGRADE_COIN);
+                    ProfileManager.Instance.playerData.playerResourseSave.ConsumeMoney(upgradePrice);
                     OnUpgradeCake();
                     LoadPopup();
                     inventoryCake?.InitUsing();
