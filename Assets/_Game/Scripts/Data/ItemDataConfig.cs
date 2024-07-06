@@ -41,6 +41,11 @@ public class ItemDataConfig : ScriptableObject
     {
         return tempRewardList[Random.Range(0, tempRewardList.Count)];
     }
+
+    public ItemType GetRewardItem()
+    {
+        return rewardOnLevelUp[Random.Range(0, rewardOnLevelUp.Count)];
+    }
 }
 
 [System.Serializable]
