@@ -1,4 +1,5 @@
 
+using SDK;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using UnityEngine;
 [System.Serializable]
 public class CakeSaveData : SaveBase
 {
+    public List<OwnedCake> ownedCakes = new();
     public List<int> cakeIDs = new List<int>();
     public List<int> cakeIDUsing = new List<int>();
     public List<CakeOnPlate> cakeOnPlates = new List<CakeOnPlate>();
@@ -17,25 +19,116 @@ public class CakeSaveData : SaveBase
         string jsonData = GetJsonData();
         if (!string.IsNullOrEmpty(jsonData))
         {
+            //Debug.Log(jsonData);
             CakeSaveData data = JsonUtility.FromJson<CakeSaveData>(jsonData);
+            ownedCakes = data.ownedCakes;
             cakeIDs = data.cakeIDs;
             cakeIDUsing = data.cakeIDUsing;
             cakeOnPlates = data.cakeOnPlates;
             cakeOnWaits = data.cakeOnWaits;
+            UpdateCardRequire();
         }
         else {
-            cakeIDs.Add(0);
-            cakeIDs.Add(1);
-
-            cakeIDUsing.Add(0);
-            cakeIDUsing.Add(1);
+            AddFirstCake();
+            UpdateCardRequire();
+            IsMarkChangeData();
+            SaveData();
+        }
+        if (ProfileManager.Instance.playerData.playerResourseSave.currentLevel == 0)
+        {
+            AddTutorialCake();
             IsMarkChangeData();
             SaveData();
         }
     }
 
-    public void AddCake(int cakeId) {
+    void AddFirstCake()
+    {
+        AddCakeCard(0, 1);
+        AddCakeCard(1, 1);
+
+        cakeIDs.Add(0);
+        cakeIDs.Add(1);
+
+        cakeIDUsing.Add(0);
+        cakeIDUsing.Add(1);
+    }
+
+    public OwnedCake GetOwnedCake(int cakeId)
+    {
+        for (int i = 0; i < ownedCakes.Count; i++)
+        {
+            if (ownedCakes[i].cakeID == cakeId)
+            {
+                ownedCakes[i].UpdateCardRequire();
+                return ownedCakes[i];
+            }
+        }
+        return null;
+    }
+
+    public int GetOwnedCakeLevel(int cakeId)
+    {
+        for (int i = 0; i < ownedCakes.Count; i++)
+        {
+            if (ownedCakes[i].cakeID == cakeId)
+            {
+                return ownedCakes[i].level;
+            }
+        }
+        return 1;
+    }
+
+    void UpdateCardRequire()
+    {
+        for (int i = 0; i < ownedCakes.Count; i++)
+        {
+            ownedCakes[i].UpdateCardRequire();
+        }
+    }
+
+    public int GetRandomUnlockedCake()
+    {
+        return cakeIDs[UnityEngine.Random.Range(0, cakeIDs.Count)];
+    }
+
+    public void AddCake(int cakeId) 
+    {
         cakeIDs.Add(cakeId);
+        IsMarkChangeData();
+        SaveData();
+    }
+
+    public void AddCakeCard(int cakeId, int amount)
+    {
+        if (cakeId == -1) return;
+        for (int i = 0; i < ownedCakes.Count; i++)
+        {
+            if (ownedCakes[i].cakeID == cakeId)
+            {
+                ownedCakes[i].AddCard(amount);
+                IsMarkChangeData();
+                SaveData();
+                return;
+            }
+        }
+        OwnedCake cake = new();
+        cake.cakeID = cakeId;
+        cake.level = 1;
+        cake.cardAmount = amount;
+        ownedCakes.Add(cake);
+        IsMarkChangeData();
+        SaveData();
+    }
+
+    public int GetRandomOwnedCake()
+    {
+        return ownedCakes[UnityEngine.Random.Range(0, ownedCakes.Count)].cakeID;
+    }
+
+    public void OnUpgradeCard(OwnedCake ownedCake)
+    {
+        ownedCake.OnUpgradeCard();
         IsMarkChangeData();
         SaveData();
     }
@@ -204,6 +297,70 @@ public class CakeSaveData : SaveBase
     {
         return cakeOnPlates.Count > 0;
     }
+
+    public bool HasCakeUpgradeable()
+    {
+        for (int i = 0; i < ownedCakes.Count; i++)
+        {
+            if (ownedCakes[i].IsAbleToUpgrade())
+                return true;
+        }
+        return false;
+    }
+
+    void AddTutorialCake()
+    {
+        ClearAllCake();
+
+        CakeOnWait cakeOnWait1 = new CakeOnWait();
+        cakeOnWait1.cakeSaves = new List<CakeSave>();
+        CakeSave cakeSave1 = new CakeSave();
+        cakeOnWait1.cakeSaves.Add(cakeSave1);
+        cakeSave1.pieceCakeIDCount = new List<int>();
+        cakeSave1.pieceCakeIDCount.Add(3);
+        cakeSave1.pieceCakeID = new List<int>();
+        cakeSave1.pieceCakeID.Add(0);
+        cakeOnWaits.Add(cakeOnWait1);
+
+        CakeOnWait cakeOnWait2 = new CakeOnWait();
+        cakeOnWait2.cakeSaves = new List<CakeSave>();
+        CakeSave cakeSave2 = new CakeSave();
+        cakeOnWait2.cakeSaves.Add(cakeSave2);
+        cakeSave2.pieceCakeIDCount = new List<int>();
+        cakeSave2.pieceCakeIDCount.Add(3);
+        cakeSave2.pieceCakeID = new List<int>();
+        cakeSave2.pieceCakeID.Add(1);
+        cakeOnWaits.Add(cakeOnWait2);
+
+        CakeOnWait cakeOnWait3 = new CakeOnWait();
+        cakeOnWait3.cakeSaves = new List<CakeSave>();
+        CakeSave cakeSave3 = new CakeSave();
+        cakeOnWait3.cakeSaves.Add(cakeSave3);
+        cakeSave3.pieceCakeIDCount = new List<int>();
+        cakeSave3.pieceCakeIDCount.Add(3);
+        cakeSave3.pieceCakeID = new List<int>();
+        cakeSave3.pieceCakeID.Add(0);
+        cakeOnWaits.Add(cakeOnWait3);
+    }
+    public void SetData(int cakeID, int currentTier)
+    {
+        for (int i = 0; i < ownedCakes.Count; i++)
+        {
+            if (ownedCakes[i].cakeID == cakeID)
+            {
+                ownedCakes[i].level = currentTier + 1;
+                IsMarkChangeData();
+                SaveData();
+                return;
+            }
+        }
+        OwnedCake cake = new();
+        cake.cakeID = cakeID;
+        cake.level = currentTier + 1;
+        ownedCakes.Add(cake);
+        IsMarkChangeData();
+        SaveData();
+    }
 }
 
 [System.Serializable]
@@ -243,5 +400,52 @@ public class CakeSave {
     {
         pieceCakeIDCount = cake.pieceCakeIDCount;
         pieceCakeID = cake.pieceCakeID;
+    }
+}
+
+[System.Serializable]
+public class OwnedCake
+{
+    public int cakeID;
+    public int level;
+    public int cardAmount;
+    int cardRequire;
+
+    public void AddCard(int amount)
+    {
+        cardAmount += amount;
+        //if(cardAmount >= cardRequire)
+        //{
+        //    level++;
+        //    cardAmount -= cardRequire;
+        //    UpdateCardRequire();
+        //}
+        EventManager.TriggerEvent(EventName.AddCakeCard.ToString());
+    }
+
+    public void OnUpgradeCard()
+    {
+        if (cardAmount >= cardRequire)
+        {
+            level++;
+            ABIAnalyticsManager.Instance.TrackEventCakeLevelUp(level, cakeID);
+            cardAmount -= cardRequire;
+            UpdateCardRequire();
+            GameManager.Instance.cakeManager.ReInitData(cakeID);
+        }
+
+    }
+
+    public void UpdateCardRequire()
+    {
+        cardRequire = ProfileManager.Instance.dataConfig.cakeDataConfig.GetCardAmountToLevelUp(level + 1);
+    }
+
+    public int CardRequire { get => cardRequire; }
+
+    public bool IsAbleToUpgrade()
+    {
+        UpdateCardRequire();
+        return cardAmount >= cardRequire;
     }
 }

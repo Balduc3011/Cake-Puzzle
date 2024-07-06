@@ -1,0 +1,111 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 320987a004190cd4c91db6b66ec65d71, type: 3}
+  m_Name: ShopDataConfig
+  m_EditorClassIdentifier: 
+  shopPacks:
+  - packageId: 1
+    rewards:
+    - ItemType: -2
+      subId: 0
+      amount: 1
+    - ItemType: 2
+      subId: 0
+      amount: 5000
+    - ItemType: 4
+      subId: 0
+      amount: 40
+    - ItemType: 7
+      subId: 0
+      amount: 40
+    - ItemType: 5
+      subId: 0
+      amount: 40
+    defaultPrice: 9.99
+  - packageId: 2
+    rewards:
+    - ItemType: -2
+      subId: 0
+      amount: 1
+    - ItemType: 2
+      subId: 0
+      amount: 1000
+    - ItemType: 4
+      subId: 0
+      amount: 10
+    - ItemType: 7
+      subId: 0
+      amount: 10
+    - ItemType: 5
+      subId: 0
+      amount: 10
+    defaultPrice: 2.99
+  - packageId: 5
+    rewards:
+    - ItemType: 2
+      subId: 0
+      amount: 0
+    defaultPrice: 1.99
+  - packageId: 10
+    rewards:
+    - ItemType: 4
+      subId: 0
+      amount: 20
+    defaultPrice: 1.49
+  - packageId: 20
+    rewards:
+    - ItemType: 7
+      subId: 0
+      amount: 20
+    defaultPrice: 1.49
+  - packageId: 30
+    rewards:
+    - ItemType: 5
+      subId: 0
+      amount: 20
+    defaultPrice: 1.49
+  - packageId: 40
+    rewards:
+    - ItemType: 2
+      subId: 0
+      amount: 1000
+    defaultPrice: 0.99
+  - packageId: 41
+    rewards:
+    - ItemType: 2
+      subId: 0
+      amount: 3500
+    defaultPrice: 2.99
+  - packageId: 42
+    rewards:
+    - ItemType: 2
+      subId: 0
+      amount: 7000
+    defaultPrice: 5.99
+  - packageId: 43
+    rewards:
+    - ItemType: 2
+      subId: 0
+      amount: 16000
+    defaultPrice: 11.99
+  - packageId: 44
+    rewards:
+    - ItemType: 2
+      subId: 0
+      amount: 34000
+    defaultPrice: 23.99
+  - packageId: 45
+    rewards:
+    - ItemType: 2
+      subId: 0
+      amount: 90000
+    defaultPrice: 49.99

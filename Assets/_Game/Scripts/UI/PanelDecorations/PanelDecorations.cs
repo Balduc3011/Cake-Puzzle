@@ -1,5 +1,7 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,11 +16,21 @@ public class PanelDecorations : UIPanel
     DecorNavButton selectedNavBtn;
     [SerializeField] RectTransform RawImageRect;
     [SerializeField] RectTransform showingSize;
+
+    DecorSlotUI selectedDecorSlot;
+    [SerializeField] GameObject confirmObj;
+    [SerializeField] CanvasGroup confirmCG;
+    [SerializeField] Button confirmBuyBtn;
+    [SerializeField] Button confirmCloseBtn;
+    [SerializeField] TextMeshProUGUI priceTxt;
+    [SerializeField] Image iconImg;
     public override void Awake()
     {
         panelType = UIPanelType.PanelDecorations;
         base.Awake();
         RawImageRect.sizeDelta = new Vector2(showingSize.rect.width, showingSize.rect.width);
+        confirmBuyBtn.onClick.AddListener(OnConfirmBuyDecoration);
+        confirmCloseBtn.onClick.AddListener(CloseConfirm);
     }
 
     private void OnEnable()
@@ -34,7 +46,7 @@ public class PanelDecorations : UIPanel
         {
             decorNavButtonList[i].SelectBtn(false);
         }
-        selectedNavBtn = decorNavButtonList[0];
+        selectedNavBtn = decorNavButtonList[1];
         decorNavButtonList[0].SelectBtn(true);
     }
 
@@ -90,4 +102,38 @@ public class PanelDecorations : UIPanel
         uiPanelShowUp.OnClose(UIManager.instance.ClosePanelDecorations);
     }
 
+
+
+    public void ShowConfirm(DecorSlotUI decorSlotUI)
+    {
+        selectedDecorSlot = decorSlotUI;
+        if(selectedDecorSlot != null)
+        {
+            confirmObj.SetActive(true);
+            confirmCG.DOFade(1, 0.15f);
+            priceTxt.text = selectedDecorSlot.priceTxt.text;
+            iconImg.sprite = selectedDecorSlot.decorIconImg.sprite;
+        }
+        
+    }
+
+    public void CloseConfirm()
+    {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
+        confirmCG.DOFade(0, 0.15f).OnComplete(CloseConfirmInstant);
+    }
+
+    void CloseConfirmInstant()
+    {
+        confirmObj.SetActive(false);
+    }
+
+    void OnConfirmBuyDecoration()
+    {
+        if(selectedDecorSlot != null)
+        {
+            selectedDecorSlot.OnBuyConfirmed();
+        }
+        CloseConfirm();
+    }
 }

@@ -172,4 +172,59 @@ public class ObjectPooling : MonoBehaviour
         streakEffects.Add(newEffect);
         return newEffect;
     }
+
+    public List<Transform> smokeEffects = new List<Transform>();
+    public Transform smokeEffect;
+    public Transform GetSmokeEffect()
+    {
+        for (int i = smokeEffects.Count - 1; i >= 0; i--)
+        {
+            if (smokeEffects[i] == null)
+            {
+                smokeEffects.RemoveAt(i);
+                continue;
+            }
+            if (!smokeEffects[i].gameObject.activeSelf) return smokeEffects[i];
+        }
+        Transform newSmokeEffect = Instantiate(smokeEffect, transform);
+        smokeEffects.Add(newSmokeEffect);
+        return newSmokeEffect;
+    }
+
+    public List<Transform> smokeEffectsDrops = new List<Transform>();
+    public Transform smokeEffectsDrop;
+    public Transform GetSmokeEffectDrop()
+    {
+        for (int i = smokeEffectsDrops.Count - 1; i >= 0; i--)
+        {
+            if (smokeEffectsDrops[i] == null)
+            {
+                smokeEffectsDrops.RemoveAt(i);
+                continue;
+            }
+            if (!smokeEffectsDrops[i].gameObject.activeSelf) return smokeEffectsDrops[i];
+        }
+        Transform newSmokeEffect = Instantiate(smokeEffectsDrop, transform);
+        smokeEffectsDrops.Add(newSmokeEffect);
+        return newSmokeEffect;
+    }
+
+    public List<Transform> fillUpEffects = new List<Transform>();
+    public Transform fillUpEffect;
+    public Transform GetFillUpEffect()
+    {
+        for (int i = fillUpEffects.Count - 1; i >= 0; i--)
+        {
+            if (fillUpEffects[i] == null)
+            {
+                fillUpEffects.RemoveAt(i);
+                continue;
+            }
+            if (!fillUpEffects[i].gameObject.activeSelf) return fillUpEffects[i];
+        }
+        Transform newSmokeEffect = Instantiate(fillUpEffect, transform);
+        fillUpEffects.Add(newSmokeEffect);
+        return newSmokeEffect;
+    }
+
 }

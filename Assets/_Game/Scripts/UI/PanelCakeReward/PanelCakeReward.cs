@@ -24,6 +24,7 @@ public class PanelCakeReward : UIPanel
         DOVirtual.DelayedCall(2.5f, ActiveCloseBtn);
         GameManager.Instance.cakeManager.cakeShowComponent.ShowNewUnlockCake();
         tapToContinueTxt.localScale = Vector3.zero;
+        transform.SetAsLastSibling();
     }
 
     void Start()
@@ -40,11 +41,8 @@ public class PanelCakeReward : UIPanel
     // Update is called once per frame
     void OnClose()
     {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         UIManager.instance.ClosePanelCakeReward();
-        GameManager.Instance.cakeManager.cakeShowComponent.ShowNormalCake();
-        GameManager.Instance.cakeManager.cakeShowComponent.ShowNextToUnlockCake();
-        GameManager.Instance.cakeManager.ClearAllCake();
-        GameManager.Instance.cakeManager.SetOnMove(false);
-        UIManager.instance.ShowPanelLoading();
+        UIManager.instance.ShowPanelSelectReward();
     }
 }

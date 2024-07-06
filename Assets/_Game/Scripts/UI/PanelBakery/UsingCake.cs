@@ -47,7 +47,10 @@ public class UsingCake : MonoBehaviour
         this.cakeData = cakeData;
         if (cakeData != null)
         {
-            onIconImg.sprite = cakeData.icon;
+            Debug.Log("111");
+            int levelPref = ProfileManager.Instance.playerData.cakeSaveData.GetOwnedCakeLevel(cakeData.id);
+            if (levelPref > 2) levelPref = 2;
+            onIconImg.sprite = cakeData.icons[levelPref - 1];
             gameObject.SetActive(true);
             transform.localScale = Vector3.zero;
             transform.DOScale(1, 0.25f).SetEase(Ease.OutBack);

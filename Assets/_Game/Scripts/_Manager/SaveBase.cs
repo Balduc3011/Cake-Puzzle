@@ -7,7 +7,7 @@ using UnityEngine;
 public class SaveBase
 {
     public bool IsChangeData;
-    string stringSave;
+    public string stringSave;
     public virtual void SetStringSave(string stringSave) { this.stringSave = stringSave; }
     public virtual void LoadData() { }
 

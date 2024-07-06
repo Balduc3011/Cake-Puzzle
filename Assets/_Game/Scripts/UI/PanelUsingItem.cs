@@ -18,8 +18,12 @@ public class PanelUsingItem : UIPanel
         base.Awake();
         btnClose.onClick.AddListener(OnClosePanel);
     }
+    private void OnEnable()
+    {
+        btnClose.interactable = true;
+    }
     ItemDataCF currentItemData;
-    public void OnUsingItem(ItemType itemType) {
+    public void OnUseItem(ItemType itemType) {
         currentItemData = ProfileManager.Instance.dataConfig.itemDataConfig.GetItemData(itemType);
         txtTitle.text = currentItemData.title;
         txtDescript.text = currentItemData.description;
@@ -37,8 +41,18 @@ public class PanelUsingItem : UIPanel
 
     void OnClosePanel()
     {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         UIManager.instance.ClosePanelUsingItem();
         GameManager.Instance.itemManager.UsingItemDone();
         EventManager.TriggerEvent(EventName.UsingFillUpDone.ToString());
+        EventManager.TriggerEvent(EventName.UsingHammerDone.ToString());
+    }
+
+    public void OnUsingItem() {
+        btnClose.interactable = false;
+    }
+
+    public void OnUsingItemDone() {
+        btnClose.interactable = true;
     }
 }

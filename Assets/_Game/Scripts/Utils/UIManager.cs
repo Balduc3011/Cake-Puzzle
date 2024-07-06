@@ -18,6 +18,7 @@ public class UIManager : MonoBehaviour {
     public bool isHasPanelIgnoreTutorial = false;
     [SerializeField] RectTransform myRect;
     [SerializeField] GameObject ingameDebugConsole;
+    [SerializeField] GameObject objBlock;
   
     public Camera mainCamera;
     public PanelTotal panelTotal;
@@ -25,17 +26,68 @@ public class UIManager : MonoBehaviour {
     PanelBakery panelBakery;
     PanelDecorations panelDecorations;
     PanelShop panelShop;
-    PanelDailyQuest panelDailyQuest;
+    PanelTopUp panelTopUp;
+
+    [SerializeField] GameObject objSpawnPanel;
+    [SerializeField] GameObject objEffect;
+    [SerializeField] GameObject objCheat;
+    [SerializeField] Button btnCheat;
+    [SerializeField] Button btnShowUI;
+    [SerializeField] Button btnTurnOffUI;
 
     // Start is called before the first frame update
     void Awake() {
         instance = this;
+        if (ProfileManager.Instance.versionStatus == VersionStatus.Cheat)
+        {
+            objCheat.SetActive(true);
+            btnCheat.onClick.AddListener(ShowPanelCheat);
+            btnTurnOffUI.onClick.AddListener(OffUI);
+            btnShowUI.onClick.AddListener(ShowUI);
+        }
+        else
+        {
+            objCheat.SetActive(false);
+        }
+    }
+
+    public void TurnBlock(bool active) {
+        objBlock.SetActive(active);
+    }
+
+    void OffUI() {
+        objSpawnPanel.SetActive(false);
+        objEffect.SetActive(false);
+        objCheat.SetActive(false);
+        btnShowUI.gameObject.SetActive(true);
+    }
+
+    void ShowUI() {
+        objSpawnPanel.SetActive(true);
+        objEffect.SetActive(true);
+        objCheat.SetActive(true);
+        btnShowUI.gameObject.SetActive(false);
+    }
+
+    public void ShowPanelCheat() {
+        isHasPopupOnScene = true;
+        objCheat.SetActive(false);
+        GameObject go = GetPanel(UIPanelType.PanelCheat);
+        go.transform.SetAsLastSibling();
+        go.SetActive(true);
+    }
+    public void ClosePanelCheat() {
+        isHasPopupOnScene = false;
+        objCheat.SetActive(true);
+        GameObject go = GetPanel(UIPanelType.PanelCheat);
+        go.SetActive(false);
     }
     private void Start()
     {
         //uiPooling.FirstPooling();
         //StartCoroutine(WaitToSpawnUIPool());
-        //ingameDebugConsole.SetActive(ProfileManager.Instance.IsShowDebug());
+        if(ingameDebugConsole != null)
+        ingameDebugConsole.SetActive(ProfileManager.Instance.IsShowDebug());
         ShowPanelTotal();
         ShowPanelLoading();
     }
@@ -121,8 +173,32 @@ public class UIManager : MonoBehaviour {
                 case UIPanelType.PanelLeaderBoard:
                     panel = Instantiate(Resources.Load("UI/PanelLeaderBoard") as GameObject, mainCanvas);
                     break;
+                case UIPanelType.PanelTopUp:
+                    panel = Instantiate(Resources.Load("UI/PanelTopUp") as GameObject, mainCanvas);
+                    break;
+                case UIPanelType.PanelQuickIAP:
+                    panel = Instantiate(Resources.Load("UI/PanelQuickIAP") as GameObject, mainCanvas);
+                    break;
+                case UIPanelType.PanelSelectReward:
+                    panel = Instantiate(Resources.Load("UI/PanelSelectReward") as GameObject, mainCanvas);
+                    break;
+                case UIPanelType.PanelHint:
+                    panel = Instantiate(Resources.Load("UI/PanelHint") as GameObject, mainCanvas);
+                    break;  
+                case UIPanelType.PanelQuickTimeEvent:
+                    panel = Instantiate(Resources.Load("UI/PanelQuickTimeEvent") as GameObject, mainCanvas);
+                    break;
                 case UIPanelType.PanelDailyQuest:
                     panel = Instantiate(Resources.Load("UI/PanelDailyQuest") as GameObject, mainCanvas);
+                    break;
+                case UIPanelType.PanelPreAds:
+                    panel = Instantiate(Resources.Load("UI/PanelPreAds") as GameObject, mainCanvas);
+                    break;
+                case UIPanelType.PanelCheat:
+                    panel = Instantiate(Resources.Load("UI/CheatPanel") as GameObject, mainCanvas);
+                    break;
+                case UIPanelType.PanelTutorial:
+                    panel = Instantiate(Resources.Load("UI/PanelTutorial") as GameObject, mainCanvas);
                     break;
             }
             if (panel) panel.SetActive(true);
@@ -148,6 +224,31 @@ public class UIManager : MonoBehaviour {
 
     public void ClosePanelBase() {
         GameObject go = GetPanel(UIPanelType.PanelBase);
+        go.SetActive(false);
+    }
+
+    public void ShowPanelTutorial()
+    {
+        GameObject go = GetPanel(UIPanelType.PanelTutorial);
+        go.SetActive(true);
+    }
+
+    public void ClosePanelTutorial()
+    {
+        GameObject go = GetPanel(UIPanelType.PanelTutorial);
+        go.SetActive(false);
+    }
+
+    public void ShowPanelHint(ItemType itemType)
+    {
+        GameObject go = GetPanel(UIPanelType.PanelHint);
+        go.SetActive(true);
+        go.GetComponent<PanelHint>().ShowComponent(itemType);
+        go.transform.SetAsLastSibling();
+    }
+
+    public void ClosePanelHint() {
+        GameObject go = GetPanel(UIPanelType.PanelHint);
         go.SetActive(false);
     }
 
@@ -180,16 +281,16 @@ public class UIManager : MonoBehaviour {
 
     public void ShowPanelPlayGame()
     {
-        isHasPopupOnScene = true;
-        GameObject go = GetPanel(UIPanelType.PanelPlayGame);
-        go.SetActive(true);
-        panelTotal.Transform.SetAsLastSibling();
         if (panelGamePlay == null)
+        {
+            GameObject go = GetPanel(UIPanelType.PanelPlayGame);
             panelGamePlay = go.GetComponent<PanelPlayGame>();
+        }
+        panelGamePlay.gameObject.SetActive(true);
+        panelTotal.Transform.SetAsLastSibling();
     }
     public void ClosePanelPlayGame()
     {
-        isHasPopupOnScene = false;
         GameObject go = GetPanel(UIPanelType.PanelPlayGame);
         go.SetActive(false);
     }
@@ -276,11 +377,11 @@ public class UIManager : MonoBehaviour {
                 panelShop.OnClose();
             }
         }
-        if (panelDailyQuest != null && ignorePanel != UIPanelType.PanelDailyQuest)
+        if (panelTopUp != null && ignorePanel != UIPanelType.PanelTopUp)
         {
-            if (panelDailyQuest.gameObject.activeSelf)
+            if (panelTopUp.gameObject.activeSelf)
             {
-                panelDailyQuest.OnClose();
+                panelTopUp.OnClose();
             }
         }
     }
@@ -295,6 +396,19 @@ public class UIManager : MonoBehaviour {
     {
         isHasPopupOnScene = false;
         GameObject go = GetPanel(UIPanelType.PanelSetting);
+        go.SetActive(false);
+    }
+
+    public void ShowPanelDailyQuest()
+    {
+        isHasPopupOnScene = true;
+        GameObject go = GetPanel(UIPanelType.PanelDailyQuest);
+        go.SetActive(true);
+    }
+    public void ClosePanelDailyQuest()
+    {
+        isHasPopupOnScene = false;
+        GameObject go = GetPanel(UIPanelType.PanelDailyQuest);
         go.SetActive(false);
     }
 
@@ -381,13 +495,13 @@ public class UIManager : MonoBehaviour {
 
     public void ShowPanelUsingItem()
     {
-        isHasPopupOnScene = true;
+        //isHasPopupOnScene = true;
         GameObject go = GetPanel(UIPanelType.PanelUsingItem);
         go.SetActive(true);
     }
     public void ClosePanelUsingItem()
     {
-        isHasPopupOnScene = false;
+        //isHasPopupOnScene = false;
         GameObject go = GetPanel(UIPanelType.PanelUsingItem);
         go.SetActive(false);
     }
@@ -405,24 +519,78 @@ public class UIManager : MonoBehaviour {
         go.SetActive(false);
     }
 
-    public void ShowPanelDailyQuest()
+    public void ShowPanelTopUp()
     {
-        CloseOtherMenu(UIPanelType.PanelDailyQuest);
+        CloseOtherMenu(UIPanelType.PanelTopUp);
         isHasPopupOnScene = true;
-        GameObject go = GetPanel(UIPanelType.PanelDailyQuest);
+        GameObject go = GetPanel(UIPanelType.PanelTopUp);
         go.SetActive(true);
         panelTotal.ShowMainSceneContent(false);
         panelTotal.Transform.SetAsLastSibling();
-        if (panelDailyQuest == null)
+        if (panelTopUp == null)
         {
-            panelDailyQuest = go.GetComponent<PanelDailyQuest>();
+            panelTopUp = go.GetComponent<PanelTopUp>();
         }
     }
 
-    public void ClosePanelDailyQuest()
+    public void ClosePanelTopUp()
     {
         isHasPopupOnScene = false;
-        GameObject go = GetPanel(UIPanelType.PanelDailyQuest);
+        GameObject go = GetPanel(UIPanelType.PanelTopUp);
         go.SetActive(false);
     }
+
+    public void ShowPanelQuickIAP(OfferID packageId)
+    {
+        GameObject go = GetPanel(UIPanelType.PanelQuickIAP);
+        go.SetActive(true);
+        go.GetComponent<PanelQuickIAP>().Init(packageId);
+    }
+
+    public void ClosePanelQuickIAP()
+    {
+        GameObject go = GetPanel(UIPanelType.PanelQuickIAP);
+        go.transform.SetAsLastSibling();
+        go.SetActive(false);
+    }
+    public void ShowPanelSelectReward()
+    {
+        Debug.Log("ShowPanelSelectReward");
+        isHasPopupOnScene = true;
+        GameObject go = GetPanel(UIPanelType.PanelSelectReward);
+        go.SetActive(true);
+    }
+    public void ClosePanelSelectReward()
+    {
+        isHasPopupOnScene = false;
+        GameObject go = GetPanel(UIPanelType.PanelSelectReward);
+        go.SetActive(false);
+    }
+
+    public void ShowPanelQuickTimeEvent() {
+        isHasPopupOnScene = true;
+        GameObject go = GetPanel(UIPanelType.PanelQuickTimeEvent);
+        go.SetActive(true);
+    }
+
+    public void ClosePanelQuickTimeEvent()
+    {
+        isHasPopupOnScene = false;
+        GameObject go = GetPanel(UIPanelType.PanelQuickTimeEvent);
+        go.SetActive(false);
+    }
+    
+    public void ShowPanelPreAds() {
+        if (ProfileManager.Instance.versionStatus == VersionStatus.Cheat) return;
+        GameObject go = GetPanel(UIPanelType.PanelPreAds);
+        go.SetActive(true);
+    }
+
+    public void ClosePanelPreAds()
+    {
+        GameObject go = GetPanel(UIPanelType.PanelPreAds);
+        go.SetActive(false);
+    }
+
+
 }

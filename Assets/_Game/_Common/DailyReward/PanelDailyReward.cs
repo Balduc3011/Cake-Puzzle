@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class PanelDailyReward : UIPanel
 {
+    [SerializeField] UIPanelShowUp uiPanelShowUp;
+    public SheetAnimation sheetAnimation;
     Transform Transform;
     [SerializeField] Button closeBtn;
     [SerializeField] List<DailyItemUI> uiDailyItems;
@@ -24,6 +26,7 @@ public class PanelDailyReward : UIPanel
     {
         Init();
         Transform.SetAsLastSibling();
+        sheetAnimation.PlayAnim();
     }
 
     void Init()
@@ -37,7 +40,9 @@ public class PanelDailyReward : UIPanel
 
     void ClosePanel()
     {
-        openAndCloseAnim.OnClose(CloseInstant);
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
+        //openAndCloseAnim.OnClose(CloseInstant);
+        uiPanelShowUp.OnClose(CloseInstant);
     }
 
     void CloseInstant()

@@ -1,3 +1,4 @@
+using SDK;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,10 +8,11 @@ using UnityEngine;
 [System.Serializable]
 public class PlayerResourseSave : SaveBase
 {
-    public BigNumber coins;
+    public int coins;
     public List<ItemData> ownedItem;
     public int trophy;
     public int trophyRecord;
+    public float piggySave;
     public string lastFreeSpin;
     public string lastDay;
     public string x2BoosterEnd;
@@ -33,6 +35,7 @@ public class PlayerResourseSave : SaveBase
             coins = data.coins;
             trophy = data.trophy;
             trophyRecord = data.trophyRecord;
+            piggySave = data.piggySave;
             lastFreeSpin = data.lastFreeSpin;
             lastDay = data.lastDay;
             x2BoosterEnd = data.x2BoosterEnd;
@@ -76,19 +79,20 @@ public class PlayerResourseSave : SaveBase
 
     public bool IsHasEnoughMoney(float amount)
     {
-        return coins.IsBigger(amount);
+        return coins >= amount;
     }
 
     public void AddMoney(float amount)
     {
-        coins.Add(amount);
+        coins += (int)amount;
         IsMarkChangeData();
         SaveData();
+        EventManager.TriggerEvent(EventName.ChangeCoin.ToString());
     }
 
     public void ConsumeMoney(float amount)
     {
-        coins.Substract(amount);
+        coins -= (int)amount;
         IsMarkChangeData();
         SaveData();
         EventManager.TriggerEvent(EventName.ChangeCoin.ToString());
@@ -104,6 +108,22 @@ public class PlayerResourseSave : SaveBase
     public void SaveRecord()
     {
         trophyRecord = trophy;
+        IsMarkChangeData();
+        SaveData();
+    }
+
+    public void AddPiggySave(float amount = 10)
+    {
+        piggySave += amount;
+        if (piggySave >= ConstantValue.VAL_MAX_PIGGY)
+            piggySave = ConstantValue.VAL_MAX_PIGGY;
+        IsMarkChangeData();
+        SaveData();
+    }
+
+    public void ClearPiggySave()
+    {
+        piggySave = 0;
         IsMarkChangeData();
         SaveData();
     }
@@ -189,6 +209,7 @@ public class PlayerResourseSave : SaveBase
         {
             if (ownedItem[i].ItemType == item.ItemType) {
                 ownedItem[i].amount += item.amount;
+                EventManager.TriggerEvent(EventName.AddItem.ToString());
                 IsMarkChangeData();
                 SaveData();
                 return;
@@ -200,6 +221,7 @@ public class PlayerResourseSave : SaveBase
         ownedItem.Add(data);
         IsMarkChangeData();
         SaveData();
+        EventManager.TriggerEvent(EventName.AddItem.ToString());
     }
 
     public float GetItemAmount(ItemType itemType)
@@ -220,37 +242,41 @@ public class PlayerResourseSave : SaveBase
         {
             if (ownedItem[i].ItemType == itemType)
             {
+                Debug.Log("using item : "+itemType);
                 ownedItem[i].amount--;
-                return;
+                EventManager.TriggerEvent(EventName.AddItem.ToString());
+                break;
             }
         }
         IsMarkChangeData();
         SaveData();
+        EventManager.TriggerEvent(EventName.AddItem.ToString());
     }
 
-    public void AddExp(float expAdd) {
-        if (currentLevel >= levelMax && currentExp==expMax) {
-            LevelUp();
-            return;
-        }
+    public bool AddExp(float expAdd) {
+        //if (currentLevel >= levelMax && currentExp==expMax) {
+        //    LevelUp();
+        //    return;
+        //}
         currentExp += expAdd;
         if (currentExp >= expMax)
         {
             currentExp = 0;
             LevelUp();
+            IsMarkChangeData();
+            SaveData();
+            return true;
         }
         IsMarkChangeData();
         SaveData();
+        return false;
     }
 
     public void LevelUp() {
-        int cakeID = ProfileManager.Instance.dataConfig.levelDataConfig.GetCakeID(currentLevel);
-        if (cakeID != -1)
-        {
-            ProfileManager.Instance.playerData.cakeSaveData.AddCake(cakeID);
-            ProfileManager.Instance.playerData.cakeSaveData.UseCake(cakeID);
-        }
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_LevelUp);
         currentLevel++;
+        ABIAnalyticsManager.Instance.TrackEventLevelComplete(currentLevel);
+        GameManager.Instance.GetLevelUpReward();
         EventManager.TriggerEvent(EventName.ChangeLevel.ToString());
         expMax = ProfileManager.Instance.dataConfig.levelDataConfig.GetExpToNextLevel(currentLevel);
     }
@@ -266,6 +292,7 @@ public class PlayerResourseSave : SaveBase
 
     public bool IsHaveItem(ItemType itemType)
     {
+        if (itemType == ItemType.Revive) return true;
         for (int i = 0; i < ownedItem.Count; i++)
         {
             if (ownedItem[i].ItemType == itemType && ownedItem[i].amount > 0)
@@ -324,6 +351,34 @@ public class PlayerResourseSave : SaveBase
         setting.status = !setting.status;
         IsMarkChangeData();
         SaveData();
+    }
+
+
+    public void SetCoin() {
+        coins = 10000;
+        IsMarkChangeData();
+        SaveData();
+    }
+
+    public void SetItem(ItemType itemType)
+    {
+        for (int i = 0; i < ownedItem.Count; i++)
+        {
+            if (ownedItem[i].ItemType == itemType)
+            {
+                ownedItem[i].amount = 10000;
+                IsMarkChangeData();
+                SaveData();
+                return;
+            }
+        }
+        ItemData data = new ItemData();
+        data.ItemType = itemType;
+        data.amount = 10000;
+        ownedItem.Add(data);
+        IsMarkChangeData();
+        SaveData();
+
     }
 }
 

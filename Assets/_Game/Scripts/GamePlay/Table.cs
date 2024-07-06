@@ -4,19 +4,41 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using DG.Tweening;
+using UnityEngine.Purchasing;
+using UnityEngine.UIElements;
+using Unity.VisualScripting;
+using System.Linq;
+
+using System.IO;
+
 public class Table : MonoBehaviour
 {
+    public List<Way> ways = new List<Way>();
     public List<Plate> plates = new List<Plate>();
     [SerializeField] List<Material> plateMaterial;
-    AnimationCurve curveRotate;
-    AnimationCurve curveMove;
     float timeRotate;
     float timeMove;
-    Plate[,] plateArray = new Plate[6, 4];
-
+    public Plate[,] plateArray = new Plate[5, 4];
     private void Start()
     {
         InitData();
+        EventManager.AddListener(EventName.ChangeLevel.ToString(), ActivePlate);
+        ActivePlate();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space)) { 
+            ClearAllCake();
+        }
+    }
+
+    public void ActivePlate()
+    {
+        for (int i = 0; i < plates.Count; i++)
+        {
+            plates[i].ActivePlate();
+        }
     }
 
     #region Decoration
@@ -41,7 +63,6 @@ public class Table : MonoBehaviour
             }
         }
     }
-    //List<Plate> plateNeedCheck = new List<Plate>();
 
     public List<Plate> mapPlate = new List<Plate>();
     public List<Plate> mapWay = new List<Plate>();
@@ -50,7 +71,6 @@ public class Table : MonoBehaviour
     // 1 => left
     // 2 => up
     // 3 => down
-
     public void ClearMapPlate(int cakeID) {
         ClearDoneSetWayPoint();
         mapPlate.Clear();
@@ -62,7 +82,17 @@ public class Table : MonoBehaviour
     int currentCakeID;
     public void CreateMapPlate(PlateIndex plateIndex, int cakeID) {
         List<Plate> plateNeedCheck = new List<Plate>();
-
+        if (CheckPlateHaveCakeDone(plateIndex))
+        {
+            //Debug.LogError("Clear Cake way!");
+            mapPlate.Clear();
+            bestPlate = null;
+            currentCakeID = -1;
+            ways.Clear();
+            GameManager.Instance.cakeManager.CheckOtherIDOfCake();
+            return;
+        }
+        Debug.Log("create map plate current id: " + currentCakeID);
         if ((plateIndex.indexX + 1) < plateArray.GetLength(0))
             plateNeedCheck.Add(plateArray[plateIndex.indexX + 1, plateIndex.indexY]);
 
@@ -90,18 +120,30 @@ public class Table : MonoBehaviour
         }
     }
 
+    public bool CheckPlateHaveCakeDone(PlateIndex plateIndex) {
+        
+        if (plateArray[plateIndex.indexX, plateIndex.indexY].currentCake != null)
+        {
+            if (plateArray[plateIndex.indexX, plateIndex.indexY].currentCake.cakeDone || plateArray[plateIndex.indexX, plateIndex.indexY].currentCake.pieces.Count == 0)
+                return true;
+            return false;
+        }
+        return true;
+    }
+
     public Plate bestPlate;
     int bestPoint;
     int totalPieceMerge;
     int currentPieces;
     int totalPieceMoveDone;
+
     public void FindPlateBest(int cakeID)
     {
         bestPoint = int.MinValue;
         for (int i = 0; i < mapPlate.Count; i++)
         {
             int points = mapPlate[i].CalculatePoint(cakeID);
-            if (points >= bestPoint) {
+            if (points > bestPoint) {
                 bestPlate = mapPlate[i];
                 bestPoint = points;
                 totalPieceMerge = mapPlate[i].GetFreeSpace();
@@ -113,20 +155,13 @@ public class Table : MonoBehaviour
     public void StartMove(int cakeID) {
         if (CheckWayDone(cakeID))
         {
-
-            if (bestPlate.CheckCakeIsDone(cakeID))
-            {
-                bestPlate.DoneCake();
-            }
             ClearCakeDone();
-            // check other cake
             return;
         }
         stepIndex = -1;
         Move(cakeID);
     }
-
-    void CallBackCheckOtherCakeOnMap() {
+    void CallBackCheckOtherIDOnMap() {
         ClearDoneSetWayPoint();
         ways.Clear();
         for (int i = mapPlate.Count - 1; i >= 0; i--) {
@@ -137,29 +172,18 @@ public class Table : MonoBehaviour
         }
         if (mapPlate.Count > 1)
         {
-            Plate plateCheck = mapPlate[0];
-            ClearMapPlate(currentCakeID);
-            AddFirstPlate(plateCheck);
-            CreateMapPlate(plateCheck.GetPlateIndex(), currentCakeID);
-            ClearDoneSetWayPoint();
-            FindPlateBest(currentCakeID);
-            StartCreateWay();
-            if (ways.Count > 0)
+            if (mapPlate[0].currentCake != null)
             {
-                Debug.Log("call start move from check id sot lai");
-                StartMove(currentCakeID);
+                GameManager.Instance.cakeManager.AddCakeNeedCheck(mapPlate[0].currentCake, ActionCallBackSameCake);
             }
-            else
-            {
-                GameManager.Instance.cakeManager.CheckIDOfCake();
-            }
-
         }
-        else
-        {
-            GameManager.Instance.cakeManager.CheckIDOfCake();
-        }
+        GameManager.Instance.cakeManager.CheckOtherIDOfCake();
     }
+
+    void ActionCallBackSameCake() {
+        mapPlate.Clear();
+    }
+
     bool CheckWayDone(int cakeID) {
         int totalDone = 0;
         for (int i = 0; i < ways.Count; i++)
@@ -167,29 +191,38 @@ public class Table : MonoBehaviour
             if (ways[i].plateCurrent.CheckModeDone(cakeID))
                 totalDone++;
         }
+;
         return totalDone == ways.Count || bestPlate.BestPlateDone(cakeID, totalPieceMoveDone);
     }
     int stepIndex = -1;
     void Move(int cakeID) {
         stepIndex++;
-        if (stepIndex == ways.Count)
+        if (stepIndex >= ways.Count)
         {
-            Debug.Log("call back start move");
             StartMove(cakeID);
             return;
         }
         if (timeMove == 0) {
             timeMove = ProfileManager.Instance.dataConfig.cakeAnimationSetting.GetTimeMove();
             timeRotate = ProfileManager.Instance.dataConfig.cakeAnimationSetting.GetTimeRotate();
-            curveRotate = ProfileManager.Instance.dataConfig.cakeAnimationSetting.GetCurveRotate();
-            curveMove = ProfileManager.Instance.dataConfig.cakeAnimationSetting.GetCurveMove();
         }
-        ways[stepIndex].Move(cakeID, curveRotate, curveMove, timeRotate, timeMove, stepIndex == ways.Count - 1, Move);
+
+        if (stepIndex < ways.Count)
+            ways[stepIndex].Move(cakeID, timeRotate, timeMove, stepIndex == ways.Count - 1, Move, RemoveWay);
+    }
+
+    void RemoveWay(Way way) {
+        ways.Remove(way); 
+    }
+
+    public bool CheckIsSameIDWithWay(int cakeID) {
+        return currentCakeID == cakeID;
     }
 
     public void StartCreateWay()
     {
-
+        if (bestPlate == null)
+            return;
         bestPlate.wayPoint.setDone = true;
         currentPieces = 0;
         ways.Clear();
@@ -206,13 +239,21 @@ public class Table : MonoBehaviour
             CreateWayLoop();
         }
     }
+    int countMapRemain = 0;
     bool CheckDoneCreateWayMove()
     {
+        if (mapWay.Count == 1)
+            return true;
         if (mapWay[mapWay.Count - 1].currentSpace == 0) return true;
+
+        countMapRemain = 0;
         for (int i = 0; i < mapWay.Count-1; i++) {
+            if (mapWay[i].currentCake == null)
+                return true;
             if (mapWay[i].currentPieceSame > 0)
-                return false;
+                countMapRemain++;
         }
+        if (countMapRemain > 0) return false;
         return true;
     }
     void CreateWayLoop() {
@@ -223,6 +264,7 @@ public class Table : MonoBehaviour
                 int wayCountLoop = 0;
                 int pieceFree = mapWay[currentPlateIndex].wayPoint.nextPlate.currentSpace;
                 int pieceSame = mapWay[currentPlateIndex].currentPieceSame;
+               
                 if (pieceFree >= pieceSame) wayCountLoop = pieceSame;
                 else wayCountLoop = pieceFree;
                 for (int i = 0; i < wayCountLoop; i++)
@@ -258,7 +300,7 @@ public class Table : MonoBehaviour
         mapWay.Add(plateArray[plateIndex.indexX, plateIndex.indexY]);
 
     }
-    public List<Way> ways = new List<Way>();
+    
 
     void CreateWay(Plate plateStart) {
         if (plateStart.wayPoint.nextPlate == null)
@@ -300,15 +342,19 @@ public class Table : MonoBehaviour
             mapPlate[i].wayPoint.nextPlate = null;
         }
     }
+
     int totalNeedRotate = 0;
     int currentRotateDone = 0;
+    bool clearCakeLoadDone = false;
+
     public void ClearCakeDone()
     {
         totalNeedRotate = 0;
         currentRotateDone = 0;
+        clearCakeLoadDone = false;
         for (int i = 0; i < plates.Count; i++)
         {
-            if (plates[i].currentCake != null && plates[i] != bestPlate)
+            if (plates[i].currentCake != null)
             {
                 if (plates[i].currentCake.CakeIsNull())
                 {
@@ -319,25 +365,18 @@ public class Table : MonoBehaviour
                 if (plates[i].currentCake.needRotateRightWay && !plates[i].currentCake.cakeDone)
                 {
                     totalNeedRotate++;
-                    Debug.Log("Rotate cake right way cake: " + plates[i]);
-                    plates[i].currentCake.RotateOtherPieceRight(RotateDone);
-                }
+                    plates[i].currentCake.RotateOtherPieceRight(null);
+                } 
             }
         }
-        if (totalNeedRotate == 0)
-            CallBackCheckOtherCakeOnMap();
-    }
-
-    void RotateDone() {
-        currentRotateDone++;
-        if (currentRotateDone == totalNeedRotate)
-            CallBackCheckOtherCakeOnMap();
+        clearCakeLoadDone = true;
+            CallBackCheckOtherIDOnMap();
     }
 
     public bool CheckGroupOneAble() {
         for (int i = 0; i < plates.Count; i++)
         {
-            if (plates[i].currentCake == null)
+            if (plates[i].CheckIsNull())
                 return true;
         }
         return false;
@@ -347,6 +386,7 @@ public class Table : MonoBehaviour
     {
         int pointXstart = 0;
         int pointYend = plateArray.GetLength(1);
+
         if (positionSecondCake == -1)
             pointXstart = 1;
         else pointYend--;
@@ -357,16 +397,12 @@ public class Table : MonoBehaviour
             {
                 if (positionSecondCake == -1)
                 {
-                    if (plateArray[i, j].currentCake == null && plateArray[i - 1, j].currentCake == null)
-                    {
+                    if (plateArray[i, j].CheckIsNull() && plateArray[i - 1, j].CheckIsNull())
                         return true;
-                    }
                 }
                 else {
-                    if (plateArray[i, j].currentCake == null && plateArray[i, j + 1].currentCake == null)
-                    {
+                    if (plateArray[i, j].CheckIsNull() && plateArray[i, j + 1].CheckIsNull())
                         return true;
-                    }
                 }
             }
         }
@@ -374,26 +410,15 @@ public class Table : MonoBehaviour
 
     }
 
-    int indexCakeClear = 0;
     public void ClearAllCakeByItem()
     {
-        indexCakeClear = 0;
-        StartCoroutine(IE_WaitClearCake());
-    }
-
-    IEnumerator IE_WaitClearCake() {
-
-        while (indexCakeClear < plates.Count)
+        for (int i = 0; i < plates.Count; i++)
         {
-            if (plates[indexCakeClear].currentCake != null)
+            if (plates[i].currentCake != null)
             {
-                plates[indexCakeClear].ClearCakeFromItem();
-                yield return new WaitForSeconds(.25f);
+                Destroy(plates[i].currentCake.gameObject);
             }
-            indexCakeClear++;
         }
-
-        GameManager.Instance.cakeManager.TrashOut(UIManager.instance.CloseBlockAll);
     }
 
     public void ClearAllCake() {
@@ -434,6 +459,21 @@ public class Table : MonoBehaviour
         newCake.transform.localPosition = Vector3.zero;
         plateArray[plateIndexTemp.indexX, plateIndexTemp.indexY].currentCake = newCake;
         newCake.InitData(cakeOnPlate.cakeIDs, plateArray[plateIndexTemp.indexX, plateIndexTemp.indexY]);
+        newCake.SetActiveCollider(false);
+    }
+    public Plate GetNullPlate() {
+        List<Plate> plateTemp = new();
+        plateTemp = plates.Where(e => e.currentCake == null).ToList();
+        if (plateTemp.Count > 0)
+            return plateTemp[UnityEngine.Random.Range(0, plateTemp.Count)];
+        return null;
+    }
+    public void LoadCakeOnPlateCheat(Cake newCake) {
+        Plate plateTemp = GetNullPlate();
+        newCake.transform.parent = plateTemp.pointStay.transform;
+        newCake.transform.localPosition = Vector3.zero;
+        plateTemp.currentCake = newCake;
+        newCake.InitData(plateTemp);
     }
 
     public void SaveCake() {
@@ -462,7 +502,8 @@ public class Table : MonoBehaviour
                 }
             }
         }
-
+        if (currentPlateNeedResolve.Count == 0)
+            return null;
         return currentPlateNeedResolve[UnityEngine.Random.Range(0, currentPlateNeedResolve.Count)].idInfors;
     }
 
@@ -493,10 +534,43 @@ public class Table : MonoBehaviour
 
         return false;
     }
+
+    public bool IsLastMove(int cakeID) {
+        return bestPlate.BestPlateDone(cakeID, totalPieceMoveDone);
+    }
+
+
+    public void ReInitCake(int cakeID)
+    {
+        for (int i = 0; i < plates.Count; i++)
+        {
+            if (plates[i].currentCake != null)
+            {
+                if (plates[i].currentCake.IsHaveCakeID(cakeID)) plates[i].currentCake.ReInitData();
+            }
+        }    
+    }
+
+    public void AnimLooseGame() {
+        for (int i = 0; i < plates.Count; i++)
+        {
+            if (plates[i].currentCake == null)
+                plates[i].AnimationLoose();
+        }
+    }
+
+    public void AnimLooseGameOut()
+    {
+        for (int i = 0; i < plates.Count; i++)
+        {
+            plates[i].AnimationLooseOut();
+        }
+    }
 }
 
 [System.Serializable]
-public class Way {
+public class Way
+{
     public Plate plateCurrent;
     public Plate plateGo;
     Piece pieces;
@@ -504,86 +578,102 @@ public class Way {
     Cake cake;
     UnityAction<int> actionCallBackMove;
     int cakeIDCallBack;
-    AnimationCurve curveRotate;
-    AnimationCurve curveMove;
     float timeRotate;
     float timeMove;
     bool lastMove;
+    int rotateIndexReturn;
 
-    public void Move(int cakeID, AnimationCurve curveRotate, AnimationCurve curveMove, float timeRotate, float timeMove, bool lastMove, UnityAction<int> actionDone = null)
+    public void Move(int cakeID, float timeRotate, float timeMove, bool lastMove, UnityAction<int> actionDone = null, UnityAction<Way> removeWay= null)
     {
-        this.curveRotate = curveRotate;
-        this.curveMove = curveMove;
         this.timeRotate = timeRotate;
         this.timeMove = timeMove;
-        this.lastMove = lastMove;
-
         cakeIDCallBack = cakeID;
         actionCallBackMove = actionDone;
-
+        if (!GameManager.Instance.cakeManager.table.CheckIsSameIDWithWay(cakeID))
+        {
+            removeWay(this);
+            CallDoneThatMove();
+            return;
+        }
         int totalFreeSpace = plateGo.GetFreeSpace();
         if (totalFreeSpace == 0)
         {
             DoActionDone();
             return;
         }
+
         pieces = plateCurrent.GetPieceMove(cakeID);
+       
         if (pieces == null)
         {
-            Debug.Log("call done move by piece null!");
+            removeWay(this);
             CallDoneThatMove();
         }
         else
         {
-            plateGo.currentCake.MakeRotateIndexForNewPiece(cakeID);
+            rotateIndexReturn = plateGo.currentCake.MakeRotateIndexForNewPiece(cakeID);
             ActionCallBackOnMoveOtherPiece();
         }
-
-        
-       
     }
 
-    void CallDoneThatMove() {
+    void CallDoneThatMove()
+    {
+        lastMove = GameManager.Instance.cakeManager.table.IsLastMove(cakeIDCallBack);
+        if (lastMove)
+        {
+            DOVirtual.DelayedCall(timeMove, () =>
+            {
+                if (pieces != null)
+                    if (plateGo.CheckCakeIsDone(pieces.cakeID))
+                    {
+                        plateGo.DoneCake();
+                    }
+            });
+        }
+
         if (lastMove)
         {
             plateCurrent.MoveDoneOfCake();
             timeDelay = ProfileManager.Instance.dataConfig.cakeAnimationSetting.GetTimeEachCake();
         }
         else timeDelay = ProfileManager.Instance.dataConfig.cakeAnimationSetting.GetTimeEachPiece();
-        DOVirtual.DelayedCall(timeDelay, () => {
+
+        DOVirtual.DelayedCall(timeDelay, () =>
+        {
             DoActionDone();
         });
     }
 
-    void ActionCallBackOnMoveOtherPiece() {
-        int rotateIndex = plateGo.currentCake.GetRotateIndex();
-        if (rotateIndex < 0) rotateIndex = 5;
-        else if (rotateIndex >= 6) rotateIndex = 0;
+    void ActionCallBackOnMoveOtherPiece()
+    {
+        if (rotateIndexReturn < 0) rotateIndexReturn = 5;
+        else if (rotateIndexReturn >= 6) rotateIndexReturn = 0;
+
+        pieces.currentRotateIndex = rotateIndexReturn;
+        plateGo.AddPiece(pieces);
 
         cake = plateGo.currentCake;
-       
-        pieces.currentRotateIndex = rotateIndex;
-        plateGo.AddPiece(pieces);
-        plateGo.currentCake.StartRotateOtherPieceForNewPiece(() => {
+
+        plateGo.currentCake.StartRotateOtherPieceForNewPiece(() =>
+        {
             pieces.transform.parent = plateGo.currentCake.transform;
             pieces.transform.DOScale(Vector3.one, 0.25f);
-            pieces.transform.DOMove(plateGo.pointStay.position, timeMove).SetEase(curveMove).OnComplete(() => {
-                cake.DoAnimImpact();
-                
-            });
+            pieces.transform.DOMove(plateGo.pointStay.position, timeMove);
+            plateGo.currentCake.CheckCakeIsDone(pieces.cakeID);
+            if (!plateGo.currentCake.cakeDone) DOVirtual.DelayedCall(timeMove - .15f, cake.DoAnimImpact);
+            pieces.transform.DORotate(new Vector3(0, plateGo.currentCake.rotates[rotateIndexReturn], 0), timeRotate);
             CallDoneThatMove();
-            pieces.transform.DORotate(new Vector3(0, plateGo.currentCake.rotates[rotateIndex], 0), timeRotate).SetEase(curveRotate);
-            
         });
         plateCurrent.CheckNullPieces();
-       
-
-        
     }
 
     void DoActionDone() { actionCallBackMove(cakeIDCallBack); }
 
-    
+    public int GetIDCallBack()
+    {
+        return cakeIDCallBack;
+    }
 }
+
 
 

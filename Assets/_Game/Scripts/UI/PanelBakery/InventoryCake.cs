@@ -1,3 +1,4 @@
+using AssetKits.ParticleImage;
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,16 +9,19 @@ using UnityEngine.UI;
 public class InventoryCake : MonoBehaviour
 {
     CakeData cakeData;
-    [SerializeField] TextMeshProUGUI cakeNameTxt;
-    [SerializeField] TextMeshProUGUI cakePointTxt;
+    OwnedCake currentCake;
     [SerializeField] Button button;
     [SerializeField] Image onIconImg;
     [SerializeField] Image offIconImg;
     [SerializeField] GameObject usingMarkObj;
     [SerializeField] GameObject lockingMarkObj;
-    string PERCAKE = "/cake";
     PanelBakery panelBakery;
     bool isUsing;
+    [SerializeField] GameObject levelBar;
+    [SerializeField] TextMeshProUGUI levelTxt;
+    [SerializeField] GameObject upgradeNotify;
+    [SerializeField] Slider cardAmountSlider;
+    [SerializeField] TextMeshProUGUI cardAmountTxt;
     void Start()
     {
         button.onClick.AddListener(OnCakeClick);
@@ -30,52 +34,61 @@ public class InventoryCake : MonoBehaviour
             InitUsing();
     }
 
-    void OnCakeClick()
-    {
-        if(onIconImg.gameObject.activeSelf) 
-            onIconImg.transform.DOScale(1.2f, 0.25f).OnComplete(() =>
-            {
-                onIconImg.transform.DOScale(1, 0.05f);
-            });
-        if (offIconImg.gameObject.activeSelf)
-            offIconImg.transform.DOScale(1.2f, 0.25f).OnComplete(() =>
-            {
-                offIconImg.transform.DOScale(1, 0.05f);
-            });
-        //ProfileManager.Instance.playerData.cakeSaveData.UseCake(cakeData.id);
-        //UIManager.instance.GetPanel(UIPanelType.PanelBakery).GetComponent<PanelBakery>().ReloadPanel();
-        if(!isUsing)
-            panelBakery.SetCakeToSwap(cakeData.id);
-    }
-
     public void Init(CakeData cakeData)
     {
         this.cakeData = cakeData;
-        onIconImg.sprite = cakeData.icon;
-        offIconImg.sprite = cakeData.icon;
-        cakeNameTxt.text = "Cake " + cakeData.id.ToString();
-        cakePointTxt.text = ((cakeData.id + 1) * 5).ToString() + ConstantValue.STR_SPACE + ConstantValue.STR_EXP + PERCAKE;
+        int levelPref = ProfileManager.Instance.playerData.cakeSaveData.GetOwnedCakeLevel(cakeData.id);
+        if (levelPref > 2) levelPref = 2;
+        onIconImg.sprite = cakeData.icons[levelPref - 1];
+        offIconImg.sprite = cakeData.icons[levelPref - 1];
         InitUsing();
     }
 
     public void InitUsing()
     {
         isUsing = false;
-        if(ProfileManager.Instance.playerData.cakeSaveData.IsOwnedCake(cakeData.id))
+        currentCake = ProfileManager.Instance.playerData.cakeSaveData.GetOwnedCake(cakeData.id);
+        int levelPref = ProfileManager.Instance.playerData.cakeSaveData.GetOwnedCakeLevel(cakeData.id);
+        if(levelPref > 2) levelPref = 2;
+        onIconImg.sprite = cakeData.icons[levelPref - 1];
+        offIconImg.sprite = cakeData.icons[levelPref - 1];
+
+        if (ProfileManager.Instance.playerData.cakeSaveData.IsOwnedCake(cakeData.id))
         {
+            levelBar.SetActive(true);
+            levelTxt.text = currentCake.level.ToString();
             lockingMarkObj.SetActive(false);
             offIconImg.gameObject.SetActive(false);
             onIconImg.gameObject.SetActive(true);
             usingMarkObj.SetActive(ProfileManager.Instance.playerData.cakeSaveData.IsUsingCake(cakeData.id));
-
             isUsing = ProfileManager.Instance.playerData.cakeSaveData.IsUsingCake(cakeData.id);
+            if(currentCake == null) currentCake = ProfileManager.Instance.playerData.cakeSaveData.GetOwnedCake(cakeData.id);
+            upgradeNotify.SetActive(currentCake.IsAbleToUpgrade());
+            cardAmountSlider.value = (float)currentCake.cardAmount / (float)currentCake.CardRequire;
+            cardAmountSlider.gameObject.SetActive(true);
+            cardAmountTxt.text = currentCake.cardAmount.ToString() + ConstantValue.STR_SLASH + currentCake.CardRequire.ToString();
         }
         else
         {
+            levelBar.SetActive(false);
+            levelTxt.text = ConstantValue.STR_BLANK;
             lockingMarkObj.SetActive(true);
             offIconImg.gameObject.SetActive(true);
             onIconImg.gameObject.SetActive(false);
             usingMarkObj.SetActive(false);
+            upgradeNotify.SetActive(false);
+            cardAmountSlider.gameObject.SetActive(false);
+        }
+    }
+
+    void OnCakeClick()
+    {
+        transform.DOScale(0.9f, 0.05f).SetEase(Ease.InOutQuad).OnComplete(() =>
+            {
+                transform.DOScale(1f, 0.05f).SetEase(Ease.InOutQuad);
+        });
+        if(ProfileManager.Instance.playerData.cakeSaveData.IsOwnedCake(cakeData.id)) {
+            panelBakery.ShowCakeInfo(cakeData, this);
         }
     }
 }

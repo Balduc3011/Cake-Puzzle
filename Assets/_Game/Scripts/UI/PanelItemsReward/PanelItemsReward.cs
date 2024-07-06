@@ -13,6 +13,8 @@ public class PanelItemsReward : UIPanel
     List<RewardItemUI> rewardItemUIs;
     List<ItemData> rewards;
     int spawnedCount;
+    public Transform coinBar;
+    public Transform bagBar;
 
     Vector3 titleScale = new Vector3 (0f, 1f, 1f);
     public override void Awake()
@@ -34,6 +36,8 @@ public class PanelItemsReward : UIPanel
         DisableOldItem();
         InitReward();
         transform.SetAsLastSibling();
+        coinBar.DOScale(1, 0.25f).From(0).SetDelay(2);
+        bagBar.DOScale(1, 0.25f).From(0).SetDelay(2);
     }
 
     void InitReward()
@@ -51,16 +55,19 @@ public class PanelItemsReward : UIPanel
 
     IEnumerator SpawnReward()
     {
-        yield return ConstantValue.WAIT_SEC025;
+        yield return ConstantValue.WAIT_SEC01;
         if (spawnedCount < rewards.Count)
         {
             RewardItemUI rewardItemUI = GetRewardItemUI();
-            rewardItemUI.Init(rewards[spawnedCount]);
+            rewardItemUI.Init(rewards[spawnedCount], this);
             spawnedCount++;
             StartCoroutine(SpawnReward());
         }
         else
         {
+            yield return ConstantValue.WAIT_SEC1;
+            yield return ConstantValue.WAIT_SEC1;
+            yield return ConstantValue.WAIT_SEC1;
             closeBtn.interactable = true;
         }
     }
@@ -90,11 +97,24 @@ public class PanelItemsReward : UIPanel
 
     void ClosePanel()
     {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         for (int i = 0; i < rewardItemUIs.Count; i++)
         {
             rewardItemUIs[i].gameObject.SetActive(false);
         }
         titleTrs.localScale = titleScale;
         UIManager.instance.ClosePanelItemsReward();
+        //if (GameManager.Instance.cakeManager.justUnlockedCake != -1 && GameManager.Instance.cakeManager.justUnlockedCake != 0)
+        //{
+        //    UIManager.instance.ShowPanelCakeReward();
+        //}
+        //else if(GameManager.Instance.cakeManager.levelUp)
+        //{
+        //    GameManager.Instance.cakeManager.cakeShowComponent.ShowNormalCake();
+        //    GameManager.Instance.cakeManager.cakeShowComponent.ShowNextToUnlockCake();
+        //    GameManager.Instance.cakeManager.ClearAllCake();
+        //    GameManager.Instance.cakeManager.SetOnMove(false);
+        //    UIManager.instance.ShowPanelLoading();
+        //}
     }
 }

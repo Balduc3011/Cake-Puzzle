@@ -12,8 +12,9 @@ public class DecorSlotUI : MonoBehaviour
     [SerializeField] Button buyBtn;
     [SerializeField] Button useBtn;
     [SerializeField] GameObject usingObj;
-    [SerializeField] TextMeshProUGUI priceTxt;
-    [SerializeField] Image decorIconImg;
+    public TextMeshProUGUI priceTxt;
+    public Image decorIconImg;
+    [SerializeField] PanelDecorations panelDecorations;
 
     private void Start()
     {
@@ -42,11 +43,22 @@ public class DecorSlotUI : MonoBehaviour
 
     void OnBuy()
     {
+        if(panelDecorations == null)
+        {
+            panelDecorations = UIManager.instance.GetPanel(UIPanelType.PanelDecorations).GetComponent<PanelDecorations>();
+        }
+        panelDecorations.ShowConfirm(this);
+    }
+
+    public void OnBuyConfirmed()
+    {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         GameManager.Instance.decorationManager.BuyDecor(decorationType, decorationData.id);
     }
 
     void OnUse()
     {
+        GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         GameManager.Instance.decorationManager.UseDecor(decorationType, decorationData.id);
     }
 

@@ -13,6 +13,10 @@ public class UIPlayerTop : MonoBehaviour
         //trophyAmount.text = ProfileManager.Instance.playerData.playerResourseSave.trophy.ToString();
         trophy = ProfileManager.Instance.playerData.playerResourseSave.trophy;
         trophyRecord = ProfileManager.Instance.playerData.playerResourseSave.trophyRecord;
+        if(trophyRecord < trophy - 20)
+        {
+            trophyRecord = trophy - 20;
+        }
         trophyAmount.text = trophyRecord.ToString();
         StartCoroutine(RunText());
     }

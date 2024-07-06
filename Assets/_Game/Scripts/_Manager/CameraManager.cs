@@ -14,6 +14,7 @@ public class CameraManager : MonoBehaviour
     [SerializeField] Vector3 rotateCameraDefault;
     [SerializeField] Transform showRoomParents;
     [SerializeField] float cameraSizeUsingItem;
+    [SerializeField] CameraShaker cameraShaker;
 
     Dictionary<int, ShowRoom> showRooms = new Dictionary<int, ShowRoom>();
 
@@ -60,11 +61,11 @@ public class CameraManager : MonoBehaviour
         });
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space)) { UsingItemMode(); }
-        if (Input.GetKeyDown(KeyCode.V)) { OutItemMode(); }
-    }
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.Space)) { UsingItemMode(); }
+    //    if (Input.GetKeyDown(KeyCode.V)) { OutItemMode(); }
+    //}
 
     public void UsingItemMode() {
         mainCamera.transform.DOMove(positionUsingItem, .5f).SetEase(Ease.OutCubic);
@@ -129,6 +130,10 @@ public class CameraManager : MonoBehaviour
                 currentShowRoom.CloseCamera();
             }
         }
+    }
+
+    public void ShakeCamera(float duration) {
+        cameraShaker.ShakeCamera(duration);
     }
 }
 

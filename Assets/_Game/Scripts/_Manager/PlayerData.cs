@@ -14,9 +14,9 @@ public class PlayerData
 
     public void LoadData()
     {
+        playerResourseSave.LoadData();
         cakeSaveData.LoadData();
         saveBase.LoadData();
-        playerResourseSave.LoadData();
         decorationSave.LoadData();
         questDataSave.LoadData();
     }

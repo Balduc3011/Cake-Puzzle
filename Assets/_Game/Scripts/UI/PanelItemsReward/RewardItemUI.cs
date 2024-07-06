@@ -1,3 +1,4 @@
+using AssetKits.ParticleImage;
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,20 +9,39 @@ using UnityEngine.UI;
 public class RewardItemUI : MonoBehaviour
 {
     Transform Transform;
+    [SerializeField] Transform contentTransform;
     [SerializeField] Image iconImg;
     [SerializeField] TextMeshProUGUI titleTxt;
     [SerializeField] TextMeshProUGUI amountTxt;
     [SerializeField] CanvasGroup canvasGroup;
-    
-    public void Init(ItemData itemData)
+    [SerializeField] ParticleImage rewardEffect;
+    PanelItemsReward panelItemsReward;
+
+    public void Init(ItemData itemData, PanelItemsReward panelItemsReward)
     {
+        this.panelItemsReward = panelItemsReward;
         titleTxt.text = itemData.ItemType.ToString();
         amountTxt.text = itemData.amount.ToString();
-        iconImg.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetItemSprite(itemData.ItemType);
+        if(itemData.ItemType != ItemType.Cake)
+            iconImg.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetItemSprite(itemData.ItemType);
+        else 
+            iconImg.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetCakeSprite(itemData.subId);
         if (Transform == null) Transform = transform;
-        Transform.localScale = Vector3.one * 2;
-        canvasGroup.alpha = 0;
-        Transform.DOScale(1, 0.1f);
-        canvasGroup.DOFade(1, 0.15f);
+        contentTransform.DOScale(1, 0.25f).From(2);
+        canvasGroup.DOFade(1, 0.15f).From(0);
+        if (itemData.ItemType != ItemType.NoAds) {
+            if (itemData.ItemType == ItemType.Coin)
+            {
+                rewardEffect.attractorTarget = panelItemsReward.coinBar;
+                rewardEffect.SetBurst(0, 0, 10);
+                rewardEffect.texture = iconImg.sprite.texture;
+                rewardEffect.Play();
+            }
+            //else
+            //{
+            //    rewardEffect.attractorTarget = panelItemsReward.bagBar;
+            //    rewardEffect.SetBurst(0, 0, itemData.amount < 5 ? (int)(itemData.amount) : 5);
+            //}
+        }
     }
 }

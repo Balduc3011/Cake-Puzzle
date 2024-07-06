@@ -31,6 +31,8 @@ public class ConstantValue
     public static string STR_FURNITURE = "Furniture";
     public static string STR_EXP = "exp";
     public static string STR_POINT = "p";
+    public static string STR_ShowX2BoosterAds = "Get x2 income from completed cake";
+    public static string STR_ShowCoinBoosterAds = "Get extra 100 coins";
 
     // VECTOR3
     public static Vector3 VEC3_VECTOR3_1 = new Vector3(1, 1, 1);
@@ -39,13 +41,24 @@ public class ConstantValue
     public static int VAL_COIN_BOOSTER = 100;
     public static float VAL_MAX_EXCEED = 1000000000000;
     public static float VAL_REVICE_PRICE = 750f;
-    public static float VAL_DEFAULT_EXP = 5f;
-    public static int VAL_DEFAULT_TROPHY = 5;
+    public static float VAL_DEFAULT_EXP = 10f;
+    public static float VAL_DEFAULT_CAKE_LEVEL = 2f;
+    public static float VAL_DEFAULT_CAKE_ID = 2f;
+    public static int VAL_DEFAULT_TROPHY = 10;
     public static float VAL_X2BOOSTER_TIME = 2.5f;
+    public static float VAL_DRAW_PIGGY = 1000f;
+    public static float VAL_MAX_PIGGY = 2000f;
+    public static float VAL_PIGGY_SAVE = 10;
+    public static float VAL_QUEST_STAR = 5;
+    public static float VAL_QUEST_COIN = 25;
+    public static float VAL_CAKEUPGRADE_COIN = 25;
+    public static float VAL_REVIVE_COIN = 250;
+    public static int VAL_CAKECOUNT_ADS = 10;
 
     // Animation
 
     // IE
+    public static WaitForSeconds WAIT_SEC01 = new WaitForSeconds(0.1f);
     public static WaitForSeconds WAIT_SEC025 = new WaitForSeconds(0.25f);
     public static WaitForSeconds WAIT_SEC05 = new WaitForSeconds(0.5f);
     public static WaitForSeconds WAIT_SEC1 = new WaitForSeconds(1f);
@@ -67,5 +80,11 @@ public enum VersionStatus
 public enum SoundId
 {
     None,
-    SFX_Base
+    SFX_Base,
+    SFX_CoinCube,
+    SFX_LevelUp,
+    SFX_TapCube,
+    SFX_UIButton,
+    SFX_UIClick,
+    SFX_Warning
 }

@@ -34,10 +34,10 @@ namespace SDK {
         protected UnityAction m_BannerAdLoadedFailCallback;
         protected UnityAction m_BannerAdsCollapsedCallback;
         protected UnityAction m_BannerAdsExpandedCallback;
-        public virtual void InitBannerAds(UnityAction bannerLoadedSuccessCallback, UnityAction bannerAdLoadedFailCallback, UnityAction bannerAdsCollapsedCallback, UnityAction bannerAdsExpandedCallback) {
+        public virtual void InitBannerAds(UnityAction bannerLoadedSuccessCallback, UnityAction bannerAdLoadedFailCallback, UnityAction bannerAdsCallback, UnityAction bannerAdsExpandedCallback) {
             m_BannerAdLoadedSuccessCallback = bannerLoadedSuccessCallback;
             m_BannerAdLoadedFailCallback = bannerAdLoadedFailCallback;
-            m_BannerAdsCollapsedCallback = bannerAdsCollapsedCallback;
+            m_BannerAdsCollapsedCallback = bannerAdsCallback;
             m_BannerAdsExpandedCallback = bannerAdsExpandedCallback;
         }
         public virtual void RequestBannerAds() {
@@ -51,6 +51,38 @@ namespace SDK {
         public virtual bool IsBannerLoaded() {
             return false;
         }
+        #endregion
+
+        #region  Collapsible Banner
+
+        protected UnityAction m_CollapsibleBannerAdLoadedSuccessCallback;
+        protected UnityAction m_CollapsibleBannerAdLoadedFailCallback;
+        protected UnityAction m_CollapsibleBannerAdsCollapsedCallback;
+        protected UnityAction m_CollapsibleBannerAdsExpandedCallback;
+        protected UnityAction m_CollapsibleBannerAdsDestroyedCallback;
+        protected UnityAction m_CollapsibleBannerAdsHideCallback;
+        public virtual void InitCollapsibleBannerAds(UnityAction bannerLoadedSuccessCallback, UnityAction bannerAdLoadedFailCallback, UnityAction bannerAdsCollapsedCallback, UnityAction bannerAdsExpandedCallback, UnityAction bannerAdsDestroyedCallback, UnityAction bannerAdsHideCallback) {
+            m_CollapsibleBannerAdLoadedSuccessCallback = bannerLoadedSuccessCallback;
+            m_CollapsibleBannerAdLoadedFailCallback = bannerAdLoadedFailCallback;
+            m_CollapsibleBannerAdsCollapsedCallback = bannerAdsCollapsedCallback;
+            m_CollapsibleBannerAdsExpandedCallback = bannerAdsExpandedCallback;
+            m_CollapsibleBannerAdsDestroyedCallback = bannerAdsDestroyedCallback;
+            m_CollapsibleBannerAdsHideCallback = bannerAdsHideCallback;
+        }
+        public virtual void RequestCollapsibleBannerAds(bool isOpenOnStart) {
+        }
+        public virtual void RefreshCollapsibleBannerAds() {
+        }
+        public virtual void ShowCollapsibleBannerAds() {
+        }
+        public virtual void HideCollapsibleBannerAds() {
+        }
+        public virtual void DestroyCollapsibleBannerAds() {
+        }
+        public virtual bool IsCollapsibleBannerLoaded() {
+            return false;
+        }
+
         #endregion
 
         #region Interstitial Ads

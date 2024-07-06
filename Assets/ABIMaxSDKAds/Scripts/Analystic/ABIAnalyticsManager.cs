@@ -8,7 +8,7 @@ namespace SDK {
     [ScriptOrder(-98)]
     public class ABIAnalyticsManager : MonoBehaviour {
         private static ABIAnalyticsManager instance;
-        public static ABIAnalyticsManager Instance { get { return instance; } }
+        public static ABIAnalyticsManager Instance => instance;
 
         void Awake() {
             if (instance) {
@@ -52,7 +52,7 @@ namespace SDK {
             List<int> trackPoints = new List<int> { 5, 15, 30, 50, 100 };
             switch (adFormat) {
                 case "REWARDED": {
-                        
+
                         int totalWatched = PlayerPrefs.GetInt(key_ad_rewarded_count, 0);
                         totalWatched++;
                         PlayerPrefs.SetInt(key_ad_rewarded_count, totalWatched);
@@ -184,6 +184,24 @@ namespace SDK {
             ABIAppsflyerManager.SendEvent(eventName, null);
 #endif
         }
+
+        public void TrackEventLevelComplete(int level) {
+            string eventName = "Level Up: " + level;
+            ABIFirebaseManager.Instance.LogFirebaseEvent(eventName);
+        }
+
+        public void TrackEventCakeLevelUp(int cakeID, int cakeLevel) {
+            string eventName = "Level Up cake ID: " + cakeID+ " level: "+cakeLevel;
+            ABIFirebaseManager.Instance.LogFirebaseEvent(eventName);
+        }
+
+        int moveTime = 0 ;
+        public void TrackEventMove() {
+            moveTime++;
+            string eventName = "Level Up cake ID: " + moveTime;
+            ABIFirebaseManager.Instance.LogFirebaseEvent(eventName);
+        }
+
     }
     public class ImpressionData {
         public string ad_platform;

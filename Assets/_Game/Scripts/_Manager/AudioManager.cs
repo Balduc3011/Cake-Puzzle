@@ -89,19 +89,16 @@ public class AudioManager : MonoBehaviour
 
     public void PlaySoundEffect(SoundId soundId, float volume = 1f)
     {
-        AudioSource selectedSource = GetFreeEffectSource();
-        selectedSource.volume = volume;
-        switch (soundId)
+        if (!ProfileManager.Instance.GetSettingStatus(SettingId.Sound)) return;
+        AudioClip audioClip = GetAudioClip(soundId);
+        if (audioClip != null)
         {
-            case SoundId.None:
-                break;
-            case SoundId.SFX_Base:
-                selectedSource.clip = sfx_Base;
-                break;
-            default:
-                break;
+            AudioSource selectedSource = GetFreeEffectSource();
+            selectedSource.volume = volume;
+            selectedSource.clip = audioClip;
+            selectedSource.Play();
         }
-        selectedSource.Play();
+        
     }
     AudioSource GetFreeEffectSource()
     {
@@ -115,5 +112,16 @@ public class AudioManager : MonoBehaviour
         AudioSource newSource = Instantiate(_SourceEffectPrefabs, Transform);
         _SourceEffects.Add(newSource);
         return newSource;
+    }
+
+    public List<AudioClip> audioClips;
+    public AudioClip GetAudioClip(SoundId soundId)
+    {
+        for (int i = 0; i < audioClips.Count; i++)
+        {
+            if (audioClips[i].name == soundId.ToString())
+                return audioClips[i];
+        }
+        return null;
     }
 }

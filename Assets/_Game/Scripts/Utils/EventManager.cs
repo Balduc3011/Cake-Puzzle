@@ -22,7 +22,14 @@ public enum EventName
     UsingFillUp = 8,
     UsingFillUpDone = 9,
     UpdateCakeOnPlate = 10,
-    ChangeStarDailyQuest = 11
+    ChangeStarDailyQuest = 11,
+    AddCakeCard = 12,
+    UsingHammer = 13,
+    UsingHammerDone = 14,
+    CheckClearCake = 15,
+    AddItem = 16,
+    OnUsingRevive = 17,
+    OnUsingReviveDone = 18
 }
 
 public class EventManager : Singleton<EventManager>

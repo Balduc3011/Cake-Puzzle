@@ -20,24 +20,42 @@ public class Plate : MonoBehaviour
     [SerializeField] Vector3 pointMoveDown;
     public int currentPieceSame;
     public int currentSpace;
+    [SerializeField] bool tutPlate;
+    public bool actived;
+    [SerializeField] GameObject ring;
+
     private void Awake()
     {
-        pointMoveUp = trsMove.position;
-        pointMoveDown = trsMove.position;
+        //pointMoveUp = trsMove.position;
+        //pointMoveDown = trsMove.position;
         pointMoveUp.y += .3f;
+    }
+    public void ActivePlate()
+    {
+        actived = tutPlate || ProfileManager.Instance.playerData.playerResourseSave.currentLevel > 0;
     }
     public void SetPlateIndex(int x, int y) {
         plateIndex = new PlateIndex(x, y);
     }
     public PlateIndex GetPlateIndex() { return plateIndex; }
 
-    public void SetCurrentCake(Cake cake) { currentCake = cake; }
+    public void SetCurrentCake(Cake cake) {
+        currentCake = cake;
+        cakeTemp = cake;
+        for (int i = pointStay.childCount - 1; i >= 0; i--)
+        {
+            if (!pointStay.GetChild(i).gameObject.activeSelf)
+                Destroy(pointStay.GetChild(i).gameObject);
+        }
+    }
 
     public void CakeDone() { currentCake = null; }
 
     public void Active() {
-        anim.SetBool("Active", true);
-        trsMove.DOMove(pointMoveUp, .15f);
+        ring.SetActive(true);
+        //anim.SetBool("Active", true);
+        if (trsMove != null)
+            trsMove.DOMove(pointMoveUp, .15f);
     }
 
     public void ActiveByItem() {
@@ -46,16 +64,18 @@ public class Plate : MonoBehaviour
 
     public void Deactive()
     {
-        anim.SetBool("Active", false);
-        trsMove.DOMove(pointMoveDown, .15f);
+        ring.SetActive(false);
+        //anim.SetBool("Active", false);
+        if (trsMove != null)
+            trsMove.DOMove(pointMoveDown, 1f).SetEase(Ease.InOutCubic);
     }
 
     public void DeActiveByItem()
     { 
-        anim.SetBool("Active", false);
+        //anim.SetBool("Active", false);
     }
-
-        public int CalculatePoint(int cakeID)
+    
+    public int CalculatePoint(int cakeID)
     {
         if (currentCake == null) return 0;
         int point = 0;
@@ -102,31 +122,19 @@ public class Plate : MonoBehaviour
     public void CheckNullPieces() {
         if (currentCake == null)
             return;
-        //currentCake.RotateOtherPieceRight(0);
-        if (currentCake.pieces.Count == 0)
-        {
-            currentCake.cakeDone = true;
-        }
-        else { currentCake.cakeDone = false; }
     }
     public void MoveDoneOfCake()
     {
         if (currentCake == null)
             return;
-        //currentCake.RotateOtherPieceRight(0);
     }
 
     public void ClearCake() {
         if (currentCake == null)
             return;
-        Debug.Log("bug scale");
         currentCake.transform.DOScale(Vector3.zero, .5f).OnComplete(() => {
-            if (currentCake != null)
-            {
-                //Destroy(currentCake.gameObject);
-                currentCake.gameObject.SetActive(false);
-                ProfileManager.Instance.playerData.cakeSaveData.RemoveCake(plateIndex);
-            }
+            currentCake?.gameObject.SetActive(false);
+            ProfileManager.Instance.playerData.cakeSaveData.RemoveCake(plateIndex);
             currentCake = null;
         });
     }
@@ -134,10 +142,17 @@ public class Plate : MonoBehaviour
     public void ClearCakeByBomb() {
         if (currentCake != null)
         {
-            Destroy(currentCake.gameObject);
+            DestroyCake();
             ProfileManager.Instance.playerData.cakeSaveData.RemoveCake(plateIndex);
             currentCake = null;
         }
+    }
+    Cake cakeTemp = null;
+    void DestroyCake() {
+        if (cakeTemp != currentCake && currentCake != null)
+            return;
+        cakeTemp?.ClearAnimation();
+        Destroy(cakeTemp?.gameObject);
     }
 
     Transform pointTrashBin;
@@ -148,7 +163,7 @@ public class Plate : MonoBehaviour
         currentCake.transform.DOJump(pointTrashBin.position, 3, 1, .25f).SetEase(Ease.OutCubic).OnComplete(() => {
             if (currentCake != null)
             {
-                Destroy(currentCake.gameObject);
+                ClearCakeByBomb();
                 currentCake = null;
             }
         });
@@ -187,12 +202,42 @@ public class Plate : MonoBehaviour
     public void SetCurrentIDInfors() {
         idInfors = currentCake.GetIDInfor();
     }
+
+    public bool CheckIsNull()
+    {
+        if (currentCake == null) {
+            //Debug.LogWarning("plate " + plateIndex.indexX + " " + plateIndex.indexY + " cake null!");
+            return true;
+        }
+        if (currentCake.cakeDone) {
+            //Debug.LogWarning("plate " + plateIndex.indexX + " " + plateIndex.indexY + " cake done!");
+            return true;
+        }
+        if (currentCake.pieces.Count == 0) {
+            //Debug.LogWarning("plate " + plateIndex.indexX + " " + plateIndex.indexY + " cake pieces count = 0!");
+            return true;
+        }
+       // Debug.LogWarning("plate " + plateIndex.indexX + " " + plateIndex.indexY + " not null!");
+        return false;
+
+    }
+
+    public void AnimationLoose()
+    {
+        anim.SetBool("Alert", true);
+    }
+
+    public void AnimationLooseOut()
+    {
+        anim.SetBool("Alert", false);
+    }
 }
 [System.Serializable]
 public class PlateIndex {
     public int indexX;
     public int indexY;
     public PlateIndex(int x, int y) {  indexX = x; indexY = y;}
+    public PlateIndex(PlateIndex plateIndex) { indexX = plateIndex.indexX; indexY = plateIndex.indexY; }
 }
 [System.Serializable]
 public class WayPointTemp {

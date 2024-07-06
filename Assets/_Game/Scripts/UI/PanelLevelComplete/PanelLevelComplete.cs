@@ -3,6 +3,7 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,6 +17,12 @@ public class PanelLevelComplete : UIPanel
     [SerializeField] CanvasGroup bgCanvanGroup;
     [SerializeField] GameObject objWinGame;
     [SerializeField] GameObject objLooseGame;
+    [SerializeField] TextMeshProUGUI revivePrivceTxt;
+    [SerializeField] Button hintObj;
+    [SerializeField] SheetAnimation sheetAnimation;
+    [SerializeField] SheetAnimation loseSheetAnimation;
+    [SerializeField] SheetAnimation winSheetAnimation;
+
     public override void Awake()
     {
         panelType = UIPanelType.PanelLevelComplete;
@@ -25,15 +32,20 @@ public class PanelLevelComplete : UIPanel
     {
         btnReviveCoin.onClick.AddListener(ReviveCoin);
         btnReviveAds.onClick.AddListener(ReviveADS);
-        btnExit.onClick.AddListener(ExitPanel);
+        btnExit.onClick.AddListener(ShowPanelHint);
+        hintObj.onClick.AddListener(ExitPanel);
         winGameCloseBtn.onClick.AddListener(ExitPanel);
+        revivePrivceTxt.text = ConstantValue.VAL_REVIVE_COIN.ToString();
     }
 
     private void OnEnable()
     {
+        objLooseGame.SetActive(true);
         panelWrapTrs.DOScale(1, 0.35f).From(0);
         bgCanvanGroup.DOFade(1, 0.35f).From(0);
-        btnReviveCoin.interactable = ProfileManager.Instance.playerData.playerResourseSave.IsHasEnoughMoney(750);
+        btnReviveCoin.interactable = ProfileManager.Instance.playerData.playerResourseSave.IsHasEnoughMoney(ConstantValue.VAL_REVIVE_COIN);
+        hintObj.gameObject.SetActive(false);
+        transform.SetAsLastSibling();
     }
 
     void OnClose()
@@ -44,41 +56,52 @@ public class PanelLevelComplete : UIPanel
 
     void ExitPanel() {
         OnClose();
+        GameManager.Instance.ShowInter();
         ProfileManager.Instance.playerData.cakeSaveData.ClearAllCake();
         GameManager.Instance.cakeManager.SetOnMove(false);
         GameManager.Instance.ClearAllCake();
-        //UIManager.instance.ShowPanelLoading();
         GameManager.Instance.BackToMenu();
+        UIManager.instance.ShowPanelLoading();
     }
 
     void ClosePanel()
     {
         UIManager.instance.ClosePanelLevelComplete();
-        UIManager.instance.ShowPanelLeaderBoard();
+        //UIManager.instance.ShowPanelLeaderBoard();
+    }
+
+    void ShowPanelHint()
+    {
+        objLooseGame.SetActive(false);
+        objWinGame.SetActive(false);
+        hintObj.gameObject.SetActive(true);
+        sheetAnimation.PlayAnim();
     }
 
     void ReviveADS()
     {
-        ReviveADSSucces();
-        OnClose();
+        //if (GameManager.Instance.IsHasNoAds())
+        //    ReviveADSSucces();
+        //else
+        //    AdsManager.Instance.ShowRewardVideo(WatchVideoRewardType.GameOverRevive.ToString(), ReviveADSSucces);
+
+        GameManager.Instance.ShowRewardVideo(WatchVideoRewardType.GameOverRevive, ReviveADSSucces);
     }
 
     void ReviveADSSucces()
     {
-        UIManager.instance.OpenBlockAll();
-        GameManager.Instance.cakeManager.TrashIn(GameManager.Instance.cakeManager.ClearCake);
+        GameManager.Instance.itemManager.UsingItem(ItemType.Revive);
+        EventManager.TriggerEvent(EventName.OnUsingRevive.ToString());
+        OnClose();
     }
 
     void ReviveCoin()
     {
-        ProfileManager.Instance.playerData.playerResourseSave.ConsumeMoney(ConstantValue.VAL_REVICE_PRICE);
-        UIManager.instance.OpenBlockAll();
-        GameManager.Instance.cakeManager.TrashIn(GameManager.Instance.cakeManager.ClearCake);
-        OnClose();
-    }
-
-    void OnWinClose()
-    {
+        ProfileManager.Instance.playerData.playerResourseSave.ConsumeMoney(ConstantValue.VAL_REVIVE_COIN);
+        //UIManager.instance.OpenBlockAll();
+        GameManager.Instance.itemManager.UsingItem(ItemType.Revive);
+        EventManager.TriggerEvent(EventName.OnUsingRevive.ToString());
+        //GameManager.Instance.cakeManager.TrashIn(GameManager.Instance.cakeManager.ClearCake);
         OnClose();
     }
 
@@ -86,5 +109,7 @@ public class PanelLevelComplete : UIPanel
     {
         objLooseGame.SetActive(!isWinGame);
         objWinGame.SetActive(isWinGame);
+        if (isWinGame) winSheetAnimation.PlayAnim();
+        //else loseSheetAnimation.PlayAnim();
     }
 }
