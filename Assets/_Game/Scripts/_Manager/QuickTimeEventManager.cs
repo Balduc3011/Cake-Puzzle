@@ -5,10 +5,9 @@ using UnityEngine;
 public class QuickTimeEventManager : MonoBehaviour
 {
     public bool onQuickTimeEvent;
-    float timeGamePlay;
+    [SerializeField] float timeGamePlay;
     [SerializeField] float timeGamePlaySetting;
     [SerializeField] int cakeNeedDone;
-    [SerializeField] float timeQuickEvent;
 
     [Range(0, 15)]
     [SerializeField] int minCakeNeedDone;
@@ -43,7 +42,7 @@ public class QuickTimeEventManager : MonoBehaviour
        
     }
 
-    public float GetTimeQuickTimeEvent() { return timeQuickEvent = cakeNeedDone * 15f; }
+    public float GetTimeQuickTimeEvent() { return cakeNeedDone * 15f; }
     public int GetTotalCakeNeedDone() { return cakeNeedDone = Random.Range(minCakeNeedDone, maxCakeNeedDone); }
     public void EndQuickTimeEvent() { onQuickTimeEvent = false; }
     public void AddProgess() {
