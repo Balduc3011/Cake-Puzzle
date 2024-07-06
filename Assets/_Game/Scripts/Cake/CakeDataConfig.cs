@@ -103,6 +103,7 @@ public class CakeData
     public int id;
     public List<Sprite> icons;
     public List<Mesh> pieces;
+    public List<Mesh> fullCake;
 }
 
 [System.Serializable] 
