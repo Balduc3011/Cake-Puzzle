@@ -709,6 +709,7 @@ public class UIManager : MonoBehaviour {
         GameObject go = GetPanel(UIPanelType.PanelQuickIAP);
         go.transform.SetAsLastSibling();
         go.SetActive(false);
+        isHasPopupOnScene = false;
         if (actionShowPanels.Count > 0)
         {
             actionShowPanels[0]();
