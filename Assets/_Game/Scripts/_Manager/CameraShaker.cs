@@ -33,13 +33,6 @@ public class CameraShaker : MonoBehaviour
     {
         originalPos = camTransform.localPosition;
         shakeDuration = duration;
-    }
-    public void Pause()
-    {
-        IsPause = true;
-    }
-    public void Resume()
-    {
         IsPause = false;
     }
     public void SetOriginalPos(Vector3 v)
@@ -63,7 +56,8 @@ public class CameraShaker : MonoBehaviour
         else
         {
             shakeDuration = 0f;
-            //camTransform.localPosition = originalPos;
+            camTransform.localPosition = originalPos;
+            IsPause = true;
         }
     }
 }
