@@ -560,7 +560,7 @@ public class Cake : MonoBehaviour
         transform.parent = currentPlate.pointStay;
         tweenAnimations.Add(transform.DOLocalMove(Vector3.zero, .1f).SetEase(Ease.InQuad).OnComplete(()=> {
             Transform effectDrop = GameManager.Instance.objectPooling.GetSmokeEffectDrop();
-            effectDrop.transform.position = transform.position - vectorOffsetEffectDrop;
+            effectDrop.transform.position = transform.position;
             effectDrop.gameObject.SetActive(true);
         }));
         //Debug.Log("last drop: "+ lastDrop);
@@ -885,7 +885,7 @@ public class Cake : MonoBehaviour
         ProfileManager.Instance.playerData.playerResourseSave.AddTrophy((int)GameManager.Instance.GetDefaultCakeProfit(pieces[0].cakeID, cakeLevel));
         DOVirtual.DelayedCall(0.18f, () => {
             tweens.Add(transform.DOScale(Vector3.one * .8f, .13f));
-            tweens.Add(transform.DOScale(Vector3.one * 1.1f, .13f).SetDelay(.13f));
+            tweens.Add(transform.DOScale(Vector3.one * 1.32f, .5f).SetDelay(.13f).SetEase(Ease.OutBack));
             tweenAnimations.Add(transform.DORotate(CacheSourse.rotateY360, .75f, RotateMode.WorldAxisAdd).SetEase(Ease.OutQuad).OnComplete(() => {
                 EffectDoneCake();
             }));
