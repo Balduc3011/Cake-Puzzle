@@ -2,16 +2,14 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UIElements;
 
 public class CakeManager : MonoBehaviour
 {
     public List<GroupCake> cakesWait = new List<GroupCake>();
     public List<Transform> pointSpawnGroupCake = new List<Transform>();
+    public List<Transform> pointFirstSpawn = new List<Transform>();
     public List<Cake> cakeNeedCheck = new List<Cake>();
     public List<float> countCake = new List<float>();
 
@@ -151,21 +149,21 @@ public class CakeManager : MonoBehaviour
         {
             groupCake = GameManager.Instance.objectPooling.GetGroupCake();
             cakesWait.Add(groupCake);
-            groupCake.transform.position = pointSpawnGroupCake[indexGroupCake].position;
+            groupCake.transform.position = pointFirstSpawn[indexGroupCake].position;
             if (indexGroupCake != 2) {
                 if (NeedResolve())
                 {
                     idInfor = GetIDInfor();
                     if (idInfor == null || idInfor.Count == 0 || idInfor[0].count == 0)
-                        groupCake.InitData((int)countCake[indexGroupCake], pointSpawnGroupCake[indexGroupCake], indexGroupCake);
+                        groupCake.InitData((int)countCake[indexGroupCake], pointSpawnGroupCake[2 - indexGroupCake], indexGroupCake);
                     else
-                        groupCake.InitData(idInfor, pointSpawnGroupCake[indexGroupCake], indexGroupCake);
+                        groupCake.InitData(idInfor, pointSpawnGroupCake[2 - indexGroupCake], indexGroupCake);
                 }
                 else
-                    groupCake.InitData((int)countCake[indexGroupCake], pointSpawnGroupCake[indexGroupCake], indexGroupCake);
+                    groupCake.InitData((int)countCake[indexGroupCake], pointSpawnGroupCake[2 - indexGroupCake], indexGroupCake);
             }
             else
-                groupCake.InitData((int)countCake[indexGroupCake], pointSpawnGroupCake[indexGroupCake], indexGroupCake);
+                groupCake.InitData((int)countCake[indexGroupCake], pointSpawnGroupCake[2 - indexGroupCake], indexGroupCake);
             ProfileManager.Instance.playerData.cakeSaveData.AddCakeWait(groupCake, indexGroupCake);
             yield return new WaitForSeconds(.25f);
             indexGroupCake++;
@@ -388,6 +386,8 @@ public class CakeManager : MonoBehaviour
     int timeCallCheckLooseGame = 0;
     public void StartCheckLoseGame()
     {
+        if (!loaded)
+            return;
         timeCallCheckLooseGame++;
         //Debug.Log("Total time check on this pharse: "+timeCallCheckLooseGame);
         if (timeCallCheckLooseGame > 30)
@@ -407,7 +407,7 @@ public class CakeManager : MonoBehaviour
         if (cakesWait.Count == 0 || onInitGroup) return;
         //Debug.Log("On check Loose Game: "+ DateTime.Now);
         onCheckLooseGame = true;
-        countCheckFaild = isCheckOnInit ? 3 : cakesWait.Count;
+        countCheckFaild = cakesWait.Count;
         countFaild = 0;
         for (int i = 0; i < cakesWait.Count; i++)
         {  
@@ -497,7 +497,6 @@ public class CakeManager : MonoBehaviour
         if (ProfileManager.Instance.playerData.cakeSaveData.IsHaveCakeWaitSave())
         {
             LoadCakeWaitData();
-            CheckLooseGame(true);
         }
         else { 
             InitGroupCake();
@@ -508,6 +507,7 @@ public class CakeManager : MonoBehaviour
             LoadCakeOnPlate();
         }
         loaded = true;
+        CheckLooseGame(true);
     }
  
     void LoadCakeOnPlate() {

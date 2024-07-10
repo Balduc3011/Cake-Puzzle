@@ -92,7 +92,6 @@ public class Table : MonoBehaviour
             GameManager.Instance.cakeManager.CheckOtherIDOfCake();
             return;
         }
-        Debug.Log("create map plate current id: " + currentCakeID);
         if ((plateIndex.indexX + 1) < plateArray.GetLength(0))
             plateNeedCheck.Add(plateArray[plateIndex.indexX + 1, plateIndex.indexY]);
 

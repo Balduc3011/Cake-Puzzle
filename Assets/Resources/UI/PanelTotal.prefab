@@ -803,7 +803,6 @@ GameObject:
   - component: {fileID: 4593485478154972910}
   - component: {fileID: 5815662506996890779}
   - component: {fileID: 203955261255673424}
-  - component: {fileID: 287246981668073506}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -869,21 +868,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &287246981668073506
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 825485942089698716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
-  m_EffectDistance: {x: 3, y: 3}
-  m_UseGraphicAlpha: 1
 --- !u!1 &917628888835737553
 GameObject:
   m_ObjectHideFlags: 0
@@ -3107,7 +3091,6 @@ GameObject:
   - component: {fileID: 1231632965873997891}
   - component: {fileID: 6342764319967740822}
   - component: {fileID: 366462737596230026}
-  - component: {fileID: 8159194737067743462}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -3173,21 +3156,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &8159194737067743462
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3560977555392979527}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
-  m_EffectDistance: {x: 3, y: 3}
-  m_UseGraphicAlpha: 1
 --- !u!1 &3976038800340482494
 GameObject:
   m_ObjectHideFlags: 0
@@ -4966,7 +4934,6 @@ GameObject:
   - component: {fileID: 3865258049121231702}
   - component: {fileID: 3156939162244642335}
   - component: {fileID: 833574763721059427}
-  - component: {fileID: 753161327237583484}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -5032,21 +4999,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &753161327237583484
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5445664350102529840}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
-  m_EffectDistance: {x: 3, y: 3}
-  m_UseGraphicAlpha: 1
 --- !u!1 &5497719194345336311
 GameObject:
   m_ObjectHideFlags: 0
@@ -8749,7 +8701,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 125, y: 125}
+  m_SizeDelta: {x: 121.43, y: 97.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6980042781871292143
 CanvasRenderer:
@@ -8779,7 +8731,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 44927745c5c88418fb5c605670c86d95, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fe93b20adc72f9f42a87f5fd4312f53a, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -8838,6 +8790,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 56d1265f6959e73449f13028989cc9e1, type: 3}
+    - target: {fileID: 3459338896255052945, guid: 8d9a8df3de5362d4cb1f730d9d572e6b, type: 3}
+      propertyPath: navBar
+      value: 
+      objectReference: {fileID: 2341562454499585702}
     - target: {fileID: 5378130059847505459, guid: 8d9a8df3de5362d4cb1f730d9d572e6b, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0
@@ -8940,7 +8896,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8498571044414353527, guid: 8d9a8df3de5362d4cb1f730d9d572e6b, type: 3}
       propertyPath: m_Name
-      value: NavBarItem
+      value: NavLeaderBoard
       objectReference: {fileID: 0}
     - target: {fileID: 8702057100513749214, guid: 8d9a8df3de5362d4cb1f730d9d572e6b, type: 3}
       propertyPath: m_text
@@ -9093,6 +9049,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 6c5f206b414075d4db14bc0f65f0bd2e, type: 3}
+    - target: {fileID: 3459338896255052945, guid: 8d9a8df3de5362d4cb1f730d9d572e6b, type: 3}
+      propertyPath: navBar
+      value: 
+      objectReference: {fileID: 2341562454499585702}
     - target: {fileID: 8007958460560154775, guid: 8d9a8df3de5362d4cb1f730d9d572e6b, type: 3}
       propertyPath: m_SizeDelta.x
       value: 115
@@ -9191,7 +9151,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8498571044414353527, guid: 8d9a8df3de5362d4cb1f730d9d572e6b, type: 3}
       propertyPath: m_Name
-      value: NavBarItem (1)
+      value: NavDecor
       objectReference: {fileID: 0}
     - target: {fileID: 8702057100513749214, guid: 8d9a8df3de5362d4cb1f730d9d572e6b, type: 3}
       propertyPath: m_text
@@ -9237,6 +9197,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 10ee5d5e55d1b4296ba901f70537cb11, type: 3}
+    - target: {fileID: 3459338896255052945, guid: 8d9a8df3de5362d4cb1f730d9d572e6b, type: 3}
+      propertyPath: navBar
+      value: 
+      objectReference: {fileID: 2341562454499585702}
     - target: {fileID: 8007958460560154775, guid: 8d9a8df3de5362d4cb1f730d9d572e6b, type: 3}
       propertyPath: m_SizeDelta.x
       value: 115
@@ -9504,6 +9468,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 518ddad9b10c53449a29a9907568dcb7, type: 3}
+    - target: {fileID: 3459338896255052945, guid: 8d9a8df3de5362d4cb1f730d9d572e6b, type: 3}
+      propertyPath: navBar
+      value: 
+      objectReference: {fileID: 2341562454499585702}
     - target: {fileID: 5378130059847505459, guid: 8d9a8df3de5362d4cb1f730d9d572e6b, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0
@@ -9606,7 +9574,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8498571044414353527, guid: 8d9a8df3de5362d4cb1f730d9d572e6b, type: 3}
       propertyPath: m_Name
-      value: NavBarItem (4)
+      value: NavShop
       objectReference: {fileID: 0}
     - target: {fileID: 8702057100513749214, guid: 8d9a8df3de5362d4cb1f730d9d572e6b, type: 3}
       propertyPath: m_text
@@ -9759,6 +9727,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 6752ebd1db8e5544abbce8792e3d89c0, type: 3}
+    - target: {fileID: 3459338896255052945, guid: 8d9a8df3de5362d4cb1f730d9d572e6b, type: 3}
+      propertyPath: navBar
+      value: 
+      objectReference: {fileID: 2341562454499585702}
     - target: {fileID: 4468750548424178775, guid: 8d9a8df3de5362d4cb1f730d9d572e6b, type: 3}
       propertyPath: m_RootOrder
       value: 4

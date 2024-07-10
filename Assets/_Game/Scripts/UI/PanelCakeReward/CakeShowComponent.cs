@@ -8,6 +8,8 @@ public class CakeShowComponent : MonoBehaviour
 {
     [SerializeField] Camera cakeCamera;
     [SerializeField] MeshFilter cakeMesh;
+    [SerializeField] GameObject cakeSlides;
+    [SerializeField] MeshFilter fullCakeMesh;
     [SerializeField] List<MeshFilter> cakeSlideMeshs;
     [SerializeField] DOTweenAnimation cakeAnim;
     [SerializeField] float normalCamZoom;
@@ -30,6 +32,8 @@ public class CakeShowComponent : MonoBehaviour
 
     public void ShowNewUnlockCake()
     {
+        cakeSlides.SetActive(true);
+        fullCakeMesh.gameObject.SetActive(false);
         Mesh cakeSlideMesh = GameManager.Instance.cakeManager.GetNewUnlockedCakePieceMesh();
         cakeCamera.orthographicSize = unlockCamZoom;
         particle.gameObject.SetActive(true);
@@ -51,16 +55,27 @@ public class CakeShowComponent : MonoBehaviour
 
     public void ShowSelectetCake(int cakeId)
     {
+        cakeSlides.SetActive(true);
+        fullCakeMesh.gameObject.SetActive(false);
         Mesh cakeSlideMesh = ProfileManager.Instance.dataConfig.cakeDataConfig.GetCakePieceMesh2(cakeId);
         cakeCamera.orthographicSize = unlockCamZoom;
-        //cakePlate.DOScale(1, 0.35f).From(0).SetEase(Ease.OutBack);
-        //cakePlate.DOMove(cakeShowPos.position, 0.35f).From(cakeStartPos.position).SetEase(Ease.OutBack);
 
         for (int i = 0; i < cakeSlideMeshs.Count; i++)
         {
             cakeSlideMeshs[i].mesh = cakeSlideMesh;
             cakeSlideMeshs[i].transform.DOScale(3.5f, 0.25f).SetDelay((i + 1) * 0.15f + 0.35f).From(0);
         }
+    }
+
+    public void ShowFullSelectetCake(int cakeId)
+    {
+        cakeSlides.SetActive(false);
+        fullCakeMesh.gameObject.SetActive(true);
+        Mesh cakeSlideMesh = ProfileManager.Instance.dataConfig.cakeDataConfig.GetCakeFullMesh2(cakeId);
+        cakeCamera.orthographicSize = unlockCamZoom;
+        
+        fullCakeMesh.mesh = cakeSlideMesh;
+        fullCakeMesh.transform.DOScale(1.75f, 0.25f).SetDelay(0.15f + 0.35f).From(0);
     }
 
     public int testCakeId;
