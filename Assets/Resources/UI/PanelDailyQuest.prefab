@@ -2210,8 +2210,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 45
-    m_Right: 45
+    m_Left: 60
+    m_Right: 60
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 0
@@ -2639,6 +2639,14 @@ PrefabInstance:
     - target: {fileID: 8080460410419135791, guid: 0caac9b46941ff348b8d0b8c8a2a0b95, type: 3}
       propertyPath: require
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8080460410419135791, guid: 0caac9b46941ff348b8d0b8c8a2a0b95, type: 3}
+      propertyPath: rewards.Array.data[0].amount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8080460410419135791, guid: 0caac9b46941ff348b8d0b8c8a2a0b95, type: 3}
+      propertyPath: rewards.Array.data[0].ItemType
+      value: -1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0caac9b46941ff348b8d0b8c8a2a0b95, type: 3}
@@ -3071,7 +3079,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8080460410419135791, guid: 0caac9b46941ff348b8d0b8c8a2a0b95, type: 3}
       propertyPath: rewards.Array.data[0].amount
-      value: 250
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8080460410419135791, guid: 0caac9b46941ff348b8d0b8c8a2a0b95, type: 3}
+      propertyPath: rewards.Array.data[0].ItemType
+      value: -1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0caac9b46941ff348b8d0b8c8a2a0b95, type: 3}
@@ -3377,8 +3389,20 @@ PrefabInstance:
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 8080460410419135791, guid: 0caac9b46941ff348b8d0b8c8a2a0b95, type: 3}
+      propertyPath: rewards.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8080460410419135791, guid: 0caac9b46941ff348b8d0b8c8a2a0b95, type: 3}
       propertyPath: rewards.Array.data[0].amount
-      value: 500
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 8080460410419135791, guid: 0caac9b46941ff348b8d0b8c8a2a0b95, type: 3}
+      propertyPath: rewards.Array.data[1].amount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8080460410419135791, guid: 0caac9b46941ff348b8d0b8c8a2a0b95, type: 3}
+      propertyPath: rewards.Array.data[1].ItemType
+      value: -1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0caac9b46941ff348b8d0b8c8a2a0b95, type: 3}

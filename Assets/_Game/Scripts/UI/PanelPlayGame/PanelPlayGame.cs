@@ -50,6 +50,15 @@ public class PanelPlayGame : UIPanel
             GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
             UIManager.instance.ShowPanelDailyQuest();
         });
+        CheckBooster();
+        EventManager.AddListener(EventName.AddItem.ToString(), CheckBooster);
+    }
+
+    void CheckBooster()
+    {
+        btnHammer.gameObject.SetActive(ProfileManager.Instance.playerData.playerResourseSave.currentLevel >= 1);
+        btnFillUp.gameObject.SetActive(ProfileManager.Instance.playerData.playerResourseSave.currentLevel >= 2);
+        btnReroll.gameObject.SetActive(ProfileManager.Instance.playerData.playerResourseSave.currentLevel >= 3);
     }
 
     public void CheckNoti()

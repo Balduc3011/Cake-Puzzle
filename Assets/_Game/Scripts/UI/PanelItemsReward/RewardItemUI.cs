@@ -33,16 +33,15 @@ public class RewardItemUI : MonoBehaviour
             if (itemData.ItemType == ItemType.Coin)
             {
                 rewardEffect.attractorTarget = panelItemsReward.coinBar;
-                rewardEffect.SetBurst(0, 0, 10);
+                rewardEffect.SetBurst(0, 0, 5);
+                rewardEffect.texture = iconImg.sprite.texture;
+                rewardEffect.Play();
             }
-            else
-            {
-                rewardEffect.attractorTarget = panelItemsReward.bagBar;
-                rewardEffect.SetBurst(0, 0, itemData.amount < 5 ? (int)(itemData.amount) : 5);
-            }
-            rewardEffect.texture = iconImg.sprite.texture;
-            rewardEffect.Play();
+            //else
+            //{
+            //    rewardEffect.attractorTarget = panelItemsReward.bagBar;
+            //    rewardEffect.SetBurst(0, 0, itemData.amount < 5 ? (int)(itemData.amount) : 5);
+            //}
         }
-        
     }
 }

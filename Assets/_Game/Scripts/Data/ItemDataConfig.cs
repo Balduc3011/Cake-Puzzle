@@ -28,12 +28,11 @@ public class ItemDataConfig : ScriptableObject
 
     public void RemoveFromTemp(ItemType itemType)
     {
-        for (int i = 0; i < tempRewardList.Count; i++)
+        for (int i = tempRewardList.Count - 1; i >= 0; i--)
         {
             if (tempRewardList[i] == itemType)
             {
                 tempRewardList.RemoveAt(i);
-                break;
             }
         }
     }
@@ -41,6 +40,11 @@ public class ItemDataConfig : ScriptableObject
     public ItemType GetRewardItemOnLevel()
     {
         return tempRewardList[Random.Range(0, tempRewardList.Count)];
+    }
+
+    public ItemType GetRewardItem()
+    {
+        return rewardOnLevelUp[Random.Range(0, rewardOnLevelUp.Count)];
     }
 }
 

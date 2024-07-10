@@ -189,7 +189,6 @@ public class GameManager : Singleton<GameManager>
     {
         if(rewardItems == null || rewardItems.Count == 0)
             return false;
-        if (itemType == ItemType.Coin) return false;
         for (int i = 0; i < rewardItems.Count; i++)
         {
             if (rewardItems[i].ItemType == itemType)
@@ -333,13 +332,21 @@ public class GameManager : Singleton<GameManager>
     {
         if (IsHasNoAds())
         {
-            questManager.AddProgress(QuestType.CompleteCake, 1);
+            questManager.AddProgress(QuestType.WatchADS, 1);
             if (callBack != null)
                 callBack();
         } 
         else
         {
-            questManager.AddProgress(QuestType.CompleteCake, 1);
+#if UNITY_EDITOR
+            if(callBack != null)
+            {
+                callBack();
+                questManager.AddProgress(QuestType.WatchADS, 1);
+                return;
+            }
+#endif
+            questManager.AddProgress(QuestType.WatchADS, 1);
             AdsManager.Instance.ShowRewardVideo(watchVideoRewardType.ToString(), callBack);
         }  
     }
@@ -352,6 +359,7 @@ public class GameManager : Singleton<GameManager>
 
     public void ShowInterRest()
     {
+        if (IsHasNoAds()) return;
         if (ProfileManager.Instance.playerData.playerResourseSave.currentLevel >= 3)
             UIManager.instance.ShowPanelPreAds();
     }

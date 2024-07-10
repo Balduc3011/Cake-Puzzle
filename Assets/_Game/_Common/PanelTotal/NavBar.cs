@@ -48,8 +48,9 @@ public class NavBar : MonoBehaviour
         SelectNavItem(2);
     }
 
-    void SelectNavItem(int index)
+    public void SelectNavItem(int index)
     {
+        Debug.Log($"Select {index}");
         if (selectedItem == navBarItems[index]) return;
         if(selectedItem != null)
         {

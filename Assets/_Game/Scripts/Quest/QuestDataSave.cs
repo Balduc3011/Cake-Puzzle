@@ -125,6 +125,7 @@ public class QuestDataSave : SaveBase
             if (quessProcess[i].questType == questType)
             {
                 quessProcess[i].marked++;
+                quessProcess[i].process = 0;
                 found = true;
             }
         }
@@ -133,6 +134,7 @@ public class QuestDataSave : SaveBase
             QuestProcess quest = new QuestProcess();
             quest.questType = questType;
             quest.marked = 1;
+            quest.process = 0;
             quessProcess.Add(quest);
         }
         starsEarned += ConstantValue.VAL_QUEST_STAR;

@@ -44,10 +44,23 @@ public class QuestTarget : MonoBehaviour
     {
         if(ProfileManager.Instance.playerData.questDataSave.CheckCanEarnQuest(index, require))
         {
+            InitReward();
             ProfileManager.Instance.playerData.questDataSave.GetReward(index);
             GameManager.Instance.GetItemRewards(rewards);
             UIManager.instance.ShowPanelItemsReward();
             Init();
+        }
+    }
+
+    void InitReward()
+    {
+        for (int i = 0; i < rewards.Count; i++)
+        {
+            if (rewards[i].ItemType == ItemType.Cake)
+            {
+                rewards[i].subId = ProfileManager.Instance.playerData.cakeSaveData.GetRandomOwnedCake();
+                rewards[i].amount = (int)(Random.Range(5, 10));
+            }
         }
     }
 }

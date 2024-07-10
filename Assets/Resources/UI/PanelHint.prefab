@@ -68,8 +68,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Choose a plate to clear that cake
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1b5c9a7370e424d53a1b8a999cf54a02, type: 2}
-  m_sharedMaterial: {fileID: 7512481295523713106, guid: 1b5c9a7370e424d53a1b8a999cf54a02, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1c2e6505f3723904b9a7f48f3f22c542, type: 2}
+  m_sharedMaterial: {fileID: 3825668454006616592, guid: 1c2e6505f3723904b9a7f48f3f22c542, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -185,7 +185,6 @@ GameObject:
   - component: {fileID: 5683031652108681269}
   - component: {fileID: 3132479946584422419}
   - component: {fileID: 984632726882339671}
-  - component: {fileID: 9039097329787264764}
   m_Layer: 0
   m_Name: Image
   m_TagString: Untagged
@@ -211,7 +210,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -3}
-  m_SizeDelta: {x: 190, y: 190}
+  m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3132479946584422419
 CanvasRenderer:
@@ -251,21 +250,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &9039097329787264764
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2073918773291178853}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
-  m_EffectDistance: {x: 5, y: 5}
-  m_UseGraphicAlpha: 1
 --- !u!1 &2128599657097443743
 GameObject:
   m_ObjectHideFlags: 0
@@ -373,8 +357,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: FILL UP
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1b5c9a7370e424d53a1b8a999cf54a02, type: 2}
-  m_sharedMaterial: {fileID: 7512481295523713106, guid: 1b5c9a7370e424d53a1b8a999cf54a02, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1c2e6505f3723904b9a7f48f3f22c542, type: 2}
+  m_sharedMaterial: {fileID: 3825668454006616592, guid: 1c2e6505f3723904b9a7f48f3f22c542, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -451,7 +435,6 @@ GameObject:
   - component: {fileID: 5303478989237372616}
   - component: {fileID: 5785108556222300535}
   - component: {fileID: 4925141961592478528}
-  - component: {fileID: 1721934729784757937}
   m_Layer: 0
   m_Name: Image
   m_TagString: Untagged
@@ -477,7 +460,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -0.000015258789, y: -3}
-  m_SizeDelta: {x: 190, y: 190}
+  m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5785108556222300535
 CanvasRenderer:
@@ -517,21 +500,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1721934729784757937
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2525130378734105176}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
-  m_EffectDistance: {x: 5, y: 5}
-  m_UseGraphicAlpha: 1
 --- !u!1 &2548132961219809494
 GameObject:
   m_ObjectHideFlags: 0
@@ -543,7 +511,6 @@ GameObject:
   - component: {fileID: 2951896757848628385}
   - component: {fileID: 7269775493402995745}
   - component: {fileID: 5239285045395371166}
-  - component: {fileID: 1774452452946962699}
   m_Layer: 0
   m_Name: Image (1)
   m_TagString: Untagged
@@ -610,21 +577,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1774452452946962699
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2548132961219809494}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
-  m_EffectDistance: {x: 5, y: 5}
-  m_UseGraphicAlpha: 1
 --- !u!1 &3383764612687418860
 GameObject:
   m_ObjectHideFlags: 0
@@ -757,8 +709,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Get a new set of placeable cakes
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1b5c9a7370e424d53a1b8a999cf54a02, type: 2}
-  m_sharedMaterial: {fileID: 7512481295523713106, guid: 1b5c9a7370e424d53a1b8a999cf54a02, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1c2e6505f3723904b9a7f48f3f22c542, type: 2}
+  m_sharedMaterial: {fileID: 3825668454006616592, guid: 1c2e6505f3723904b9a7f48f3f22c542, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -996,8 +948,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Tap to Close
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1b5c9a7370e424d53a1b8a999cf54a02, type: 2}
-  m_sharedMaterial: {fileID: 7512481295523713106, guid: 1b5c9a7370e424d53a1b8a999cf54a02, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1c2e6505f3723904b9a7f48f3f22c542, type: 2}
+  m_sharedMaterial: {fileID: 3825668454006616592, guid: 1c2e6505f3723904b9a7f48f3f22c542, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1618,8 +1570,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: HAMMER
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1b5c9a7370e424d53a1b8a999cf54a02, type: 2}
-  m_sharedMaterial: {fileID: 7512481295523713106, guid: 1b5c9a7370e424d53a1b8a999cf54a02, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1c2e6505f3723904b9a7f48f3f22c542, type: 2}
+  m_sharedMaterial: {fileID: 3825668454006616592, guid: 1c2e6505f3723904b9a7f48f3f22c542, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1772,7 +1724,6 @@ GameObject:
   - component: {fileID: 1837692034463889594}
   - component: {fileID: 877027628062824332}
   - component: {fileID: 4297869632042642254}
-  - component: {fileID: 1599213431763826265}
   m_Layer: 0
   m_Name: Image
   m_TagString: Untagged
@@ -1798,7 +1749,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -0.000015258789, y: -3}
-  m_SizeDelta: {x: 190, y: 190}
+  m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &877027628062824332
 CanvasRenderer:
@@ -1838,21 +1789,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1599213431763826265
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7190810045579058583}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
-  m_EffectDistance: {x: 5, y: 5}
-  m_UseGraphicAlpha: 1
 --- !u!1 &7283154096517507469
 GameObject:
   m_ObjectHideFlags: 0
@@ -1921,8 +1857,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: REROLL
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1b5c9a7370e424d53a1b8a999cf54a02, type: 2}
-  m_sharedMaterial: {fileID: 7512481295523713106, guid: 1b5c9a7370e424d53a1b8a999cf54a02, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1c2e6505f3723904b9a7f48f3f22c542, type: 2}
+  m_sharedMaterial: {fileID: 3825668454006616592, guid: 1c2e6505f3723904b9a7f48f3f22c542, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1999,7 +1935,6 @@ GameObject:
   - component: {fileID: 4438633232653461281}
   - component: {fileID: 5808546760105730093}
   - component: {fileID: 3260421546487207478}
-  - component: {fileID: 8114937463674634966}
   m_Layer: 0
   m_Name: Image (1)
   m_TagString: Untagged
@@ -2066,21 +2001,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &8114937463674634966
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7829381357387803842}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
-  m_EffectDistance: {x: 5, y: 5}
-  m_UseGraphicAlpha: 1
 --- !u!1 &8770010153517260655
 GameObject:
   m_ObjectHideFlags: 0
@@ -2217,7 +2137,6 @@ GameObject:
   - component: {fileID: 8372688343951576056}
   - component: {fileID: 6789183029942160117}
   - component: {fileID: 4937760333711292415}
-  - component: {fileID: 3056188673940841330}
   m_Layer: 0
   m_Name: Image (1)
   m_TagString: Untagged
@@ -2284,21 +2203,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3056188673940841330
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8900012356813065408}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
-  m_EffectDistance: {x: 5, y: 5}
-  m_UseGraphicAlpha: 1
 --- !u!1 &8976772774258862868
 GameObject:
   m_ObjectHideFlags: 0
@@ -2404,8 +2308,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Choose a plate to fill the cake
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1b5c9a7370e424d53a1b8a999cf54a02, type: 2}
-  m_sharedMaterial: {fileID: 7512481295523713106, guid: 1b5c9a7370e424d53a1b8a999cf54a02, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1c2e6505f3723904b9a7f48f3f22c542, type: 2}
+  m_sharedMaterial: {fileID: 3825668454006616592, guid: 1c2e6505f3723904b9a7f48f3f22c542, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

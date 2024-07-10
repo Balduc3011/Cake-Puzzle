@@ -446,6 +446,8 @@ public class OwnedCake
     public bool IsAbleToUpgrade()
     {
         UpdateCardRequire();
-        return cardAmount >= cardRequire;
+        float upgradePrice = upgradePrice = ConstantValue.VAL_CAKEUPGRADE_COIN * level;
+        return cardAmount >= cardRequire &&
+                ProfileManager.Instance.playerData.playerResourseSave.IsHasEnoughMoney(upgradePrice);
     }
 }

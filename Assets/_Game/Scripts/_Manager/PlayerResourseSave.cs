@@ -253,7 +253,7 @@ public class PlayerResourseSave : SaveBase
         EventManager.TriggerEvent(EventName.AddItem.ToString());
     }
 
-    public void AddExp(float expAdd) {
+    public bool AddExp(float expAdd) {
         //if (currentLevel >= levelMax && currentExp==expMax) {
         //    LevelUp();
         //    return;
@@ -263,9 +263,13 @@ public class PlayerResourseSave : SaveBase
         {
             currentExp = 0;
             LevelUp();
+            IsMarkChangeData();
+            SaveData();
+            return true;
         }
         IsMarkChangeData();
         SaveData();
+        return false;
     }
 
     public void LevelUp() {
