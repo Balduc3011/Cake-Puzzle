@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+
+#if UNITY_EDITOR
 #if UNITY_ANDROID || UNITY_IOS
 using Unity.Notifications.Android;
 using UnityEngine;
@@ -76,4 +78,5 @@ public class PushNotificationManager : MonoBehaviour {
     }
 
 }
+#endif
 #endif
