@@ -361,6 +361,9 @@ public class CakeSaveData : SaveBase
         IsMarkChangeData();
         SaveData();
     }
+    public int GetCakeIDForMission() {
+        return cakeIDUsing[UnityEngine.Random.Range(0, cakeIDUsing.Count - 1)];
+    }
 }
 
 [System.Serializable]

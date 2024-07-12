@@ -302,8 +302,6 @@ public class PanelTotal : UIPanel
             showCakeCounter = 0;
             InitCakeDecor();
         }
-
-        if (onQuickTimeEvent) UpdateTime();
     }
 
     float showCakeCoolDown = 3 * 60;
@@ -360,50 +358,34 @@ public class PanelTotal : UIPanel
     #region Quick Time Event
     public float currentCakeDone;
     float currentTime;
-    bool onQuickTimeEvent;
 
-    public void ShowQuickTimeEvent(float cakeNeedDoneOnEvent, float timeMaxEvent) {
+    public void ShowQuickTimeEvent() {
+        GameManager.Instance.quickTimeEventManager.InitMission();
         objQuickTimeEvents.SetActive(true);
         quickEventCanvasGroup.DOFade(1, .25f).From(0).SetEase(Ease.InOutSine);
         objQuickTimeEvents.transform.DOScale(1, .25f).From(0).SetEase(Ease.OutBack);
-        sliderQuickTimeEvent.maxValue = cakeNeedDoneOnEvent;
+        sliderQuickTimeEvent.maxValue = GameManager.Instance.quickTimeEventManager.GetTotalCakeNeedDone();
         sliderQuickTimeEvent.value = 0;
         currentCakeDone = 0;
-        onQuickTimeEvent = true;
-        currentTime = timeMaxEvent;
-        txtCountCake.text = "0/" + cakeNeedDoneOnEvent;
-        txtTime.text = TimeUtil.ConvertFloatToString(timeMaxEvent);
+        currentTime = GameManager.Instance.quickTimeEventManager.GetTimeQuickTimeEvent();
+        txtCountCake.text = "0/" + sliderQuickTimeEvent.maxValue;
+        txtTime.text = TimeUtil.ConvertFloatToString(currentTime);
     }
 
     public void OutTimeEvent() {
         objQuickTimeEvents.SetActive(false);
-        currentCakeDone = 0;
-        currentTime = 0;
-        onQuickTimeEvent = false;
-        GameManager.Instance.quickTimeEventManager.EndQuickTimeEvent();
     }
 
-    public void UpdateQuickTimeEvent()
+    public void UpdateQuickTimeEvent(int currentCakeDone)
     {
         if (sliderQuickTimeEvent.maxValue == 0)
             return;
-        currentCakeDone++;
         txtCountCake.text = currentCakeDone + "/" + sliderQuickTimeEvent.maxValue;
         sliderQuickTimeEvent.value = currentCakeDone;
-        if (currentCakeDone >= sliderQuickTimeEvent.maxValue &&
-            GameManager.Instance.quickTimeEventManager.onQuickTimeEvent)
-        { 
-            UIManager.instance.panelTotal.OutTimeEvent();
-            GameManager.Instance.RandonReward();
-            UIManager.instance.ShowPanelSelectReward();
-        }
     }
 
-    void UpdateTime() {
-        currentTime -= Time.deltaTime;
-        if (currentTime >= 0f) txtTime.text = TimeUtil.TimeToString(currentTime, TimeFommat.Keyword);
-        if (currentTime <= 0f)
-            OutTimeEvent();
+    public void UpdateTime(float time) {
+        txtTime.text = TimeUtil.TimeToString(time, TimeFommat.Keyword);
     }
     #endregion
 }

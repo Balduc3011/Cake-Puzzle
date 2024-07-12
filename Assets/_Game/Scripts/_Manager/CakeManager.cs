@@ -431,7 +431,7 @@ public class CakeManager : MonoBehaviour
             {
                 UIManager.instance.TurnBlock(false);
                 UIManager.instance.ShowPanelLevelComplete(false);
-                UIManager.instance.panelTotal.OutTimeEvent();
+                GameManager.Instance.quickTimeEventManager.EndQuickTimeEvent();
                 table.AnimLooseGameOut();
             });
         }  
