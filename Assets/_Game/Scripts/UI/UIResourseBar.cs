@@ -61,6 +61,8 @@ public class UIResourseBar : MonoBehaviour
     }
 
     public void AnimChangeCoin() {
+        if (imgCoin == null)
+            return;
         if (mySequence != null)
             mySequence.Kill();
         mySequence = DOTween.Sequence();
