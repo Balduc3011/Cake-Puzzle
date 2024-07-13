@@ -33,7 +33,7 @@ public class RewardItemUI : MonoBehaviour
             if (itemData.ItemType == ItemType.Coin)
             {
                 rewardEffect.attractorTarget = panelItemsReward.coinBar;
-                rewardEffect.SetBurst(0, 0, 5);
+                rewardEffect.SetBurst(0, 0, 10);
                 rewardEffect.texture = iconImg.sprite.texture;
                 rewardEffect.Play();
             }

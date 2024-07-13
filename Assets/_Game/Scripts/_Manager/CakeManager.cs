@@ -569,8 +569,8 @@ public class CakeManager : MonoBehaviour
       
         SetJustUnlockedCake(newCakeID);
         levelUp = true;
-        ShowLevelUp();
-        //Invoke("ShowLevelUp", 3.5f);
+        //ShowLevelUp();
+        DOVirtual.DelayedCall(3.5f, ShowLevelUp);
     }
 
     void ShowLevelUp()

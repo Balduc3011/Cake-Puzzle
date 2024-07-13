@@ -103,6 +103,7 @@ public class PanelTotal : UIPanel
 
     float currentExp = 0;
     float currentValue = 0;
+    float nextValue = 0;
     int currentLevel;
     bool isChangeLevel;
     float maxExp;
@@ -115,12 +116,13 @@ public class PanelTotal : UIPanel
         else
         {
             isChangeLevel = false;
-            currentExp = ProfileManager.Instance.playerData.playerResourseSave.currentExp;
-            maxExp = ProfileManager.Instance.playerData.playerResourseSave.GetMaxExp();
         }
-
-        DOVirtual.Float(currentValue, currentExp, 1f, (value) => {
-            sliderLevelExpImg.fillAmount = value / maxExp;
+        currentValue = sliderLevelExpImg.fillAmount;
+        maxExp = ProfileManager.Instance.playerData.playerResourseSave.GetMaxExp();
+        currentExp = ProfileManager.Instance.playerData.playerResourseSave.currentExp;
+        nextValue = currentExp / maxExp;
+        DOVirtual.Float(currentValue, nextValue, 0.35f, (value) => {
+            sliderLevelExpImg.fillAmount = value;
         }).OnComplete(() => {
             if (isChangeLevel)
             {

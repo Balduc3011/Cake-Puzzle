@@ -70,10 +70,11 @@ public class PanelSelectReward : UIPanel
         selectedCardId = cardId;
         for (int i = 0; i < rewardCards.Count; i++)
         {
-            if (rewardCards[i].cardID == cardId)
-                rewardCards[i].HideCard();
-            else
-                rewardCards[i].ToOpenPoint();
+            rewardCards[i].ActiveBtn(false);
+            //if (rewardCards[i].cardID == cardId)
+            //    rewardCards[i].HideCard();
+            //else
+            //    rewardCards[i].ToOpenPoint();
         }
         Invoke("ShowClose", 1.5f);
         GameManager.Instance.AddItem(rewards[cardId]);
@@ -104,19 +105,12 @@ public class PanelSelectReward : UIPanel
         UIManager.instance.ClosePanelSelectReward();
         GameManager.Instance.cakeManager.cakeShowComponent.ShowNormalCake();
         GameManager.Instance.cakeManager.cakeShowComponent.ShowNextToUnlockCake();
-       // GameManager.Instance.cakeManager.ClearAllCake();
         GameManager.Instance.cakeManager.SetOnMove(false);
-        //UIManager.instance.ShowPanelLoading();
     }
 
     void GetExtraByAds()
     {
         GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
-        //if (GameManager.Instance.IsHasNoAds())
-        //    OnGetExtraReward();
-        //else
-        //    AdsManager.Instance.ShowRewardVideo(WatchVideoRewardType.GetExtraCard.ToString(), OnGetExtraReward);
-
         GameManager.Instance.ShowRewardVideo(WatchVideoRewardType.GetExtraCard, OnGetExtraReward);
     }
 
@@ -131,8 +125,9 @@ public class PanelSelectReward : UIPanel
             }
             else
             {
-                rewardCards[i].ShowCardReward();
-                rewardCards[i].HideCard();
+                //rewardCards[i].ShowCardReward();
+                //rewardCards[i].HideCard();
+                rewardCards[i].ShowCard();
                 GameManager.Instance.AddItem(rewards[i]);
             }
                 
