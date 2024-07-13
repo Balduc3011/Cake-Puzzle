@@ -311,14 +311,22 @@ public class PanelTotal : UIPanel
     [SerializeField] Button confirmBuyBtn;
     [SerializeField] Button confirmCloseBtn;
     [SerializeField] TextMeshProUGUI desText;
+    [SerializeField] List<GameObject> boostObjs;
     //[SerializeField] Image iconImg;
     UnityAction adsConfirmCallBack;
-    public void ShowConfirm(UnityAction unityAction, string des)
+    public void ShowConfirm(UnityAction unityAction, int index)
     {
         adsConfirmCallBack = unityAction;
         confirmObj.SetActive(true);
         confirmCG.DOFade(1, 0.15f);
-        desText.text = des;
+        for (int i = 0; i < boostObjs.Count; i++)
+        {
+            if(i == index)
+            {
+                boostObjs[i].SetActive(true);
+            }
+            boostObjs[i].SetActive(false);
+        }
     }
 
     public void CloseConfirmShowAds()
