@@ -34,9 +34,8 @@ public class PanelTotal : UIPanel
     //[SerializeField] GameObject backGround;
     [SerializeField] GameObject objBlockAll;
     [SerializeField] TextMeshProUGUI txtCurrentLevel;
-    [SerializeField] TextMeshProUGUI txtCurrentExp;
     //[SerializeField] Image imgNextCake;
-    [SerializeField] Slider sliderLevelExp;
+    [SerializeField] Image sliderLevelExpImg;
     [SerializeField] Slider sliderQuickTimeEvent;
     [SerializeField] Transform trsCoin;
     [SerializeField] CanvasGroup canvasGroup;
@@ -104,32 +103,30 @@ public class PanelTotal : UIPanel
 
     float currentExp = 0;
     float currentValue = 0;
+    float nextValue = 0;
     int currentLevel;
     bool isChangeLevel;
+    float maxExp;
     private void ChangeExp()
     {
         if (currentLevel != ProfileManager.Instance.playerData.playerResourseSave.currentLevel)
         {
-            currentExp = sliderLevelExp.maxValue;
             isChangeLevel = true;
         }
         else
         {
             isChangeLevel = false;
-            currentExp = ProfileManager.Instance.playerData.playerResourseSave.currentExp;
-            sliderLevelExp.maxValue = ProfileManager.Instance.playerData.playerResourseSave.GetMaxExp();
         }
-
-        currentValue = sliderLevelExp.value;
-        DOVirtual.Float(currentValue, currentExp, 1f, (value) => {
-            sliderLevelExp.value = value;
-            txtCurrentExp.text = (int)value + "/" + sliderLevelExp.maxValue;
+        currentValue = sliderLevelExpImg.fillAmount;
+        maxExp = ProfileManager.Instance.playerData.playerResourseSave.GetMaxExp();
+        currentExp = ProfileManager.Instance.playerData.playerResourseSave.currentExp;
+        nextValue = currentExp / maxExp;
+        DOVirtual.Float(currentValue, nextValue, 0.35f, (value) => {
+            sliderLevelExpImg.fillAmount = value;
         }).OnComplete(() => {
             if (isChangeLevel)
             {
-                sliderLevelExp.value = 0;
-                sliderLevelExp.maxValue = ProfileManager.Instance.playerData.playerResourseSave.GetMaxExp();
-                txtCurrentExp.text = 0 + "/" + sliderLevelExp.maxValue;
+                sliderLevelExpImg.fillAmount = 0;
                 currentLevel = ProfileManager.Instance.playerData.playerResourseSave.currentLevel;
                 ChangeLevel();
             }
@@ -138,17 +135,7 @@ public class PanelTotal : UIPanel
     LevelData levelData;
     private void ChangeLevel()
     {
-
         txtCurrentLevel.text = ProfileManager.Instance.playerData.playerResourseSave.currentLevel.ToString();
-        //levelData = ProfileManager.Instance.dataConfig.levelDataConfig.GetLevel(ProfileManager.Instance.playerData.playerResourseSave.currentLevel);
-        //if (levelData.cakeUnlockID != -1)
-        //{
-        //    imgNextCake.gameObject.SetActive(true);
-        //    imgNextCake.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetCakeSprite(levelData.cakeUnlockID);
-        //}
-        //else { 
-        //    imgNextCake.gameObject.SetActive(false);
-        //}
     }
 
     void Start()
@@ -269,7 +256,7 @@ public class PanelTotal : UIPanel
     }
 
     public Transform GetPointSlider() {
-        return sliderLevelExp.handleRect.transform;
+        return txtCurrentLevel.transform;
     }
 
     public Transform GetCoinTrs() {

@@ -36,8 +36,8 @@ public class PanelItemsReward : UIPanel
         DisableOldItem();
         InitReward();
         transform.SetAsLastSibling();
-        coinBar.DOScale(1, 0.25f).From(0).SetDelay(2);
-        bagBar.DOScale(1, 0.25f).From(0).SetDelay(2);
+        coinBar.DOScale(1, 0.25f).From(0).SetDelay(1f);
+        bagBar.DOScale(1, 0.25f).From(0).SetDelay(1f);
     }
 
     void InitReward()

@@ -244,6 +244,11 @@ public class UIManager : MonoBehaviour {
 
     public void ShowPanelHint(ItemType itemType)
     {
+        if (itemType != ItemType.Hammer
+            && itemType != ItemType.FillUp
+            && itemType != ItemType.ReRoll
+            )
+            return;
         isHasPopupOnScene = true;
         GameObject go = GetPanel(UIPanelType.PanelHint);
         go.SetActive(true);
