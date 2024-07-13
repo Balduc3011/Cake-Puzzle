@@ -119,8 +119,6 @@ public class PanelLevelUp : UIPanel
             yield return ConstantValue.WAIT_SEC1;
             yield return ConstantValue.WAIT_SEC1;
             closeBtn.gameObject.SetActive(true);
-
-            
         }
     }
 
