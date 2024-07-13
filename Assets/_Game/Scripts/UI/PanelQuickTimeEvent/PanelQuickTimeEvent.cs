@@ -36,6 +36,6 @@ public class PanelQuickTimeEvent : UIPanel
         imgCanvasGroup.DOFade(0, timeDuration * 2).SetEase(Ease.InOutQuad);
         txtCanvasGroup.DOFade(0, timeDuration * 2).SetEase(Ease.InOutQuad);
         mainCanvasGroup.DOFade(0, timeDuration * 2).SetEase(Ease.InOutQuad).SetDelay(timeDuration).OnComplete(UIManager.instance.ClosePanelQuickTimeEvent);
-        UIManager.instance.panelTotal.ShowQuickTimeEvent(GameManager.Instance.quickTimeEventManager.GetTotalCakeNeedDone(), GameManager.Instance.quickTimeEventManager.GetTimeQuickTimeEvent());
+        UIManager.instance.panelTotal.ShowQuickTimeEvent();
     }
 }

@@ -34,9 +34,9 @@ public class PanelTotal : UIPanel
     //[SerializeField] GameObject backGround;
     [SerializeField] GameObject objBlockAll;
     [SerializeField] TextMeshProUGUI txtCurrentLevel;
-    [SerializeField] TextMeshProUGUI txtCurrentExp;
     //[SerializeField] Image imgNextCake;
-    [SerializeField] Slider sliderLevelExp;
+    [SerializeField] Image sliderLevelExpImg;
+    [SerializeField] Image missionIcon;
     [SerializeField] Slider sliderQuickTimeEvent;
     [SerializeField] Transform trsCoin;
     [SerializeField] CanvasGroup canvasGroup;
@@ -55,6 +55,8 @@ public class PanelTotal : UIPanel
 
     [SerializeField] TextMeshProUGUI txtCountCake;
     [SerializeField] TextMeshProUGUI txtTime;
+
+    public UIResourseBar coinBar;
 
     int showingCake = -1;
     public override void Awake()
@@ -104,51 +106,38 @@ public class PanelTotal : UIPanel
 
     float currentExp = 0;
     float currentValue = 0;
+    float nextValue = 0;
     int currentLevel;
     bool isChangeLevel;
+    float maxExp;
     private void ChangeExp()
     {
         if (currentLevel != ProfileManager.Instance.playerData.playerResourseSave.currentLevel)
         {
-            currentExp = sliderLevelExp.maxValue;
             isChangeLevel = true;
         }
         else
         {
             isChangeLevel = false;
-            currentExp = ProfileManager.Instance.playerData.playerResourseSave.currentExp;
-            sliderLevelExp.maxValue = ProfileManager.Instance.playerData.playerResourseSave.GetMaxExp();
         }
-
-        currentValue = sliderLevelExp.value;
-        DOVirtual.Float(currentValue, currentExp, 1f, (value) => {
-            sliderLevelExp.value = value;
-            txtCurrentExp.text = (int)value + "/" + sliderLevelExp.maxValue;
+        currentValue = sliderLevelExpImg.fillAmount;
+        maxExp = ProfileManager.Instance.playerData.playerResourseSave.GetMaxExp();
+        currentExp = ProfileManager.Instance.playerData.playerResourseSave.currentExp;
+        nextValue = currentExp / maxExp;
+        DOVirtual.Float(currentValue, nextValue, 0.35f, (value) => {
+            sliderLevelExpImg.fillAmount = value;
         }).OnComplete(() => {
             if (isChangeLevel)
             {
-                sliderLevelExp.value = 0;
-                sliderLevelExp.maxValue = ProfileManager.Instance.playerData.playerResourseSave.GetMaxExp();
-                txtCurrentExp.text = 0 + "/" + sliderLevelExp.maxValue;
+                sliderLevelExpImg.fillAmount = 0;
                 currentLevel = ProfileManager.Instance.playerData.playerResourseSave.currentLevel;
                 ChangeLevel();
             }
         });
     }
-    LevelData levelData;
     private void ChangeLevel()
     {
-
         txtCurrentLevel.text = ProfileManager.Instance.playerData.playerResourseSave.currentLevel.ToString();
-        //levelData = ProfileManager.Instance.dataConfig.levelDataConfig.GetLevel(ProfileManager.Instance.playerData.playerResourseSave.currentLevel);
-        //if (levelData.cakeUnlockID != -1)
-        //{
-        //    imgNextCake.gameObject.SetActive(true);
-        //    imgNextCake.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetCakeSprite(levelData.cakeUnlockID);
-        //}
-        //else { 
-        //    imgNextCake.gameObject.SetActive(false);
-        //}
     }
 
     void Start()
@@ -269,7 +258,7 @@ public class PanelTotal : UIPanel
     }
 
     public Transform GetPointSlider() {
-        return sliderLevelExp.handleRect.transform;
+        return txtCurrentLevel.transform;
     }
 
     public Transform GetCoinTrs() {
@@ -302,8 +291,6 @@ public class PanelTotal : UIPanel
             showCakeCounter = 0;
             InitCakeDecor();
         }
-
-        if (onQuickTimeEvent) UpdateTime();
     }
 
     float showCakeCoolDown = 3 * 60;
@@ -326,14 +313,21 @@ public class PanelTotal : UIPanel
     [SerializeField] Button confirmBuyBtn;
     [SerializeField] Button confirmCloseBtn;
     [SerializeField] TextMeshProUGUI desText;
+    [SerializeField] List<GameObject> boostObjs;
     //[SerializeField] Image iconImg;
     UnityAction adsConfirmCallBack;
-    public void ShowConfirm(UnityAction unityAction, string des)
+    public void ShowConfirm(UnityAction unityAction, int index)
     {
         adsConfirmCallBack = unityAction;
         confirmObj.SetActive(true);
         confirmCG.DOFade(1, 0.15f);
-        desText.text = des;
+        for (int i = 0; i < boostObjs.Count; i++)
+        {
+            if (i == index)
+                boostObjs[i].SetActive(true);
+            else
+            boostObjs[i].SetActive(false);
+        }
     }
 
     public void CloseConfirmShowAds()
@@ -360,50 +354,48 @@ public class PanelTotal : UIPanel
     #region Quick Time Event
     public float currentCakeDone;
     float currentTime;
-    bool onQuickTimeEvent;
 
-    public void ShowQuickTimeEvent(float cakeNeedDoneOnEvent, float timeMaxEvent) {
+    public void ShowQuickTimeEvent() {
+        GameManager.Instance.quickTimeEventManager.InitMission();
+        missionIcon.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetCakeSprite(GameManager.Instance.quickTimeEventManager.GetCurrentCakeID());
         objQuickTimeEvents.SetActive(true);
         quickEventCanvasGroup.DOFade(1, .25f).From(0).SetEase(Ease.InOutSine);
         objQuickTimeEvents.transform.DOScale(1, .25f).From(0).SetEase(Ease.OutBack);
-        sliderQuickTimeEvent.maxValue = cakeNeedDoneOnEvent;
+        sliderQuickTimeEvent.maxValue = GameManager.Instance.quickTimeEventManager.GetTotalCakeNeedDone();
         sliderQuickTimeEvent.value = 0;
         currentCakeDone = 0;
-        onQuickTimeEvent = true;
-        currentTime = timeMaxEvent;
-        txtCountCake.text = "0/" + cakeNeedDoneOnEvent;
-        txtTime.text = TimeUtil.ConvertFloatToString(timeMaxEvent);
+        currentTime = GameManager.Instance.quickTimeEventManager.GetTimeQuickTimeEvent();
+        txtCountCake.text = "0/" + sliderQuickTimeEvent.maxValue;
+        txtTime.text = TimeUtil.ConvertFloatToString(currentTime);
     }
 
     public void OutTimeEvent() {
         objQuickTimeEvents.SetActive(false);
-        currentCakeDone = 0;
-        currentTime = 0;
-        onQuickTimeEvent = false;
-        GameManager.Instance.quickTimeEventManager.EndQuickTimeEvent();
     }
-
-    public void UpdateQuickTimeEvent()
+    EffectMove effectMove;
+    public void UpdateQuickTimeEvent(int currentCakeDone, Transform pointCake)
     {
         if (sliderQuickTimeEvent.maxValue == 0)
             return;
-        currentCakeDone++;
+        effectMove = GameManager.Instance.objectPooling.GetCakeEffectMove();
+        effectMove.ChangeSprite(ProfileManager.Instance.dataConfig.spriteDataConfig.GetCakeSprite(GameManager.Instance.quickTimeEventManager.GetCurrentCakeID()));
+        effectMove.PrepareToMove(Camera.main.WorldToScreenPoint(pointCake.position), missionIcon.transform, AnimMissionProgress);
         txtCountCake.text = currentCakeDone + "/" + sliderQuickTimeEvent.maxValue;
         sliderQuickTimeEvent.value = currentCakeDone;
-        if (currentCakeDone >= sliderQuickTimeEvent.maxValue &&
-            GameManager.Instance.quickTimeEventManager.onQuickTimeEvent)
-        { 
-            UIManager.instance.panelTotal.OutTimeEvent();
-            GameManager.Instance.RandonReward();
-            UIManager.instance.ShowPanelSelectReward();
-        }
     }
 
-    void UpdateTime() {
-        currentTime -= Time.deltaTime;
-        if (currentTime >= 0f) txtTime.text = TimeUtil.TimeToString(currentTime, TimeFommat.Keyword);
-        if (currentTime <= 0f)
-            OutTimeEvent();
+    public void UpdateTime(float time) {
+        txtTime.text = TimeUtil.TimeToString(time, TimeFommat.Keyword);
+    }
+    Sequence mySequence;
+    void AnimMissionProgress() {
+        if (mySequence != null)
+            mySequence.Kill();
+        mySequence = DOTween.Sequence();
+        missionIcon.transform.localScale = Vector3.one;
+        mySequence.Append(missionIcon.transform.DOScale(Vector3.one * .8f, .15f).SetEase(Ease.InQuad));
+        mySequence.Append(missionIcon.transform.DOScale(Vector3.one * 1.2f, .15f).SetEase(Ease.InQuad));
+        mySequence.Append(missionIcon.transform.DOScale(Vector3.one, .15f).SetEase(Ease.OutQuad));
     }
     #endregion
 }

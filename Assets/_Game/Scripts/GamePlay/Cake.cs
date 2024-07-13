@@ -77,6 +77,7 @@ public class Cake : MonoBehaviour
     [SerializeField] Vector3 vectorCheckOffset;
 
     Vector3 vectorRotateTo;
+    Transform fillUpEffect;
 
     private void Start()
     {
@@ -445,6 +446,9 @@ public class Cake : MonoBehaviour
             currentRotateIndex = pieces[pieces.Count - 1].currentRotateIndex;
             
             DOVirtual.DelayedCall((indexRemove + 1) * .25f, () => {
+                fillUpEffect = GameManager.Instance.objectPooling.GetFillUpEffect();
+                fillUpEffect.position = transform.position + vectorOffsetEffectDrop;
+                fillUpEffect.gameObject.SetActive(true);
                 indexRemove = 0;
                 for (int i = pieces.Count; i < 6; i++)
                 {
@@ -455,6 +459,7 @@ public class Cake : MonoBehaviour
                 {
                     tweenAnimations.Add(transform.DORotate(new Vector3(0, 360, 0), 1f, RotateMode.WorldAxisAdd).SetEase(Ease.InCirc).OnComplete(()=> {
                         transform.DOLocalMove(Vector3.zero, .3f).SetEase(Ease.OutBack);
+                        fillUpEffect.gameObject.SetActive(false);
                         GameManager.Instance.itemManager.UsingItemDone();
                         ProfileManager.Instance.playerData.playerResourseSave.UsingItem(ItemType.FillUp);
                         DoneCakeMode();
@@ -560,7 +565,7 @@ public class Cake : MonoBehaviour
         transform.parent = currentPlate.pointStay;
         tweenAnimations.Add(transform.DOLocalMove(Vector3.zero, .1f).SetEase(Ease.InQuad).OnComplete(()=> {
             Transform effectDrop = GameManager.Instance.objectPooling.GetSmokeEffectDrop();
-            effectDrop.transform.position = transform.position - vectorOffsetEffectDrop;
+            effectDrop.transform.position = transform.position;
             effectDrop.gameObject.SetActive(true);
         }));
         //Debug.Log("last drop: "+ lastDrop);
@@ -869,7 +874,7 @@ public class Cake : MonoBehaviour
     {
         GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_TapCube);
         GameManager.Instance.questManager.AddProgress(QuestType.CompleteCake, 1);
-        GameManager.Instance.quickTimeEventManager.AddProgess();
+        GameManager.Instance.quickTimeEventManager.AddProgess(pieces[0].cakeID, transform);
         if (panelTotal == null)
             panelTotal = UIManager.instance.panelTotal;
 
@@ -887,7 +892,7 @@ public class Cake : MonoBehaviour
         ProfileManager.Instance.playerData.playerResourseSave.AddTrophy((int)GameManager.Instance.GetDefaultCakeProfit(pieces[0].cakeID, cakeLevel));
         DOVirtual.DelayedCall(0.18f, () => {
             tweens.Add(transform.DOScale(Vector3.one * .8f, .13f));
-            tweens.Add(transform.DOScale(Vector3.one * 1.1f, .13f).SetDelay(.13f));
+            tweens.Add(transform.DOScale(Vector3.one * 1.32f, .5f).SetDelay(.13f).SetEase(Ease.OutBack));
             tweenAnimations.Add(transform.DORotate(CacheSourse.rotateY360, .75f, RotateMode.WorldAxisAdd).SetEase(Ease.OutQuad).OnComplete(() => {
                 EffectDoneCake();
             }));

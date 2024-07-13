@@ -208,6 +208,12 @@ public class CakeManager : MonoBehaviour
         return ProfileManager.Instance.dataConfig.rateDataConfig.GetTotalPieces(haveMoreThan3Cake);
     }
 
+    public void RemoveCakeCurrentCheck()
+    {
+        if (currentCakeCheck != null) cakeNeedCheck.Remove(currentCakeCheck);
+        onCheckCake = false;
+    }
+
     public int GetTotalCakeID() {
         haveMoreThan3Cake = ProfileManager.Instance.playerData.cakeSaveData.IsHaveMoreThanThreeCake();
         return ProfileManager.Instance.dataConfig.rateDataConfig.GetTotalCakeID(haveMoreThan3Cake);
@@ -367,6 +373,7 @@ public class CakeManager : MonoBehaviour
             }
             else
             {
+                idNeedCheckOnCake.RemoveAt(0);
                 CheckOtherIDOfCake();
             }
         }
@@ -431,7 +438,7 @@ public class CakeManager : MonoBehaviour
             {
                 UIManager.instance.TurnBlock(false);
                 UIManager.instance.ShowPanelLevelComplete(false);
-                UIManager.instance.panelTotal.OutTimeEvent();
+                GameManager.Instance.quickTimeEventManager.EndQuickTimeEvent();
                 table.AnimLooseGameOut();
             });
         }  
@@ -566,11 +573,9 @@ public class CakeManager : MonoBehaviour
     void LevelUp() {
         onMove = true;
         int newCakeID = ProfileManager.Instance.dataConfig.levelDataConfig.GetCakeID(ProfileManager.Instance.playerData.playerResourseSave.currentLevel - 1);
-      
         SetJustUnlockedCake(newCakeID);
         levelUp = true;
         ShowLevelUp();
-        //Invoke("ShowLevelUp", 3.5f);
     }
 
     void ShowLevelUp()
@@ -581,7 +586,7 @@ public class CakeManager : MonoBehaviour
         }
         else
         {
-            UIManager.instance.ShowPanelSelectReward();
+            UIManager.instance.ShowPanelLevelUp();
         }
     }
 

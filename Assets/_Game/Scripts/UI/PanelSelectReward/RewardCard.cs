@@ -16,6 +16,7 @@ public class RewardCard : MonoBehaviour
     [SerializeField] Transform holdPoint;
     [SerializeField] PanelSelectReward panelSelectReward;
     [SerializeField] Image rewardIcon;
+    [SerializeField] Image rewardIcon2;
     [SerializeField] TextMeshProUGUI rewardAmountTxt;
     [SerializeField] GameObject main;
     [SerializeField] GameObject bg;
@@ -30,25 +31,33 @@ public class RewardCard : MonoBehaviour
         cardBtn.onClick.AddListener(SelectCard);
     }
 
+    public void ActiveBtn(bool value)
+    {
+        cardBtn.interactable = value;
+    }
+
     public void ShowCardReward()
     {
-        ParticleImage rewardEffect = panelSelectReward.GetRewardEffect();
-        if (rewardEffect == null) return;
-        rewardEffect.transform.position = Transform.position;
-        rewardEffect.texture = rewardIcon.sprite.texture;
-        rewardEffect.SetBurst(0, 0, (int)(toReward.amount));
-        rewardEffect.Play();
-        moveTarget = panelSelectReward.GetBoosterPos(toReward.ItemType);
-        if(moveTarget != null)
+        if(toReward.ItemType == ItemType.Coin)
         {
-            rewardEffect.attractorTarget = moveTarget;
+            ParticleImage rewardEffect = panelSelectReward.GetRewardEffect();
+            if (rewardEffect == null) return;
+            rewardEffect.transform.position = Transform.position;
+            rewardEffect.texture = rewardIcon.sprite.texture;
+            rewardEffect.SetBurst(0, 0, toReward.amount < 10 ? (int)(toReward.amount) : 10);
+            rewardEffect.Play();
+            moveTarget = panelSelectReward.GetBoosterPos(toReward.ItemType);
+            if (moveTarget != null)
+            {
+                rewardEffect.attractorTarget = moveTarget;
+            }
+            else
+            {
+                rewardEffect.attractorTarget = panelSelectReward.itemsBag;
+            }
+            //rewardEffect.onLastParticleFinish = EffectMoveDone;
+            panelSelectReward.SetEffectDoneMoveAct(EffectMoveDone);
         }
-        else
-        {
-            rewardEffect.attractorTarget = panelSelectReward.itemsBag;
-        }
-        //rewardEffect.onLastParticleFinish = EffectMoveDone;
-        panelSelectReward.SetEffectDoneMoveAct(EffectMoveDone);
     }
 
     void EffectMoveDone()
@@ -60,8 +69,23 @@ public class RewardCard : MonoBehaviour
     {
         panelSelectReward.OnSelectCard(cardID);
         cardBtn.interactable = false;
-        ShowCardReward();
+        //ShowCardReward();
+        ShowCard();
     }
+
+    public void ShowCard()
+    {
+        Transform.DORotate(Vector3.up * 180, 1.4f).SetEase(Ease.InOutQuart);
+        cardLight.DOFade(1, 0.15f).SetDelay(0.7f).OnComplete(() =>
+        {
+            bg.SetActive(false);
+            main.SetActive(true);
+
+        });
+        rewardIcon2.transform.DOScale(0, 0.1f).SetEase(Ease.InBack);
+        cardLight.DOFade(0, 1f).SetDelay(0.7f + 0.25f).OnComplete(ShowCardReward);
+    }
+
     public void HideCard()
     {
         Transform.DOScale(0, 0.25f).From(1).SetEase(Ease.InBack);
@@ -77,16 +101,11 @@ public class RewardCard : MonoBehaviour
     {
         Transform.DOScale(1, 0.5f).From(0);
         Transform.DOMove(openPoint.position, 0.25f).SetEase(Ease.OutBack);
-        Transform.DOMove(holdPoint.position, 0.25f).SetEase(Ease.InOutQuad).SetDelay(1);
-        Transform.DORotate(Vector3.up * 180, 1.4f).SetEase(Ease.InOutQuart).SetDelay(1.5f);
-        cardLight.DOFade(1, 0.15f).SetDelay(0.7f + 1.5f).OnComplete(() =>
+        Transform.DOMove(holdPoint.position, 0.25f).SetEase(Ease.InOutQuad).SetDelay(1).OnComplete(() =>
         {
             cardBtn.interactable = true;
-            bg.SetActive(false);
-            main.SetActive(true);
 
         });
-        cardLight.DOFade(0, 1f).SetDelay(0.7f + 1.5f + 0.25f);
     }
 
     public void ToOpenPoint()
@@ -108,6 +127,7 @@ public class RewardCard : MonoBehaviour
             main.SetActive(true);
 
         });
+        rewardIcon2.transform.DOScale(0, 0.1f).SetEase(Ease.InBack);
         cardLight.DOFade(0, 1f).SetDelay(0.7f + 0.5f + 0.25f).OnComplete(ShowCardReward);
     }
     public void ToHoldEx()
@@ -117,6 +137,12 @@ public class RewardCard : MonoBehaviour
     public void ToHoldOpen()
     {
         Transform.DOScale(1, 0.5f).From(0);
+    }
+
+    public void ShowHint()
+    {
+        rewardIcon2.gameObject.SetActive(true);
+        rewardIcon2.transform.DOScale(1, 0.15f).SetEase(Ease.OutBack);
     }
 
 
@@ -139,13 +165,14 @@ public class RewardCard : MonoBehaviour
         if(cardID < rewards.Count)
         {
             toReward = rewards[cardID];
-            //rewardIcon.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetItemSprite(toReward.ItemType);
             rewardAmountTxt.text = toReward.amount.ToString();
-            //border1.SetActive(toReward.ItemType == ItemType.Cake);
             if (toReward.ItemType != ItemType.Cake)
                 rewardIcon.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetItemSprite(toReward.ItemType);
             else
                 rewardIcon.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetCakeSprite(toReward.subId);
+            rewardIcon2.sprite = rewardIcon.sprite;
         }
+        rewardIcon2.gameObject.SetActive(false);
+        rewardIcon2.transform.localScale = Vector3.zero;
     }
 }

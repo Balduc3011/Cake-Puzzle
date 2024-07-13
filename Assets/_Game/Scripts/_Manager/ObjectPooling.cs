@@ -227,4 +227,21 @@ public class ObjectPooling : MonoBehaviour
         return newSmokeEffect;
     }
 
+    public List<EffectMove> cakeMissionMoves = new List<EffectMove>();
+    public EffectMove cakeMissionMove;
+    public EffectMove GetCakeEffectMove()
+    {
+        for (int i = cakeMissionMoves.Count - 1; i >= 0; i--)
+        {
+            if (cakeMissionMoves[i] == null)
+            {
+                cakeMissionMoves.RemoveAt(i);
+                continue;
+            }
+            if (!cakeMissionMoves[i].gameObject.activeSelf) return cakeMissionMoves[i];
+        }
+        EffectMove newCakeMissionMove = Instantiate(cakeMissionMove, trsPanel);
+        cakeMissionMoves.Add(newCakeMissionMove);
+        return newCakeMissionMove;
+    }
 }

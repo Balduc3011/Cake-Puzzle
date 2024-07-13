@@ -10,7 +10,6 @@ public class PanelCakeReward : UIPanel
     [SerializeField] RectTransform RawImageRect;
     [SerializeField] RectTransform showingSize;
     [SerializeField] Button closeBtn;
-    [SerializeField] Transform tapToContinueTxt;
     public override void Awake()
     {
         panelType = UIPanelType.PanelCakeReward;
@@ -23,7 +22,6 @@ public class PanelCakeReward : UIPanel
         closeBtn.interactable = false;
         DOVirtual.DelayedCall(2.5f, ActiveCloseBtn);
         GameManager.Instance.cakeManager.cakeShowComponent.ShowNewUnlockCake();
-        tapToContinueTxt.localScale = Vector3.zero;
         transform.SetAsLastSibling();
     }
 
@@ -35,7 +33,6 @@ public class PanelCakeReward : UIPanel
     void ActiveCloseBtn()
     {
         closeBtn.interactable = true;
-        tapToContinueTxt.DOScale(1, 0.15f);
     }
 
     // Update is called once per frame
@@ -43,6 +40,6 @@ public class PanelCakeReward : UIPanel
     {
         GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         UIManager.instance.ClosePanelCakeReward();
-        UIManager.instance.ShowPanelSelectReward();
+        UIManager.instance.ShowPanelLevelUp();
     }
 }

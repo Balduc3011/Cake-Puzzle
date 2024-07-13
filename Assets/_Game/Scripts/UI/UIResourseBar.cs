@@ -2,12 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using DG.Tweening;
+using UnityEngine.UI;
 
 public class UIResourseBar : MonoBehaviour
 {
     [SerializeField] ItemType itemType;
     [SerializeField] TextMeshProUGUI amountTxt;
-    [SerializeField] Animator myAnim;
+    [SerializeField] Image imgCoin;
+    [SerializeField] Vector3 vectorPunch = new Vector3(0.1f, 0.1f, 0.1f);
+    Sequence mySequence;
     void Start()
     {
         switch (itemType)
@@ -53,6 +57,19 @@ public class UIResourseBar : MonoBehaviour
             default:
                 break;
         }
-        myAnim.SetTrigger("Active");
+        AnimChangeCoin();
+    }
+
+    public void AnimChangeCoin() {
+        if (imgCoin == null)
+            return;
+        if (mySequence != null)
+            mySequence.Kill();
+        mySequence = DOTween.Sequence();
+        imgCoin.transform.localScale = Vector3.one;
+        mySequence.Append(imgCoin.transform.DOScale(Vector3.one * .8f, .15f).SetEase(Ease.InQuad));
+        mySequence.Append(imgCoin.transform.DOScale(Vector3.one * 1.2f, .15f).SetEase(Ease.InQuad));
+        mySequence.Append(imgCoin.transform.DOScale(Vector3.one, .15f).SetEase(Ease.OutQuad));
+        mySequence.Play();
     }
 }

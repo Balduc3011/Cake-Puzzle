@@ -13,14 +13,17 @@ public class QuestSlot : MonoBehaviour
     [SerializeField] TextMeshProUGUI txtName;
     [SerializeField] TextMeshProUGUI txtProgress;
     [SerializeField] TextMeshProUGUI txtRewardAmount;
+    [SerializeField] Image rewardIcon;
     [SerializeField] Slider sProgress;
     [SerializeField] GameObject objSlider;
     float currentProgress;
     float questRequire;
+    List<ItemData> defaultQuestReward;
 
     private void Start()
     {
         collectBtn.onClick.AddListener(CollectQuest);
+        InitReward();
     }
     public void InitData(QuestType questType)
     {
@@ -32,11 +35,11 @@ public class QuestSlot : MonoBehaviour
     {
         ReScale();
         ReInit();
+        InitRewardShow();
     }
 
     void ReInit()
     {
-        txtRewardAmount.text = ConstantValue.VAL_QUEST_COIN.ToString();
         currentProgress = ProfileManager.Instance.playerData.questDataSave.GetCurrentProgress(questType);
         questRequire = ProfileManager.Instance.playerData.questDataSave.GetCurrentRequire(questType);
         collectBtn.interactable = (currentProgress >= questRequire);
@@ -79,6 +82,43 @@ public class QuestSlot : MonoBehaviour
         GameManager.Instance.questManager.ClaimQuest(questType);
         ReInit();
         ReScale();
+        GameManager.Instance.GetItemRewards(defaultQuestReward);
+        UIManager.instance.ShowPanelItemsReward();
+        InitReward();
+    }
 
+    void InitReward()
+    {
+        defaultQuestReward = new List<ItemData>();
+        ItemData itemData = new ItemData();
+        defaultQuestReward.Add(itemData);
+        itemData.ItemType = Random.Range(-1f, 1.5f) > 0 ? ItemType.Coin : ItemType.Cake;
+        if (itemData.ItemType == ItemType.Coin)
+        {
+            itemData.amount = ConstantValue.VAL_QUEST_COIN;
+            itemData.subId = -1;
+            rewardIcon.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetItemSprite(ItemType.Coin);
+        }
+        else
+        {
+            itemData.amount = (int)(Random.Range(10, 15));
+            itemData.subId = ProfileManager.Instance.playerData.cakeSaveData.GetRandomOwnedCake();
+            rewardIcon.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetCakeSprite(itemData.subId);
+        }
+        txtRewardAmount.text = itemData.amount.ToString();
+    }
+
+    void InitRewardShow()
+    {
+        if (defaultQuestReward == null || defaultQuestReward.Count == 0) return;
+        if (defaultQuestReward[0].ItemType == ItemType.Coin)
+        {
+            rewardIcon.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetItemSprite(ItemType.Coin);
+        }
+        else
+        {
+            rewardIcon.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetCakeSprite(defaultQuestReward[0].subId);
+        }
+        txtRewardAmount.text = defaultQuestReward[0].amount.ToString();
     }
 }
