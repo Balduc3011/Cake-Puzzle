@@ -622,7 +622,7 @@ public class Way
         if (totalFreeSpace == 0)
         {
             Debug.Log("Remove All");
-            actionRemoveAll();
+            CallDoneThatMove();
             return;
         }
 

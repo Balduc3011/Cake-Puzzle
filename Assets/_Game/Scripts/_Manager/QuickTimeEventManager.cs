@@ -43,6 +43,7 @@ public class QuickTimeEventManager : MonoBehaviour
                 {
                     timeGamePlay = 0;
                     timeMissionRemain = 1000;
+                    currentProgress = 0;
                     UIManager.instance.ShowPanelQuickTimeEvent();
                     onQuickTimeEvent = true;
                 }
@@ -65,7 +66,7 @@ public class QuickTimeEventManager : MonoBehaviour
         timeTotal = cakeNeedDone * 15f;
         timeMissionRemain = timeTotal;
         currentCakeID = ProfileManager.Instance.playerData.cakeSaveData.GetCakeIDForMission();
-        currentProgress = 0;
+        
     }
 
     public float GetTimeQuickTimeEvent() {
