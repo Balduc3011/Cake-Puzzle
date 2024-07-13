@@ -37,14 +37,14 @@ public class QuickBuy : MonoBehaviour
     {
         buyBtn.onClick.AddListener(OnBuyPack);
         adsBtn.onClick.AddListener(OnWatchAds);
-        priceTxt.text = "50";
+        priceTxt.text = ConstantValue.VAL_BOOSTER_PRICE.ToString();
     }
 
     void OnBuyPack()
     {
-        if (ProfileManager.Instance.playerData.playerResourseSave.IsHasEnoughMoney(50))
+        if (ProfileManager.Instance.playerData.playerResourseSave.IsHasEnoughMoney(ConstantValue.VAL_BOOSTER_PRICE))
         {
-            ProfileManager.Instance.playerData.playerResourseSave.ConsumeMoney(50);
+            ProfileManager.Instance.playerData.playerResourseSave.ConsumeMoney(ConstantValue.VAL_BOOSTER_PRICE);
             OnBuyPackSuccess();
         }
         else

@@ -51,9 +51,10 @@ public class ConstantValue
     public static float VAL_PIGGY_SAVE = 10;
     public static float VAL_QUEST_STAR = 5;
     public static float VAL_QUEST_COIN = 15;
-    public static float VAL_CAKEUPGRADE_COIN = 150;
+    public static float VAL_CAKEUPGRADE_COIN = 200;
     public static float VAL_REVIVE_COIN = 250;
     public static int VAL_CAKECOUNT_ADS = 10;
+    public static int VAL_BOOSTER_PRICE = 100;
 
     // Animation
 
