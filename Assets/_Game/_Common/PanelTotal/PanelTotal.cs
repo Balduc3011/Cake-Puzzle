@@ -323,10 +323,9 @@ public class PanelTotal : UIPanel
         confirmCG.DOFade(1, 0.15f);
         for (int i = 0; i < boostObjs.Count; i++)
         {
-            if(i == index)
-            {
+            if (i == index)
                 boostObjs[i].SetActive(true);
-            }
+            else
             boostObjs[i].SetActive(false);
         }
     }

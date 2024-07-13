@@ -60,28 +60,9 @@ public class GameManager : Singleton<GameManager>
     public void GetLevelUpReward(bool getLevelCake = true)
     {
         rewardItems.Clear();
-        int level = ProfileManager.Instance.playerData.playerResourseSave.currentLevel;
-        if(level == 1)
-        {
-            AddRewardByType(ItemType.Hammer);
-        }
-        else if (level == 2)
-        {
-            AddRewardByType(ItemType.FillUp);
-        }
-        else if (level == 3)
-        {
-            AddRewardByType(ItemType.ReRoll);
-        }
-        else
-        {
-            RandonReward();
-        }
-        //GetCakeOnLevelUp();
-        //GetLevelUpItem();
-        if(getLevelCake) 
+        InitLevelUpRewards();
+        if (getLevelCake) 
             GetLevelCake();
-        //CollectItemReward(rewardItems);
     }
 
     void GetLevelCake()
@@ -97,7 +78,6 @@ public class GameManager : Singleton<GameManager>
             ProfileManager.Instance.playerData.cakeSaveData.UseCake(newCakeID);
         }
         firstCake.subId = newCakeID;
-        //rewardItems.Add(firstCake);
         AddItem(firstCake);
     }
 
@@ -118,6 +98,9 @@ public class GameManager : Singleton<GameManager>
             case ItemType.Bomb:
             case ItemType.FillUp:
                 newItem.amount = 1;
+                break;
+            case ItemType.Coin:
+                newItem.amount = (int)(UnityEngine.Random.Range(10, 15));
                 break;
             default:
                 break;
@@ -152,67 +135,101 @@ public class GameManager : Singleton<GameManager>
 
     public void RandonReward()
     {
-        rewardItems.Clear();
-        ProfileManager.Instance.dataConfig.itemDataConfig.InitRewardRandonList();
-        for (int i = 0; i < 2; i++)
-        {
-            ItemData newItem = new();
-            newItem.subId = -1;
-            newItem.ItemType = ProfileManager.Instance.dataConfig.itemDataConfig.GetRewardItemOnLevel();
-            while (CheckHasReward(newItem.ItemType))
-            {
-                newItem.ItemType = ProfileManager.Instance.dataConfig.itemDataConfig.GetRewardItemOnLevel();
-            }
-            ProfileManager.Instance.dataConfig.itemDataConfig.RemoveFromTemp(newItem.ItemType);
-
-            if (newItem.ItemType == ItemType.Cake)
-            {
-                newItem.amount = UnityEngine.Random.Range(10, 20);
-                int randonCake = ProfileManager.Instance.playerData.cakeSaveData.GetRandomUnlockedCake();
-                newItem.subId = randonCake;
-                //ColectRewardCakeCard((int)newItem.amount);
-            }
-            else if(newItem.ItemType == ItemType.Coin)
-            {
-                newItem.amount = (int)(UnityEngine.Random.Range(2, 8)) * 10;
-            }
-            else
-            {
-                //newItem.amount = UnityEngine.Random.Range(1, 5);
-                newItem.amount = 1;
-            }
-            rewardItems.Add(newItem);
-        }
+        RandonRewardOneCake();
     }
 
     public void RandonRewardOneCake()
     {
         rewardItems.Clear();
         ProfileManager.Instance.dataConfig.itemDataConfig.InitRewardRandonList();
-        for (int i = 0; i < 2; i++)
-        {
-            ItemData newItem = new();
-            newItem.subId = ProfileManager.Instance.playerData.cakeSaveData.GetRandomUnlockedCake();
-            newItem.ItemType = ItemType.Cake;
-            ProfileManager.Instance.dataConfig.itemDataConfig.RemoveFromTemp(ItemType.Cake);
 
-            if (newItem.ItemType == ItemType.Cake)
+        ItemData newItem1 = new();
+        newItem1.ItemType = ItemType.Cake;
+        newItem1.subId = ProfileManager.Instance.playerData.cakeSaveData.GetRandomUnlockedCake();
+        newItem1.amount = UnityEngine.Random.Range(1, 6);
+        ProfileManager.Instance.dataConfig.itemDataConfig.RemoveFromTemp(ItemType.Cake);
+
+        ItemData newItem2 = new();
+        newItem2.ItemType = ProfileManager.Instance.dataConfig.itemDataConfig.GetRewardItemOnLevel();
+        newItem2.subId = -1;
+        if (newItem2.ItemType == ItemType.Coin)
+        {
+            newItem2.amount = (int)(UnityEngine.Random.Range(10, 15));
+        }
+        else
+        {
+            newItem2.amount = 1;
+        }
+        
+        if(UnityEngine.Random.Range(-1f, 1f) > 0)
+        {
+            rewardItems.Add(newItem1);
+            rewardItems.Add(newItem2);
+        }
+        else
+        {
+            rewardItems.Add(newItem2);
+            rewardItems.Add(newItem1);
+        }
+    }
+
+    public void InitLevelUpRewards()
+    {
+        rewardItems.Clear();
+
+        ItemData newItem1 = new();
+        newItem1.ItemType = ItemType.Cake;
+        newItem1.subId = ProfileManager.Instance.playerData.cakeSaveData.GetRandomUnlockedCake();
+        newItem1.amount = UnityEngine.Random.Range(1, 6);
+        rewardItems.Add(newItem1);
+        GetRewardByLevel();
+    }
+
+    void GetRewardByLevel()
+    {
+        int level = ProfileManager.Instance.playerData.playerResourseSave.currentLevel;
+        if (level == 1)
+        {
+            AddRewardByType(ItemType.Hammer);
+            AddRewardByType(ItemType.Coin);
+        }
+        else if (level == 2)
+        {
+            AddRewardByType(ItemType.FillUp);
+            AddRewardByType(ItemType.Coin);
+        }
+        else if (level == 3)
+        {
+            AddRewardByType(ItemType.ReRoll);
+            AddRewardByType(ItemType.Coin);
+        }
+        else 
+        {
+            ProfileManager.Instance.dataConfig.itemDataConfig.InitRewardRandonList();
+            ItemData newItem1 = new();
+            newItem1.ItemType = ItemType.Cake;
+            newItem1.subId = ProfileManager.Instance.playerData.cakeSaveData.GetRandomUnlockedCake();
+            int cakeTry = 0;
+            while (newItem1.subId == rewardItems[0].subId && cakeTry < 10)
             {
-                newItem.amount = UnityEngine.Random.Range(10, 20);
-                int randonCake = ProfileManager.Instance.playerData.cakeSaveData.GetRandomUnlockedCake();
-                newItem.subId = randonCake;
-                //ColectRewardCakeCard((int)newItem.amount);
+                newItem1.subId = ProfileManager.Instance.playerData.cakeSaveData.GetRandomUnlockedCake();
+                cakeTry++;
             }
-            else if (newItem.ItemType == ItemType.Coin)
+            newItem1.amount = UnityEngine.Random.Range(1, 6);
+            ProfileManager.Instance.dataConfig.itemDataConfig.RemoveFromTemp(ItemType.Cake);
+            ItemData newItem2 = new();
+            newItem2.ItemType = ProfileManager.Instance.dataConfig.itemDataConfig.GetRewardItemOnLevel();
+            newItem2.subId = -1;
+            if (newItem2.ItemType == ItemType.Coin)
             {
-                newItem.amount = (int)(UnityEngine.Random.Range(2, 8)) * 10;
+                newItem2.amount = (int)(UnityEngine.Random.Range(10, 15));
             }
             else
             {
-                //newItem.amount = UnityEngine.Random.Range(1, 5);
-                newItem.amount = 1;
+                newItem2.amount = 1;
             }
-            rewardItems.Add(newItem);
+            rewardItems.Add(newItem1);
+            rewardItems.Add(newItem2);
         }
     }
 
@@ -419,4 +436,5 @@ public enum WatchVideoRewardType
     GameOverRevive,
     FreeSpinAds,
     GetExtraCard,
+    GetX2LevelUpReward
 }

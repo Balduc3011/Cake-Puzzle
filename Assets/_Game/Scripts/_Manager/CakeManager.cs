@@ -566,11 +566,9 @@ public class CakeManager : MonoBehaviour
     void LevelUp() {
         onMove = true;
         int newCakeID = ProfileManager.Instance.dataConfig.levelDataConfig.GetCakeID(ProfileManager.Instance.playerData.playerResourseSave.currentLevel - 1);
-      
         SetJustUnlockedCake(newCakeID);
         levelUp = true;
-        //ShowLevelUp();
-        DOVirtual.DelayedCall(3.5f, ShowLevelUp);
+        ShowLevelUp();
     }
 
     void ShowLevelUp()
@@ -581,7 +579,7 @@ public class CakeManager : MonoBehaviour
         }
         else
         {
-            UIManager.instance.ShowPanelSelectReward();
+            UIManager.instance.ShowPanelLevelUp();
         }
     }
 

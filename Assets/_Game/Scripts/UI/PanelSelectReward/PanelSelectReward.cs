@@ -71,10 +71,8 @@ public class PanelSelectReward : UIPanel
         for (int i = 0; i < rewardCards.Count; i++)
         {
             rewardCards[i].ActiveBtn(false);
-            //if (rewardCards[i].cardID == cardId)
-            //    rewardCards[i].HideCard();
-            //else
-            //    rewardCards[i].ToOpenPoint();
+            if (rewardCards[i].cardID != cardId)
+                rewardCards[i].ShowHint();
         }
         Invoke("ShowClose", 1.5f);
         GameManager.Instance.AddItem(rewards[cardId]);

@@ -17,7 +17,7 @@ public class RewardItemUI : MonoBehaviour
     [SerializeField] ParticleImage rewardEffect;
     PanelItemsReward panelItemsReward;
 
-    public void Init(ItemData itemData, PanelItemsReward panelItemsReward)
+    public void Init(ItemData itemData, PanelItemsReward panelItemsReward = null)
     {
         this.panelItemsReward = panelItemsReward;
         titleTxt.text = itemData.ItemType.ToString();
@@ -30,7 +30,7 @@ public class RewardItemUI : MonoBehaviour
         contentTransform.DOScale(1, 0.25f).From(2);
         canvasGroup.DOFade(1, 0.15f).From(0);
         if (itemData.ItemType != ItemType.NoAds) {
-            if (itemData.ItemType == ItemType.Coin)
+            if (itemData.ItemType == ItemType.Coin && panelItemsReward != null)
             {
                 rewardEffect.attractorTarget = panelItemsReward.coinBar;
                 rewardEffect.SetBurst(0, 0, 10);

@@ -203,6 +203,9 @@ public class UIManager : MonoBehaviour {
                 case UIPanelType.PanelTutorial:
                     panel = Instantiate(Resources.Load("UI/PanelTutorial") as GameObject, mainCanvas);
                     break;
+                case UIPanelType.PanelLevelUp:
+                    panel = Instantiate(Resources.Load("UI/PanelLevelUp") as GameObject, mainCanvas);
+                    break;
             }
             if (panel) panel.SetActive(true);
             return panel;
@@ -257,6 +260,7 @@ public class UIManager : MonoBehaviour {
     }
 
     public void ClosePanelHint() {
+        isHasPopupOnScene = false;
         if (actionShowPanels.Count > 0)
         {
             actionShowPanels[0]();
@@ -738,6 +742,31 @@ public class UIManager : MonoBehaviour {
     {
         isHasPopupOnScene = false;
         GameObject go = GetPanel(UIPanelType.PanelSelectReward);
+        go.SetActive(false);
+        if (actionShowPanels.Count > 0)
+        {
+            actionShowPanels[0]();
+            actionShowPanels.RemoveAt(0);
+        }
+    }
+
+    public void ShowPanelLevelUp()
+    {
+        if (isHasPopupOnScene)
+        {
+            actionShowPanels.Add(ShowPanelLevelUp);
+        }
+        else
+        {
+            isHasPopupOnScene = true;
+            GameObject go = GetPanel(UIPanelType.PanelLevelUp);
+            go.SetActive(true);
+        }
+    }
+    public void ClosePanelLevelUp()
+    {
+        isHasPopupOnScene = false;
+        GameObject go = GetPanel(UIPanelType.PanelLevelUp);
         go.SetActive(false);
         if (actionShowPanels.Count > 0)
         {
