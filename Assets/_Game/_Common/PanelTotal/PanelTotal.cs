@@ -36,6 +36,7 @@ public class PanelTotal : UIPanel
     [SerializeField] TextMeshProUGUI txtCurrentLevel;
     //[SerializeField] Image imgNextCake;
     [SerializeField] Image sliderLevelExpImg;
+    [SerializeField] Image missionIcon;
     [SerializeField] Slider sliderQuickTimeEvent;
     [SerializeField] Transform trsCoin;
     [SerializeField] CanvasGroup canvasGroup;
@@ -54,6 +55,8 @@ public class PanelTotal : UIPanel
 
     [SerializeField] TextMeshProUGUI txtCountCake;
     [SerializeField] TextMeshProUGUI txtTime;
+
+    public UIResourseBar coinBar;
 
     int showingCake = -1;
     public override void Awake()
@@ -132,7 +135,6 @@ public class PanelTotal : UIPanel
             }
         });
     }
-    LevelData levelData;
     private void ChangeLevel()
     {
         txtCurrentLevel.text = ProfileManager.Instance.playerData.playerResourseSave.currentLevel.ToString();
@@ -289,8 +291,6 @@ public class PanelTotal : UIPanel
             showCakeCounter = 0;
             InitCakeDecor();
         }
-
-        if (onQuickTimeEvent) UpdateTime();
     }
 
     float showCakeCoolDown = 3 * 60;
@@ -354,50 +354,48 @@ public class PanelTotal : UIPanel
     #region Quick Time Event
     public float currentCakeDone;
     float currentTime;
-    bool onQuickTimeEvent;
 
-    public void ShowQuickTimeEvent(float cakeNeedDoneOnEvent, float timeMaxEvent) {
+    public void ShowQuickTimeEvent() {
+        GameManager.Instance.quickTimeEventManager.InitMission();
+        missionIcon.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetCakeSprite(GameManager.Instance.quickTimeEventManager.GetCurrentCakeID());
         objQuickTimeEvents.SetActive(true);
         quickEventCanvasGroup.DOFade(1, .25f).From(0).SetEase(Ease.InOutSine);
         objQuickTimeEvents.transform.DOScale(1, .25f).From(0).SetEase(Ease.OutBack);
-        sliderQuickTimeEvent.maxValue = cakeNeedDoneOnEvent;
+        sliderQuickTimeEvent.maxValue = GameManager.Instance.quickTimeEventManager.GetTotalCakeNeedDone();
         sliderQuickTimeEvent.value = 0;
         currentCakeDone = 0;
-        onQuickTimeEvent = true;
-        currentTime = timeMaxEvent;
-        txtCountCake.text = "0/" + cakeNeedDoneOnEvent;
-        txtTime.text = TimeUtil.ConvertFloatToString(timeMaxEvent);
+        currentTime = GameManager.Instance.quickTimeEventManager.GetTimeQuickTimeEvent();
+        txtCountCake.text = "0/" + sliderQuickTimeEvent.maxValue;
+        txtTime.text = TimeUtil.ConvertFloatToString(currentTime);
     }
 
     public void OutTimeEvent() {
         objQuickTimeEvents.SetActive(false);
-        currentCakeDone = 0;
-        currentTime = 0;
-        onQuickTimeEvent = false;
-        GameManager.Instance.quickTimeEventManager.EndQuickTimeEvent();
     }
-
-    public void UpdateQuickTimeEvent()
+    EffectMove effectMove;
+    public void UpdateQuickTimeEvent(int currentCakeDone, Transform pointCake)
     {
         if (sliderQuickTimeEvent.maxValue == 0)
             return;
-        currentCakeDone++;
+        effectMove = GameManager.Instance.objectPooling.GetCakeEffectMove();
+        effectMove.ChangeSprite(ProfileManager.Instance.dataConfig.spriteDataConfig.GetCakeSprite(GameManager.Instance.quickTimeEventManager.GetCurrentCakeID()));
+        effectMove.PrepareToMove(Camera.main.WorldToScreenPoint(pointCake.position), missionIcon.transform, AnimMissionProgress);
         txtCountCake.text = currentCakeDone + "/" + sliderQuickTimeEvent.maxValue;
         sliderQuickTimeEvent.value = currentCakeDone;
-        if (currentCakeDone >= sliderQuickTimeEvent.maxValue &&
-            GameManager.Instance.quickTimeEventManager.onQuickTimeEvent)
-        { 
-            UIManager.instance.panelTotal.OutTimeEvent();
-            GameManager.Instance.RandonReward();
-            UIManager.instance.ShowPanelSelectReward();
-        }
     }
 
-    void UpdateTime() {
-        currentTime -= Time.deltaTime;
-        if (currentTime >= 0f) txtTime.text = TimeUtil.TimeToString(currentTime, TimeFommat.Keyword);
-        if (currentTime <= 0f)
-            OutTimeEvent();
+    public void UpdateTime(float time) {
+        txtTime.text = TimeUtil.TimeToString(time, TimeFommat.Keyword);
+    }
+    Sequence mySequence;
+    void AnimMissionProgress() {
+        if (mySequence != null)
+            mySequence.Kill();
+        mySequence = DOTween.Sequence();
+        missionIcon.transform.localScale = Vector3.one;
+        mySequence.Append(missionIcon.transform.DOScale(Vector3.one * .8f, .15f).SetEase(Ease.InQuad));
+        mySequence.Append(missionIcon.transform.DOScale(Vector3.one * 1.2f, .15f).SetEase(Ease.InQuad));
+        mySequence.Append(missionIcon.transform.DOScale(Vector3.one, .15f).SetEase(Ease.OutQuad));
     }
     #endregion
 }
