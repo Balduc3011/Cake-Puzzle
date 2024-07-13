@@ -36,6 +36,7 @@ public class PanelTotal : UIPanel
     [SerializeField] TextMeshProUGUI txtCurrentLevel;
     //[SerializeField] Image imgNextCake;
     [SerializeField] Image sliderLevelExpImg;
+    [SerializeField] Image missionIcon;
     [SerializeField] Slider sliderQuickTimeEvent;
     [SerializeField] Transform trsCoin;
     [SerializeField] CanvasGroup canvasGroup;
@@ -54,6 +55,8 @@ public class PanelTotal : UIPanel
 
     [SerializeField] TextMeshProUGUI txtCountCake;
     [SerializeField] TextMeshProUGUI txtTime;
+
+    public UIResourseBar coinBar;
 
     int showingCake = -1;
     public override void Awake()
@@ -132,7 +135,6 @@ public class PanelTotal : UIPanel
             }
         });
     }
-    LevelData levelData;
     private void ChangeLevel()
     {
         txtCurrentLevel.text = ProfileManager.Instance.playerData.playerResourseSave.currentLevel.ToString();
@@ -356,6 +358,7 @@ public class PanelTotal : UIPanel
 
     public void ShowQuickTimeEvent() {
         GameManager.Instance.quickTimeEventManager.InitMission();
+        missionIcon.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetCakeSprite(GameManager.Instance.quickTimeEventManager.GetCurrentCakeID());
         objQuickTimeEvents.SetActive(true);
         quickEventCanvasGroup.DOFade(1, .25f).From(0).SetEase(Ease.InOutSine);
         objQuickTimeEvents.transform.DOScale(1, .25f).From(0).SetEase(Ease.OutBack);
@@ -370,17 +373,30 @@ public class PanelTotal : UIPanel
     public void OutTimeEvent() {
         objQuickTimeEvents.SetActive(false);
     }
-
-    public void UpdateQuickTimeEvent(int currentCakeDone)
+    EffectMove effectMove;
+    public void UpdateQuickTimeEvent(int currentCakeDone, Transform pointCake)
     {
         if (sliderQuickTimeEvent.maxValue == 0)
             return;
+        effectMove = GameManager.Instance.objectPooling.GetCakeEffectMove();
+        effectMove.ChangeSprite(ProfileManager.Instance.dataConfig.spriteDataConfig.GetCakeSprite(GameManager.Instance.quickTimeEventManager.GetCurrentCakeID()));
+        effectMove.PrepareToMove(Camera.main.WorldToScreenPoint(pointCake.position), missionIcon.transform, AnimMissionProgress);
         txtCountCake.text = currentCakeDone + "/" + sliderQuickTimeEvent.maxValue;
         sliderQuickTimeEvent.value = currentCakeDone;
     }
 
     public void UpdateTime(float time) {
         txtTime.text = TimeUtil.TimeToString(time, TimeFommat.Keyword);
+    }
+    Sequence mySequence;
+    void AnimMissionProgress() {
+        if (mySequence != null)
+            mySequence.Kill();
+        mySequence = DOTween.Sequence();
+        missionIcon.transform.localScale = Vector3.one;
+        mySequence.Append(missionIcon.transform.DOScale(Vector3.one * .8f, .15f).SetEase(Ease.InQuad));
+        mySequence.Append(missionIcon.transform.DOScale(Vector3.one * 1.2f, .15f).SetEase(Ease.InQuad));
+        mySequence.Append(missionIcon.transform.DOScale(Vector3.one, .15f).SetEase(Ease.OutQuad));
     }
     #endregion
 }

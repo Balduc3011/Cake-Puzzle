@@ -30,4 +30,8 @@ public class CoinEffect : MonoBehaviour
         //});
 
     }
+
+    public void CallCoinEffect() {
+        UIManager.instance.panelTotal.coinBar.AnimChangeCoin();
+    }
 }

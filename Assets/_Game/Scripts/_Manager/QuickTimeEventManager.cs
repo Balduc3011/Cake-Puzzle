@@ -81,11 +81,11 @@ public class QuickTimeEventManager : MonoBehaviour
         UIManager.instance.panelTotal.OutTimeEvent();
     }
 
-    public void AddProgess(int cakeID) {
+    public void AddProgess(int cakeID, Transform pointCake) {
         if (cakeID != currentCakeID || !onQuickTimeEvent) return;
 
         currentProgress++;
-        UIManager.instance.panelTotal.UpdateQuickTimeEvent(currentProgress);
+        UIManager.instance.panelTotal.UpdateQuickTimeEvent(currentProgress, pointCake);
         if (currentProgress >= cakeNeedDone)
         {
             EndQuickTimeEvent();
@@ -93,4 +93,6 @@ public class QuickTimeEventManager : MonoBehaviour
             UIManager.instance.ShowPanelSelectReward();
         }
     }
+
+    public int GetCurrentCakeID() { return currentCakeID; }
 }

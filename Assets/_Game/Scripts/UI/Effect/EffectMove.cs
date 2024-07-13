@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Events;
 
 public class EffectMove : MonoBehaviour
 {
+    [SerializeField] Image imgIcon;
     [SerializeField] float speed;
     [SerializeField] AnimationCurve curvePosition, curveNoise;
     [SerializeField] float magnitudeRange = 1;
@@ -23,6 +25,8 @@ public class EffectMove : MonoBehaviour
     {
         trsMove = transform;
     }
+
+    public void ChangeSprite(Sprite icon) { imgIcon.sprite = icon; }
 
     public void PrepareToMove(Vector3 startPoint, Transform targetPoint, UnityAction actionDone = null)
     {
