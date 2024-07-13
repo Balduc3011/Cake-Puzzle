@@ -28,7 +28,7 @@ public class Table : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space)) { 
+        if (Input.GetKeyDown(KeyCode.Space)) {
             ClearAllCake();
         }
     }
@@ -120,7 +120,7 @@ public class Table : MonoBehaviour
     }
 
     public bool CheckPlateHaveCakeDone(PlateIndex plateIndex) {
-        
+
         if (plateArray[plateIndex.indexX, plateIndex.indexY].currentCake != null)
         {
             if (plateArray[plateIndex.indexX, plateIndex.indexY].currentCake.cakeDone || plateArray[plateIndex.indexX, plateIndex.indexY].currentCake.pieces.Count == 0)
@@ -164,19 +164,34 @@ public class Table : MonoBehaviour
         ClearDoneSetWayPoint();
         ways.Clear();
         for (int i = mapPlate.Count - 1; i >= 0; i--) {
-            if (mapPlate[i].currentCake == null || !mapPlate[i].currentCake.CheckHaveCakeID(currentCakeID))
+            if (mapPlate[i].currentCake == null /*|| !mapPlate[i].currentCake.CheckHaveCakeID(currentCakeID)*/)
             {
                 mapPlate.RemoveAt(i);
             }
         }
-        if (mapPlate.Count > 1)
+        mapWay.Remove(bestPlate);
+
+        if (mapWay.Count > 0 && !BestPlateNullOrNoSpace())
         {
-            if (mapPlate[0].currentCake != null)
+            for (int i = 0; i < mapWay.Count; i++)
             {
-                GameManager.Instance.cakeManager.AddCakeNeedCheck(mapPlate[0].currentCake, ActionCallBackSameCake);
+                if (mapWay[i].currentCake != null && totalPieceMerge != 0 && mapWay[i] != bestPlate)
+                {
+                    Debug.Log("ADd cake again: " + mapWay[i]);
+                    GameManager.Instance.cakeManager.AddCakeNeedCheck(mapWay[i].currentCake, ActionCallBackSameCake);
+                    break;
+                }
             }
+            //else if (mapPlate[1].currentCake != null) {
+            //    GameManager.Instance.cakeManager.AddCakeNeedCheck(mapPlate[1].currentCake, ActionCallBackSameCake);
+            //}
         }
         GameManager.Instance.cakeManager.CheckOtherIDOfCake();
+    }
+
+    bool BestPlateNullOrNoSpace() {
+        Debug.Log(bestPlate + "  current freespace: " + bestPlate.GetFreeSpace());
+        return bestPlate.currentCake == null || bestPlate.GetFreeSpace() == 0;
     }
 
     void ActionCallBackSameCake() {
@@ -207,11 +222,17 @@ public class Table : MonoBehaviour
         }
 
         if (stepIndex < ways.Count)
-            ways[stepIndex].Move(cakeID, timeRotate, timeMove, stepIndex == ways.Count - 1, Move, RemoveWay);
+            ways[stepIndex].Move(cakeID, timeRotate, timeMove, stepIndex == ways.Count - 1, Move, RemoveWay, RemoveAll);
     }
 
     void RemoveWay(Way way) {
         ways.Remove(way); 
+    }
+
+    void RemoveAll() {
+        ways.Clear();
+        mapPlate.Clear();
+        GameManager.Instance.cakeManager.RemoveCakeCurrentCheck();
     }
 
     public bool CheckIsSameIDWithWay(int cakeID) {
@@ -351,6 +372,8 @@ public class Table : MonoBehaviour
         totalNeedRotate = 0;
         currentRotateDone = 0;
         clearCakeLoadDone = false;
+        //Debug.Log("Remove best plate: "+bestPlate);
+        //mapPlate.Remove(bestPlate);
         for (int i = 0; i < plates.Count; i++)
         {
             if (plates[i].currentCake != null)
@@ -369,7 +392,7 @@ public class Table : MonoBehaviour
             }
         }
         clearCakeLoadDone = true;
-            CallBackCheckOtherIDOnMap();
+        CallBackCheckOtherIDOnMap();
     }
 
     public bool CheckGroupOneAble() {
@@ -582,7 +605,7 @@ public class Way
     bool lastMove;
     int rotateIndexReturn;
 
-    public void Move(int cakeID, float timeRotate, float timeMove, bool lastMove, UnityAction<int> actionDone = null, UnityAction<Way> removeWay= null)
+    public void Move(int cakeID, float timeRotate, float timeMove, bool lastMove, UnityAction<int> actionDone = null, UnityAction<Way> removeWay = null, UnityAction actionRemoveAll = null)
     {
         this.timeRotate = timeRotate;
         this.timeMove = timeMove;
@@ -597,7 +620,8 @@ public class Way
         int totalFreeSpace = plateGo.GetFreeSpace();
         if (totalFreeSpace == 0)
         {
-            DoActionDone();
+            Debug.Log("Remove All");
+            actionRemoveAll();
             return;
         }
 

@@ -208,6 +208,12 @@ public class CakeManager : MonoBehaviour
         return ProfileManager.Instance.dataConfig.rateDataConfig.GetTotalPieces(haveMoreThan3Cake);
     }
 
+    public void RemoveCakeCurrentCheck()
+    {
+        if (currentCakeCheck != null) cakeNeedCheck.Remove(currentCakeCheck);
+        onCheckCake = false;
+    }
+
     public int GetTotalCakeID() {
         haveMoreThan3Cake = ProfileManager.Instance.playerData.cakeSaveData.IsHaveMoreThanThreeCake();
         return ProfileManager.Instance.dataConfig.rateDataConfig.GetTotalCakeID(haveMoreThan3Cake);
@@ -367,6 +373,7 @@ public class CakeManager : MonoBehaviour
             }
             else
             {
+                idNeedCheckOnCake.RemoveAt(0);
                 CheckOtherIDOfCake();
             }
         }
