@@ -65,6 +65,7 @@ public class QuickTimeEventManager : MonoBehaviour
         timeTotal = cakeNeedDone * 15f;
         timeMissionRemain = timeTotal;
         currentCakeID = ProfileManager.Instance.playerData.cakeSaveData.GetCakeIDForMission();
+        currentProgress = 0;
     }
 
     public float GetTimeQuickTimeEvent() {
