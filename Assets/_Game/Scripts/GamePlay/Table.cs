@@ -190,7 +190,8 @@ public class Table : MonoBehaviour
     }
 
     bool BestPlateNullOrNoSpace() {
-        Debug.Log(bestPlate + "  current freespace: " + bestPlate.GetFreeSpace());
+        if (bestPlate == null)
+            return false;
         return bestPlate.currentCake == null || bestPlate.GetFreeSpace() == 0;
     }
 

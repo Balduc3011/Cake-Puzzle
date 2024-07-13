@@ -77,6 +77,7 @@ public class Cake : MonoBehaviour
     [SerializeField] Vector3 vectorCheckOffset;
 
     Vector3 vectorRotateTo;
+    Transform fillUpEffect;
 
     private void Start()
     {
@@ -445,6 +446,9 @@ public class Cake : MonoBehaviour
             currentRotateIndex = pieces[pieces.Count - 1].currentRotateIndex;
             
             DOVirtual.DelayedCall((indexRemove + 1) * .25f, () => {
+                fillUpEffect = GameManager.Instance.objectPooling.GetFillUpEffect();
+                fillUpEffect.position = transform.position + vectorOffsetEffectDrop;
+                fillUpEffect.gameObject.SetActive(true);
                 indexRemove = 0;
                 for (int i = pieces.Count; i < 6; i++)
                 {
@@ -455,6 +459,7 @@ public class Cake : MonoBehaviour
                 {
                     tweenAnimations.Add(transform.DORotate(new Vector3(0, 360, 0), 1f, RotateMode.WorldAxisAdd).SetEase(Ease.InCirc).OnComplete(()=> {
                         transform.DOLocalMove(Vector3.zero, .3f).SetEase(Ease.OutBack);
+                        fillUpEffect.gameObject.SetActive(false);
                         GameManager.Instance.itemManager.UsingItemDone();
                         ProfileManager.Instance.playerData.playerResourseSave.UsingItem(ItemType.FillUp);
                         DoneCakeMode();

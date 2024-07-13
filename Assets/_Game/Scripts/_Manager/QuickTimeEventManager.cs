@@ -15,7 +15,7 @@ public class QuickTimeEventManager : MonoBehaviour
 
     [Range(0, 15)]
     [SerializeField] int minCakeNeedDone;
-    [Range(15, 40)]
+    [Range(5, 40)]
     [SerializeField] int maxCakeNeedDone = 15;
 
     [SerializeField] int currentCakeID = -1;
