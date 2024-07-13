@@ -740,7 +740,7 @@ MonoBehaviour:
   smokeEffectsDrops: []
   smokeEffectsDrop: {fileID: 3531531379073087571, guid: 63cf9fc9bfd2ae646aecde98d1348b17, type: 3}
   fillUpEffects: []
-  fillUpEffect: {fileID: 5536587569727218034, guid: 0410c0bf92d7ed945a1699dab4ccb75e, type: 3}
+  fillUpEffect: {fileID: 2365095307129346677, guid: 9a550ec37ae544b4e934b0b1e7aaa030, type: 3}
   cakeMissionMoves: []
   cakeMissionMove: {fileID: 298526862, guid: fac44cf72bcb438489cc5a26071622d2, type: 3}
 --- !u!1 &448359004
@@ -1672,7 +1672,7 @@ MonoBehaviour:
   timeTotal: 0
   timeMissionRemain: 0
   minCakeNeedDone: 5
-  maxCakeNeedDone: 20
+  maxCakeNeedDone: 10
   currentCakeID: -1
 --- !u!1 &681171902
 GameObject:
@@ -3713,14 +3713,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cakeOnPlate:
   - cakeSaves:
-    - pieceCakeIDCount: 01000000
-      pieceCakeID: 01000000
+    - pieceCakeIDCount: 0300000001000000
+      pieceCakeID: 0100000000000000
   - cakeSaves:
-    - pieceCakeIDCount: 0100000001000000
+    - pieceCakeIDCount: 0500000001000000
       pieceCakeID: 0100000002000000
-  - cakeSaves:
-    - pieceCakeIDCount: 04000000
-      pieceCakeID: 02000000
+  - cakeSaves: []
   trsSpawn:
   - {fileID: 1766099085}
   - {fileID: 823543815}
