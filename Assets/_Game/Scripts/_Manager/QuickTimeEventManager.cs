@@ -19,7 +19,7 @@ public class QuickTimeEventManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!GameManager.Instance.playing &&
+        if (!GameManager.Instance.playing ||
             ProfileManager.Instance.playerData.playerResourseSave.currentLevel <= 4)
         {
             timeGamePlay = 0;
