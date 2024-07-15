@@ -82,7 +82,7 @@ public class RewardCard : MonoBehaviour
             main.SetActive(true);
 
         });
-        rewardIcon2.transform.DOScale(0, 0.1f).SetEase(Ease.InBack);
+        //rewardIcon2.transform.DOScale(0, 0.1f).SetEase(Ease.InBack);
         cardLight.DOFade(0, 1f).SetDelay(0.7f + 0.25f).OnComplete(ShowCardReward);
     }
 
@@ -127,7 +127,7 @@ public class RewardCard : MonoBehaviour
             main.SetActive(true);
 
         });
-        rewardIcon2.transform.DOScale(0, 0.1f).SetEase(Ease.InBack);
+        //rewardIcon2.transform.DOScale(0, 0.1f).SetEase(Ease.InBack);
         cardLight.DOFade(0, 1f).SetDelay(0.7f + 0.5f + 0.25f).OnComplete(ShowCardReward);
     }
     public void ToHoldEx()
@@ -141,8 +141,8 @@ public class RewardCard : MonoBehaviour
 
     public void ShowHint()
     {
-        rewardIcon2.gameObject.SetActive(true);
-        rewardIcon2.transform.DOScale(1, 0.15f).SetEase(Ease.OutBack);
+        //rewardIcon2.gameObject.SetActive(true);
+        //rewardIcon2.transform.DOScale(1, 0.15f).SetEase(Ease.OutBack);
     }
 
 

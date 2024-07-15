@@ -10,7 +10,6 @@ public class UIResourseBar : MonoBehaviour
     [SerializeField] ItemType itemType;
     [SerializeField] TextMeshProUGUI amountTxt;
     [SerializeField] Image imgCoin;
-    [SerializeField] Vector3 vectorPunch = new Vector3(0.1f, 0.1f, 0.1f);
     Sequence mySequence;
     void Start()
     {
@@ -57,7 +56,7 @@ public class UIResourseBar : MonoBehaviour
             default:
                 break;
         }
-        AnimChangeCoin();
+        //AnimChangeCoin();
     }
 
     public void AnimChangeCoin() {
@@ -67,7 +66,7 @@ public class UIResourseBar : MonoBehaviour
             mySequence.Kill();
         mySequence = DOTween.Sequence();
         imgCoin.transform.localScale = Vector3.one;
-        mySequence.Append(imgCoin.transform.DOScale(Vector3.one * .8f, .15f).SetEase(Ease.InQuad));
+        mySequence.Append(imgCoin.transform.DOScale(Vector3.one * .8f, .12f).SetEase(Ease.InQuad));
         mySequence.Append(imgCoin.transform.DOScale(Vector3.one * 1.2f, .15f).SetEase(Ease.InQuad));
         mySequence.Append(imgCoin.transform.DOScale(Vector3.one, .15f).SetEase(Ease.OutQuad));
         mySequence.Play();

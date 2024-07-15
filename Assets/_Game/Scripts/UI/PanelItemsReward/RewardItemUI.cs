@@ -43,5 +43,9 @@ public class RewardItemUI : MonoBehaviour
             //    rewardEffect.SetBurst(0, 0, itemData.amount < 5 ? (int)(itemData.amount) : 5);
             //}
         }
+        else
+        {
+            amountTxt.text = "No Ads";
+        }
     }
 }

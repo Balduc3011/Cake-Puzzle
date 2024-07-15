@@ -42,7 +42,7 @@ public class PanelPlayGame : UIPanel
 
         bakeryBtn.onClick.AddListener(() => {
             GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
-            UIManager.instance.ShowPanelBakery();
+            UIManager.instance.ShowPanelBakery(true);
             UIManager.instance.ClosePanelPlayGame();
         });
 

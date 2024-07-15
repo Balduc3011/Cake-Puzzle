@@ -213,19 +213,15 @@ public class UIManager : MonoBehaviour {
         return listPanel[type];
     }
 
-    public void OpenBlockAll() {
-        panelTotal.OpenObjBlockAll();
+    void AddPanelNeedOpen(UnityAction action) {
+        if (!actionShowPanels.Contains(action))
+        {
+            actionShowPanels.Add(action);
+        }
     }
 
-    public void CloseBlockAll()
-    {
-        panelTotal.CloseObjBlockAll();
-    }
-
-    public void ShowPanelBase()
-    {
-        GameObject go = GetPanel(UIPanelType.PanelBase);
-        go.SetActive(true);
+    void RemovePanelNeedOpen() {
+        actionShowPanels.RemoveAt(0);
     }
 
     public void ClosePanelBase() {
@@ -264,7 +260,7 @@ public class UIManager : MonoBehaviour {
         if (actionShowPanels.Count > 0)
         {
             actionShowPanels[0]();
-            actionShowPanels.RemoveAt(0);
+            RemovePanelNeedOpen();
         }
         onScene.Remove(UIPanelType.PanelHint);
         GameObject go = GetPanel(UIPanelType.PanelHint);
@@ -319,7 +315,7 @@ public class UIManager : MonoBehaviour {
     {
         if (isHasPopupOnScene)
         {
-            actionShowPanels.Add(ShowPanelSpin);
+            AddPanelNeedOpen(ShowPanelSpin);
         }
         else
         {
@@ -336,14 +332,14 @@ public class UIManager : MonoBehaviour {
         if (actionShowPanels.Count > 0)
         {
             actionShowPanels[0]();
-            actionShowPanels.RemoveAt(0);
+            RemovePanelNeedOpen();
         }
     }
     public void ShowPanelDailyReward()
     {
         if (isHasPopupOnScene)
         {
-            actionShowPanels.Add(ShowPanelDailyReward);
+            AddPanelNeedOpen(ShowPanelDailyReward);
         }
         else
         {
@@ -360,7 +356,7 @@ public class UIManager : MonoBehaviour {
         if (actionShowPanels.Count > 0)
         {
             actionShowPanels[0]();
-            actionShowPanels.RemoveAt(0);
+            RemovePanelNeedOpen();
         }
     }
 
@@ -378,20 +374,23 @@ public class UIManager : MonoBehaviour {
         if (actionShowPanels.Count > 0)
         {
             actionShowPanels[0]();
-            actionShowPanels.RemoveAt(0);
+            RemovePanelNeedOpen();
         }
     }
 
-    public void ShowPanelBakery()
+    public void ShowPanelBakery(bool popUpOnScene = false)
     {
         if (isHasPopupOnScene && GameManager.Instance.playing)
         {
-            actionShowPanels.Add(ShowPanelBakery);
+            AddPanelNeedOpen(() =>
+            {
+                ShowPanelBakery(popUpOnScene);
+            });
         }
         else
         {
             CloseOtherMenu(UIPanelType.PanelBakery);
-            isHasPopupOnScene = true;
+            isHasPopupOnScene = popUpOnScene;
             GameObject go = GetPanel(UIPanelType.PanelBakery);
             go.SetActive(true);
             panelTotal.ShowMainSceneContent(false);
@@ -410,12 +409,13 @@ public class UIManager : MonoBehaviour {
         if (actionShowPanels.Count > 0)
         {
             actionShowPanels[0]();
-            actionShowPanels.RemoveAt(0);
+            RemovePanelNeedOpen();
         }
     }
 
     void CloseOtherMenu(UIPanelType ignorePanel)
     {
+        panelTotal.topRectBase.gameObject.SetActive(true);
         if(panelBakery != null && ignorePanel != UIPanelType.PanelBakery)
         {
             if(panelBakery.gameObject.activeSelf)
@@ -450,7 +450,7 @@ public class UIManager : MonoBehaviour {
     {
         if (isHasPopupOnScene)
         {
-            actionShowPanels.Add(ShowPanelSetting);
+            AddPanelNeedOpen(ShowPanelSetting);
         }
         else
         {
@@ -467,7 +467,7 @@ public class UIManager : MonoBehaviour {
         if (actionShowPanels.Count > 0)
         {
             actionShowPanels[0]();
-            actionShowPanels.RemoveAt(0);
+            RemovePanelNeedOpen();
         }
     }
 
@@ -475,7 +475,7 @@ public class UIManager : MonoBehaviour {
     {
         if (isHasPopupOnScene)
         {
-            actionShowPanels.Add(ShowPanelDailyQuest);
+            AddPanelNeedOpen(ShowPanelDailyQuest);
         }
         else
         {
@@ -492,20 +492,23 @@ public class UIManager : MonoBehaviour {
         if (actionShowPanels.Count > 0)
         {
             actionShowPanels[0]();
-            actionShowPanels.RemoveAt(0);
+            RemovePanelNeedOpen();
         }
     }
 
-    public void ShowPanelDecorations()
+    public void ShowPanelDecorations(bool popUpOnScene = false)
     {
         if (isHasPopupOnScene && GameManager.Instance.playing)
         {
-            actionShowPanels.Add(ShowPanelDecorations);
+            AddPanelNeedOpen(() =>
+            {
+                ShowPanelDecorations(popUpOnScene);
+            });
         }
         else
         {
             CloseOtherMenu(UIPanelType.PanelDecorations);
-            isHasPopupOnScene = true;
+            isHasPopupOnScene = popUpOnScene;
             GameObject go = GetPanel(UIPanelType.PanelDecorations);
             go.SetActive(true);
             panelTotal.ShowMainSceneContent(false);
@@ -526,20 +529,23 @@ public class UIManager : MonoBehaviour {
         if (actionShowPanels.Count > 0)
         {
             actionShowPanels[0]();
-            actionShowPanels.RemoveAt(0);
+            RemovePanelNeedOpen();
         }
     }
 
-    public void ShowPanelShop()
+    public void ShowPanelShop(bool popUpOnScene = false)
     {
         if (isHasPopupOnScene && GameManager.Instance.playing)
         {
-            actionShowPanels.Add(ShowPanelShop);
+            AddPanelNeedOpen(() =>
+            {
+                ShowPanelShop(popUpOnScene);
+            });
         }
         else
         {
             CloseOtherMenu(UIPanelType.PanelShop);
-            isHasPopupOnScene = true;
+            isHasPopupOnScene = popUpOnScene;
             GameObject go = GetPanel(UIPanelType.PanelShop);
             go.SetActive(true);
             panelTotal.ShowMainSceneContent(false);
@@ -558,7 +564,7 @@ public class UIManager : MonoBehaviour {
         if (actionShowPanels.Count > 0)
         {
             actionShowPanels[0]();
-            actionShowPanels.RemoveAt(0);
+            RemovePanelNeedOpen();
         }
     }
 
@@ -576,7 +582,7 @@ public class UIManager : MonoBehaviour {
         if (actionShowPanels.Count > 0)
         {
             actionShowPanels[0]();
-            actionShowPanels.RemoveAt(0);
+            RemovePanelNeedOpen();
         }
     }
     PanelLevelComplete panelLevelComplete;
@@ -584,7 +590,7 @@ public class UIManager : MonoBehaviour {
     {
         if (isHasPopupOnScene)
         {
-            actionShowPanels.Add(()=> {
+            AddPanelNeedOpen(()=> {
                 ShowPanelLevelComplete(isWinGame);
             });
         }
@@ -605,7 +611,7 @@ public class UIManager : MonoBehaviour {
         if (actionShowPanels.Count > 0)
         {
             actionShowPanels[0]();
-            actionShowPanels.RemoveAt(0);
+            RemovePanelNeedOpen();
         }
     }
 
@@ -621,7 +627,7 @@ public class UIManager : MonoBehaviour {
         if (actionShowPanels.Count > 0)
         {
             actionShowPanels[0]();
-            actionShowPanels.RemoveAt(0);
+            RemovePanelNeedOpen();
         }
     }
 
@@ -629,7 +635,7 @@ public class UIManager : MonoBehaviour {
     {
         if (isHasPopupOnScene)
         {
-            actionShowPanels.Add(ShowPanelUsingItem);
+            AddPanelNeedOpen(ShowPanelUsingItem);
         }
         else
         {
@@ -646,7 +652,7 @@ public class UIManager : MonoBehaviour {
         if (actionShowPanels.Count > 0)
         {
             actionShowPanels[0]();
-            actionShowPanels.RemoveAt(0);
+            RemovePanelNeedOpen();
         }
     }
 
@@ -654,7 +660,7 @@ public class UIManager : MonoBehaviour {
     {
         if (isHasPopupOnScene)
         {
-            actionShowPanels.Add(ShowPanelLeaderBoard);
+            AddPanelNeedOpen(ShowPanelLeaderBoard);
         }
         else
         {
@@ -671,14 +677,14 @@ public class UIManager : MonoBehaviour {
         if (actionShowPanels.Count > 0)
         {
             actionShowPanels[0]();
-            actionShowPanels.RemoveAt(0);
+            RemovePanelNeedOpen();
         }
     }
 
-    public void ShowPanelTopUp()
+    public void ShowPanelTopUp(bool popUpOnScene = false)
     {
         CloseOtherMenu(UIPanelType.PanelTopUp);
-        isHasPopupOnScene = true;
+        isHasPopupOnScene = popUpOnScene;
         GameObject go = GetPanel(UIPanelType.PanelTopUp);
         go.SetActive(true);
         panelTotal.ShowMainSceneContent(false);
@@ -700,7 +706,7 @@ public class UIManager : MonoBehaviour {
     {
         if (isHasPopupOnScene)
         {
-            actionShowPanels.Add(()=> {
+            AddPanelNeedOpen(()=> {
                 ShowPanelQuickIAP(packageId);
             });
         }
@@ -722,14 +728,14 @@ public class UIManager : MonoBehaviour {
         if (actionShowPanels.Count > 0)
         {
             actionShowPanels[0]();
-            actionShowPanels.RemoveAt(0);
+            RemovePanelNeedOpen();
         }
     }
     public void ShowPanelSelectReward()
     {
         if (isHasPopupOnScene)
         {
-            actionShowPanels.Add(ShowPanelSelectReward);
+            AddPanelNeedOpen(ShowPanelSelectReward);
         }
         else
         {
@@ -746,7 +752,7 @@ public class UIManager : MonoBehaviour {
         if (actionShowPanels.Count > 0)
         {
             actionShowPanels[0]();
-            actionShowPanels.RemoveAt(0);
+            RemovePanelNeedOpen();
         }
     }
 
@@ -754,7 +760,7 @@ public class UIManager : MonoBehaviour {
     {
         if (isHasPopupOnScene)
         {
-            actionShowPanels.Add(ShowPanelLevelUp);
+            AddPanelNeedOpen(ShowPanelLevelUp);
         }
         else
         {
@@ -771,14 +777,14 @@ public class UIManager : MonoBehaviour {
         if (actionShowPanels.Count > 0)
         {
             actionShowPanels[0]();
-            actionShowPanels.RemoveAt(0);
+            RemovePanelNeedOpen();
         }
     }
 
     public void ShowPanelQuickTimeEvent() {
         if (isHasPopupOnScene)
         {
-            actionShowPanels.Add(ShowPanelQuickTimeEvent);
+            AddPanelNeedOpen(ShowPanelQuickTimeEvent);
         }
         else
         {
@@ -796,14 +802,14 @@ public class UIManager : MonoBehaviour {
         if (actionShowPanels.Count > 0)
         {
             actionShowPanels[0]();
-            actionShowPanels.RemoveAt(0);
+            RemovePanelNeedOpen();
         }
     }
     
     public void ShowPanelPreAds() {
         if (isHasPopupOnScene)
         {
-            actionShowPanels.Add(ShowPanelPreAds);
+            AddPanelNeedOpen(ShowPanelPreAds);
         }
         else
         {
@@ -822,7 +828,7 @@ public class UIManager : MonoBehaviour {
         if (actionShowPanels.Count > 0)
         {
             actionShowPanels[0]();
-            actionShowPanels.RemoveAt(0);
+            RemovePanelNeedOpen();
         }
     }
 
