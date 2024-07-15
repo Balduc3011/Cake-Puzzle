@@ -177,7 +177,6 @@ public class Table : MonoBehaviour
             {
                 if (mapWay[i].currentCake != null && totalPieceMerge != 0 && mapWay[i] != bestPlate)
                 {
-                    Debug.Log("ADd cake again: " + mapWay[i]);
                     GameManager.Instance.cakeManager.AddCakeNeedCheck(mapWay[i].currentCake, ActionCallBackSameCake);
                     break;
                 }
@@ -190,9 +189,20 @@ public class Table : MonoBehaviour
     }
 
     bool BestPlateNullOrNoSpace() {
-        if (bestPlate == null)
+
+        if (bestPlate == null || bestPlate.currentCake == null)
+        {
+            //Debug.Log("return false");
             return false;
-        return bestPlate.currentCake == null || bestPlate.GetFreeSpace() == 0;
+        }
+
+        if (bestPlate.currentCake != null)
+            if (bestPlate.currentCake.cakeDone)
+            {
+                //Debug.Log("return false");
+                return false;
+            }
+        return bestPlate.GetFreeSpace() == 0;
     }
 
     void ActionCallBackSameCake() {
@@ -223,17 +233,11 @@ public class Table : MonoBehaviour
         }
 
         if (stepIndex < ways.Count)
-            ways[stepIndex].Move(cakeID, timeRotate, timeMove, stepIndex == ways.Count - 1, Move, RemoveWay, RemoveAll);
+            ways[stepIndex].Move(cakeID, timeRotate, timeMove, stepIndex == ways.Count - 1, Move, RemoveWay);
     }
 
     void RemoveWay(Way way) {
         ways.Remove(way); 
-    }
-
-    void RemoveAll() {
-        ways.Clear();
-        mapPlate.Clear();
-        GameManager.Instance.cakeManager.RemoveCakeCurrentCheck();
     }
 
     public bool CheckIsSameIDWithWay(int cakeID) {
@@ -364,15 +368,17 @@ public class Table : MonoBehaviour
         }
     }
 
-    int totalNeedRotate = 0;
-    int currentRotateDone = 0;
-    bool clearCakeLoadDone = false;
+    ///int totalNeedRotate = 0;
+    /// <summary>
+    /// /int currentRotateDone = 0;
+    /// </summary>
+    //bool clearCakeLoadDone = false;
 
     public void ClearCakeDone()
     {
-        totalNeedRotate = 0;
-        currentRotateDone = 0;
-        clearCakeLoadDone = false;
+        //totalNeedRotate = 0;
+        //currentRotateDone = 0;
+        //clearCakeLoadDone = false;
         //Debug.Log("Remove best plate: "+bestPlate);
         //mapPlate.Remove(bestPlate);
         for (int i = 0; i < plates.Count; i++)
@@ -387,12 +393,12 @@ public class Table : MonoBehaviour
 
                 if (plates[i].currentCake.needRotateRightWay && !plates[i].currentCake.cakeDone)
                 {
-                    totalNeedRotate++;
+                    //totalNeedRotate++;
                     plates[i].currentCake.RotateOtherPieceRight(null);
                 } 
             }
         }
-        clearCakeLoadDone = true;
+        //clearCakeLoadDone = true;
         CallBackCheckOtherIDOnMap();
     }
 
@@ -606,7 +612,7 @@ public class Way
     bool lastMove;
     int rotateIndexReturn;
 
-    public void Move(int cakeID, float timeRotate, float timeMove, bool lastMove, UnityAction<int> actionDone = null, UnityAction<Way> removeWay = null, UnityAction actionRemoveAll = null)
+    public void Move(int cakeID, float timeRotate, float timeMove, bool lastMove, UnityAction<int> actionDone = null, UnityAction<Way> removeWay = null)
     {
         this.timeRotate = timeRotate;
         this.timeMove = timeMove;

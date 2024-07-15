@@ -13,10 +13,6 @@ public class QuickTimeEventManager : MonoBehaviour
     [SerializeField] float timeTotal;
     [SerializeField] float timeMissionRemain = 0;
 
-    [Range(0, 15)]
-    [SerializeField] int minCakeNeedDone;
-    [Range(5, 40)]
-    [SerializeField] int maxCakeNeedDone = 15;
 
     [SerializeField] int currentCakeID = -1;
 
@@ -62,8 +58,8 @@ public class QuickTimeEventManager : MonoBehaviour
     }
 
     public void InitMission() {
-        cakeNeedDone = Random.Range(minCakeNeedDone, maxCakeNeedDone);
-        timeTotal = cakeNeedDone * 15f;
+        cakeNeedDone = 3;
+        timeTotal = 3f * 60f;
         timeMissionRemain = timeTotal;
         currentCakeID = ProfileManager.Instance.playerData.cakeSaveData.GetCakeIDForMission();
         
