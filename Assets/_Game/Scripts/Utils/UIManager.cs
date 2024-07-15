@@ -382,16 +382,19 @@ public class UIManager : MonoBehaviour {
         }
     }
 
-    public void ShowPanelBakery()
+    public void ShowPanelBakery(bool popUpOnScene = false)
     {
         if (isHasPopupOnScene && GameManager.Instance.playing)
         {
-            actionShowPanels.Add(ShowPanelBakery);
+            actionShowPanels.Add(() =>
+            {
+                ShowPanelBakery(popUpOnScene);
+            });
         }
         else
         {
             CloseOtherMenu(UIPanelType.PanelBakery);
-            isHasPopupOnScene = true;
+            isHasPopupOnScene = popUpOnScene;
             GameObject go = GetPanel(UIPanelType.PanelBakery);
             go.SetActive(true);
             panelTotal.ShowMainSceneContent(false);
@@ -496,16 +499,19 @@ public class UIManager : MonoBehaviour {
         }
     }
 
-    public void ShowPanelDecorations()
+    public void ShowPanelDecorations(bool popUpOnScene = false)
     {
         if (isHasPopupOnScene && GameManager.Instance.playing)
         {
-            actionShowPanels.Add(ShowPanelDecorations);
+            actionShowPanels.Add(() =>
+            {
+                ShowPanelDecorations(popUpOnScene);
+            });
         }
         else
         {
             CloseOtherMenu(UIPanelType.PanelDecorations);
-            isHasPopupOnScene = true;
+            isHasPopupOnScene = popUpOnScene;
             GameObject go = GetPanel(UIPanelType.PanelDecorations);
             go.SetActive(true);
             panelTotal.ShowMainSceneContent(false);
@@ -530,16 +536,19 @@ public class UIManager : MonoBehaviour {
         }
     }
 
-    public void ShowPanelShop()
+    public void ShowPanelShop(bool popUpOnScene = false)
     {
         if (isHasPopupOnScene && GameManager.Instance.playing)
         {
-            actionShowPanels.Add(ShowPanelShop);
+            actionShowPanels.Add(() =>
+            {
+                ShowPanelShop(popUpOnScene);
+            });
         }
         else
         {
             CloseOtherMenu(UIPanelType.PanelShop);
-            isHasPopupOnScene = true;
+            isHasPopupOnScene = popUpOnScene;
             GameObject go = GetPanel(UIPanelType.PanelShop);
             go.SetActive(true);
             panelTotal.ShowMainSceneContent(false);
@@ -675,10 +684,10 @@ public class UIManager : MonoBehaviour {
         }
     }
 
-    public void ShowPanelTopUp()
+    public void ShowPanelTopUp(bool popUpOnScene = false)
     {
         CloseOtherMenu(UIPanelType.PanelTopUp);
-        isHasPopupOnScene = true;
+        isHasPopupOnScene = popUpOnScene;
         GameObject go = GetPanel(UIPanelType.PanelTopUp);
         go.SetActive(true);
         panelTotal.ShowMainSceneContent(false);

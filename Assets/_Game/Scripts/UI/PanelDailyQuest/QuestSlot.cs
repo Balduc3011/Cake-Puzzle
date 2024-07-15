@@ -101,8 +101,11 @@ public class QuestSlot : MonoBehaviour
         }
         else
         {
-            itemData.amount = (int)(Random.Range(10, 15));
-            itemData.subId = ProfileManager.Instance.playerData.cakeSaveData.GetRandomOwnedCake();
+            itemData.amount = (int)(Random.Range(1, 6));
+            for (int i = 0; i < Random.Range(1, 6); i++)
+            {
+                itemData.subId = ProfileManager.Instance.playerData.cakeSaveData.GetRandomOwnedCake();
+            }
             rewardIcon.sprite = ProfileManager.Instance.dataConfig.spriteDataConfig.GetCakeSprite(itemData.subId);
         }
         txtRewardAmount.text = itemData.amount.ToString();
