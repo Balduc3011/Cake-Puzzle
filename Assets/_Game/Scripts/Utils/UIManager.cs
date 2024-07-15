@@ -415,6 +415,7 @@ public class UIManager : MonoBehaviour {
 
     void CloseOtherMenu(UIPanelType ignorePanel)
     {
+        panelTotal.topRectBase.gameObject.SetActive(true);
         if(panelBakery != null && ignorePanel != UIPanelType.PanelBakery)
         {
             if(panelBakery.gameObject.activeSelf)

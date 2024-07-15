@@ -39,18 +39,11 @@ public class PanelBakery : UIPanel
         OnCakeSwaped();
         cakeInfoPopup.SetActive(false);
         closeBtn.gameObject.SetActive(GameManager.Instance.playing);
-
+        UIManager.instance.panelTotal.topRectBase.gameObject.SetActive(false);
     }
 
     void InitCakes()
     {
-        //List<int> usingCakeIndex = ProfileManager.Instance.playerData.cakeSaveData.cakeIDUsing;
-        //for (int i = 0; i < usingCakeIndex.Count; i++)
-        //{
-        //    UsingCake cake = GetUsingCake();
-        //    cake.Init(ProfileManager.Instance.dataConfig.cakeDataConfig.GetCakeData(usingCakeIndex[i]));
-        //}
-
         List<CakeData> cakeDatas = ProfileManager.Instance.dataConfig.cakeDataConfig.cakeDatas;
         for (int i = 0; i < cakeDatas.Count; i++)
         {
@@ -74,25 +67,6 @@ public class PanelBakery : UIPanel
         {
             inventoryCakeList[i].InitUsing();
         }
-        //if (reloadUsing)
-        //{
-        //    List<int> usingCakeIndex = ProfileManager.Instance.playerData.cakeSaveData.cakeIDUsing;
-        //    for (int i = 0; i < usingCakeIndex.Count; i++)
-        //    {
-        //        if (i < usingCakeList.Count)
-        //        {
-        //            if (!usingCakeList[i].gameObject.activeSelf)
-        //            {
-        //                usingCakeList[i].Init(ProfileManager.Instance.dataConfig.cakeDataConfig.GetCakeData(usingCakeIndex[i]));
-        //            }
-        //        }
-        //        else
-        //        {
-        //            UsingCake cake = GetUsingCake();
-        //            cake.Init(ProfileManager.Instance.dataConfig.cakeDataConfig.GetCakeData(usingCakeIndex[i]));
-        //        }
-        //    }
-        //}
     }
 
     public UsingCake GetUsingCake()
@@ -135,6 +109,7 @@ public class PanelBakery : UIPanel
         UIManager.instance.ClosePanelBakery();
         UIManager.instance.ShowPanelPlayGame();
         UIManager.instance.panelTotal.ShowMainSceneContent(true);
+        UIManager.instance.panelTotal.topRectBase.gameObject.SetActive(true);
     }
 
     [SerializeField] GameObject cakeInfoPopup;
@@ -167,6 +142,7 @@ public class PanelBakery : UIPanel
         popupCake = cakeData;
         cakeInfoPopup.SetActive(true);
         LoadPopup();
+        UIManager.instance.panelTotal.topRectBase.gameObject.SetActive(true);
     }
 
     void LoadPopup()
@@ -230,6 +206,7 @@ public class PanelBakery : UIPanel
     {
         GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         popUpAnim.OnClose(UnActivePopup);
+        UIManager.instance.panelTotal.topRectBase.gameObject.SetActive(false);
     }
     void UnActivePopup()
     {
