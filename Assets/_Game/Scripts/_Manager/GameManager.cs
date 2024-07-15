@@ -418,6 +418,18 @@ public class GameManager : Singleton<GameManager>
         if (ProfileManager.Instance.versionStatus == VersionStatus.Cheat) return;
         AdsManager.Instance.ShowInterstitial();
     }
+
+    public void CollectInterGold()
+    {
+        List<ItemData> itemDatas = new List<ItemData>();
+        ItemData coin = new ItemData();
+        coin.ItemType = ItemType.Coin;
+        coin.amount = 5;
+        coin.subId = -1;
+        itemDatas.Add(coin);
+        GetItemRewards(itemDatas);
+        UIManager.instance.ShowPanelItemsReward();
+    }
 }
 
 public enum WatchVideoRewardType
