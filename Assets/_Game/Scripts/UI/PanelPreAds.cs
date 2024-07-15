@@ -33,6 +33,6 @@ public class PanelPreAds : UIPanel
         if (GameManager.Instance.IsHasNoAds()) return;
         if (ProfileManager.Instance.versionStatus == VersionStatus.Cheat) return;
         AdsManager.Instance.ShowInterstitial();
-        ProfileManager.Instance.playerData.playerResourseSave.AddMoney(5);
+        GameManager.Instance.CollectInterGold();
     }
 }
