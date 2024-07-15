@@ -8,6 +8,7 @@ public class PanelItemsReward : UIPanel
 {
     [SerializeField] Transform titleTrs;
     [SerializeField] Button closeBtn;
+    [SerializeField] GameObject closeTxt;
     [SerializeField] RewardItemUI itemUIPrefab;
     [SerializeField] Transform rewardItemUIsContainer;
     List<RewardItemUI> rewardItemUIs;
@@ -43,6 +44,7 @@ public class PanelItemsReward : UIPanel
     void InitReward()
     {
         closeBtn.interactable = false;
+        closeTxt.SetActive(false);
         spawnedCount = 0;
         rewards = GameManager.Instance.rewardItems;
         //for (int i = 0; i < rewards.Count; i++)
@@ -67,8 +69,8 @@ public class PanelItemsReward : UIPanel
         {
             yield return ConstantValue.WAIT_SEC1;
             yield return ConstantValue.WAIT_SEC1;
-            yield return ConstantValue.WAIT_SEC1;
             closeBtn.interactable = true;
+            closeTxt.SetActive(true);
         }
     }
 

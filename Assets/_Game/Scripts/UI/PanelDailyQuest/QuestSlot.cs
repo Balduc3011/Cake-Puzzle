@@ -92,7 +92,10 @@ public class QuestSlot : MonoBehaviour
         defaultQuestReward = new List<ItemData>();
         ItemData itemData = new ItemData();
         defaultQuestReward.Add(itemData);
-        itemData.ItemType = Random.Range(-1f, 1.5f) > 0 ? ItemType.Coin : ItemType.Cake;
+        for (int i = 0; i < Random.Range(1, 6); i++)
+        {
+            itemData.ItemType = Random.Range(-1f, 1.5f) > 0 ? ItemType.Coin : ItemType.Cake;
+        }
         if (itemData.ItemType == ItemType.Coin)
         {
             itemData.amount = ConstantValue.VAL_QUEST_COIN;
