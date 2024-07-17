@@ -150,7 +150,7 @@ public class CakeManager : MonoBehaviour
             groupCake = GameManager.Instance.objectPooling.GetGroupCake();
             cakesWait.Add(groupCake);
             groupCake.transform.position = pointFirstSpawn[indexGroupCake].position;
-            if (indexGroupCake != 2) {
+            if (indexGroupCake != 1) {
                 if (NeedResolve())
                 {
                     idInfor = GetIDInfor();
@@ -599,7 +599,7 @@ public class CakeManager : MonoBehaviour
         InitGroupCake();
     }
 
-    public bool NeedResolve() { return cakeOnPlates.Count >= 12; }
+    public bool NeedResolve() { return cakeOnPlates.Count >= 15; }
 
   
     public List<IDInfor> GetIDInfor() {
