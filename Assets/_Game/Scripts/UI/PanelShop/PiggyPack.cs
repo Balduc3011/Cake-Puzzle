@@ -14,8 +14,9 @@ public class PiggyPack : IAPPack
     [SerializeField] TextMeshProUGUI conditionValueTxt;
     [SerializeField] TextMeshProUGUI conditionTxt;
 
-    private void Start()
+    public override void Start()
     {
+        base.Start();
         conditionTxt.text = "Save <color=#FFDC0B>" +
                 ConstantValue.VAL_DRAW_PIGGY.ToString() + " coin</color> to draw";
         conditionValueTxt.text = ConstantValue.VAL_DRAW_PIGGY.ToString();
@@ -48,5 +49,15 @@ public class PiggyPack : IAPPack
                 return rewardItems[i];
         }
         return null;
+    }
+
+    public override void OnBuyPackSuccess()
+    {
+        base.OnBuyPackSuccess();
+        ProfileManager.Instance.playerData.playerResourseSave.piggySave = 0;
+        slider.value = 0;
+        valueTxt.text = "0";
+        maxValueTxt.text = ConstantValue.VAL_MAX_PIGGY.ToString();
+        buyBtn.interactable = false;
     }
 }

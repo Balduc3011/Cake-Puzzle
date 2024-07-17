@@ -40,7 +40,7 @@ public class IAPPack : MonoBehaviour
         }
     }
 
-    private void Start()
+    public virtual void Start()
     {
         buyBtn.onClick.AddListener(OnBuyPack);
         priceTxt.text = "$9.99";
@@ -52,7 +52,7 @@ public class IAPPack : MonoBehaviour
         MyIAPManager.instance.Buy(packageId.ToString(), OnBuyPackSuccess);
     }
 
-    void OnBuyPackSuccess()
+    public virtual void OnBuyPackSuccess()
     {
         UIManager.instance.ShowPanelItemsReward();
     }
