@@ -27,4 +27,10 @@ public class TutorialManager : MonoBehaviour
         panelTutorial.PlayTutorial(tutPlate[currentTutIndex].transform, tutCakes[currentTutIndex]);
         currentTutIndex++;
     }
+
+    public bool TutorialCondition()
+    {
+        return (ProfileManager.Instance.playerData.playerResourseSave.currentLevel == 0
+            && ProfileManager.Instance.playerData.playerResourseSave.currentExp == 0);
+    }
 }

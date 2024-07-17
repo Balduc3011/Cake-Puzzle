@@ -367,7 +367,7 @@ public class Cake : MonoBehaviour
 
     bool CheckPickable()
     {
-        if(ProfileManager.Instance.playerData.playerResourseSave.currentLevel == 0)
+        if(GameManager.Instance.tutorialManager.TutorialCondition())
         {
             return myGroupCake.groupCakeIndex ==
                 GameManager.Instance.tutorialManager.tutCakesId[GameManager.Instance.tutorialManager.currentTutIndex - 1];
@@ -583,7 +583,7 @@ public class Cake : MonoBehaviour
         //    transform.DOScale(Vector3.one, .2f).SetDelay(.2f);
 
         //});
-        if (ProfileManager.Instance.playerData.playerResourseSave.currentLevel == 0)
+        if (GameManager.Instance.tutorialManager.TutorialCondition())
         {
             GameManager.Instance.tutorialManager.PlayTutorial();
         }

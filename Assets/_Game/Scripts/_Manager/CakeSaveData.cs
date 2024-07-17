@@ -34,7 +34,8 @@ public class CakeSaveData : SaveBase
             IsMarkChangeData();
             SaveData();
         }
-        if (ProfileManager.Instance.playerData.playerResourseSave.currentLevel == 0)
+        if (ProfileManager.Instance.playerData.playerResourseSave.currentLevel == 0
+            && ProfileManager.Instance.playerData.playerResourseSave.currentExp == 0)
         {
             AddTutorialCake();
             IsMarkChangeData();

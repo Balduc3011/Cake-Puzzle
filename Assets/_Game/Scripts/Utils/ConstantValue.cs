@@ -40,7 +40,7 @@ public class ConstantValue
     // VALUE
     public static int VAL_COIN_BOOSTER = 100;
     public static float VAL_MAX_EXCEED = 1000000000000;
-    public static float VAL_REVICE_PRICE = 750f;
+    public static float VAL_REVICE_PRICE = 1000f;
     public static float VAL_DEFAULT_EXP = 10f;
     public static float VAL_DEFAULT_CAKE_LEVEL = 2f;
     public static float VAL_DEFAULT_CAKE_ID = 2f;
@@ -52,7 +52,7 @@ public class ConstantValue
     public static float VAL_QUEST_STAR = 5;
     public static float VAL_QUEST_COIN = 10;
     public static float VAL_CAKEUPGRADE_COIN = 200;
-    public static float VAL_REVIVE_COIN = 250;
+    public static float VAL_REVIVE_COIN = 1000f;
     public static int VAL_CAKECOUNT_ADS = 10;
     public static int VAL_BOOSTER_PRICE = 100;
 

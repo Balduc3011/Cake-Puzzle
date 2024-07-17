@@ -22,7 +22,7 @@ public class Table : MonoBehaviour
     private void Start()
     {
         InitData();
-        EventManager.AddListener(EventName.ChangeLevel.ToString(), ActivePlate);
+        EventManager.AddListener(EventName.ChangeExp.ToString(), ActivePlate);
         ActivePlate();
     }
 

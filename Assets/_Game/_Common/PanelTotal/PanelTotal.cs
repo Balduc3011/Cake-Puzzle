@@ -191,6 +191,7 @@ public class PanelTotal : UIPanel
         ChangeLevel();
         ChangeExp();
         CheckNoti();
+        FirstPlay();
     }
 
     void ShowBGCanvasGroup(bool show)
@@ -202,6 +203,22 @@ public class PanelTotal : UIPanel
     public void ShowMainSceneContent(bool show)
     {
         mainSceneContent.gameObject.SetActive(show);
+    }
+
+    void FirstPlay()
+    {
+        if (ProfileManager.Instance.playerData.playerResourseSave.currentLevel == 0
+            && ProfileManager.Instance.playerData.playerResourseSave.currentExp == 0)
+        {
+            GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
+            GameManager.Instance.cameraManager.FirstCamera();
+            GameManager.Instance.cameraManager.OpenMainCamera();
+            navBarContent.SetActive(false);
+            mainMenuContent.SetActive(false);
+            backGround.SetActive(false);
+            functinBar.SetActive(false);
+            DOVirtual.DelayedCall(0.5f, GameManager.Instance.PlayGame);
+        }  
     }
 
     void PlayGame()

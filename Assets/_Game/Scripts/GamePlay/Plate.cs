@@ -32,7 +32,7 @@ public class Plate : MonoBehaviour
     }
     public void ActivePlate()
     {
-        actived = tutPlate || ProfileManager.Instance.playerData.playerResourseSave.currentLevel > 0;
+        actived = tutPlate || (!GameManager.Instance.tutorialManager.TutorialCondition());
     }
     public void SetPlateIndex(int x, int y) {
         plateIndex = new PlateIndex(x, y);

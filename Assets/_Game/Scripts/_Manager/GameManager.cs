@@ -35,7 +35,7 @@ public class GameManager : Singleton<GameManager>
         UIManager.instance.ShowPanelPlayGame();
         cakeManager.PlayGame();
         playing = true;
-        if(ProfileManager.Instance.playerData.playerResourseSave.currentLevel == 0 )
+        if(tutorialManager.TutorialCondition())
         {
             tutorialManager.PlayTutorial();
         }
