@@ -66,7 +66,7 @@ public class UIResourseBar : MonoBehaviour
             mySequence.Kill();
         mySequence = DOTween.Sequence();
         imgCoin.transform.localScale = Vector3.one;
-        mySequence.Append(imgCoin.transform.DOScale(Vector3.one * .8f, .12f).SetEase(Ease.InQuad));
+        mySequence.Append(imgCoin.transform.DOScale(Vector3.one * .65f, .12f).SetEase(Ease.InQuad));
         mySequence.Append(imgCoin.transform.DOScale(Vector3.one * 1.2f, .15f).SetEase(Ease.InQuad));
         mySequence.Append(imgCoin.transform.DOScale(Vector3.one, .15f).SetEase(Ease.OutQuad));
         mySequence.Play();
