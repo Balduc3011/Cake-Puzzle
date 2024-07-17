@@ -35,7 +35,7 @@ public class PanelLoading : UIPanel
                 loadingBar.value = value;
                 txtCurrentLoad.text = (int)value + "%";
             }).OnComplete(() => {
-                firstLoadBG.SetActive(false);
+                //firstLoadBG.SetActive(false);
                 logo.SetActive(false);
                 SetCardMoving(false);
                 DOVirtual.DelayedCall(.5f, UIManager.instance.ClosePanelLoading);
