@@ -429,7 +429,7 @@ public class CakeManager : MonoBehaviour
                     countFaild++;
             }
         }
-        //Debug.Log(countFaild + " count check fail: " + countCheckFaild);
+        Debug.Log(countFaild + " count check fail: " + countCheckFaild);
         if (countFaild == countCheckFaild && countFaild > 0)
         {
             UIManager.instance.TurnBlock(true);
@@ -514,7 +514,7 @@ public class CakeManager : MonoBehaviour
             LoadCakeOnPlate();
         }
         loaded = true;
-        CheckLooseGame(true);
+        
     }
  
     void LoadCakeOnPlate() {
@@ -568,6 +568,7 @@ public class CakeManager : MonoBehaviour
             }
             indexGroupCake++;
         }
+        CheckLooseGame(true);
     }
 
     void LevelUp() {
@@ -599,7 +600,7 @@ public class CakeManager : MonoBehaviour
         InitGroupCake();
     }
 
-    public bool NeedResolve() { return cakeOnPlates.Count >= 15; }
+    public bool NeedResolve() { return cakeOnPlates.Count > 12; }
 
   
     public List<IDInfor> GetIDInfor() {

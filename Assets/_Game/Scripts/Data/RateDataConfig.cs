@@ -11,12 +11,12 @@ public class RateDataConfig : ScriptableObject
 
     float randomResult;
     public float GetRandomSlot(bool moreThanThree, int currentTotalCake) {
-        if (currentTotalCake >= 15)
+        Debug.Log(" Current total Cake: " + currentTotalCake);
+        if (currentTotalCake >= 12)
         {
             return 1;
         }
         randomResult = Random.Range(0, 100);
-        Debug.Log(randomResult);
         for (int i = 0; i < rateTotalSlot.Count - 1; i++) {
             if (randomResult < rateTotalSlot[i])
             {
@@ -27,7 +27,6 @@ public class RateDataConfig : ScriptableObject
             }
         }
         if (moreThanThree) {
-            Debug.Log("return 2");
             return rateTotalSlot.Count - 1; }
         else return 0;
     }
