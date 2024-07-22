@@ -13,6 +13,7 @@ public class PanelTotal : UIPanel
     public RectTransform subTopRect;
     [SerializeField] UIPanelShowUp uiPanelShowUp;
     public Transform Transform;
+    [SerializeField] CanvasGroup mainCG;
     [SerializeField] CanvasGroup functionCG;
     [SerializeField] CanvasGroup functionCG2;
     [SerializeField] Button playBtn;
@@ -55,6 +56,8 @@ public class PanelTotal : UIPanel
 
     [SerializeField] TextMeshProUGUI txtCountCake;
     [SerializeField] TextMeshProUGUI txtTime;
+    [SerializeField] Texture texture;
+    [SerializeField] RawImage rawImage;
 
     public UIResourseBar coinBar;
 
@@ -64,10 +67,20 @@ public class PanelTotal : UIPanel
         panelType = UIPanelType.PanelTotal;
         base.Awake();
         EventManager.AddListener(EventName.ChangeExp.ToString(), ChangeExp);
+        EventManager.AddListener(EventName.ChangeExp.ToString(), UpdateMainCG);
         EventManager.AddListener(EventName.AddCakeCard.ToString(), CheckNoti);
         //backGround = UIManager.instance.backGround;
         CheckSubScreenObstacleBase();
         Invoke("InitCakeDecor", 0.25f);
+        rawImage.texture = texture;
+    }
+
+    void UpdateMainCG()
+    {
+        if (ProfileManager.Instance.playerData.playerResourseSave.currentLevel == 0
+            && ProfileManager.Instance.playerData.playerResourseSave.currentExp == 0)
+            mainCG.alpha = 0;
+        else mainCG.alpha = 1;
     }
 
     public void CheckNoti()
@@ -218,6 +231,7 @@ public class PanelTotal : UIPanel
             backGround.SetActive(false);
             functinBar.SetActive(false);
             DOVirtual.DelayedCall(0.5f, GameManager.Instance.PlayGame);
+            UpdateMainCG();
         }  
     }
 
@@ -234,6 +248,7 @@ public class PanelTotal : UIPanel
         CheckNoti();
         UIManager.instance.ShowPanelLoading();
         DOVirtual.DelayedCall(2.5f, GameManager.Instance.PlayGame);
+        UpdateMainCG();
     }
 
     public void BackToMenu()

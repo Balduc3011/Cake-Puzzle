@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class PanelPlayGame : UIPanel
 {
+    [SerializeField] CanvasGroup mainCG;
     [SerializeField] GameObject x2BoosterBar;
     [SerializeField] Button x2BoosterBtn;
     [SerializeField] TextMeshProUGUI x2BoosterTimeTxt;
@@ -52,6 +53,16 @@ public class PanelPlayGame : UIPanel
         });
         CheckBooster();
         EventManager.AddListener(EventName.AddItem.ToString(), CheckBooster);
+        EventManager.AddListener(EventName.ChangeExp.ToString(), UpdateMainCG);
+        UpdateMainCG();
+    }
+
+    void UpdateMainCG()
+    {
+        if (ProfileManager.Instance.playerData.playerResourseSave.currentLevel == 0
+            && ProfileManager.Instance.playerData.playerResourseSave.currentExp == 0)
+            mainCG.alpha = 0;
+        else mainCG.alpha = 1;
     }
 
     void CheckBooster()

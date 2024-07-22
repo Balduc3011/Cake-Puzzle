@@ -10,11 +10,14 @@ public class PanelCakeReward : UIPanel
     [SerializeField] RectTransform RawImageRect;
     [SerializeField] RectTransform showingSize;
     [SerializeField] Button closeBtn;
+    [SerializeField] Texture texture;
+    [SerializeField] RawImage rawImage;
     public override void Awake()
     {
         panelType = UIPanelType.PanelCakeReward;
         base.Awake();
         RawImageRect.sizeDelta = new Vector2(showingSize.rect.width, showingSize.rect.width);
+        rawImage.texture = texture;
     }
 
     private void OnEnable()

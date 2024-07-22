@@ -611,6 +611,19 @@ public class Cake : MonoBehaviour
                 if (currentPlate != null)
                     currentPlate.Deactive();
                 if (!plate.actived) return;
+                if(GameManager.Instance.tutorialManager.TutorialCondition())
+                {
+                    if (myGroupCake.groupCakeIndex == 0 && plate.plateIndex.indexY != 1)
+                    {
+                        currentPlate = null;
+                        return;
+                    }
+                    if (myGroupCake.groupCakeIndex == 2 && plate.plateIndex.indexY != 2)
+                    {
+                        currentPlate = null;
+                        return;
+                    }
+                }
                 if (plate.currentCake != null)
                 {
                     currentPlate = null;
