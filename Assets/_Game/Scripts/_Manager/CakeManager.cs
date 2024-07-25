@@ -316,6 +316,7 @@ public class CakeManager : MonoBehaviour
     void ResetCheckCake()
     {
         Debug.LogError("Loi roi dmm");
+        timeCallAddCheckCake = 0;
         cakeNeedCheck.Clear();
     }
     void ClearCakeCheckDone() { cakeCheckDone.Clear(); }
