@@ -40,19 +40,18 @@ namespace SDK {
                 new Parameter("value", revenue),
                 new Parameter("currency", "USD"), // All AppLovin revenue is sent in USD
             };
-            FirebaseAnalytics.LogEvent("ad_impression", impressionParameters);
-            FirebaseAnalytics.LogEvent("ad_impression_abi", impressionParameters);
+            ABIFirebaseManager.Instance.LogFirebaseEvent("ad_impression", impressionParameters);
+            ABIFirebaseManager.Instance.LogFirebaseEvent("ad_impression_abi", impressionParameters);
 
             EventManager.AddEventNextFrame(() => {
                 TrackLocalAdImpression(impressionData.ad_format, impressionData);
             });
-
         }
         public static void TrackLocalAdImpression(string adFormat, ImpressionData impressionData) {
             List<int> trackPoints = new List<int> { 5, 15, 30, 50, 100 };
             switch (adFormat) {
                 case "REWARDED": {
-
+                        
                         int totalWatched = PlayerPrefs.GetInt(key_ad_rewarded_count, 0);
                         totalWatched++;
                         PlayerPrefs.SetInt(key_ad_rewarded_count, totalWatched);

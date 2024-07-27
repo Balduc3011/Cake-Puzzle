@@ -408,7 +408,8 @@ public class GameManager : Singleton<GameManager>
 
     public void ShowCollapsibleBanner()
     {
-        AdsManager.Instance.ShowBannerAds();
+        //AdsManager.Instance.ShowBannerAds();
+        AdsManager.Instance.ShowCollapsibleBannerAds();
     }
 
     public void ShowInterRest()

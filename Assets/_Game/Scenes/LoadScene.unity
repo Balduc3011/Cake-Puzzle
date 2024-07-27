@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731725, g: 0.1341475, b: 0.121078506, a: 1}
+  m_IndirectSpecularColor: {r: 0.1273174, g: 0.13414761, b: 0.12107885, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -214,27 +214,35 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3744565625552255737, guid: 72fec712b86322e4a86060c37a805d29, type: 3}
       propertyPath: m_AdmobAdSetup.appOpenAdUnitID.AndroidID.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3744565625552255737, guid: 72fec712b86322e4a86060c37a805d29, type: 3}
       propertyPath: m_AdmobAdSetup.rewardedAdUnitID.AndroidID.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3744565625552255737, guid: 72fec712b86322e4a86060c37a805d29, type: 3}
       propertyPath: m_AdmobAdSetup.appOpenAdUnitID.AndroidID.Array.data[0]
       value: ca-app-pub-6955836496511243/1235574248
       objectReference: {fileID: 0}
     - target: {fileID: 3744565625552255737, guid: 72fec712b86322e4a86060c37a805d29, type: 3}
+      propertyPath: m_AdmobAdSetup.rewardedAdUnitID.AndroidID.Array.data[0]
+      value: ca-app-pub-6955836496511243/9801161640
+      objectReference: {fileID: 0}
+    - target: {fileID: 3744565625552255737, guid: 72fec712b86322e4a86060c37a805d29, type: 3}
       propertyPath: m_AdmobAdSetup.interstitialAdUnitID.AndroidID.Array.size
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3744565625552255737, guid: 72fec712b86322e4a86060c37a805d29, type: 3}
+      propertyPath: m_AdmobAdSetup.interstitialAdUnitID.AndroidID.Array.data[0]
+      value: ca-app-pub-6955836496511243/8428370220
       objectReference: {fileID: 0}
     - target: {fileID: 3744565625552255737, guid: 72fec712b86322e4a86060c37a805d29, type: 3}
       propertyPath: m_AdmobAdSetup.collapsibleBannerAdUnitID.AndroidID.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3744565625552255737, guid: 72fec712b86322e4a86060c37a805d29, type: 3}
       propertyPath: m_AdmobAdSetup.collapsibleBannerAdUnitID.AndroidID.Array.data[0]
-      value: ca-app-pub-3940256099942544/2014213617
+      value: ca-app-pub-6955836496511243/1885863829
       objectReference: {fileID: 0}
     - target: {fileID: 6685391519484111099, guid: 72fec712b86322e4a86060c37a805d29, type: 3}
       propertyPath: m_SDKSetup
@@ -242,7 +250,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 94745e8f5fa756144a6872e88438ca09, type: 2}
     - target: {fileID: 6685391519484111099, guid: 72fec712b86322e4a86060c37a805d29, type: 3}
       propertyPath: m_MainAdsMediationType
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6685391519484111099, guid: 72fec712b86322e4a86060c37a805d29, type: 3}
       propertyPath: IsLinkRewardWithRemoveAds
@@ -258,27 +266,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6685391519484111099, guid: 72fec712b86322e4a86060c37a805d29, type: 3}
       propertyPath: m_AutoRefreshTimeCollapsibleBanner
-      value: 20
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 6685391519484111099, guid: 72fec712b86322e4a86060c37a805d29, type: 3}
       propertyPath: m_AdsConfigs.Array.data[0].adsMediationType
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6685391519484111099, guid: 72fec712b86322e4a86060c37a805d29, type: 3}
       propertyPath: m_AdsConfigs.Array.data[1].adsMediationType
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6685391519484111099, guid: 72fec712b86322e4a86060c37a805d29, type: 3}
       propertyPath: m_AdsConfigs.Array.data[2].adsMediationType
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6685391519484111099, guid: 72fec712b86322e4a86060c37a805d29, type: 3}
       propertyPath: m_AdsConfigs.Array.data[3].adsMediationType
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6685391519484111099, guid: 72fec712b86322e4a86060c37a805d29, type: 3}
       propertyPath: m_AdsConfigs.Array.data[5].adsMediationType
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6685391520706141682, guid: 72fec712b86322e4a86060c37a805d29, type: 3}
       propertyPath: m_BannerPosition
@@ -290,15 +298,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6685391520706141682, guid: 72fec712b86322e4a86060c37a805d29, type: 3}
       propertyPath: m_MaxAdConfig.bannerAdUnitID.AndroidID
-      value: 905d065aa297731c
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6685391520706141682, guid: 72fec712b86322e4a86060c37a805d29, type: 3}
       propertyPath: m_MaxAdConfig.rewardedAdUnitID.AndroidID
-      value: a6e2d3db7eb4b96e
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6685391520706141682, guid: 72fec712b86322e4a86060c37a805d29, type: 3}
       propertyPath: m_MaxAdConfig.interstitialAdUnitID.AndroidID
-      value: c24dcfa1e877a102
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8929703242961252456, guid: 72fec712b86322e4a86060c37a805d29, type: 3}
       propertyPath: m_RootOrder
@@ -576,6 +584,7 @@ MonoBehaviour:
       currentLevel: 0
       currentExp: 0
       settingValues: []
+      isFirstTimeLevelUpFive: 0
     decorationSave:
       IsChangeData: 0
       stringSave: 
