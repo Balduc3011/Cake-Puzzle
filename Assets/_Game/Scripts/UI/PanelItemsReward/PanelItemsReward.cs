@@ -98,6 +98,7 @@ public class PanelItemsReward : UIPanel
 
     void ClosePanel()
     {
+        closeBtn.interactable = false;
         GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         for (int i = 0; i < rewardItemUIs.Count; i++)
         {

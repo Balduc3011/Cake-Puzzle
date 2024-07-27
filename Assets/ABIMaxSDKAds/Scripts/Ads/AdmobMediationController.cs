@@ -506,6 +506,7 @@ namespace SDK
         {
             base.InitRewardVideoAd(videoClosed, videoLoadSuccess, videoLoadFailed, videoStart);
             Debug.Log("Init Reward Video");
+            RequestRewardVideoAd();
         }
 
         public override void RequestRewardVideoAd()
