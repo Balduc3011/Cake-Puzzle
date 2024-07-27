@@ -23,6 +23,7 @@ public class PlayerResourseSave : SaveBase
     public List<SettingValue> settingValues;
 
     public bool isFirstTimeLevelUpFive;
+    public bool isFirstTimeLooseByMission;
 
     int levelMax;
     float expMax;
@@ -46,6 +47,7 @@ public class PlayerResourseSave : SaveBase
             currentExp = data.currentExp;
             settingValues = data.settingValues;
             isFirstTimeLevelUpFive = data.isFirstTimeLevelUpFive;
+            isFirstTimeLooseByMission = data.isFirstTimeLooseByMission;
             CheckDay();
         }
         else
@@ -82,6 +84,12 @@ public class PlayerResourseSave : SaveBase
 
     public void LevelUpFiveFirsTime() {
         isFirstTimeLevelUpFive = true;
+        IsMarkChangeData();
+        SaveData();
+    }
+
+    public void SetIsFirstTimeLooseByMission() {
+        isFirstTimeLooseByMission = true;
         IsMarkChangeData();
         SaveData();
     }

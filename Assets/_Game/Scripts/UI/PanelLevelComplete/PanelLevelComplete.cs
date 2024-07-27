@@ -21,6 +21,7 @@ public class PanelLevelComplete : UIPanel
     [SerializeField] GameObject objLooseGame;
     [SerializeField] GameObject objLooseGameByMission;
     [SerializeField] TextMeshProUGUI revivePrivceTxt;
+    [SerializeField] TextMeshProUGUI txtPriceRevieMisisonFail;
     [SerializeField] Button hintObj;
     [SerializeField] SheetAnimation sheetAnimation;
     [SerializeField] SheetAnimation loseSheetAnimation;
@@ -47,7 +48,6 @@ public class PanelLevelComplete : UIPanel
 
     private void OnEnable()
     {
-        objLooseGame.SetActive(true);
         panelWrapTrs.DOScale(1, 0.35f).From(0);
         bgCanvanGroup.DOFade(1, 0.35f).From(0);
         btnReviveCoin.interactable = ProfileManager.Instance.playerData.playerResourseSave.IsHasEnoughMoney(ConstantValue.VAL_REVIVE_COIN);
@@ -111,8 +111,10 @@ public class PanelLevelComplete : UIPanel
 
     void ReviveCoinMission()
     {
-        ProfileManager.Instance.playerData.playerResourseSave.ConsumeMoney(500);
-        GameManager.Instance.quickTimeEventManager.JustFailMission();
+        if (btnReviveAdsMission.gameObject.activeSelf)
+            ProfileManager.Instance.playerData.playerResourseSave.ConsumeMoney(500);
+        else
+            ProfileManager.Instance.playerData.playerResourseSave.SetIsFirstTimeLooseByMission();
         OnClose();
     }
 
@@ -123,7 +125,6 @@ public class PanelLevelComplete : UIPanel
 
     void ReviveADSMissionSucces()
     {
-        GameManager.Instance.quickTimeEventManager.JustFailMission();
         OnClose();
     }
 
@@ -132,6 +133,12 @@ public class PanelLevelComplete : UIPanel
         objLooseGame.SetActive(!isWinGame && !GameManager.Instance.quickTimeEventManager.isFail);
         objLooseGameByMission.SetActive(!isWinGame && GameManager.Instance.quickTimeEventManager.isFail);
         objWinGame.SetActive(isWinGame);
+
+        if (objLooseGameByMission.activeSelf)
+        {
+            btnReviveAdsMission.gameObject.SetActive(ProfileManager.Instance.playerData.playerResourseSave.isFirstTimeLooseByMission);
+            txtPriceRevieMisisonFail.text = btnReviveAdsMission.gameObject.activeSelf ? "500" : "Free";
+        }
 
         if (isWinGame) winSheetAnimation.PlayAnim();
         //else loseSheetAnimation.PlayAnim();
