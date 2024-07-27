@@ -11,12 +11,15 @@ public class PanelLevelComplete : UIPanel
 {
     [SerializeField] Button btnReviveCoin;
     [SerializeField] Button btnReviveAds;
+    [SerializeField] Button btnReviveAdsMission;
+    [SerializeField] Button btnReviveCoinMisison;
     [SerializeField] Button winGameCloseBtn;
     [SerializeField] Button btnExit;
     [SerializeField] Transform panelWrapTrs;
     [SerializeField] CanvasGroup bgCanvanGroup;
     [SerializeField] GameObject objWinGame;
     [SerializeField] GameObject objLooseGame;
+    [SerializeField] GameObject objLooseGameByMission;
     [SerializeField] TextMeshProUGUI revivePrivceTxt;
     [SerializeField] Button hintObj;
     [SerializeField] SheetAnimation sheetAnimation;
@@ -32,6 +35,10 @@ public class PanelLevelComplete : UIPanel
     {
         btnReviveCoin.onClick.AddListener(ReviveCoin);
         btnReviveAds.onClick.AddListener(ReviveADS);
+
+        btnReviveCoinMisison.onClick.AddListener(ReviveCoinMission);
+        btnReviveAdsMission.onClick.AddListener(ReviveADSMission);
+
         btnExit.onClick.AddListener(ShowPanelHint);
         hintObj.onClick.AddListener(ExitPanel);
         winGameCloseBtn.onClick.AddListener(ExitPanel);
@@ -52,6 +59,8 @@ public class PanelLevelComplete : UIPanel
     {
         panelWrapTrs.DOScale(0, 0.35f).From(1).SetEase(Ease.InOutBack);
         bgCanvanGroup.DOFade(0, 0.35f).From(1).OnComplete(ClosePanel);
+        if (objLooseGameByMission.activeSelf)
+            GameManager.Instance.quickTimeEventManager.isFail = false;
     }
 
     void ExitPanel() {
@@ -80,11 +89,6 @@ public class PanelLevelComplete : UIPanel
 
     void ReviveADS()
     {
-        //if (GameManager.Instance.IsHasNoAds())
-        //    ReviveADSSucces();
-        //else
-        //    AdsManager.Instance.ShowRewardVideo(WatchVideoRewardType.GameOverRevive.ToString(), ReviveADSSucces);
-
         GameManager.Instance.ShowRewardVideo(WatchVideoRewardType.GameOverRevive, ReviveADSSucces);
     }
 
@@ -105,10 +109,30 @@ public class PanelLevelComplete : UIPanel
         OnClose();
     }
 
+    void ReviveCoinMission()
+    {
+        ProfileManager.Instance.playerData.playerResourseSave.ConsumeMoney(500);
+        GameManager.Instance.quickTimeEventManager.JustFailMission();
+        OnClose();
+    }
+
+    void ReviveADSMission()
+    {
+        GameManager.Instance.ShowRewardVideo(WatchVideoRewardType.GameOverRevive, ReviveADSMissionSucces);
+    }
+
+    void ReviveADSMissionSucces()
+    {
+        GameManager.Instance.quickTimeEventManager.JustFailMission();
+        OnClose();
+    }
+
     public void ShowPanel(bool isWinGame)
     {
-        objLooseGame.SetActive(!isWinGame);
+        objLooseGame.SetActive(!isWinGame && !GameManager.Instance.quickTimeEventManager.isFail);
+        objLooseGameByMission.SetActive(!isWinGame && GameManager.Instance.quickTimeEventManager.isFail);
         objWinGame.SetActive(isWinGame);
+
         if (isWinGame) winSheetAnimation.PlayAnim();
         //else loseSheetAnimation.PlayAnim();
     }

@@ -22,6 +22,8 @@ public class PlayerResourseSave : SaveBase
     public float currentExp;
     public List<SettingValue> settingValues;
 
+    public bool isFirstTimeLevelUpFive;
+
     int levelMax;
     float expMax;
     public override void LoadData()
@@ -43,6 +45,7 @@ public class PlayerResourseSave : SaveBase
             currentLevel = data.currentLevel;
             currentExp = data.currentExp;
             settingValues = data.settingValues;
+            isFirstTimeLevelUpFive = data.isFirstTimeLevelUpFive;
             CheckDay();
         }
         else
@@ -75,6 +78,12 @@ public class PlayerResourseSave : SaveBase
                 if (dailyRewardedDay >= 7) dailyRewardedDay = 0;
             }
         }
+    }
+
+    public void LevelUpFiveFirsTime() {
+        isFirstTimeLevelUpFive = true;
+        IsMarkChangeData();
+        SaveData();
     }
 
     public bool IsHasEnoughMoney(float amount)
