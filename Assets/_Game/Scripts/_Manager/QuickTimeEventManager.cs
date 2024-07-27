@@ -12,10 +12,8 @@ public class QuickTimeEventManager : MonoBehaviour
     [SerializeField] int currentProgress;
     [SerializeField] float timeTotal;
     [SerializeField] float timeMissionRemain = 0;
-    [SerializeField] float timeAfterLooseByEvent = 0;
 
     [SerializeField] int currentCakeID = -1;
-    [SerializeField] bool justDieByEvent = false;
 
     public bool isFail;
     // Update is called once per frame
@@ -35,17 +33,7 @@ public class QuickTimeEventManager : MonoBehaviour
             return;
         }
 
-        if (justDieByEvent)
-        {
-            if (timeAfterLooseByEvent < 5 * 60f)
-                timeAfterLooseByEvent += Time.deltaTime;
-            else
-            {
-                justDieByEvent = false;
-            }
-        }
-
-        if (!onQuickTimeEvent && !justDieByEvent && !isFail)
+        if (!onQuickTimeEvent  && !isFail)
         {
             if (timeGamePlay < timeGamePlaySetting)
             {
@@ -57,7 +45,6 @@ public class QuickTimeEventManager : MonoBehaviour
                     timeGamePlay -= 10f;
                 else
                 {
-                    timeAfterLooseByEvent = 0f;
                     timeGamePlay = 0;
                     timeMissionRemain = 1000;
                     currentProgress = 0;
@@ -119,9 +106,4 @@ public class QuickTimeEventManager : MonoBehaviour
     }
 
     public int GetCurrentCakeID() { return currentCakeID; }
-
-    public void JustFailMission() {
-        justDieByEvent = true;
-        timeAfterLooseByEvent = 0;
-    }
 }
