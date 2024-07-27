@@ -12,10 +12,12 @@ public class QuickTimeEventManager : MonoBehaviour
     [SerializeField] int currentProgress;
     [SerializeField] float timeTotal;
     [SerializeField] float timeMissionRemain = 0;
-
+    [SerializeField] float timeAfterLooseByEvent = 0;
 
     [SerializeField] int currentCakeID = -1;
+    [SerializeField] bool justDieByEvent = false;
 
+    public bool isFail;
     // Update is called once per frame
     void Update()
     {
@@ -25,7 +27,25 @@ public class QuickTimeEventManager : MonoBehaviour
             timeGamePlay = 0;
             return;
         }
-        if (!onQuickTimeEvent)
+
+        if (!ProfileManager.Instance.playerData.playerResourseSave.isFirstTimeLevelUpFive)
+        {
+            timeGamePlay = 175f;
+            ProfileManager.Instance.playerData.playerResourseSave.LevelUpFiveFirsTime();
+            return;
+        }
+
+        if (justDieByEvent)
+        {
+            if (timeAfterLooseByEvent < 5 * 60f)
+                timeAfterLooseByEvent += Time.deltaTime;
+            else
+            {
+                justDieByEvent = false;
+            }
+        }
+
+        if (!onQuickTimeEvent && !justDieByEvent && !isFail)
         {
             if (timeGamePlay < timeGamePlaySetting)
             {
@@ -37,6 +57,7 @@ public class QuickTimeEventManager : MonoBehaviour
                     timeGamePlay -= 10f;
                 else
                 {
+                    timeAfterLooseByEvent = 0f;
                     timeGamePlay = 0;
                     timeMissionRemain = 1000;
                     currentProgress = 0;
@@ -52,17 +73,16 @@ public class QuickTimeEventManager : MonoBehaviour
                 timeMissionRemain -= Time.deltaTime;
                 UIManager.instance.panelTotal.UpdateTime(timeMissionRemain);
             }
-            else EndQuickTimeEvent();
+            else EndQuickTimeEvent(true);
         }
 
     }
 
     public void InitMission() {
         cakeNeedDone = 3;
-        timeTotal = 3f * 60f;
+        timeTotal = 5f * 60f;
         timeMissionRemain = timeTotal;
         currentCakeID = ProfileManager.Instance.playerData.cakeSaveData.GetCakeIDForMission();
-        
     }
 
     public float GetTimeQuickTimeEvent() {
@@ -74,9 +94,15 @@ public class QuickTimeEventManager : MonoBehaviour
         return cakeNeedDone;
     }
 
-    public void EndQuickTimeEvent() {
+    public void EndQuickTimeEvent(bool callbymissionfail) {
+
         onQuickTimeEvent = false;
         UIManager.instance.panelTotal.OutTimeEvent();
+        if (callbymissionfail)
+        {
+            isFail = true;
+            UIManager.instance.ShowPanelLevelComplete(false);
+        }
     }
 
     public void AddProgess(int cakeID, Transform pointCake) {
@@ -86,11 +112,16 @@ public class QuickTimeEventManager : MonoBehaviour
         UIManager.instance.panelTotal.UpdateQuickTimeEvent(currentProgress, pointCake);
         if (currentProgress >= cakeNeedDone)
         {
-            EndQuickTimeEvent();
+            EndQuickTimeEvent(false);
             GameManager.Instance.RandonReward();
             UIManager.instance.ShowPanelSelectReward();
         }
     }
 
     public int GetCurrentCakeID() { return currentCakeID; }
+
+    public void JustFailMission() {
+        justDieByEvent = true;
+        timeAfterLooseByEvent = 0;
+    }
 }
