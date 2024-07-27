@@ -162,6 +162,7 @@ public class Table : MonoBehaviour
     }
     void CallBackCheckOtherIDOnMap() {
         ClearDoneSetWayPoint();
+      
         ways.Clear();
         for (int i = mapPlate.Count - 1; i >= 0; i--) {
             if (mapPlate[i].currentCake == null /*|| !mapPlate[i].currentCake.CheckHaveCakeID(currentCakeID)*/)
@@ -175,7 +176,7 @@ public class Table : MonoBehaviour
         {
             for (int i = 0; i < mapWay.Count; i++)
             {
-                if (mapWay[i].currentCake != null && totalPieceMerge != 0 && mapWay[i] != bestPlate)
+                if (mapWay[i].currentCake != null && totalPieceMerge != 0 /*&& mapWay[i] != bestPlate*/)
                 {
                     GameManager.Instance.cakeManager.AddCakeNeedCheck(mapWay[i].currentCake, ActionCallBackSameCake);
                     break;
@@ -185,6 +186,8 @@ public class Table : MonoBehaviour
             //    GameManager.Instance.cakeManager.AddCakeNeedCheck(mapPlate[1].currentCake, ActionCallBackSameCake);
             //}
         }
+        totalPieceMerge = 0;
+        totalPieceMoveDone = 0;
         GameManager.Instance.cakeManager.CheckOtherIDOfCake();
     }
 
