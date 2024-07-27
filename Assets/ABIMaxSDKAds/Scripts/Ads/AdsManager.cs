@@ -50,7 +50,8 @@ namespace SDK
         private bool IsInitedAdsType;
         private bool IsRemoveAds;
         public bool IsLinkRewardWithRemoveAds;
-        
+        public double inter_show_cooldown;
+
         public AdsMediationType m_MainAdsMediationType = AdsMediationType.MAX;
         public List<AdsConfig> m_AdsConfigs = new List<AdsConfig>();
         public List<AdsMediationController> m_AdsMediationControllers = new List<AdsMediationController>();
@@ -104,6 +105,12 @@ namespace SDK
                     ABIFirebaseManager.Instance.GetConfigValue(Keys.key_remote_inter_reward_interspersed_time);
                 m_MaxRewardInterruptCount = (int)configValue.DoubleValue;
                 Debug.Log("=============== MAX Reward InteruptCount" + m_MaxRewardInterruptCount);
+            }
+            {
+                ConfigValue configValue =
+                    ABIFirebaseManager.Instance.GetConfigValue(Keys.key_remote_inter_show_cooldown);
+                inter_show_cooldown = configValue.DoubleValue;
+                Debug.Log("=============== MAX inter_show_cooldown" + inter_show_cooldown);
             }
             UpdateAOARemoteConfig();
             m_IsUpdateRemoteConfigSuccess = true;

@@ -41,7 +41,7 @@ public class UIPanel : MonoBehaviour {
         CheckScreenObstacleBase();
     }
 
-    void CheckScreenObstacleBase()
+    public void CheckScreenObstacleBase()
     {
         if(topRectBase == null)
         {

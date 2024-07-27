@@ -365,6 +365,16 @@ public class CakeSaveData : SaveBase
     public int GetCakeIDForMission() {
         return cakeIDUsing[UnityEngine.Random.Range(0, cakeIDUsing.Count - 1)];
     }
+
+    public bool CheckNoneCakeUpgraded()
+    {
+        for (int i = 0; i < ownedCakes.Count; i++)
+        {
+            if (ownedCakes[i].level > 1)
+                return false;
+        }
+        return true;
+    }
 }
 
 [System.Serializable]
@@ -436,6 +446,7 @@ public class OwnedCake
             cardAmount -= cardRequire;
             UpdateCardRequire();
             GameManager.Instance.cakeManager.ReInitData(cakeID);
+            EventManager.TriggerEvent(EventName.UpgradeCakeCard.ToString());
         }
 
     }

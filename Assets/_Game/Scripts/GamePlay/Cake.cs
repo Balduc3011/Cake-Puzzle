@@ -899,7 +899,7 @@ public class Cake : MonoBehaviour
         GameManager.Instance.AddPiggySave(GameManager.Instance.GetDefaultCakeProfit(pieces[0].cakeID, cakeLevel, true));
         if(!ProfileManager.Instance.playerData.playerResourseSave.AddExp(GameManager.Instance.GetDefaultCakeProfit(pieces[0].cakeID, cakeLevel)))
         {
-            GameManager.Instance.cakeManager.AddCakeCount();
+            //GameManager.Instance.cakeManager.AddCakeCount();
         }
         ProfileManager.Instance.playerData.playerResourseSave.AddMoney(GameManager.Instance.GetDefaultCakeProfit(pieces[0].cakeID, cakeLevel, true));
         ProfileManager.Instance.playerData.playerResourseSave.AddTrophy((int)GameManager.Instance.GetDefaultCakeProfit(pieces[0].cakeID, cakeLevel));

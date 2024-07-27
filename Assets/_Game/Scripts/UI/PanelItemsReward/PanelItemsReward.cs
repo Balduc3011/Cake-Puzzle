@@ -14,6 +14,7 @@ public class PanelItemsReward : UIPanel
     List<RewardItemUI> rewardItemUIs;
     List<ItemData> rewards;
     int spawnedCount;
+    public Transform popup;
     public Transform coinBar;
     public Transform bagBar;
 
@@ -33,12 +34,17 @@ public class PanelItemsReward : UIPanel
 
     private void OnEnable()
     {
+        for (int i = 0; i < rewardItemUIs.Count; i++)
+        {
+            rewardItemUIs[i].gameObject.SetActive(false);
+        }
         titleTrs.DOScaleX(1, 0.25f);
         DisableOldItem();
         InitReward();
         transform.SetAsLastSibling();
         coinBar.DOScale(1, 0.25f).From(0).SetDelay(1f);
         bagBar.DOScale(1, 0.25f).From(0).SetDelay(1f);
+        popup.DOScale(1, 0.25f).From(0);
     }
 
     void InitReward()
@@ -47,11 +53,6 @@ public class PanelItemsReward : UIPanel
         closeTxt.SetActive(false);
         spawnedCount = 0;
         rewards = GameManager.Instance.rewardItems;
-        //for (int i = 0; i < rewards.Count; i++)
-        //{
-        //    RewardItemUI rewardItemUI = GetRewardItemUI();
-        //    rewardItemUI.Init(rewards[i]);
-        //}
         StartCoroutine(SpawnReward());
     }
 
@@ -67,8 +68,6 @@ public class PanelItemsReward : UIPanel
         }
         else
         {
-            yield return ConstantValue.WAIT_SEC1;
-            yield return ConstantValue.WAIT_SEC1;
             closeBtn.interactable = true;
             closeTxt.SetActive(true);
         }
@@ -102,21 +101,14 @@ public class PanelItemsReward : UIPanel
         GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_UIButton);
         for (int i = 0; i < rewardItemUIs.Count; i++)
         {
-            rewardItemUIs[i].gameObject.SetActive(false);
+            rewardItemUIs[i].PlayEffect();
         }
         titleTrs.localScale = titleScale;
+        DOVirtual.DelayedCall(1.5f, CloseInstant);
+    }
+
+    void CloseInstant()
+    {
         UIManager.instance.ClosePanelItemsReward();
-        //if (GameManager.Instance.cakeManager.justUnlockedCake != -1 && GameManager.Instance.cakeManager.justUnlockedCake != 0)
-        //{
-        //    UIManager.instance.ShowPanelCakeReward();
-        //}
-        //else if(GameManager.Instance.cakeManager.levelUp)
-        //{
-        //    GameManager.Instance.cakeManager.cakeShowComponent.ShowNormalCake();
-        //    GameManager.Instance.cakeManager.cakeShowComponent.ShowNextToUnlockCake();
-        //    GameManager.Instance.cakeManager.ClearAllCake();
-        //    GameManager.Instance.cakeManager.SetOnMove(false);
-        //    UIManager.instance.ShowPanelLoading();
-        //}
     }
 }

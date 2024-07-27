@@ -19,6 +19,7 @@ public class UIManager : MonoBehaviour {
     [SerializeField] RectTransform myRect;
     [SerializeField] GameObject ingameDebugConsole;
     [SerializeField] GameObject objBlock;
+    [SerializeField] GameObject panelPreAds;
   
     public Camera mainCamera;
     public PanelTotal panelTotal;
@@ -807,29 +808,31 @@ public class UIManager : MonoBehaviour {
     }
     
     public void ShowPanelPreAds() {
-        if (isHasPopupOnScene)
-        {
-            AddPanelNeedOpen(ShowPanelPreAds);
-        }
-        else
-        {
-            if (ProfileManager.Instance.versionStatus == VersionStatus.Cheat) return;
-            isHasPopupOnScene = true;
-            GameObject go = GetPanel(UIPanelType.PanelPreAds);
-            go.SetActive(true);
-        }
+        //if (isHasPopupOnScene)
+        //{
+        //    AddPanelNeedOpen(ShowPanelPreAds);
+        //}
+        //else
+        //{
+        //    if (ProfileManager.Instance.versionStatus == VersionStatus.Cheat) return;
+        //    isHasPopupOnScene = true;
+        //    GameObject go = GetPanel(UIPanelType.PanelPreAds);
+        //    go.SetActive(true);
+        //}
+        panelPreAds.SetActive(true);
     }
 
     public void ClosePanelPreAds()
     {
-        GameObject go = GetPanel(UIPanelType.PanelPreAds);
-        go.SetActive(false);
-        isHasPopupOnScene = false;
-        if (actionShowPanels.Count > 0)
-        {
-            actionShowPanels[0]();
-            RemovePanelNeedOpen();
-        }
+        //GameObject go = GetPanel(UIPanelType.PanelPreAds);
+        //go.SetActive(false);
+        //isHasPopupOnScene = false;
+        //if (actionShowPanels.Count > 0)
+        //{
+        //    actionShowPanels[0]();
+        //    RemovePanelNeedOpen();
+        //}
+        panelPreAds.SetActive(false);
     }
 
 

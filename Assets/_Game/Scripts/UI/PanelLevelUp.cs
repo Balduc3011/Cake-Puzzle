@@ -160,6 +160,8 @@ public class PanelLevelUp : UIPanel
         GameManager.Instance.cakeManager.cakeShowComponent.ShowNormalCake();
         GameManager.Instance.cakeManager.cakeShowComponent.ShowNextToUnlockCake();
         GameManager.Instance.cakeManager.SetOnMove(false);
+        if (ProfileManager.Instance.playerData.playerResourseSave.currentLevel > 2)
+            GameManager.Instance.ShowInter();
     }
 
     void X2BtnOnClick()

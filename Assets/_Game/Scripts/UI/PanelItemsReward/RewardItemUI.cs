@@ -16,9 +16,11 @@ public class RewardItemUI : MonoBehaviour
     [SerializeField] CanvasGroup canvasGroup;
     [SerializeField] ParticleImage rewardEffect;
     PanelItemsReward panelItemsReward;
+    ItemData itemData;
 
     public void Init(ItemData itemData, PanelItemsReward panelItemsReward = null)
     {
+        this.itemData = itemData;
         this.panelItemsReward = panelItemsReward;
         titleTxt.text = itemData.ItemType.ToString();
         amountTxt.text = itemData.amount.ToString();
@@ -30,13 +32,13 @@ public class RewardItemUI : MonoBehaviour
         contentTransform.DOScale(1, 0.25f).From(2);
         canvasGroup.DOFade(1, 0.15f).From(0);
         if (itemData.ItemType != ItemType.NoAds) {
-            if (itemData.ItemType == ItemType.Coin && panelItemsReward != null)
-            {
-                rewardEffect.attractorTarget = panelItemsReward.coinBar;
-                rewardEffect.SetBurst(0, 0, 10);
-                rewardEffect.texture = iconImg.sprite.texture;
-                rewardEffect.Play();
-            }
+            //if (itemData.ItemType == ItemType.Coin && panelItemsReward != null)
+            //{
+            //    rewardEffect.attractorTarget = panelItemsReward.coinBar;
+            //    rewardEffect.SetBurst(0, 0, 10);
+            //    rewardEffect.texture = iconImg.sprite.texture;
+            //    rewardEffect.Play();
+            //}
             //else
             //{
             //    rewardEffect.attractorTarget = panelItemsReward.bagBar;
@@ -46,6 +48,17 @@ public class RewardItemUI : MonoBehaviour
         else
         {
             amountTxt.text = "No Ads";
+        }
+    }
+
+    public void PlayEffect()
+    {
+        if (itemData.ItemType == ItemType.Coin && panelItemsReward != null)
+        {
+            rewardEffect.attractorTarget = panelItemsReward.coinBar;
+            rewardEffect.SetBurst(0, 0, 10);
+            rewardEffect.texture = iconImg.sprite.texture;
+            rewardEffect.Play();
         }
     }
 }

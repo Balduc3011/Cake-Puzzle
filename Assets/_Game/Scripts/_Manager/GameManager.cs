@@ -1,4 +1,6 @@
+using ABI;
 using DG.Tweening.Core.Easing;
+using Firebase.RemoteConfig;
 using SDK;
 using Sirenix.OdinInspector;
 using System;
@@ -24,11 +26,16 @@ public class GameManager : Singleton<GameManager>
     public QuickTimeEventManager quickTimeEventManager;
     [field: SerializeField] public TutorialManager tutorialManager { get; private set; }
     public List<ItemData> rewardItems;
+    [SerializeField] float showAdsCounter;
+    [SerializeField] float showAdsCooldown = 30;
+    [SerializeField] bool interShowing;
     private void Start()
     {
         cameraManager.ShowARoom(0);
         AddTempName();
         ShowCollapsibleBanner();
+        showAdsCooldown = (float)(AdsManager.Instance.inter_show_cooldown);
+        if(showAdsCooldown == 0) showAdsCooldown = 60;
     }
     public void PlayGame()
     {
@@ -401,34 +408,50 @@ public class GameManager : Singleton<GameManager>
 
     public void ShowCollapsibleBanner()
     {
-        //AdsManager.Instance.ShowCollapsibleBannerAds(false, null);
         AdsManager.Instance.ShowBannerAds();
     }
 
     public void ShowInterRest()
     {
         if (IsHasNoAds()) return;
-        if (ProfileManager.Instance.playerData.playerResourseSave.currentLevel >= 3)
+        if (!AdsManager.Instance.IsInterstitialAdLoaded()) return;
+        if (ProfileManager.Instance.versionStatus == VersionStatus.Cheat) return;
+        if (ProfileManager.Instance.playerData.playerResourseSave.currentLevel >= 1)
+        {
             UIManager.instance.ShowPanelPreAds();
+            showAdsCounter = 0;
+            interShowing = true;
+        }
+            
     }
 
     public void ShowInter()
     {
-        if (GameManager.Instance.IsHasNoAds()) return;
+        if (IsHasNoAds()) return;
+        if (!AdsManager.Instance.IsInterstitialAdLoaded()) return;
         if (ProfileManager.Instance.versionStatus == VersionStatus.Cheat) return;
         AdsManager.Instance.ShowInterstitial();
+        showAdsCounter = 0;
     }
 
-    public void CollectInterGold()
+    public void ResetCounter()
     {
-        List<ItemData> itemDatas = new List<ItemData>();
-        ItemData coin = new ItemData();
-        coin.ItemType = ItemType.Coin;
-        coin.amount = 5;
-        coin.subId = -1;
-        itemDatas.Add(coin);
-        GetItemRewards(itemDatas);
-        UIManager.instance.ShowPanelItemsReward();
+        showAdsCounter = 0;
+        interShowing = false;
+    }
+
+    
+
+    private void Update()
+    {
+        if(!interShowing && playing)
+        {
+            showAdsCounter += Time.deltaTime;
+            if (showAdsCounter > showAdsCooldown)
+            {
+                ShowInterRest();
+            }
+        }
     }
 }
 

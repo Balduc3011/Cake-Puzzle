@@ -73,14 +73,23 @@ public class PanelTotal : UIPanel
         CheckSubScreenObstacleBase();
         Invoke("InitCakeDecor", 0.25f);
         rawImage.texture = texture;
+        InitCakeDecor();
     }
 
     void UpdateMainCG()
     {
         if (ProfileManager.Instance.playerData.playerResourseSave.currentLevel == 0
             && ProfileManager.Instance.playerData.playerResourseSave.currentExp == 0)
+        {
+            OpenObjBlockAll();
             mainCG.alpha = 0;
-        else mainCG.alpha = 1;
+        }
+        else
+        {
+            CloseObjBlockAll();
+            mainCG.alpha = 1;
+        }
+            
     }
 
     public void CheckNoti()
