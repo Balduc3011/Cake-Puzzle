@@ -33,7 +33,6 @@ public class GameManager : Singleton<GameManager>
     {
         cameraManager.ShowARoom(0);
         AddTempName();
-        ShowCollapsibleBanner();
         showAdsCooldown = (float)(AdsManager.Instance.inter_show_cooldown);
         if(showAdsCooldown == 0) showAdsCooldown = 60;
     }
@@ -417,7 +416,7 @@ public class GameManager : Singleton<GameManager>
         if (IsHasNoAds()) return;
         if (!AdsManager.Instance.IsInterstitialAdLoaded()) return;
         if (ProfileManager.Instance.versionStatus == VersionStatus.Cheat) return;
-        if (ProfileManager.Instance.playerData.playerResourseSave.currentLevel >= 1)
+        if (ProfileManager.Instance.playerData.playerResourseSave.currentLevel >= 2)
         {
             UIManager.instance.ShowPanelPreAds();
             showAdsCounter = 0;
