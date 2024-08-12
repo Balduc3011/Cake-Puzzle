@@ -8,6 +8,8 @@ using UnityEngine.UI;
 
 public class PanelPlayGame : UIPanel
 {
+
+    public WrapOrder wrapOrder;
     [SerializeField] GameObject x2BoosterBar;
     [SerializeField] Button x2BoosterBtn;
     [SerializeField] TextMeshProUGUI x2BoosterTimeTxt;
