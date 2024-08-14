@@ -47,12 +47,24 @@ public class CakeSaveData : SaveBase
     {
         AddCakeCard(0, 1);
         AddCakeCard(1, 1);
+        AddCakeCard(2, 1);
+        AddCakeCard(3, 1);
+        AddCakeCard(4, 1);
+        AddCakeCard(5, 1);
 
         cakeIDs.Add(0);
-        cakeIDs.Add(1);
+        cakeIDs.Add(1); 
+        cakeIDs.Add(2);
+        cakeIDs.Add(3);
+        cakeIDs.Add(4);
+        cakeIDs.Add(5);
 
         cakeIDUsing.Add(0);
         cakeIDUsing.Add(1);
+        cakeIDUsing.Add(2);
+        cakeIDUsing.Add(3);
+        cakeIDUsing.Add(4);
+        cakeIDUsing.Add(5);
     }
 
     public OwnedCake GetOwnedCake(int cakeId)

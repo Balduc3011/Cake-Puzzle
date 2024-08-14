@@ -1021,4 +1021,18 @@ public class Cake : MonoBehaviour
             for (int i = 0; i < tweens.Count; i++)
                 tweens[i].Kill();
     }
+    Sequence mySequence;
+    public void OnDestroyCake()
+    {
+        if (mySequence != null)
+            mySequence.Kill();
+        mySequence = DOTween.Sequence();
+        mySequence.Append(transform.DOScale(.8f, .13f));
+        mySequence.Append(transform.DOScale(1.2f, .13f));
+        mySequence.Append(transform.DOScale(0f, .13f));
+        mySequence.OnComplete(() =>
+        {
+            Destroy(this.gameObject);
+        });
+    }
 }

@@ -59,7 +59,8 @@ public class GroupCake : MonoBehaviour
     {
         if (onFollow && !GameManager.Instance.cakeManager.onCheckLooseGame) { 
             for (int i = 0;i < cake.Count;i++) {
-                if (cake[i].gameObject.activeSelf) cake[i].CheckOnMouse();
+                if (cake[i] != null)
+                    if (cake[i].gameObject.activeSelf) cake[i].CheckOnMouse();
             }
         }
     }
@@ -138,15 +139,19 @@ public class GroupCake : MonoBehaviour
     public void DropFail() {
         for (int i = 0; i < cake.Count; i++)
         {
-            if (cake[i].gameObject.activeSelf)
+            if (cake[i] != null)
             {
-                cake[i].GroupDropFail();
-                if (i > 0)
-                    cake[i].transform.DOLocalMove(pointCake1Default.localPosition, .2f).SetEase(Ease.InOutQuad);
-                else
-                    cake[i].transform.DOLocalMove(pointCake0Default.localPosition, .2f).SetEase(Ease.InOutQuad);
-                cake[i].transform.DOScale(1f, .25f).SetEase(Ease.InOutQuad);
+                if (cake[i].gameObject.activeSelf)
+                {
+                    cake[i].GroupDropFail();
+                    if (i > 0)
+                        cake[i].transform.DOLocalMove(pointCake1Default.localPosition, .2f).SetEase(Ease.InOutQuad);
+                    else
+                        cake[i].transform.DOLocalMove(pointCake0Default.localPosition, .2f).SetEase(Ease.InOutQuad);
+                    cake[i].transform.DOScale(1f, .25f).SetEase(Ease.InOutQuad);
+                }
             }
+            
         }
         transform.position = pointSpawn.position;
         canTouch = true;
@@ -281,6 +286,13 @@ public class GroupCake : MonoBehaviour
         {
             if (cake[i].IsHaveCakeID(cakeID))
                 cake[i].ReInitData();
+        }
+    }
+
+    public void OnDestroyCake() {
+        for (int i = 0; i < cake.Count; i++) {
+            if (cake[i].gameObject.activeSelf)
+                cake[i].OnDestroyCake();
         }
     }
 }

@@ -31,9 +31,18 @@ public class LevelDataConfig : ScriptableObject
             return -1;
         return levelDatas[currentLevel].cakeUnlockID;
     }
+
+    public int GetTotalCakeRandom()
+    {
+        int currentLevel = ProfileManager.Instance.playerData.playerResourseSave.currentLevel;
+        if (currentLevel >= levelDatas.Count)
+            return 5;
+        return levelDatas[currentLevel].totalCakeRandom;
+    }
 }
 [System.Serializable]
 public class LevelData {
     public float expUnlock;
     public int cakeUnlockID;
+    public int totalCakeRandom = 5;
 }

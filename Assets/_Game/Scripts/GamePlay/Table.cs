@@ -458,7 +458,9 @@ public class Table : MonoBehaviour
         {
             if (plates[i].currentCake != null)
             {
-                Destroy(plates[i].currentCake.gameObject);
+                plates[i].currentCake.OnDestroyCake();
+                plates[i].currentCake = null;
+                //Destroy(plates[i].currentCake.gameObject);
             }
         }
     }

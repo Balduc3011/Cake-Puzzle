@@ -107,13 +107,13 @@ public class CakeManager : MonoBehaviour
 
     public bool CheckPlateHaveCakeDone(PlateIndex plateIndex)
     {
-        
+
         if (currentCakeCheck != null)
         {
             if (currentCakeCheck.cakeDone || currentCakeCheck.pieces.Count == 0)
                 return true;
             return false;
-        }return true;
+        } return true;
     }
 
     public bool SetCurrentGroupCake(GroupCake gCake) {
@@ -327,19 +327,19 @@ public class CakeManager : MonoBehaviour
             timeCallAddCheckCake++;
             if (timeCallAddCheckCake > 30)
                 ResetCheckCake();
-            Debug.Log("add same cake: "+cake.currentPlate);
+            Debug.Log("add same cake: " + cake.currentPlate);
             //Debug.Break();
             actionCallBackSameCake();
             return;
         }
         cakeNeedCheck.Add(cake);
         if (onCheckLooseGame) CancelCheckLooseCake();
-      
+
     }
 
     void CancelCheckLooseCake() {
         Debug.Log("Cancel invoke");
-        CancelInvoke("CheckLooseGame"); 
+        CancelInvoke("CheckLooseGame");
 
     }
 
@@ -410,7 +410,7 @@ public class CakeManager : MonoBehaviour
             }
         }
     }
-    
+
     void CheckLooseGame(bool isCheckOnInit = false) {
         if (cakesWait.Count == 0 || onInitGroup) return;
         //Debug.Log("On check Loose Game: "+ DateTime.Now);
@@ -418,7 +418,7 @@ public class CakeManager : MonoBehaviour
         countCheckFaild = cakesWait.Count;
         countFaild = 0;
         for (int i = 0; i < cakesWait.Count; i++)
-        {  
+        {
             if (cakesWait[i].cake.Count == 1)
             {
                 if (!table.CheckGroupOneAble())
@@ -442,7 +442,7 @@ public class CakeManager : MonoBehaviour
                 GameManager.Instance.quickTimeEventManager.EndQuickTimeEvent(false);
                 table.AnimLooseGameOut();
             });
-        }  
+        }
         onCheckLooseGame = false;
         DOTween.ClearCachedTweens();
     }
@@ -469,7 +469,7 @@ public class CakeManager : MonoBehaviour
 
     void UpdateCake() {
         if (cakeOnPlates.Count == 0)
-        cakeOnPlates = ProfileManager.Instance.playerData.cakeSaveData.cakeOnPlates;
+            cakeOnPlates = ProfileManager.Instance.playerData.cakeSaveData.cakeOnPlates;
     }
 
     public void TrashIn(UnityAction actioncallBack) {
@@ -491,13 +491,14 @@ public class CakeManager : MonoBehaviour
         table.ClearAllCake();
         for (int i = 0; i < cakesWait.Count; i++)
         {
-            Destroy(cakesWait[i].gameObject);
+            cakesWait[i].OnDestroyCake();
+            //Destroy(cakesWait[i].gameObject);
         }
         cakesWait.Clear();
         InitGroupCake();
     }
 
-  
+
     public void PlayGame()
     {
         if (loaded)
@@ -506,7 +507,7 @@ public class CakeManager : MonoBehaviour
         {
             LoadCakeWaitData();
         }
-        else { 
+        else {
             InitGroupCake();
         }
 
@@ -515,9 +516,9 @@ public class CakeManager : MonoBehaviour
             LoadCakeOnPlate();
         }
         loaded = true;
-        
+
     }
- 
+
     void LoadCakeOnPlate() {
         cakeOnPlates = ProfileManager.Instance.playerData.cakeSaveData.cakeOnPlates;
         for (int i = 0; i < cakeOnPlates.Count; i++)
@@ -526,6 +527,14 @@ public class CakeManager : MonoBehaviour
             table.LoadCakeOnPlate(newCake, cakeOnPlates[i]);
         }
         SetupCheckCake();
+    }
+
+    public void InitCakeFromLevelData() {
+        int totalPlateCount = ProfileManager.Instance.dataConfig.levelDataConfig.GetTotalCakeRandom();
+        for (int i = 0; i < totalPlateCount; i++)
+        {
+            GameManager.Instance.cakeManager.LoadCakeCheat();
+        }
     }
 
     public void LoadCakeCheat() {
@@ -577,6 +586,13 @@ public class CakeManager : MonoBehaviour
         int newCakeID = ProfileManager.Instance.dataConfig.levelDataConfig.GetCakeID(ProfileManager.Instance.playerData.playerResourseSave.currentLevel - 1);
         SetJustUnlockedCake(newCakeID);
         levelUp = true;
+        DOVirtual.DelayedCall(2f, ()=> {
+            ClearAllCake();
+            DOVirtual.DelayedCall(.5f, InitCakeFromLevelData).OnComplete(() => {
+                table.SaveCake();
+            });
+        });
+       
         ShowLevelUp();
     }
 
