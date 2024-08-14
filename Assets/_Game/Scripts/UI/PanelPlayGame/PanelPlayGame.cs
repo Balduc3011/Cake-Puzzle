@@ -8,8 +8,8 @@ using UnityEngine.UI;
 
 public class PanelPlayGame : UIPanel
 {
-
     public WrapOrder wrapOrder;
+    [SerializeField] CanvasGroup mainCG;
     [SerializeField] GameObject x2BoosterBar;
     [SerializeField] Button x2BoosterBtn;
     [SerializeField] TextMeshProUGUI x2BoosterTimeTxt;
@@ -26,6 +26,7 @@ public class PanelPlayGame : UIPanel
     [SerializeField] BoosterItemButton btnHammer;
     [SerializeField] BoosterItemButton btnFillUp;
     [SerializeField] BoosterItemButton btnReroll;
+    [SerializeField] GameObject objBlockAll;
 
     [SerializeField] List<TransitionUI> transitionUIList;
     public override void Awake()
@@ -54,7 +55,28 @@ public class PanelPlayGame : UIPanel
         });
         CheckBooster();
         EventManager.AddListener(EventName.AddItem.ToString(), CheckBooster);
+        EventManager.AddListener(EventName.ChangeExp.ToString(), UpdateMainCG);
+        EventManager.AddListener(EventName.AddCakeCard.ToString(), CheckBakeryTut);
+        EventManager.AddListener(EventName.UpgradeCakeCard.ToString(), CheckBakeryTut);
+        UpdateMainCG();
     }
+
+    void UpdateMainCG()
+    {
+        if (ProfileManager.Instance.playerData.playerResourseSave.currentLevel == 0
+            && ProfileManager.Instance.playerData.playerResourseSave.currentExp == 0)
+        {
+            OpenObjBlockAll();
+            mainCG.alpha = 0;
+        }
+        else
+        {
+            CloseObjBlockAll();
+            mainCG.alpha = 1;
+        }
+    }
+    public void OpenObjBlockAll() { objBlockAll.SetActive(true); }
+    public void CloseObjBlockAll() { objBlockAll.SetActive(false); }
 
     void CheckBooster()
     {
@@ -67,6 +89,7 @@ public class PanelPlayGame : UIPanel
     {
         questNoti.SetActive(ProfileManager.Instance.playerData.questDataSave.CheckShowNoticeQuest());
         bakeryNoti.SetActive(ProfileManager.Instance.playerData.cakeSaveData.HasCakeUpgradeable());
+        CheckBakeryTut();
     }
 
     private void OnEnable()
@@ -220,5 +243,20 @@ public class PanelPlayGame : UIPanel
                 break;
         }
         return null;
+    }
+
+    [Header("BakeryTut")]
+    [SerializeField] GameObject bakeryTutBlock;
+    [SerializeField] GameObject bakeryTutHand;
+
+    public void ShowBakeryTut(bool act)
+    {
+        bakeryTutBlock.SetActive(act);
+        bakeryTutHand.SetActive(act);
+    }
+
+    public void CheckBakeryTut()
+    {
+        ShowBakeryTut(ProfileManager.Instance.playerData.cakeSaveData.HasCakeUpgradeable() && ProfileManager.Instance.playerData.cakeSaveData.CheckNoneCakeUpgraded());
     }
 }

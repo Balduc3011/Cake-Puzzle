@@ -55,6 +55,7 @@ public class ConstantValue
     public static float VAL_REVIVE_COIN = 1000f;
     public static int VAL_CAKECOUNT_ADS = 10;
     public static int VAL_BOOSTER_PRICE = 100;
+    public static int VAL_INTER_REWARD = 5;
 
     // Animation
 

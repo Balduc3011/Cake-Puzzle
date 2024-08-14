@@ -23,6 +23,7 @@ public class PanelLevelUp : UIPanel
     [SerializeField] Transform LevelBar;
     [SerializeField] Transform LevelBarHold;
     [SerializeField] Transform LevelBarShow;
+    [SerializeField] Transform popUp;
     Vector3 spinAngle = new Vector3(0, 0, 1 - 3 * 360);
     bool x2Taken;
 
@@ -44,6 +45,7 @@ public class PanelLevelUp : UIPanel
         DisableOldItem();
         transform.SetAsLastSibling();
         coinBar.localScale = Vector3.zero;
+        popUp.localScale = Vector3.zero;
         PlayAnim();
         InitRewardData();
         x2Taken = false;
@@ -84,7 +86,8 @@ public class PanelLevelUp : UIPanel
         });
         LevelBar.DOScale(2f, 0.05f).SetDelay(1.25f + 0.5f + 0.25f);
 
-        LevelBar.DOScale(0, 0.25f).SetEase(Ease.InBack).SetDelay(3.25f).OnComplete(InitReward);
+        LevelBar.DOScale(0, 0.25f).SetEase(Ease.InBack).SetDelay(3.25f);
+        popUp.DOScale(1, 0.25f).SetEase(Ease.OutBack).SetDelay(3.5f).OnComplete(InitReward);
     }
 
 
@@ -157,6 +160,8 @@ public class PanelLevelUp : UIPanel
         GameManager.Instance.cakeManager.cakeShowComponent.ShowNormalCake();
         GameManager.Instance.cakeManager.cakeShowComponent.ShowNextToUnlockCake();
         GameManager.Instance.cakeManager.SetOnMove(false);
+        if (ProfileManager.Instance.playerData.playerResourseSave.currentLevel > 2)
+            GameManager.Instance.ShowInter();
     }
 
     void X2BtnOnClick()

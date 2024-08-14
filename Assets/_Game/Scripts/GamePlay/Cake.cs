@@ -611,6 +611,19 @@ public class Cake : MonoBehaviour
                 if (currentPlate != null)
                     currentPlate.Deactive();
                 if (!plate.actived) return;
+                if(GameManager.Instance.tutorialManager.TutorialCondition())
+                {
+                    if (myGroupCake.groupCakeIndex == 0 && plate.plateIndex.indexY != 1)
+                    {
+                        currentPlate = null;
+                        return;
+                    }
+                    if (myGroupCake.groupCakeIndex == 2 && plate.plateIndex.indexY != 2)
+                    {
+                        currentPlate = null;
+                        return;
+                    }
+                }
                 if (plate.currentCake != null)
                 {
                     currentPlate = null;
@@ -886,7 +899,7 @@ public class Cake : MonoBehaviour
         GameManager.Instance.AddPiggySave(GameManager.Instance.GetDefaultCakeProfit(pieces[0].cakeID, cakeLevel, true));
         if(!ProfileManager.Instance.playerData.playerResourseSave.AddExp(GameManager.Instance.GetDefaultCakeProfit(pieces[0].cakeID, cakeLevel)))
         {
-            GameManager.Instance.cakeManager.AddCakeCount();
+            //GameManager.Instance.cakeManager.AddCakeCount();
         }
         ProfileManager.Instance.playerData.playerResourseSave.AddMoney(GameManager.Instance.GetDefaultCakeProfit(pieces[0].cakeID, cakeLevel, true));
         ProfileManager.Instance.playerData.playerResourseSave.AddTrophy((int)GameManager.Instance.GetDefaultCakeProfit(pieces[0].cakeID, cakeLevel));

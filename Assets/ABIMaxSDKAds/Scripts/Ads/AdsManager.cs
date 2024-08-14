@@ -43,6 +43,7 @@ namespace SDK
         private double m_InterstitialCappingAdsCooldown = 0;
         private double m_MaxInterstitialCappingTimeDay1 = 30;
         private double m_MaxInterstitialCappingTimeDay2 = 30;
+        public double inter_show_cooldown;
         private int m_RewardInterruptCountTime = 0;
         private int m_MaxRewardInterruptCount = 6;
         private bool m_IsActiveInterruptReward = false;
@@ -104,6 +105,12 @@ namespace SDK
                     ABIFirebaseManager.Instance.GetConfigValue(Keys.key_remote_inter_reward_interspersed_time);
                 m_MaxRewardInterruptCount = (int)configValue.DoubleValue;
                 Debug.Log("=============== MAX Reward InteruptCount" + m_MaxRewardInterruptCount);
+            }
+            {
+                ConfigValue configValue =
+                    ABIFirebaseManager.Instance.GetConfigValue(Keys.key_remote_inter_show_cooldown);
+                inter_show_cooldown = configValue.DoubleValue;
+                Debug.Log("=============== MAX inter_show_cooldown" + inter_show_cooldown);
             }
             UpdateAOARemoteConfig();
             m_IsUpdateRemoteConfigSuccess = true;
@@ -763,7 +770,7 @@ namespace SDK
 
         private AdsConfig RewardVideoAdsConfig => GetAdsConfig(AdsType.REWARDED);
         
-        private UnityAction m_RewardedVideoCloseCallback;
+        private UnityAction<bool> m_RewardedVideoCloseCallback;
         private UnityAction m_RewardedVideoLoadSuccessCallback;
         private UnityAction m_RewardedVideoLoadFailedCallback;
         private UnityAction m_RewardedVideoEarnSuccessCallback;
@@ -853,45 +860,29 @@ namespace SDK
 
         private void OnRewardVideoStart()
         {
-            if (m_RewardedVideoShowStartCallback != null)
-            {
-                m_RewardedVideoShowStartCallback();
-            }
-
-            ABIAnalyticsManager.Instance.TrackAdsReward_StartShow();
+            m_RewardedVideoShowStartCallback?.Invoke();
             MarkShowingAds(true);
+            ABIAnalyticsManager.Instance.TrackAdsReward_StartShow();
         }
 
         private void OnRewardVideoShowFail()
         {
-            if (m_RewardedVideoShowFailCallback != null)
-            {
-                m_RewardedVideoShowFailCallback();
-            }
-
+            m_RewardedVideoShowFailCallback?.Invoke();
             ABIAnalyticsManager.Instance.TrackAdsReward_ShowFail();
         }
 
-        private void OnRewardVideoClosed()
+        private void OnRewardVideoClosed(bool isWatchedSuccess)
         {
             ResetAdsInterstitialCappingTime();
             RequestRewardVideo();
-            if (m_RewardedVideoCloseCallback != null)
-            {
-                m_RewardedVideoCloseCallback();
-            }
-
+            m_RewardedVideoCloseCallback?.Invoke(isWatchedSuccess);
             MarkShowingAds(false);
         }
 
         private void OnRewardVideoLoadSuccess()
         {
             RewardVideoAdsConfig.RefreshLoadAds();
-            if (m_RewardedVideoLoadSuccessCallback != null)
-            {
-                m_RewardedVideoLoadSuccessCallback();
-            }
-
+            m_RewardedVideoLoadSuccessCallback?.Invoke();
             ABIAnalyticsManager.Instance.TrackAdsReward_LoadSuccess();
         }
 
@@ -899,10 +890,7 @@ namespace SDK
         {
             ResetAdsLoadingCooldown();
             RewardVideoAdsConfig.MarkReloadFail();
-            if (m_RewardedVideoLoadFailedCallback != null)
-            {
-                m_RewardedVideoLoadFailedCallback();
-            }
+            m_RewardedVideoLoadFailedCallback?.Invoke();
         }
 
         public bool IsReadyToShowRewardVideo()

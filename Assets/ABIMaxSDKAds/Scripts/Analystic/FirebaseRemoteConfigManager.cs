@@ -23,6 +23,7 @@ namespace SDK
             defaults.Add(ABI.Keys.key_remote_interstital_capping_time_day2, 45);
             defaults.Add(ABI.Keys.key_remote_inter_reward_interspersed, true);
             defaults.Add(ABI.Keys.key_remote_inter_reward_interspersed_time, 10);
+            defaults.Add(ABI.Keys.key_remote_inter_show_cooldown, 60);
 
             defaults.Add(ABI.Keys.key_remote_free_ads, "");
             FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.DefaultInstance;

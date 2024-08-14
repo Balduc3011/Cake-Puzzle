@@ -29,7 +29,8 @@ public enum EventName
     CheckClearCake = 15,
     AddItem = 16,
     OnUsingRevive = 17,
-    OnUsingReviveDone = 18
+    OnUsingReviveDone = 18,
+    UpgradeCakeCard = 19,
 }
 
 public class EventManager : Singleton<EventManager>

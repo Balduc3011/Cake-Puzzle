@@ -14,6 +14,8 @@ namespace ABI {
         
         internal static readonly string key_remote_inter_reward_interspersed = "inter_reward_interspersed";
         internal static readonly string key_remote_inter_reward_interspersed_time = "inter_reward_interspersed_time";
+        internal static readonly string key_remote_inter_show_cooldown = "inter_show_cooldown";
+
         internal static readonly string key_remote_free_ads = "time_free_ads";
     } 
 }

@@ -18,6 +18,7 @@ public class CakeShowComponent : MonoBehaviour
     [SerializeField] Transform cakeShowPos;
     [SerializeField] Transform cakeStartPos;
     [SerializeField] ParticleSystem particle;
+    List<Tween> cakeSlideTween = new List<Tween>();
 
     private void Start()
     {
@@ -60,10 +61,27 @@ public class CakeShowComponent : MonoBehaviour
         Mesh cakeSlideMesh = ProfileManager.Instance.dataConfig.cakeDataConfig.GetCakePieceMesh2(cakeId);
         cakeCamera.orthographicSize = unlockCamZoom;
 
+        for (int i = 0; i < cakeSlideTween.Count; i++)
+        {
+            if (cakeSlideTween[i] != null)
+                cakeSlideTween[i].Kill();
+        }
+
         for (int i = 0; i < cakeSlideMeshs.Count; i++)
         {
             cakeSlideMeshs[i].mesh = cakeSlideMesh;
-            cakeSlideMeshs[i].transform.DOScale(3.5f, 0.25f).SetDelay((i + 1) * 0.15f + 0.35f).From(0);
+            if(cakeSlideMeshs.Count > cakeSlideTween.Count)
+            {
+                Tween tween = cakeSlideMeshs[i].transform.DOScale(3.5f, 0.25f).SetDelay((i + 1) * 0.15f + 0.35f).From(0);
+                cakeSlideTween.Add(tween);
+            }
+            else
+            {
+                if (cakeSlideTween[i] != null)
+                    cakeSlideTween[i].Kill();
+                cakeSlideTween[i] = cakeSlideMeshs[i].transform.DOScale(3.5f, 0.25f).SetDelay((i + 1) * 0.15f + 0.35f).From(0);
+            }
+            
         }
     }
 

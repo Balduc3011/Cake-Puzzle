@@ -1,7 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//using AppsFlyerSDK;
+
+#if UNITY_APPSFLYER
+using AppsFlyerSDK;
+#endif
+
 namespace SDK
 {
 #if UNITY_APPSFLYER
