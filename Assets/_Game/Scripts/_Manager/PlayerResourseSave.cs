@@ -24,6 +24,7 @@ public class PlayerResourseSave : SaveBase
 
     public bool isFirstTimeLevelUpFive;
     public bool isFirstTimeLooseByMission;
+    public OrderProgress orderProgress;
 
     int levelMax;
     float expMax;
@@ -48,6 +49,7 @@ public class PlayerResourseSave : SaveBase
             settingValues = data.settingValues;
             isFirstTimeLevelUpFive = data.isFirstTimeLevelUpFive;
             isFirstTimeLooseByMission = data.isFirstTimeLooseByMission;
+            orderProgress = data.orderProgress;
             CheckDay();
         }
         else
@@ -275,15 +277,15 @@ public class PlayerResourseSave : SaveBase
         //    LevelUp();
         //    return;
         //}
-        currentExp += expAdd;
-        if (currentExp >= expMax)
-        {
-            currentExp = 0;
-            LevelUp();
-            IsMarkChangeData();
-            SaveData();
-            return true;
-        }
+        //currentExp += expAdd;
+        //if (currentExp >= expMax)
+        //{
+        //    currentExp = 0;
+        //    LevelUp();
+        //    IsMarkChangeData();
+        //    SaveData();
+        //    return true;
+        //}
         IsMarkChangeData();
         SaveData();
         return false;
@@ -411,4 +413,11 @@ public enum SettingId
     Music = 1,
     Sound = 2,
     Vibrate = 3,
+}
+
+
+[System.Serializable]
+public class OrderProgress {
+    public int currentOrderIndex;
+    public List<int> progress;
 }

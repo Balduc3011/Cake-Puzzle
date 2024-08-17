@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
 using System;
+using _BaseGame.ScriptableObjects.MapData;
 
 public class WrapOrder : MonoBehaviour
 {
@@ -21,9 +22,16 @@ public class WrapOrder : MonoBehaviour
     Sequence mySequence;
     Sequence sequenceTime;
 
+    int currentLevel = 0;
+    int currentOrderIndex = 0;
+
+    public MapCakeConfigsData mapCakeConfigsData;
+    CakeOrder cakeOrderTemp;
+
     private void Awake()
     {
         vectorDefault = rectWrapSlotOrder.sizeDelta;
+        UpdateData();
         RandomOrder();
     }
     private void Update()
@@ -33,6 +41,12 @@ public class WrapOrder : MonoBehaviour
             OnOrderComplete(false);
         }
     }
+
+    public void UpdateData() {
+        currentLevel = ProfileManager.Instance.playerData.playerResourseSave.currentLevel;
+        mapCakeConfigsData = MapCakeConfigs.Instance.GetMapCakeConfigsData(currentLevel);
+    }
+
     public void RandomOrder() {
         if (sequenceTime != null) sequenceTime.Kill();
         sequenceTime = DOTween.Sequence();
@@ -45,11 +59,12 @@ public class WrapOrder : MonoBehaviour
             mySequence.Kill();
         mySequence = DOTween.Sequence();
         mySequence.Append(rectWrapSlotOrder.DOSizeDelta(vectorDefault, .25f, true));
+        
         for (int i = 0; i < slotOrders.Count; i++)
         {
-            int cakeID = ProfileManager.Instance.playerData.cakeSaveData.GetRandomOwnedCake();
-            CakeData cakeData = ProfileManager.Instance.dataConfig.cakeDataConfig.GetCakeData(cakeID);
-            slotOrders[i].InitData(cakeData);
+            cakeOrderTemp = mapCakeConfigsData.GetCakeOrder(currentOrderIndex, i);
+            CakeData cakeData = ProfileManager.Instance.dataConfig.cakeDataConfig.GetCakeData(cakeOrderTemp.type);
+            slotOrders[i].InitData(cakeData, cakeOrderTemp.amount);
         }
     }
 

@@ -50,7 +50,8 @@ namespace _BaseGame.ScriptableObjects.MapData
                 mapCakeConfigs = newData;
             });
         }
-        private MapCakeConfigsData GetMapCakeConfigsData(int level)
+
+        public MapCakeConfigsData GetMapCakeConfigsData(int level)
         {
             return mapCakeConfigs.Find(m => m.level == level);
         }
@@ -158,6 +159,10 @@ namespace _BaseGame.ScriptableObjects.MapData
         public void ClearBoard()
         {
             board.ClearBoard();
+        }
+
+        public CakeOrder GetCakeOrder(int currentOrderIndex, int slotOrderIndex) {
+            return cakeOrders[currentOrderIndex * 3 + slotOrderIndex];
         }
     }
     

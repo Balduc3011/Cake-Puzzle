@@ -34,4 +34,8 @@ public class SlotBase<Data> : MonoBehaviour
             if (actionCallback != null) actionCallback(this);
         });
     }
+
+    public virtual void InitData(CakeData slotData, int amount)
+    {
+    }
 }
