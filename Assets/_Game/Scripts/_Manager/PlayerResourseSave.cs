@@ -24,7 +24,6 @@ public class PlayerResourseSave : SaveBase
 
     public bool isFirstTimeLevelUpFive;
     public bool isFirstTimeLooseByMission;
-    public OrderProgress orderProgress;
 
     int levelMax;
     float expMax;
@@ -49,11 +48,11 @@ public class PlayerResourseSave : SaveBase
             settingValues = data.settingValues;
             isFirstTimeLevelUpFive = data.isFirstTimeLevelUpFive;
             isFirstTimeLooseByMission = data.isFirstTimeLooseByMission;
-            orderProgress = data.orderProgress;
             CheckDay();
         }
         else
         {
+            currentLevel = 1;
             SetNewSetting();
             IsMarkChangeData();
             SaveData();
@@ -286,6 +285,7 @@ public class PlayerResourseSave : SaveBase
         //    SaveData();
         //    return true;
         //}
+        return true;
         IsMarkChangeData();
         SaveData();
         return false;
@@ -297,7 +297,7 @@ public class PlayerResourseSave : SaveBase
         ABIAnalyticsManager.Instance.TrackEventLevelComplete(currentLevel);
         GameManager.Instance.GetLevelUpReward();
         EventManager.TriggerEvent(EventName.ChangeLevel.ToString());
-        expMax = ProfileManager.Instance.dataConfig.levelDataConfig.GetExpToNextLevel(currentLevel);
+        //expMax = ProfileManager.Instance.dataConfig.levelDataConfig.GetExpToNextLevel(currentLevel);
     }
 
     public string GetCurrentExp()
@@ -399,6 +399,8 @@ public class PlayerResourseSave : SaveBase
         SaveData();
 
     }
+
+    
 }
 
 [System.Serializable]
@@ -416,8 +418,4 @@ public enum SettingId
 }
 
 
-[System.Serializable]
-public class OrderProgress {
-    public int currentOrderIndex;
-    public List<int> progress;
-}
+

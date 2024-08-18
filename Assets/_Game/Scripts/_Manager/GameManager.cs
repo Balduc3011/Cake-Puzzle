@@ -1,3 +1,4 @@
+using _BaseGame.ScriptableObjects.MapData;
 using ABI;
 using DG.Tweening.Core.Easing;
 using Firebase.RemoteConfig;
@@ -24,6 +25,7 @@ public class GameManager : Singleton<GameManager>
     public LightManager lightManager;
     public QuestManager questManager;
     public QuickTimeEventManager quickTimeEventManager;
+    public OrderManager ordermanager;
     [field: SerializeField] public TutorialManager tutorialManager { get; private set; }
     public List<ItemData> rewardItems;
     [SerializeField] float showAdsCounter;
@@ -39,6 +41,7 @@ public class GameManager : Singleton<GameManager>
     public void PlayGame()
     {
         UIManager.instance.ShowPanelPlayGame();
+        ordermanager.UpdateData();
         cakeManager.PlayGame();
         playing = true;
         if(tutorialManager.TutorialCondition())

@@ -6,6 +6,7 @@ using TMPro;
 using DG.Tweening;
 using System;
 using _BaseGame.ScriptableObjects.MapData;
+using UnityEngine.Events;
 
 public class WrapOrder : MonoBehaviour
 {
@@ -22,18 +23,14 @@ public class WrapOrder : MonoBehaviour
     Sequence mySequence;
     Sequence sequenceTime;
 
-    int currentLevel = 0;
-    int currentOrderIndex = 0;
-
-    public MapCakeConfigsData mapCakeConfigsData;
     CakeOrder cakeOrderTemp;
 
     private void Awake()
     {
         vectorDefault = rectWrapSlotOrder.sizeDelta;
-        UpdateData();
-        RandomOrder();
+        gameObject.SetActive(false);
     }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.J))
@@ -42,33 +39,37 @@ public class WrapOrder : MonoBehaviour
         }
     }
 
-    public void UpdateData() {
-        currentLevel = ProfileManager.Instance.playerData.playerResourseSave.currentLevel;
-        mapCakeConfigsData = MapCakeConfigs.Instance.GetMapCakeConfigsData(currentLevel);
-    }
+    public void GetOrder() {
+        Debug.Log("Order");
+        if (GameManager.Instance.ordermanager.ShowOrder())
+            gameObject.SetActive(true);
 
-    public void RandomOrder() {
         if (sequenceTime != null) sequenceTime.Kill();
+
         sequenceTime = DOTween.Sequence();
+
         sequenceTime.Append(DOVirtual.Float(timeSetting, 0, timeSetting, (value) => {
             txtTime.text = TimeUtil.TimeToString(((int)value + 1));
         }).SetEase(Ease.Linear).OnComplete(()=> {
-            if (!IsDoneAll()) OnOrderComplete(false);
+            //if (!GameManager.Instance.ordermanager.IsDoneAll()) OnOrderComplete(false);
         }));
+
         if (mySequence != null)
             mySequence.Kill();
+
         mySequence = DOTween.Sequence();
+
         mySequence.Append(rectWrapSlotOrder.DOSizeDelta(vectorDefault, .25f, true));
-        
+
         for (int i = 0; i < slotOrders.Count; i++)
         {
-            cakeOrderTemp = mapCakeConfigsData.GetCakeOrder(currentOrderIndex, i);
+            cakeOrderTemp = GameManager.Instance.ordermanager.GetCakeOrder(i);
             CakeData cakeData = ProfileManager.Instance.dataConfig.cakeDataConfig.GetCakeData(cakeOrderTemp.type);
             slotOrders[i].InitData(cakeData, cakeOrderTemp.amount);
         }
     }
 
-    public void OnOrderComplete(bool isDone) {
+    public void OnOrderComplete(bool isDone, UnityAction actionCallBack = null) {
         
 
         vectorScale = rectWrapSlotOrder.sizeDelta;
@@ -85,8 +86,9 @@ public class WrapOrder : MonoBehaviour
                 CoinEffect coinEffect = GameManager.Instance.objectPooling.GetCoinEffect();
                 coinEffect.transform.position = trsBox.position;
                 coinEffect.Move(UIManager.instance.panelTotal.GetCoinTrs());
+                if (actionCallBack != null)
+                    actionCallBack();
             }
-            RandomOrder();
         });
     }
 
@@ -101,19 +103,8 @@ public class WrapOrder : MonoBehaviour
             }
         }
 
-        if (IsDoneAll())
-        {
-            ProfileManager.Instance.playerData.playerResourseSave.AddMoney(15);
-            OnOrderComplete(true);
-        }
+       
     }
 
-    bool IsDoneAll() {
-        for (int i = 0; i < slotOrders.Count; i++)
-        {
-            if (!slotOrders[i].IsDone())
-                return false;
-        }
-        return true;
-    }
+   
 }

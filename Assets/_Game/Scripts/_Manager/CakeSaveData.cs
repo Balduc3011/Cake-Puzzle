@@ -1,4 +1,5 @@
 
+using _BaseGame.ScriptableObjects.MapData;
 using SDK;
 using System;
 using System.Collections;
@@ -13,6 +14,9 @@ public class CakeSaveData : SaveBase
     public List<int> cakeIDUsing = new List<int>();
     public List<CakeOnPlate> cakeOnPlates = new List<CakeOnPlate>();
     public List<CakeOnWait> cakeOnWaits = new List<CakeOnWait>();
+
+    public OrderProgress orderProgress;
+
     public override void LoadData()
     {
         SetStringSave("CakeSaveData");
@@ -26,6 +30,7 @@ public class CakeSaveData : SaveBase
             cakeIDUsing = data.cakeIDUsing;
             cakeOnPlates = data.cakeOnPlates;
             cakeOnWaits = data.cakeOnWaits;
+            orderProgress = data.orderProgress;
             UpdateCardRequire();
         }
         else {
@@ -387,7 +392,97 @@ public class CakeSaveData : SaveBase
         }
         return true;
     }
+
+    public void AddCakeProgress(int cakeID)
+    {
+        orderProgress.AddProgress(cakeID);
+        IsMarkChangeData();
+        SaveData();
+    }
+
+    public int GetProgressOrder(int orderIndex)
+    {
+        return orderProgress.GetProgressOrder(orderIndex);
+    }
+
+    public OrderProgress InitprogressData(int currentLevel, MapCakeConfigsData mapCakeConfigsData)
+    {
+        //orderProgress = new();
+        orderProgress.currentOrderLevel = currentLevel;
+        orderProgress.currentOrderIndex = 0;
+        orderProgress.progress.Clear();
+        orderProgress.InitData(mapCakeConfigsData.GetListCakeOrder(0));
+        IsMarkChangeData();
+        SaveData();
+        return orderProgress;
+    }
+
+    public void NextOrder(MapCakeConfigsData mapCakeConfigsData)
+    {
+        orderProgress.currentOrderIndex++;
+        orderProgress.InitData(mapCakeConfigsData.GetListCakeOrder(orderProgress.currentOrderIndex));
+        IsMarkChangeData();
+        SaveData();
+    }
 }
+
+[System.Serializable]
+public class OrderProgress
+{
+    public int currentOrderLevel;
+    public int currentOrderIndex;
+    public List<OrderCake> progress;
+
+    public void SetIsDone(int progressIndex) { progress[progressIndex].isDone = true; }
+
+    public void AddProgress(int cakeID)
+    {
+        for (int i = 0; i < progress.Count; i++)
+        {
+            if (progress[i].cakeID == cakeID && !progress[i].isDone)
+            {
+                progress[i].progress++;
+                break;
+            }
+        }
+    }
+
+    public int GetProgressOrder(int orderIndex)
+    {
+        if (orderIndex < progress.Count) return progress[orderIndex].progress;
+        return -1;
+    }
+
+    public void InitData(List<CakeOrder> cakeOrders) {
+        for (int i = 0; i < cakeOrders.Count; i++)
+        {
+            OrderCake newOrderCake = new();
+            newOrderCake.cakeID = cakeOrders[i].type;
+            newOrderCake.progress = 0;
+            newOrderCake.isDone = false;
+            progress.Add(newOrderCake);
+        }
+    }
+
+    public bool IsDoneAll()
+    {
+        for (int i = 0; i < progress.Count; i++)
+        {
+            if (!progress[i].isDone)
+                return false;
+        }
+        return true;
+    }
+}
+
+[System.Serializable]
+public class OrderCake
+{
+    public int cakeID;
+    public int progress;
+    public bool isDone;
+}
+
 
 [System.Serializable]
 public class CakeOnPlate {

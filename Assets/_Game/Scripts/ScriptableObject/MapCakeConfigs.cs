@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using JetBrains.Annotations;
 using SDK;
 using Sirenix.OdinInspector;
 using Sirenix.Utilities;
@@ -69,6 +70,11 @@ namespace _BaseGame.ScriptableObjects.MapData
         {
             EditorUtility.SetDirty(this);
             AssetDatabase.SaveAssets();
+        }
+
+        public bool IsLastOrderOfLevel(int level, int currentOrderIndex)
+        {
+            return (GetMapCakeConfigsData(level).cakeOrders.Count/3 == currentOrderIndex);
         }
     }
     
@@ -163,6 +169,15 @@ namespace _BaseGame.ScriptableObjects.MapData
 
         public CakeOrder GetCakeOrder(int currentOrderIndex, int slotOrderIndex) {
             return cakeOrders[currentOrderIndex * 3 + slotOrderIndex];
+        }
+        List<CakeOrder> cakeOrdersTemp = new();
+        public List<CakeOrder> GetListCakeOrder(int currentOrderIndex) {
+            cakeOrdersTemp.Clear();
+            for (int i = currentOrderIndex * 3; i < (currentOrderIndex + 1) *3; i++)
+            {
+                cakeOrdersTemp.Add(cakeOrders[i]);
+            }
+            return cakeOrdersTemp;
         }
     }
     

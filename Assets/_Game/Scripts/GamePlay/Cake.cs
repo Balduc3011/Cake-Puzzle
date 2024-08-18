@@ -943,7 +943,7 @@ public class Cake : MonoBehaviour
 
         tweenAnimations.Add(transform.DOScale(0f, .3f).SetEase(Ease.InQuad));
 
-        UIManager.instance.panelGamePlay.wrapOrder.DoneACake(pieces[0].cakeID);
+     GameManager.Instance.ordermanager.DoneACake(pieces[0].cakeID);
 
         DOVirtual.DelayedCall(CacheSourse.float05, () => {
             //Debug.Log("Destroy now");
