@@ -40,7 +40,6 @@ public class WrapOrder : MonoBehaviour
     }
 
     public void GetOrder() {
-        Debug.Log("Order");
         if (GameManager.Instance.ordermanager.ShowOrder())
             gameObject.SetActive(true);
         GameManager.Instance.ordermanager.isFail = false;
@@ -48,7 +47,7 @@ public class WrapOrder : MonoBehaviour
 
         sequenceTime = DOTween.Sequence();
 
-        sequenceTime.Append(DOVirtual.Float(timeSetting, 0, timeSetting, (value) => {
+        sequenceTime.Append(DOVirtual.Float(GameManager.Instance.ordermanager.GetTimeOrder(), 0, GameManager.Instance.ordermanager.GetTimeOrder(), (value) => {
             txtTime.text = TimeUtil.TimeToString(((int)value + 1));
         }).SetEase(Ease.Linear).OnComplete(()=> {
             GameManager.Instance.ordermanager.isFail = true;
@@ -67,7 +66,6 @@ public class WrapOrder : MonoBehaviour
         for (int i = 0; i < slotOrders.Count; i++)
         {
             cakeOrderTemp = GameManager.Instance.ordermanager.GetCakeOrder(i);
-            Debug.Log(cakeOrderTemp.amount);
             CakeData cakeData = ProfileManager.Instance.dataConfig.cakeDataConfig.GetCakeData(cakeOrderTemp.type);
             slotOrders[i].InitData(cakeData, cakeOrderTemp.amount);
         }

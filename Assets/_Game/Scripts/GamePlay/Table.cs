@@ -502,12 +502,12 @@ public class Table : MonoBehaviour
             return plateTemp[UnityEngine.Random.Range(0, plateTemp.Count)];
         return null;
     }
-    public void LoadCakeOnPlateCheat(Cake newCake) {
-        Plate plateTemp = GetNullPlate();
+    public void LoadCakeOnPlateCheat(Cake newCake, PlateIndex plateIndex, int totalPieces) {
+        Plate plateTemp = plateArray[plateIndex.indexX, plateIndex.indexY];
         newCake.transform.parent = plateTemp.pointStay.transform;
         newCake.transform.localPosition = Vector3.zero;
         plateTemp.currentCake = newCake;
-        newCake.InitData(plateTemp);
+        newCake.InitData(plateTemp, totalPieces);
     }
 
     public void SaveCake() {

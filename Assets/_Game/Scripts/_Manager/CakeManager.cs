@@ -1,3 +1,4 @@
+using _BaseGame.ScriptableObjects.MapData;
 using DG.Tweening;
 using System;
 using System.Collections;
@@ -64,11 +65,14 @@ public class CakeManager : MonoBehaviour
     [SerializeField] Transform pointEnd;
 
     UnityAction<Cake> actionCallBack;
+    MapCakeConfigsData mapCakeConfigData;
+  
 
     private void Start()
     {
         EventManager.AddListener(EventName.ChangeLevel.ToString(), LevelUp);
         EventManager.AddListener(EventName.UpdateCakeOnPlate.ToString(), UpdateCake);
+     
     }
 
     bool isFirstTimeMove;
@@ -430,7 +434,6 @@ public class CakeManager : MonoBehaviour
                     countFaild++;
             }
         }
-        Debug.Log(countFaild + " count check fail: " + countCheckFaild);
         if (countFaild == countCheckFaild && countFaild > 0)
         {
             UIManager.instance.TurnBlock(true);
@@ -530,16 +533,24 @@ public class CakeManager : MonoBehaviour
     }
 
     public void InitCakeFromLevelData() {
-        int totalPlateCount = ProfileManager.Instance.dataConfig.levelDataConfig.GetTotalCakeRandom();
-        for (int i = 0; i < totalPlateCount; i++)
+        //int totalPlateCount = ProfileManager.Instance.dataConfig.levelDataConfig.GetTotalCakeRandom();
+        //for (int i = 0; i < totalPlateCount; i++)
+        //{
+        //    GameManager.Instance.cakeManager.LoadCakeCheat();
+        //}
+        for (int i = 0; i < mapCakeConfigData.board.Board.Count; i++)
         {
-            GameManager.Instance.cakeManager.LoadCakeCheat();
+            if (mapCakeConfigData.board.Board[i].value != 0)
+            {
+                PlateIndex plateIndex = new(mapCakeConfigData.board.Board[i].row, mapCakeConfigData.board.Board[i].col);
+                LoadCakeCheat(plateIndex, mapCakeConfigData.board.Board[i].value);
+            }
         }
     }
 
-    public void LoadCakeCheat() {
+    public void LoadCakeCheat(PlateIndex plateIndex, int totalPieces) {
         Cake newCake = Instantiate(cakePref);
-        table.LoadCakeOnPlateCheat(newCake);
+        table.LoadCakeOnPlateCheat(newCake, plateIndex, totalPieces);
     }
 
     public bool CakeOnWait(GroupCake myGroupCake)
@@ -582,6 +593,8 @@ public class CakeManager : MonoBehaviour
     }
 
     void LevelUp() {
+        int currentLevel = ProfileManager.Instance.playerData.playerResourseSave.currentLevel;
+        mapCakeConfigData = MapCakeConfigs.Instance.GetMapCakeConfigsData(currentLevel);
         onMove = true;
         int newCakeID = ProfileManager.Instance.dataConfig.levelDataConfig.GetCakeID(ProfileManager.Instance.playerData.playerResourseSave.currentLevel - 1);
         SetJustUnlockedCake(newCakeID);

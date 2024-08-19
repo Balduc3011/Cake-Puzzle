@@ -56,7 +56,7 @@ public class CheatPanel : UIPanel
         }
         for (int i = 0; i < totalPlateCount; i++)
         {
-            GameManager.Instance.cakeManager.LoadCakeCheat();
+            //GameManager.Instance.cakeManager.LoadCakeCheat();
         }
     }
 }

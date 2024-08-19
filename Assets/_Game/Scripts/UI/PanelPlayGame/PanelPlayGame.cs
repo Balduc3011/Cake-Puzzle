@@ -66,7 +66,6 @@ public class PanelPlayGame : UIPanel
         if (ProfileManager.Instance.playerData.playerResourseSave.currentLevel == 0
             && ProfileManager.Instance.playerData.playerResourseSave.currentExp == 0)
         {
-            OpenObjBlockAll();
             mainCG.alpha = 0;
         }
         else

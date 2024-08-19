@@ -42,6 +42,7 @@ public class GameManager : Singleton<GameManager>
     {
         UIManager.instance.ShowPanelPlayGame();
         ordermanager.UpdateData();
+        ordermanager.CheckDoneAll(true);
         cakeManager.PlayGame();
         playing = true;
         if(tutorialManager.TutorialCondition())

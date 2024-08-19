@@ -165,11 +165,11 @@ public class Cake : MonoBehaviour
         UpdatePlateDecor();
     }
 
-    public void InitData(Plate plate)
+    public void InitData(Plate plate, int totalPieces)
     {
         SetFirstIndexOfPiece();
         tweenAnimations.Add(transform.DOScale(scaleDefault, .5f).From(1.2f).SetEase(Ease.InOutBack));
-        totalPieces = GameManager.Instance.cakeManager.GetPiecesTotal() + 1;
+        this.totalPieces = totalPieces;
         SetupPiecesCakeID();
         pieceIndex = 0;
         SetUpCakeID();
@@ -887,7 +887,8 @@ public class Cake : MonoBehaviour
     {
         GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_TapCube);
         GameManager.Instance.questManager.AddProgress(QuestType.CompleteCake, 1);
-        GameManager.Instance.quickTimeEventManager.AddProgess(pieces[0].cakeID, transform);
+        //GameManager.Instance.quickTimeEventManager.AddProgess(pieces[0].cakeID, transform);
+        GameManager.Instance.ordermanager.DoneACake(pieces[0].cakeID);
         if (panelTotal == null)
             panelTotal = UIManager.instance.panelTotal;
 
@@ -943,7 +944,7 @@ public class Cake : MonoBehaviour
 
         tweenAnimations.Add(transform.DOScale(0f, .3f).SetEase(Ease.InQuad));
 
-     GameManager.Instance.ordermanager.DoneACake(pieces[0].cakeID);
+    
 
         DOVirtual.DelayedCall(CacheSourse.float05, () => {
             //Debug.Log("Destroy now");

@@ -2,6 +2,7 @@ using _BaseGame.ScriptableObjects.MapData;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 
 public class OrderManager : Singleton<OrderManager>
@@ -42,30 +43,44 @@ public class OrderManager : Singleton<OrderManager>
     {
         if (mapCakeConfigsData == null)
             UpdateData();
-        Debug.Log($"current order index {currentOrderIndex * 3 + cakeIndex}");
         return mapCakeConfigsData.GetCakeOrder(currentOrderIndex, cakeIndex);
+    }
+
+    public float GetTimeOrder()
+    {
+        return mapCakeConfigsData.orderCakeTime * 60;
     }
 
     public void DoneACake(int cakeID)
     {
+        if (currentLevel == 0)
+        {
+            ProfileManager.Instance.playerData.playerResourseSave.LevelUp();
+            return;
+        }
         ProfileManager.Instance.playerData.cakeSaveData.AddCakeProgress(cakeID);
         UIManager.instance.panelGamePlay.wrapOrder.DoneACake(cakeID);
         
         orderProgress = ProfileManager.Instance.playerData.cakeSaveData.orderProgress;
+        CheckDoneAll(false);
+    }
 
+    public void CheckDoneAll(bool checkFromFirstGame) {
+        if (currentLevel == 0)
+            return;
         if (IsDoneAll())
         {
-            ProfileManager.Instance.playerData.playerResourseSave.AddMoney(15);
-            if (MapCakeConfigs.Instance.IsLastOrderOfLevel(currentLevel, currentOrderIndex+1))
+            if(!checkFromFirstGame)
+                ProfileManager.Instance.playerData.playerResourseSave.AddMoney(15);
+
+            if (MapCakeConfigs.Instance.IsLastOrderOfLevel(currentLevel, currentOrderIndex + 1))
             {
                 Debug.Log("Level up");
                 ProfileManager.Instance.playerData.playerResourseSave.LevelUp();
             }
             else
-            {
                 ProfileManager.Instance.playerData.cakeSaveData.NextOrder(mapCakeConfigsData);
-            }
-
+            ProfileManager.Instance.playerData.cakeSaveData.SetTimeRemaining(DateTime.Now.AddMinutes(mapCakeConfigsData.orderCakeTime).ToString(new CultureInfo("en-US")));
             UIManager.instance.panelGamePlay.wrapOrder.OnOrderComplete(true, UpdateData);
 
 

@@ -4,6 +4,7 @@ using SDK;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 
 [System.Serializable]
@@ -405,10 +406,11 @@ public class CakeSaveData : SaveBase
         return orderProgress.GetProgressOrder(orderIndex);
     }
 
-    public OrderProgress InitprogressData(int currentLevel, MapCakeConfigsData mapCakeConfigsData)
+    public OrderProgress InitprogressData(float currentLevel, MapCakeConfigsData mapCakeConfigsData)
     {
         //orderProgress = new();
-        orderProgress.currentOrderLevel = currentLevel;
+        int levelTemp = currentLevel > MapCakeConfigs.Instance.mapCakeConfigs.Count ? (int)(currentLevel % MapCakeConfigs.Instance.mapCakeConfigs.Count) : (int)currentLevel;
+        orderProgress.currentOrderLevel = levelTemp;
         orderProgress.currentOrderIndex = 0;
         orderProgress.progress.Clear();
         orderProgress.InitData(mapCakeConfigsData.GetListCakeOrder(0));
@@ -424,6 +426,14 @@ public class CakeSaveData : SaveBase
         IsMarkChangeData();
         SaveData();
     }
+
+    public void SetTimeRemaining(string timeDone) { orderProgress.SetTimeRemaining(timeDone); }
+
+    public float GetTimeRemaining() {
+        //float timeRemaining = DateTime.Parse(orderProgress.GetTimeRemaining(), new CultureInfo("en-US"));
+        //return orderProgress.GetTimeRemaining();
+        return 1;
+    }
 }
 
 [System.Serializable]
@@ -431,7 +441,11 @@ public class OrderProgress
 {
     public int currentOrderLevel;
     public int currentOrderIndex;
+    public string timeDone;
     public List<OrderCake> progress = new();
+
+    public void SetTimeRemaining(string timeRemaining) { this.timeDone = timeRemaining; }
+    public string GetTimeRemaining() { return timeDone; }
 
     public void SetIsDone(int progressIndex) { progress[progressIndex + currentOrderIndex * 3].isDone = true; }
 

@@ -1,3 +1,4 @@
+using _BaseGame.ScriptableObjects.MapData;
 using SDK;
 using System;
 using System.Collections;
@@ -52,7 +53,7 @@ public class PlayerResourseSave : SaveBase
         }
         else
         {
-            currentLevel = 1;
+            currentLevel = 0;
             SetNewSetting();
             IsMarkChangeData();
             SaveData();
@@ -294,6 +295,8 @@ public class PlayerResourseSave : SaveBase
     public void LevelUp() {
         GameManager.Instance.audioManager.PlaySoundEffect(SoundId.SFX_LevelUp);
         currentLevel++;
+        //if (currentLevel > MapCakeConfigs.Instance.mapCakeConfigs.Count)
+        //    currentLevel = 1;
         ABIAnalyticsManager.Instance.TrackEventLevelComplete(currentLevel);
         GameManager.Instance.GetLevelUpReward();
         EventManager.TriggerEvent(EventName.ChangeLevel.ToString());

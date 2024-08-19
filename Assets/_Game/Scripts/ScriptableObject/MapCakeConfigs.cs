@@ -52,9 +52,10 @@ namespace _BaseGame.ScriptableObjects.MapData
             });
         }
 
-        public MapCakeConfigsData GetMapCakeConfigsData(int level)
+        public MapCakeConfigsData GetMapCakeConfigsData(float level)
         {
-            return mapCakeConfigs.Find(m => m.level == level);
+            int levelTemp = level > mapCakeConfigs.Count ? (int)(level % mapCakeConfigs.Count) : (int)level;
+            return mapCakeConfigs.Find(m => m.level == levelTemp);
         }
         [Button]
         public void GenerateCakeRequired()
