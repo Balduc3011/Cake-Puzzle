@@ -11,8 +11,8 @@ public class PanelLevelComplete : UIPanel
 {
     [SerializeField] Button btnReviveCoin;
     [SerializeField] Button btnReviveAds;
-    [SerializeField] Button btnReviveAdsMission;
-    [SerializeField] Button btnReviveCoinMisison;
+    [SerializeField] Button btnReviveAdsOrder;
+    [SerializeField] Button btnReviveCoinOrder;
     [SerializeField] Button winGameCloseBtn;
     [SerializeField] Button btnExit;
     [SerializeField] Transform panelWrapTrs;
@@ -37,8 +37,8 @@ public class PanelLevelComplete : UIPanel
         btnReviveCoin.onClick.AddListener(ReviveCoin);
         btnReviveAds.onClick.AddListener(ReviveADS);
 
-        btnReviveCoinMisison.onClick.AddListener(ReviveCoinMission);
-        btnReviveAdsMission.onClick.AddListener(ReviveADSMission);
+        btnReviveCoinOrder.onClick.AddListener(ReviveCoinOrder);
+        btnReviveAdsOrder.onClick.AddListener(ReviveADSOrder);
 
         btnExit.onClick.AddListener(ShowPanelHint);
         hintObj.onClick.AddListener(ExitPanel);
@@ -109,35 +109,37 @@ public class PanelLevelComplete : UIPanel
         OnClose();
     }
 
-    void ReviveCoinMission()
+    void ReviveCoinOrder()
     {
-        if (btnReviveAdsMission.gameObject.activeSelf)
+        if (btnReviveAdsOrder.gameObject.activeSelf)
             ProfileManager.Instance.playerData.playerResourseSave.ConsumeMoney(500);
         else
             ProfileManager.Instance.playerData.playerResourseSave.SetIsFirstTimeLooseByMission();
+        GameManager.Instance.ordermanager.Revive();
         OnClose();
     }
 
-    void ReviveADSMission()
+    void ReviveADSOrder()
     {
         GameManager.Instance.ShowRewardVideo(WatchVideoRewardType.GameOverRevive, ReviveADSMissionSucces);
     }
 
     void ReviveADSMissionSucces()
     {
+        GameManager.Instance.ordermanager.Revive();
         OnClose();
     }
 
     public void ShowPanel(bool isWinGame)
     {
-        objLooseGame.SetActive(!isWinGame && !GameManager.Instance.quickTimeEventManager.isFail);
-        objLooseGameByMission.SetActive(!isWinGame && GameManager.Instance.quickTimeEventManager.isFail);
+        objLooseGame.SetActive(!isWinGame && !GameManager.Instance.ordermanager.isFail);
+        objLooseGameByMission.SetActive(!isWinGame && GameManager.Instance.ordermanager.isFail);
         objWinGame.SetActive(isWinGame);
 
         if (objLooseGameByMission.activeSelf)
         {
-            btnReviveAdsMission.gameObject.SetActive(ProfileManager.Instance.playerData.playerResourseSave.isFirstTimeLooseByMission);
-            txtPriceRevieMisisonFail.text = btnReviveAdsMission.gameObject.activeSelf ? "500" : "Free";
+            btnReviveAdsOrder.gameObject.SetActive(ProfileManager.Instance.playerData.playerResourseSave.isFirstTimeLooseByMission);
+            txtPriceRevieMisisonFail.text = btnReviveAdsOrder.gameObject.activeSelf ? "500" : "Free";
         }
 
         if (isWinGame) winSheetAnimation.PlayAnim();

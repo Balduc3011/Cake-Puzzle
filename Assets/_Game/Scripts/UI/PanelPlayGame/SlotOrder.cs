@@ -46,7 +46,7 @@ public class SlotOrder : SlotBase<CakeData>
         orderIndex = orderIndex == -1 ? orderIndex = transform.GetSiblingIndex() : orderIndex;
 
         currentCakeDone = ProfileManager.Instance.playerData.cakeSaveData.GetProgressOrder(orderIndex);
-
+        objCountCakeWrap.SetActive(true);
         txtCountCake.text = $"{currentCakeDone}/{totalCakeRequire}";
 
         if (totalCakeRequire <= currentCakeDone)

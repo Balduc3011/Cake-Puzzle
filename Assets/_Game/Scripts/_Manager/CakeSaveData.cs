@@ -431,9 +431,9 @@ public class OrderProgress
 {
     public int currentOrderLevel;
     public int currentOrderIndex;
-    public List<OrderCake> progress;
+    public List<OrderCake> progress = new();
 
-    public void SetIsDone(int progressIndex) { progress[progressIndex].isDone = true; }
+    public void SetIsDone(int progressIndex) { progress[progressIndex + currentOrderIndex * 3].isDone = true; }
 
     public void AddProgress(int cakeID)
     {
@@ -449,7 +449,8 @@ public class OrderProgress
 
     public int GetProgressOrder(int orderIndex)
     {
-        if (orderIndex < progress.Count) return progress[orderIndex].progress;
+        Debug.Log("current order index: "+currentOrderIndex);
+        if (orderIndex < progress.Count) return progress[orderIndex + currentOrderIndex * 3].progress;
         return -1;
     }
 

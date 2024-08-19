@@ -11,6 +11,7 @@ public class OrderManager : Singleton<OrderManager>
     int currentLevel = 0;
     int currentOrderIndex = 0;
     public OrderProgress orderProgress;
+    public bool isFail;
 
     private void Start()
     {
@@ -41,6 +42,7 @@ public class OrderManager : Singleton<OrderManager>
     {
         if (mapCakeConfigsData == null)
             UpdateData();
+        Debug.Log($"current order index {currentOrderIndex * 3 + cakeIndex}");
         return mapCakeConfigsData.GetCakeOrder(currentOrderIndex, cakeIndex);
     }
 
@@ -78,5 +80,12 @@ public class OrderManager : Singleton<OrderManager>
     public bool ShowOrder()
     {
         return true;
+    }
+
+    public void Revive()
+    {
+        isFail = false;
+        UIManager.instance.panelGamePlay.wrapOrder.gameObject.SetActive(true);
+        UIManager.instance.panelGamePlay.wrapOrder.GetOrder();
     }
 }
