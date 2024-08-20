@@ -13,6 +13,7 @@ public class OrderManager : Singleton<OrderManager>
     int currentOrderIndex = 0;
     public OrderProgress orderProgress;
     public bool isFail;
+    float timeRemaining;
 
     private void Start()
     {
@@ -36,6 +37,13 @@ public class OrderManager : Singleton<OrderManager>
 
         currentOrderIndex = orderProgress.currentOrderIndex;
 
+        timeRemaining = ProfileManager.Instance.playerData.cakeSaveData.GetTimeRemaining();
+        if (timeRemaining == 0)
+        {
+            ProfileManager.Instance.playerData.cakeSaveData.ResetProgres();
+            ProfileManager.Instance.playerData.cakeSaveData.SetTimeRemainingOrder();
+        }
+
         UIManager.instance.panelGamePlay?.wrapOrder.GetOrder();
     }
 
@@ -48,8 +56,14 @@ public class OrderManager : Singleton<OrderManager>
 
     public float GetTimeOrder()
     {
-        return mapCakeConfigsData.orderCakeTime * 60;
+        if (timeRemaining == 0)
+        {
+            float totalOrder = mapCakeConfigsData.cakeOrders.Count / 3;
+            return (mapCakeConfigsData.orderCakeTime * 60) / totalOrder;
+        }
+        else return timeRemaining;
     }
+      
 
     public void DoneACake(int cakeID)
     {

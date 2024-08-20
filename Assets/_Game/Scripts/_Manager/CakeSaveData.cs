@@ -414,15 +414,37 @@ public class CakeSaveData : SaveBase
         orderProgress.currentOrderIndex = 0;
         orderProgress.progress.Clear();
         orderProgress.InitData(mapCakeConfigsData.GetListCakeOrder(0));
+
+        SetTimeRemainingOrder();
+
+        return orderProgress;
+    }
+
+    public void ResetProgres() {
+        orderProgress.ResetProgress();
         IsMarkChangeData();
         SaveData();
-        return orderProgress;
+    }
+
+    public void SetTimeRemainingOrder() {
+        MapCakeConfigsData mapCakeConfigsData = OrderManager.Instance.mapCakeConfigsData;
+        float totalOrder = mapCakeConfigsData.cakeOrders.Count / 3;
+        orderProgress.SetTimeRemaining(DateTime.Now.AddSeconds((mapCakeConfigsData.orderCakeTime * 60) / totalOrder).ToString(new CultureInfo("en-US")));
+
+        IsMarkChangeData();
+        SaveData();
     }
 
     public void NextOrder(MapCakeConfigsData mapCakeConfigsData)
     {
         orderProgress.currentOrderIndex++;
+
         orderProgress.InitData(mapCakeConfigsData.GetListCakeOrder(orderProgress.currentOrderIndex));
+
+        float totalOrder = mapCakeConfigsData.cakeOrders.Count / 3;
+
+        orderProgress.SetTimeRemaining(DateTime.Now.AddSeconds((mapCakeConfigsData.orderCakeTime * 60) / totalOrder).ToString(new CultureInfo("en-US")));
+
         IsMarkChangeData();
         SaveData();
     }
@@ -430,9 +452,7 @@ public class CakeSaveData : SaveBase
     public void SetTimeRemaining(string timeDone) { orderProgress.SetTimeRemaining(timeDone); }
 
     public float GetTimeRemaining() {
-        //float timeRemaining = DateTime.Parse(orderProgress.GetTimeRemaining(), new CultureInfo("en-US"));
-        //return orderProgress.GetTimeRemaining();
-        return 1;
+        return orderProgress.GetTimeRemaining();
     }
 }
 
@@ -445,7 +465,13 @@ public class OrderProgress
     public List<OrderCake> progress = new();
 
     public void SetTimeRemaining(string timeRemaining) { this.timeDone = timeRemaining; }
-    public string GetTimeRemaining() { return timeDone; }
+    public float GetTimeRemaining() {
+        DateTime timeOut = DateTime.Parse(timeDone, new CultureInfo("en-US"));
+        if (DateTime.Compare(DateTime.Now, timeOut) > 0)
+            return 0;
+        else 
+            return (float)timeOut.Subtract(DateTime.Now).TotalSeconds;
+    }
 
     public void SetIsDone(int progressIndex) { progress[progressIndex + currentOrderIndex * 3].isDone = true; }
 
@@ -487,6 +513,14 @@ public class OrderProgress
                 return false;
         }
         return true;
+    }
+
+    public void ResetProgress() {
+        for (int i = 0; i < progress.Count; i++)
+        {
+            progress[i].progress = 0;
+            progress[i].isDone = false;
+        }
     }
 }
 

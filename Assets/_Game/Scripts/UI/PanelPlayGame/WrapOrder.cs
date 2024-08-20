@@ -46,8 +46,8 @@ public class WrapOrder : MonoBehaviour
         if (sequenceTime != null) sequenceTime.Kill();
 
         sequenceTime = DOTween.Sequence();
-
-        sequenceTime.Append(DOVirtual.Float(GameManager.Instance.ordermanager.GetTimeOrder(), 0, GameManager.Instance.ordermanager.GetTimeOrder(), (value) => {
+        float timeOrder = GameManager.Instance.ordermanager.GetTimeOrder();
+        sequenceTime.Append(DOVirtual.Float(timeOrder, 0, timeOrder, (value) => {
             txtTime.text = TimeUtil.TimeToString(((int)value + 1));
         }).SetEase(Ease.Linear).OnComplete(()=> {
             GameManager.Instance.ordermanager.isFail = true;
