@@ -1046,7 +1046,7 @@ public class Cake : MonoBehaviour
         mySequence.Append(transform.DOScale(0f, .13f));
         mySequence.OnComplete(() =>
         {
-            Destroy(this.gameObject);
+            //Destroy(this.gameObject);
         });
     }
 }

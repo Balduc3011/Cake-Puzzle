@@ -47,7 +47,7 @@ public class CheatPanel : UIPanel
     }
 
     void Spawn() {
-        GameManager.Instance.cakeManager.ClearCake();
+        //GameManager.Instance.cakeManager.ClearCake();
         totalPlateCount = int.Parse(totalPlateInput.text);
         totalPlateCount = totalPlateCount > 20 ? 20 : totalPlateCount;
         for (int i = 0; i < slots.Count; i++)

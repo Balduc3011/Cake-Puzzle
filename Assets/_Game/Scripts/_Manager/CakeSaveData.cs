@@ -466,6 +466,8 @@ public class OrderProgress
 
     public void SetTimeRemaining(string timeRemaining) { this.timeDone = timeRemaining; }
     public float GetTimeRemaining() {
+        if (string.IsNullOrEmpty(timeDone))
+            return 0;
         DateTime timeOut = DateTime.Parse(timeDone, new CultureInfo("en-US"));
         if (DateTime.Compare(DateTime.Now, timeOut) > 0)
             return 0;
@@ -489,7 +491,6 @@ public class OrderProgress
 
     public int GetProgressOrder(int orderIndex)
     {
-        Debug.Log("current order index: "+currentOrderIndex);
         if (orderIndex < progress.Count) return progress[orderIndex + currentOrderIndex * 3].progress;
         return -1;
     }

@@ -320,6 +320,7 @@ public class GameManager : Singleton<GameManager>
 
     public void ClearAllCake()
     {
+       
         cakeManager.ClearAllCake();
     }
 

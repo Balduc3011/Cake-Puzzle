@@ -140,6 +140,7 @@ public class CakeManager : MonoBehaviour
     }
 
     public void InitGroupCake() {
+        Debug.Log("Init group cake");
         SetCountPieces();
         indexGroupCake = 0;
         onInitGroup = true;
@@ -151,6 +152,8 @@ public class CakeManager : MonoBehaviour
     IEnumerator IE_WaitToInitGroupCake() {
         while (indexGroupCake < 3)
         {
+
+            Debug.Log("index group cake: " + indexGroupCake);
             groupCake = GameManager.Instance.objectPooling.GetGroupCake();
             cakesWait.Add(groupCake);
             groupCake.transform.position = pointFirstSpawn[indexGroupCake].position;
@@ -186,16 +189,9 @@ public class CakeManager : MonoBehaviour
 
     public void CheckSpawnCakeGroup()
     {
-        if (cakesWait.Count <= 0) { InitGroupCake(); }
-    }
-
-    public void RemoveAllCakeWait() {
-        for (int i = cakesWait.Count - 1; i >= 0; i--)
-        {
-            Destroy(cakesWait[i].gameObject);
-            cakesWait.RemoveAt(i);
+        if (cakesWait.Count <= 0 && !isLooseByOrder) {
+            InitGroupCake();
         }
-        InitGroupCake();
     }
 
 
@@ -463,13 +459,6 @@ public class CakeManager : MonoBehaviour
         return ProfileManager.Instance.dataConfig.cakeDataConfig.GetCakePieceMesh(nextUnlockCake);
     }
 
-    public void ClearCake()
-    {
-        ProfileManager.Instance.playerData.cakeSaveData.ClearAllCake();
-        table.ClearAllCakeByItem();
-        RemoveAllCakeWait();
-    }
-
     void UpdateCake() {
         if (cakeOnPlates.Count == 0)
             cakeOnPlates = ProfileManager.Instance.playerData.cakeSaveData.cakeOnPlates;
@@ -490,28 +479,32 @@ public class CakeManager : MonoBehaviour
 
     public void ClearAllCake()
     {
+        ProfileManager.Instance.playerData.cakeSaveData.ClearAllCake();
         levelUp = false;
         table.ClearAllCake();
         for (int i = 0; i < cakesWait.Count; i++)
         {
             cakesWait[i].OnDestroyCake();
+            //cakesWait[i].gameObject.SetActive(false);
             //Destroy(cakesWait[i].gameObject);
         }
         cakesWait.Clear();
         InitGroupCake();
     }
 
+    public bool isLooseByOrder = false;
 
     public void PlayGame()
     {
-        if (loaded)
+        if (loaded || isLooseByOrder)
             return;
+        Debug.Log("Load Data");
         if (ProfileManager.Instance.playerData.cakeSaveData.IsHaveCakeWaitSave())
         {
             LoadCakeWaitData();
         }
         else {
-            InitGroupCake();
+            //InitGroupCake();
         }
 
         if (ProfileManager.Instance.playerData.cakeSaveData.IsHaveCakeOnPlate())
@@ -538,6 +531,11 @@ public class CakeManager : MonoBehaviour
         //{
         //    GameManager.Instance.cakeManager.LoadCakeCheat();
         //}
+        Debug.Log("Clear");
+        ClearAllCake();
+        int currentLevel = ProfileManager.Instance.playerData.playerResourseSave.currentLevel;
+        mapCakeConfigData = MapCakeConfigs.Instance.GetMapCakeConfigsData(currentLevel);
+
         for (int i = 0; i < mapCakeConfigData.board.Board.Count; i++)
         {
             if (mapCakeConfigData.board.Board[i].value != 0)
@@ -546,6 +544,8 @@ public class CakeManager : MonoBehaviour
                 LoadCakeCheat(plateIndex, mapCakeConfigData.board.Board[i].value);
             }
         }
+
+        table.SaveCake();
     }
 
     public void LoadCakeCheat(PlateIndex plateIndex, int totalPieces) {
@@ -593,18 +593,12 @@ public class CakeManager : MonoBehaviour
     }
 
     void LevelUp() {
-        int currentLevel = ProfileManager.Instance.playerData.playerResourseSave.currentLevel;
-        mapCakeConfigData = MapCakeConfigs.Instance.GetMapCakeConfigsData(currentLevel);
+        //int currentLevel = ProfileManager.Instance.playerData.playerResourseSave.currentLevel;
+        //mapCakeConfigData = MapCakeConfigs.Instance.GetMapCakeConfigsData(currentLevel);
         onMove = true;
         int newCakeID = ProfileManager.Instance.dataConfig.levelDataConfig.GetCakeID(ProfileManager.Instance.playerData.playerResourseSave.currentLevel - 1);
         SetJustUnlockedCake(newCakeID);
         levelUp = true;
-        DOVirtual.DelayedCall(2f, ()=> {
-            ClearAllCake();
-            DOVirtual.DelayedCall(.5f, InitCakeFromLevelData).OnComplete(() => {
-                table.SaveCake();
-            });
-        });
        
         ShowLevelUp();
     }

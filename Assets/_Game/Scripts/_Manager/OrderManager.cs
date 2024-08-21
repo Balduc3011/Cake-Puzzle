@@ -9,8 +9,8 @@ public class OrderManager : Singleton<OrderManager>
 {
     public MapCakeConfigsData mapCakeConfigsData;
     CakeOrder cakeOrderTemp;
-    int currentLevel = 0;
-    int currentOrderIndex = 0;
+    public int currentLevel = 0;
+    public int currentOrderIndex = 0;
     public OrderProgress orderProgress;
     public bool isFail;
     float timeRemaining;
@@ -22,6 +22,7 @@ public class OrderManager : Singleton<OrderManager>
 
     public void UpdateData()
     {
+        Debug.Log("Update data order");
         currentLevel = ProfileManager.Instance.playerData.playerResourseSave.currentLevel;
 
         if (currentLevel == 0) return;
@@ -40,11 +41,14 @@ public class OrderManager : Singleton<OrderManager>
         timeRemaining = ProfileManager.Instance.playerData.cakeSaveData.GetTimeRemaining();
         if (timeRemaining == 0)
         {
+            GameManager.Instance.cakeManager.isLooseByOrder = true;
             ProfileManager.Instance.playerData.cakeSaveData.ResetProgres();
             ProfileManager.Instance.playerData.cakeSaveData.SetTimeRemainingOrder();
+            GameManager.Instance.cakeManager.InitCakeFromLevelData();
         }
 
         UIManager.instance.panelGamePlay?.wrapOrder.GetOrder();
+        GameManager.Instance.cakeManager.isLooseByOrder = false;
     }
 
     public CakeOrder GetCakeOrder(int cakeIndex)

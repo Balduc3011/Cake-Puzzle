@@ -18,6 +18,10 @@ public class ProfileManager : Singleton<ProfileManager>
     private void Update()
     {
         playerData.Update();
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            Time.timeScale *= 2f;
+        }
     }
 
     public bool IsShowCheat()

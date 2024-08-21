@@ -55,6 +55,7 @@ namespace _BaseGame.ScriptableObjects.MapData
         public MapCakeConfigsData GetMapCakeConfigsData(float level)
         {
             int levelTemp = level > mapCakeConfigs.Count ? (int)(level % mapCakeConfigs.Count) : (int)level;
+            Debug.Log("Level "+ levelTemp+" " +level);
             return mapCakeConfigs.Find(m => m.level == levelTemp);
         }
         [Button]
