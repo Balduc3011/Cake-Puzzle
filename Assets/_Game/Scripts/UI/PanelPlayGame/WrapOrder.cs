@@ -39,22 +39,17 @@ public class WrapOrder : MonoBehaviour
         }
     }
 
+    public void ChangeTextTime(float time) {
+        txtTime.text = TimeUtil.TimeToString(time);
+    }
+
     public void GetOrder() {
         if (GameManager.Instance.ordermanager.ShowOrder())
             gameObject.SetActive(true);
         GameManager.Instance.ordermanager.isFail = false;
         if (sequenceTime != null) sequenceTime.Kill();
 
-        sequenceTime = DOTween.Sequence();
-        float timeOrder = GameManager.Instance.ordermanager.GetTimeOrder();
-        sequenceTime.Append(DOVirtual.Float(timeOrder, 0, timeOrder, (value) => {
-            txtTime.text = TimeUtil.TimeToString(((int)value + 1));
-        }).SetEase(Ease.Linear).OnComplete(()=> {
-            GameManager.Instance.ordermanager.isFail = true;
-            UIManager.instance.ShowPanelLevelComplete(false);
-            gameObject.SetActive(false);
-            //if (!GameManager.Instance.ordermanager.IsDoneAll()) OnOrderComplete(false);
-        }));
+        GameManager.Instance.ordermanager.StartOrder();
 
         if (mySequence != null)
             mySequence.Kill();

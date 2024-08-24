@@ -429,7 +429,7 @@ public class CakeSaveData : SaveBase
     public void SetTimeRemainingOrder() {
         MapCakeConfigsData mapCakeConfigsData = OrderManager.Instance.mapCakeConfigsData;
         float totalOrder = mapCakeConfigsData.cakeOrders.Count / 3;
-        orderProgress.SetTimeRemaining(DateTime.Now.AddSeconds((mapCakeConfigsData.orderCakeTime * 60) / totalOrder).ToString(new CultureInfo("en-US")));
+        orderProgress.SetTimeRemaining((mapCakeConfigsData.orderCakeTime * 60) / totalOrder);
 
         IsMarkChangeData();
         SaveData();
@@ -437,19 +437,24 @@ public class CakeSaveData : SaveBase
 
     public void NextOrder(MapCakeConfigsData mapCakeConfigsData)
     {
+        //Debug.Log("Next order");
         orderProgress.currentOrderIndex++;
-
+        //Debug.Log("current order index: " + orderProgress.currentOrderIndex);
         orderProgress.InitData(mapCakeConfigsData.GetListCakeOrder(orderProgress.currentOrderIndex));
 
         float totalOrder = mapCakeConfigsData.cakeOrders.Count / 3;
 
-        orderProgress.SetTimeRemaining(DateTime.Now.AddSeconds((mapCakeConfigsData.orderCakeTime * 60) / totalOrder).ToString(new CultureInfo("en-US")));
+        orderProgress.SetTimeRemaining((mapCakeConfigsData.orderCakeTime * 60) / totalOrder);
 
         IsMarkChangeData();
         SaveData();
     }
 
-    public void SetTimeRemaining(string timeDone) { orderProgress.SetTimeRemaining(timeDone); }
+    public void SetTimeRemaining(float timeDone) { 
+        orderProgress.SetTimeRemaining(timeDone);
+        IsMarkChangeData();
+        SaveData();
+    }
 
     public float GetTimeRemaining() {
         return orderProgress.GetTimeRemaining();
@@ -461,18 +466,12 @@ public class OrderProgress
 {
     public int currentOrderLevel;
     public int currentOrderIndex;
-    public string timeDone;
+    public float timeRemain;
     public List<OrderCake> progress = new();
 
-    public void SetTimeRemaining(string timeRemaining) { this.timeDone = timeRemaining; }
+    public void SetTimeRemaining(float timeRemaining) { this.timeRemain = timeRemaining; }
     public float GetTimeRemaining() {
-        if (string.IsNullOrEmpty(timeDone))
-            return 0;
-        DateTime timeOut = DateTime.Parse(timeDone, new CultureInfo("en-US"));
-        if (DateTime.Compare(DateTime.Now, timeOut) > 0)
-            return 0;
-        else 
-            return (float)timeOut.Subtract(DateTime.Now).TotalSeconds;
+        return timeRemain;
     }
 
     public void SetIsDone(int progressIndex) { progress[progressIndex + currentOrderIndex * 3].isDone = true; }

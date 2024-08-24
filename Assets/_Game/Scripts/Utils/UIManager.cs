@@ -648,6 +648,7 @@ public class UIManager : MonoBehaviour {
     public void ClosePanelUsingItem()
     {
         //isHasPopupOnScene = false;
+        GameManager.Instance.ordermanager.SetStartOrder(true);
         GameObject go = GetPanel(UIPanelType.PanelUsingItem);
         go.SetActive(false);
         if (actionShowPanels.Count > 0)

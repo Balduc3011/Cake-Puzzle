@@ -2,8 +2,8 @@ using _BaseGame.ScriptableObjects.MapData;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using UnityEngine;
+using DG.Tweening;
 
 public class OrderManager : Singleton<OrderManager>
 {
@@ -14,15 +14,58 @@ public class OrderManager : Singleton<OrderManager>
     public OrderProgress orderProgress;
     public bool isFail;
     float timeRemaining;
-
+    bool startOrder;
     private void Start()
     {
         EventManager.AddListener(EventName.ChangeLevel.ToString(), UpdateData);
     }
 
+    private void Update()
+    {
+        if (startOrder)
+        {
+            if (timeRemaining >= 0)
+            {
+                timeRemaining -= Time.deltaTime;
+                UIManager.instance.panelGamePlay.wrapOrder.ChangeTextTime(timeRemaining);
+            }
+            else {
+                isFail = true;
+                startOrder = false;
+                UIManager.instance.ShowPanelLevelComplete(false);
+                //gameObject.SetActive(false);
+            }
+        }
+    }
+    Tween tweenLoopSaveData;
+
+    public void SetStartOrder(bool active) {
+        if (active && timeRemaining > 0)
+        {
+            startOrder = active;
+            return;
+        }
+        startOrder = active;
+    }
+
+    public void StartOrder() {
+        startOrder = true;
+        Debug.Log("start order");
+        tweenLoopSaveData = DOVirtual.DelayedCall(3f, () => {
+            if (!startOrder)
+            {
+                if (tweenLoopSaveData != null)
+                    tweenLoopSaveData.Kill();
+            }
+            else ProfileManager.Instance.playerData.cakeSaveData.SetTimeRemaining(timeRemaining); 
+        });
+        tweenLoopSaveData.SetLoops(-1);
+        tweenLoopSaveData.Play();
+    }
+
     public void UpdateData()
     {
-        Debug.Log("Update data order");
+        //Debug.Log("Update data order");
         currentLevel = ProfileManager.Instance.playerData.playerResourseSave.currentLevel;
 
         if (currentLevel == 0) return;
@@ -31,7 +74,7 @@ public class OrderManager : Singleton<OrderManager>
 
         orderProgress = ProfileManager.Instance.playerData.cakeSaveData.orderProgress;
 
-        if (orderProgress == null || orderProgress.currentOrderLevel != currentLevel)
+        if (orderProgress == null || IsDifferentLevel())
         {
             orderProgress = ProfileManager.Instance.playerData.cakeSaveData.InitprogressData(currentLevel, mapCakeConfigsData);
         }
@@ -49,6 +92,13 @@ public class OrderManager : Singleton<OrderManager>
 
         UIManager.instance.panelGamePlay?.wrapOrder.GetOrder();
         GameManager.Instance.cakeManager.isLooseByOrder = false;
+    }
+
+    bool IsDifferentLevel() {
+        int levelTemp = currentLevel;
+        if (currentLevel > MapCakeConfigs.Instance.mapCakeConfigs.Count)
+            levelTemp = currentLevel % MapCakeConfigs.Instance.mapCakeConfigs.Count;
+        return levelTemp != orderProgress.currentOrderLevel;
     }
 
     public CakeOrder GetCakeOrder(int cakeIndex)
@@ -73,6 +123,7 @@ public class OrderManager : Singleton<OrderManager>
     {
         if (currentLevel == 0)
         {
+            startOrder = false;
             ProfileManager.Instance.playerData.playerResourseSave.LevelUp();
             return;
         }
@@ -90,15 +141,20 @@ public class OrderManager : Singleton<OrderManager>
         {
             if(!checkFromFirstGame)
                 ProfileManager.Instance.playerData.playerResourseSave.AddMoney(15);
-
+            //Debug.Log("current level: " + currentLevel);
             if (MapCakeConfigs.Instance.IsLastOrderOfLevel(currentLevel, currentOrderIndex + 1))
             {
-                Debug.Log("Level up");
+                //Debug.Log("Level up");
+                startOrder = false;
                 ProfileManager.Instance.playerData.playerResourseSave.LevelUp();
             }
             else
+            {
+                //Debug.Log("next order");
                 ProfileManager.Instance.playerData.cakeSaveData.NextOrder(mapCakeConfigsData);
-            ProfileManager.Instance.playerData.cakeSaveData.SetTimeRemaining(DateTime.Now.AddMinutes(mapCakeConfigsData.orderCakeTime).ToString(new CultureInfo("en-US")));
+            }
+            float totalOrder = mapCakeConfigsData.cakeOrders.Count / 3;
+            ProfileManager.Instance.playerData.cakeSaveData.SetTimeRemaining((mapCakeConfigsData.orderCakeTime * 60) / totalOrder);
             UIManager.instance.panelGamePlay.wrapOrder.OnOrderComplete(true, UpdateData);
 
 
@@ -117,7 +173,13 @@ public class OrderManager : Singleton<OrderManager>
 
     public void Revive()
     {
+        
+        float totalOrder = mapCakeConfigsData.cakeOrders.Count / 3;
+        ProfileManager.Instance.playerData.cakeSaveData.SetTimeRemaining((mapCakeConfigsData.orderCakeTime * 60) / totalOrder);
+        timeRemaining = ProfileManager.Instance.playerData.cakeSaveData.GetTimeRemaining();
+
         isFail = false;
+       
         UIManager.instance.panelGamePlay.wrapOrder.gameObject.SetActive(true);
         UIManager.instance.panelGamePlay.wrapOrder.GetOrder();
     }

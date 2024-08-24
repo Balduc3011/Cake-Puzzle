@@ -294,5 +294,9 @@ public class GroupCake : MonoBehaviour
             if (cake[i].gameObject.activeSelf)
                 cake[i].OnDestroyCake();
         }
+        for (int i = 0; i < objConnects.Count; i++)
+        {
+            objConnects[i].gameObject.SetActive(false);
+        }
     }
 }

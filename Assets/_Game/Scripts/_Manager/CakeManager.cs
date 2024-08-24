@@ -140,7 +140,7 @@ public class CakeManager : MonoBehaviour
     }
 
     public void InitGroupCake() {
-        Debug.Log("Init group cake");
+        //Debug.Log("Init group cake");
         SetCountPieces();
         indexGroupCake = 0;
         onInitGroup = true;
@@ -153,7 +153,7 @@ public class CakeManager : MonoBehaviour
         while (indexGroupCake < 3)
         {
 
-            Debug.Log("index group cake: " + indexGroupCake);
+            //Debug.Log("index group cake: " + indexGroupCake);
             groupCake = GameManager.Instance.objectPooling.GetGroupCake();
             cakesWait.Add(groupCake);
             groupCake.transform.position = pointFirstSpawn[indexGroupCake].position;
@@ -432,6 +432,7 @@ public class CakeManager : MonoBehaviour
         }
         if (countFaild == countCheckFaild && countFaild > 0)
         {
+            GameManager.Instance.ordermanager.SetStartOrder(false);
             UIManager.instance.TurnBlock(true);
             table.AnimLooseGame();
             DOVirtual.DelayedCall(2f, () =>
@@ -531,8 +532,8 @@ public class CakeManager : MonoBehaviour
         //{
         //    GameManager.Instance.cakeManager.LoadCakeCheat();
         //}
-        Debug.Log("Clear");
-        ClearAllCake();
+        //Debug.Log("INIT CAKE LEVEL DATA");
+        //ClearAllCake();
         int currentLevel = ProfileManager.Instance.playerData.playerResourseSave.currentLevel;
         mapCakeConfigData = MapCakeConfigs.Instance.GetMapCakeConfigsData(currentLevel);
 

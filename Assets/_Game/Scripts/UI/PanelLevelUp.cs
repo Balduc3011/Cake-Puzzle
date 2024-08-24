@@ -162,6 +162,10 @@ public class PanelLevelUp : UIPanel
         GameManager.Instance.cakeManager.SetOnMove(false);
         if (ProfileManager.Instance.playerData.playerResourseSave.currentLevel > 2)
             GameManager.Instance.ShowInter();
+
+        GameManager.Instance.ClearAllCake();
+        GameManager.Instance.cakeManager.InitCakeFromLevelData();
+        ProfileManager.Instance.playerData.cakeSaveData.ResetProgres();
     }
 
     void X2BtnOnClick()

@@ -25,7 +25,7 @@ namespace _BaseGame.ScriptableObjects.MapData
             SelectedMapCakeConfigsData = GetMapCakeConfigsData(SelectedLevel);
             SelectedMapCakeConfigsData.editTable = true;
         }
-        
+#if UNITY_EDITOR
         [Button]
         public void FetchDataFromGoogleSheet()
         {
@@ -51,13 +51,17 @@ namespace _BaseGame.ScriptableObjects.MapData
                 mapCakeConfigs = newData;
             });
         }
-
+#endif
         public MapCakeConfigsData GetMapCakeConfigsData(float level)
         {
             int levelTemp = level > mapCakeConfigs.Count ? (int)(level % mapCakeConfigs.Count) : (int)level;
-            Debug.Log("Level "+ levelTemp+" " +level);
+            //Debug.Log("Level "+ levelTemp+" " +level);
+            if (levelTemp == 0)
+                return mapCakeConfigs[mapCakeConfigs.Count - 1];
             return mapCakeConfigs.Find(m => m.level == levelTemp);
         }
+
+#if UNITY_EDITOR
         [Button]
         public void GenerateCakeRequired()
         {
@@ -73,9 +77,12 @@ namespace _BaseGame.ScriptableObjects.MapData
             EditorUtility.SetDirty(this);
             AssetDatabase.SaveAssets();
         }
-
+#endif
         public bool IsLastOrderOfLevel(int level, int currentOrderIndex)
         {
+            //Debug.Log("Last order is: "+ GetMapCakeConfigsData(level).cakeOrders.Count / 3);
+            //Debug.Log($"Current order index: {currentOrderIndex}");
+            //Debug.Log("Is last order of level: " + (GetMapCakeConfigsData(level).cakeOrders.Count / 3 == currentOrderIndex));
             return (GetMapCakeConfigsData(level).cakeOrders.Count/3 == currentOrderIndex);
         }
     }
@@ -131,7 +138,8 @@ namespace _BaseGame.ScriptableObjects.MapData
                 }
             }
         }
-        
+
+#if UNITY_EDITOR
         static int DrawColoredEnumElement(Rect rect, int value)
         {
             if (Event.current.type == EventType.MouseDown && rect.Contains(Event.current.mousePosition))
@@ -139,15 +147,15 @@ namespace _BaseGame.ScriptableObjects.MapData
                 switch (Event.current.button)
                 {
                     case 1:
-                        value -=1;
+                        value -= 1;
                         break;
                     case 0:
-                        value +=1;
+                        value += 1;
                         break;
                 }
-                
-                if(value>6)value = 0;
-                if(value<0)value = 6;
+
+                if (value > 6) value = 0;
+                if (value < 0) value = 6;
                 GUI.changed = true;
                 Event.current.Use();
             }
@@ -161,6 +169,8 @@ namespace _BaseGame.ScriptableObjects.MapData
 
             return value;
         }
+#endif
+
 
         [Button]
         [ShowIf("@editTable == true")]

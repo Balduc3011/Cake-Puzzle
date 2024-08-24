@@ -43,15 +43,18 @@ public class ItemManager : MonoBehaviour
                 case ItemType.Bomb:
                     break;
                 case ItemType.ReRoll:
+                    GameManager.Instance.ordermanager.SetStartOrder(false);
                     GameManager.Instance.cakeManager.UsingReroll();
                     ProfileManager.Instance.playerData.playerResourseSave.UsingItem(itemType);
                     break;
                 case ItemType.Hammer:
+                    GameManager.Instance.ordermanager.SetStartOrder(false);
                     UIManager.instance.ShowPanelUsingItem();
                     UsingItemWithPanel(ItemType.Hammer);
                     EventManager.TriggerEvent(EventName.UsingHammer.ToString());
                     break;
                 case ItemType.FillUp:
+                    GameManager.Instance.ordermanager.SetStartOrder(false);
                     UIManager.instance.ShowPanelUsingItem();
                     UsingItemWithPanel(ItemType.FillUp);
                     EventManager.TriggerEvent(EventName.UsingFillUp.ToString());
