@@ -69,14 +69,19 @@ public class OrderManager : Singleton<OrderManager>
         currentLevel = ProfileManager.Instance.playerData.playerResourseSave.currentLevel;
 
         if (currentLevel == 0) return;
-
+        Debug.Log("Get map cake data");
+        Debug.Log("Current level: "+ currentLevel);
         mapCakeConfigsData = MapCakeConfigs.Instance.GetMapCakeConfigsData(currentLevel);
+
+        if (mapCakeConfigsData == null)
+            Debug.Log("Null map cake data");
 
         orderProgress = ProfileManager.Instance.playerData.cakeSaveData.orderProgress;
 
         if (orderProgress == null || IsDifferentLevel())
         {
             orderProgress = ProfileManager.Instance.playerData.cakeSaveData.InitprogressData(currentLevel, mapCakeConfigsData);
+            Debug.Log("other level");
         }
 
         currentOrderIndex = orderProgress.currentOrderIndex;
@@ -92,6 +97,13 @@ public class OrderManager : Singleton<OrderManager>
 
         UIManager.instance.panelGamePlay?.wrapOrder.GetOrder();
         GameManager.Instance.cakeManager.isLooseByOrder = false;
+    }
+
+    public void ResetData()
+    {
+        timeRemaining = ProfileManager.Instance.playerData.cakeSaveData.GetTimeRemaining();
+        ProfileManager.Instance.playerData.cakeSaveData.ResetProgres();
+        ProfileManager.Instance.playerData.cakeSaveData.SetTimeRemainingOrder();
     }
 
     bool IsDifferentLevel() {

@@ -1,3 +1,4 @@
+//using _BaseGame.ScriptableObjects.MapData;
 using _BaseGame.ScriptableObjects.MapData;
 using DG.Tweening;
 using System;
@@ -536,7 +537,7 @@ public class CakeManager : MonoBehaviour
         //ClearAllCake();
         int currentLevel = ProfileManager.Instance.playerData.playerResourseSave.currentLevel;
         mapCakeConfigData = MapCakeConfigs.Instance.GetMapCakeConfigsData(currentLevel);
-
+        
         for (int i = 0; i < mapCakeConfigData.board.Board.Count; i++)
         {
             if (mapCakeConfigData.board.Board[i].value != 0)

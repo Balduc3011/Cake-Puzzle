@@ -33,6 +33,15 @@ public class CakeSaveData : SaveBase
             cakeOnWaits = data.cakeOnWaits;
             orderProgress = data.orderProgress;
             UpdateCardRequire();
+            if (ownedCakes.Count < 6)
+            {
+                for (int i = ownedCakes.Count; i < 6; i++)
+                {
+                    AddCakeCard(i, 1);
+                    cakeIDs.Add(i);
+                    cakeIDUsing.Add(i);
+                }
+            }
         }
         else {
             AddFirstCake();

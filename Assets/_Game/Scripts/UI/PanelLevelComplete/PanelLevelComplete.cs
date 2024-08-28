@@ -70,6 +70,7 @@ public class PanelLevelComplete : UIPanel
         ProfileManager.Instance.playerData.cakeSaveData.ClearAllCake();
         GameManager.Instance.cakeManager.SetOnMove(false);
         GameManager.Instance.ClearAllCake();
+        GameManager.Instance.ordermanager.ResetData();
         GameManager.Instance.cakeManager.InitCakeFromLevelData();
         ProfileManager.Instance.playerData.cakeSaveData.ResetProgres();
         GameManager.Instance.BackToMenu();
