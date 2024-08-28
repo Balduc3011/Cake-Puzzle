@@ -7,8 +7,8 @@ using UnityEngine;
 
 namespace _BaseGame.ScriptableObjects.MapData
 {
-    [CreateAssetMenu(fileName = "MapCakeConfigs", menuName = "Cake/MapCakeConfigs", order = 0)]
-    [GlobalConfig("Assets/Resources/GlobalConfig/MapCakeConfigs.asset")]
+    [CreateAssetMenu(fileName = "MapCakeConfigs", menuName = "GlobalConfigs/MapCakeConfigs", order = 0)]
+    [GlobalConfig("Assets/Resources/GlobalConfigs/")]
     public class MapCakeConfigs : GlobalConfig<MapCakeConfigs>
     {
         public string googleSheetURL;
